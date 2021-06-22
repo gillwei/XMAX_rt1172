@@ -193,6 +193,7 @@ EW_DEFINE_METHODS( CoreVerticalList, CoreGroup )
   EW_METHOD( UpdateLayout,      void )( CoreGroup _this, XPoint aSize )
   EW_METHOD( UpdateViewState,   void )( CoreVerticalList _this, XSet aState )
   EW_METHOD( InvalidateArea,    void )( CoreGroup _this, XRect aArea )
+  EW_METHOD( GetViewAtIndex,    CoreView )( CoreVerticalList _this, XInt32 aIndex )
   EW_METHOD( CountViews,        XInt32 )( CoreVerticalList _this )
   EW_METHOD( FindNextView,      CoreView )( CoreVerticalList _this, CoreView aView, 
     XSet aFilter )
@@ -234,6 +235,14 @@ XObject CoreVerticalList_DispatchEvent( CoreVerticalList _this, CoreEvent aEvent
    Usually, this method will be invoked automatically by the framework. Optionally 
    you can request its invocation by using the method @InvalidateViewState(). */
 void CoreVerticalList_UpdateViewState( CoreVerticalList _this, XSet aState );
+
+/* The method GetViewAtIndex() returns the view stored at the Z-order position aIndex 
+   within the component. The view lying in the background of the component has the 
+   index 0. The next above view has the index 1, and so far. The total number of 
+   views enclosed within this component can be asked by the method @CountViews().
+   If the passed index is negative or the desired view doesn't exist, the method 
+   returns 'null'. */
+CoreView CoreVerticalList_GetViewAtIndex( CoreVerticalList _this, XInt32 aIndex );
 
 /* The method CountViews() returns the total number of views belonging to this component. 
    In case of an empty component without any views, 0 is returned. */

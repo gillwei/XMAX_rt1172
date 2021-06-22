@@ -1445,6 +1445,36 @@ EW_RES_WITHOUT_VARIANTS( ResourceIconUnitVolt )
 /* Table with links to derived variants of the bitmap resource : 'Resource::Brightness' */
 EW_RES_WITHOUT_VARIANTS( ResourceBrightness )
 
+/* Include a file containing the bitmap resource : 'Resource::EcoBase' */
+#include "_ResourceEcoBase.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::EcoBase' */
+EW_RES_WITHOUT_VARIANTS( ResourceEcoBase )
+
+/* Include a file containing the bitmap resource : 'Resource::AvgLine' */
+#include "_ResourceAvgLine.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::AvgLine' */
+EW_RES_WITHOUT_VARIANTS( ResourceAvgLine )
+
+/* Include a file containing the bitmap resource : 'Resource::EcoWindowLine' */
+#include "_ResourceEcoWindowLine.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::EcoWindowLine' */
+EW_RES_WITHOUT_VARIANTS( ResourceEcoWindowLine )
+
+/* Include a file containing the bitmap resource : 'Resource::EcoDot' */
+#include "_ResourceEcoDot.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::EcoDot' */
+EW_RES_WITHOUT_VARIANTS( ResourceEcoDot )
+
+/* Include a file containing the bitmap resource : 'Resource::GradientCover' */
+#include "_ResourceGradientCover.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::GradientCover' */
+EW_RES_WITHOUT_VARIANTS( ResourceGradientCover )
+
 /* Include a file containing the bitmap resource : 'Resource::HighTemperature' */
 #include "_ResourceHighTemperature.h"
 

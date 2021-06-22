@@ -236,6 +236,7 @@ EW_DEFINE_CLASS( TCSTCS01_Main, MenuBaseMenuView, VehicleDataReceivedEventHandle
   CoreGroup_UpdateLayout,
   CoreGroup_UpdateViewState,
   CoreGroup_InvalidateArea,
+  CoreGroup_GetViewAtIndex,
   CoreGroup_CountViews,
   CoreGroup_FindNextView,
   CoreGroup_FindSiblingView,

@@ -251,6 +251,7 @@ EW_DEFINE_METHODS( CoreGroup, CoreRectView )
   EW_METHOD( UpdateLayout,      void )( CoreGroup _this, XPoint aSize )
   EW_METHOD( UpdateViewState,   void )( CoreGroup _this, XSet aState )
   EW_METHOD( InvalidateArea,    void )( CoreGroup _this, XRect aArea )
+  EW_METHOD( GetViewAtIndex,    CoreView )( CoreGroup _this, XInt32 aIndex )
   EW_METHOD( CountViews,        XInt32 )( CoreGroup _this )
   EW_METHOD( FindNextView,      CoreView )( CoreGroup _this, CoreView aView, XSet 
     aFilter )
@@ -776,6 +777,17 @@ void CoreGroup_InvalidateArea( CoreGroup _this, XRect aArea );
 
 /* Wrapper function for the virtual method : 'Core::Group.InvalidateArea()' */
 void CoreGroup__InvalidateArea( void* _this, XRect aArea );
+
+/* The method GetViewAtIndex() returns the view stored at the Z-order position aIndex 
+   within the component. The view lying in the background of the component has the 
+   index 0. The next above view has the index 1, and so far. The total number of 
+   views enclosed within this component can be asked by the method @CountViews().
+   If the passed index is negative or the desired view doesn't exist, the method 
+   returns 'null'. */
+CoreView CoreGroup_GetViewAtIndex( CoreGroup _this, XInt32 aIndex );
+
+/* Wrapper function for the virtual method : 'Core::Group.GetViewAtIndex()' */
+CoreView CoreGroup__GetViewAtIndex( void* _this, XInt32 aIndex );
 
 /* The method CountViews() returns the total number of views belonging to this component. 
    In case of an empty component without any views, 0 is returned. */

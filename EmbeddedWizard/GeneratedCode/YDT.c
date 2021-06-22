@@ -194,6 +194,7 @@ EW_DEFINE_CLASS( YDTYDT01_Main, ComponentsBaseMainBG, PushButton, PushButton, Pu
   CoreGroup_UpdateLayout,
   CoreGroup_UpdateViewState,
   CoreGroup_InvalidateArea,
+  CoreGroup_GetViewAtIndex,
   CoreGroup_CountViews,
   CoreGroup_FindNextView,
   CoreGroup_FindSiblingView,

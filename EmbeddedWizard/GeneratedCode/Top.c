@@ -240,6 +240,7 @@ EW_DEFINE_CLASS( TopTOP01_Disclaimer, ComponentsBaseComponent, OnAcceptButtonCli
   TopTOP01_Disclaimer_UpdateLayout,
   CoreGroup_UpdateViewState,
   CoreGroup_InvalidateArea,
+  CoreGroup_GetViewAtIndex,
   CoreGroup_CountViews,
   CoreGroup_FindNextView,
   CoreGroup_FindSiblingView,

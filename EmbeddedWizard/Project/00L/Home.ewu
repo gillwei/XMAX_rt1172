@@ -36,13 +36,23 @@ $rect <10,110,210,150>
 $output false
 class HOM12_EcoVisualizer : Home::BaseHome
 {
-  $rect <0,280,180,320>
+  $rect <550,600,730,640>
   inherited method Init()
   {
     trace "Init HOM12";
+    var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.TIMEOUT_ERROR2_DETECTED );
+    if( (bool)VehicleData.DataUInt32 )
+    {
+      RemoveAllEcoRecord();
+    }
+    else
+    {
+      signal OnEcoBarUpdateSlot;
+    }
+    SetFuelRateUnit();
   }
 
-  $rect <210,280,440,320>
+  $rect <540,660,770,700>
   inherited method OnLongEnterKeyActivated()
   {
     if( Components::ACTIVATE_LONG_PRESS_REPETITION_COUNT == KeyHandler.RepetitionCount )
@@ -51,16 +61,392 @@ class HOM12_EcoVisualizer : Home::BaseHome
     }
   }
 
-  $rect <0,330,180,370>
+  $rect <550,130,730,170>
   inherited var HomeType = Enum::HomeType.ECO_VISUALIZER;
 
   $rect <20,20,160,60>
-  object Views::Text Title
+  object Views::Image EcoMeterBase
   {
-    preset Bounds = <72,113,403,156>;
-    preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertCenter];
-    preset String = Strings::INF01_ECHO_VISUALIZER;
-    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    preset Bounds = <61,44,417,200>;
+    preset Bitmap = Resource::EcoBase;
+  }
+
+  $rect <20,20,160,60>
+  object Home::EcoMeterChart EcoMeterChart
+  {
+    preset Layout = Core::Layout[AlignToRight];
+    preset Bounds = <61,44,435,200>;
+    preset Enabled = false;
+    preset MaxValue = 2.0;
+    preset DotFrame = Resource::EcoDot;
+    preset BarSize = 6;
+    preset Records = null;
+    preset StartAnimation = ShiftLeftStarts;
+    preset EndAnimation = ShiftLeftEnds;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Rectangle RightBlackArea
+  {
+    preset Bounds = <417,44,435,184>;
+    preset Color = #070707FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Rectangle LeftBlackArea
+  {
+    preset Bounds = <43,44,61,184>;
+    preset Color = #070707FF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image GradientCover
+  {
+    preset Bounds = <55,61,412,189>;
+    preset Bitmap = Resource::GradientCover;
+    preset Visible = true;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text AvgFuel
+  {
+    preset Bounds = <85,212,194,242>;
+    preset String = "AVG FUEL";
+    preset Font = Fonts::NotoSansMedium22pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text Average
+  {
+    preset Bounds = <205,196,328,253>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
+    preset String = "";
+    preset Font = Fonts::NotoSansMedium42pt;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image Unit
+  {
+    preset Bounds = <333,205,393,247>;
+    preset Bitmap = Resource::IconUnitKM_L;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image EcoWindowLine
+  {
+    preset Bounds = <52,244,428,259>;
+    preset Bitmap = Resource::EcoWindowLine;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image AvgLine
+  {
+    preset Bounds = <0,102,480,129>;
+    preset Bitmap = Resource::AvgLine;
+  }
+
+  $rect <760,80,960,120>
+  property float CurrentRelativeValue;
+
+  $rect <760,120,960,160>
+  onset CurrentRelativeValue
+  {
+    // Remember the property's new value.
+    pure CurrentRelativeValue = value;
+
+    if( EcoRecordList.NoOfItems >= EcoRecordList.MaxValue )
+    {
+      EcoRecordList.RemoveRecord();
+    }
+
+    EcoRecordList.AddRecord( CurrentRelativeValue );
+
+    if( EcoRecordList.NoOfItems == 1 )
+    {
+      EcoMeterChart.Record = EcoRecordList.firstRecord;
+      Index++;
+    }
+    else
+    {
+      if( Index == EcoRecordList.MaxValue )
+      {
+        //Remove EcoMeterComponent view from view list.
+        EcoMeterChart.RemoveEcoUnit( Index - EcoRecordList.MaxValue );
+        Index--;
+      }
+      EcoMeterChart.Record = EcoRecordList.GetRecord( Index );
+      Index++;
+    }
+
+    EcoMeterChart.Records = EcoRecordList;
+  }
+
+  $rect <990,640,1190,680>
+  object Effects::RectEffect ShiftLeftEffect
+  {
+    preset OnFinished = ShiftLeftEnds;
+    preset OnAnimate = OnMoveLeft;
+    preset Bounces = 1;
+    preset NoOfCycles = 1;
+    preset CycleDuration = 200;
+    preset Enabled = false;
+    preset Value2 = <50,45,419,184>;
+    preset Value1 = <56,45,425,184>;
+  }
+
+  $rect <990,680,1190,720>
+  slot OnMoveLeft
+  {
+    EcoMeterChart.Bounds = ShiftLeftEffect.Value;
+
+  }
+
+  $rect <990,600,1190,640>
+  slot ShiftLeftStarts
+  {
+    signal EcoMeterChart.OnAnimate;
+    ShiftLeftEffect.Enabled = true;
+  }
+
+  $rect <990,720,1190,760>
+  slot ShiftLeftEnds
+  {
+    ShiftLeftEffect.Enabled = false;
+  }
+
+  $rect <140,380,330,420>
+  object Core::Timer Timer
+  {
+    preset OnTrigger = OnUpdateSlot;
+    preset Period = 1000;
+    preset Enabled = false;
+  }
+
+  $rect <140,420,340,460>
+  slot OnUpdateSlot
+  {
+    if( ValueArrayIdx > 20 )
+    {
+      ValueArrayIdx = 0;
+    }
+
+    // hide the 6th ~ 8th bar.
+    if( ValueArrayIdx > 5 && ValueArrayIdx < 9 )
+    {
+      CurrentRelativeValue = -1;
+      EcoMeterChart.HideEcoUnit( ValueArrayIdx );
+    }
+    else
+    {
+      CurrentRelativeValue = ValueArray[ValueArrayIdx];
+    }
+    ValueArrayIdx++;
+
+  }
+
+  $rect <980,80,1180,120>
+  var int32 Index = 0;
+
+  $rect <550,410,750,450>
+  object Core::SystemEventHandler VehicleDataReceivedEventHandler
+  {
+    preset OnEvent = OnVehicleDataReceivedSlot;
+    preset Event = DeviceInterface::VehicleDevice.VehicleDataReceivedSystemEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <750,410,950,450>
+  slot OnVehicleDataReceivedSlot
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = ( DeviceInterface::VehicleDataClass )VehicleDataReceivedEventHandler.Context;
+
+    if( null != VehicleData )
+    {
+      switch( VehicleData.RxType )
+      {
+        case Enum::VehicleRxType.TIMEOUT_ERROR2_DETECTED:
+        {
+          EcoBarUpdateTimer.Enabled = false;
+          RemoveAllEcoRecord();
+          Average.String = Strings::GEN_THREE_HYPHENS;
+        }
+        case Enum::VehicleRxType.TIMEOUT_ERROR2_RECOVERED:
+        {
+          EcoBarUpdateTimer.Enabled = true;
+        }
+        case Enum::VehicleRxType.FUEL_CONSUMPTION_UNIT:
+        {
+          SetFuelRateUnit();
+        }
+        default:;
+      }
+    }
+  }
+
+  // Variable
+  note group Note1
+  {
+    attr Bounds = <520,40,1210,310>;
+  }
+
+  // System event
+  note group Note2
+  {
+    attr Bounds = <520,360,1210,520>;
+  }
+
+  // Method
+  note group Note
+  {
+    attr Bounds = <520,540,1210,810>;
+  }
+
+  // Test
+  note group Note3
+  {
+    attr Bounds = <80,310,410,590>;
+  }
+
+  $rect <550,720,750,760>
+  method void RemoveAllEcoRecord()
+  {
+    if( EcoRecordList.NoOfItems > 0 )
+    {
+      while( EcoRecordList.NoOfItems > 0 )
+      {
+        EcoMeterChart.RemoveEcoUnit( Index - 1 );
+        EcoRecordList.RemoveRecord();
+        Index--;
+      }
+      EcoRecordList.ClearList();
+    }
+  }
+
+  $rect <550,80,750,120>
+  object Home::RecordList EcoRecordList;
+
+  $rect <140,470,340,510>
+  array float ValueArray[ 21 ] =
+  (
+    Default[0] = 0.0;
+    Default[1] = 0.1;
+    Default[2] = 0.2;
+    Default[3] = 0.3;
+    Default[4] = 0.4;
+    Default[5] = 0.5;
+    Default[6] = 0.6;
+    Default[7] = 0.7;
+    Default[8] = 0.8;
+    Default[9] = 0.9;
+    Default[10] = 1.0;
+    Default[11] = 1.1;
+    Default[12] = 1.2;
+    Default[13] = 1.3;
+    Default[14] = 1.4;
+    Default[15] = 1.5;
+    Default[16] = 1.6;
+    Default[17] = 1.7;
+    Default[18] = 1.8;
+    Default[19] = 1.9;
+    Default[20] = 2.0;
+  );
+
+  $rect <140,510,340,550>
+  var int32 ValueArrayIdx = 0;
+
+  $rect <550,190,750,230>
+  property float FuelRateInst;
+
+  $rect <550,230,750,270>
+  onset FuelRateInst
+  {
+    // Remember the property's new value.
+    pure FuelRateInst = value;
+  }
+
+  $rect <770,190,970,230>
+  property float FuelRateAvg;
+
+  $rect <770,230,970,270>
+  onset FuelRateAvg
+  {
+    // Remember the property's new value.
+    pure FuelRateAvg = value;
+
+    if( FuelRateAvg == 0.0 )
+    {
+      RemoveAllEcoRecord();
+      AvgLine.Visible = false;
+      Average.String = Strings::GEN_THREE_HYPHENS;
+    }
+    else
+    {
+      AvgLine.Visible = true;
+      CurrentRelativeValue = FuelRateInst/FuelRateAvg;
+      Average.String = string( FuelRateAvg, 0, 1 );
+    }
+  }
+
+  $rect <770,600,960,640>
+  object Core::Timer EcoBarUpdateTimer
+  {
+    preset OnTrigger = OnEcoBarUpdateSlot;
+    preset Period = 1000;
+    preset Enabled = true;
+  }
+
+  $rect <770,650,970,690>
+  slot OnEcoBarUpdateSlot
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.ENGINE_SPEED );
+    if( VehicleData.DataUInt32 < 50 )
+    {
+      CurrentRelativeValue = -1; // make sure the head of eco bar is not drawn.
+      EcoMeterChart.HideEcoUnit( Index ); // hide the eco bar.
+    }
+    else
+    {
+      if( DeviceInterface::VehicleDevice.EngineIdling )
+      {
+        switch( DeviceInterface::VehicleDevice.FuelConsumptionUnit )
+        {
+          case Enum::MeterFuelConsumptionUnit.KM_PER_LITER: CurrentRelativeValue = 0.0; // show the head of eco bar only(minimum relative value).
+          case Enum::MeterFuelConsumptionUnit.L_PER_100KM: CurrentRelativeValue = 2.0; // show full eco bar(maximum relative value).
+          default:;
+        }
+      }
+      else
+      {
+        VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.FUEL_RATE_INSTANT_UNIT_CONVERTED );
+        FuelRateInst = VehicleData.DataFloat;
+
+        VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.FUEL_RATE_AVERAGE_UNIT_CONVERTED );
+        if( VehicleData.Valid )
+        {
+          FuelRateAvg = VehicleData.DataFloat;
+        }
+        else
+        {
+          AvgLine.Visible = false;
+          RemoveAllEcoRecord();
+          Average.String = Strings::GEN_THREE_HYPHENS;
+        }
+      }
+    }
+  }
+
+  $rect <760,720,960,760>
+  method void SetFuelRateUnit()
+  {
+    switch( DeviceInterface::VehicleDevice.FuelConsumptionUnit )
+    {
+      case Enum::MeterFuelConsumptionUnit.KM_PER_LITER: Unit.Bitmap = Resource::IconUnitKM_L;
+      case Enum::MeterFuelConsumptionUnit.L_PER_100KM: Unit.Bitmap = Resource::IconUnitL_100KM;
+      case Enum::MeterFuelConsumptionUnit.MILE_PER_IMPERIAL_GAL,
+           Enum::MeterFuelConsumptionUnit.MILE_PER_US_GAL: Unit.Bitmap = Resource::IconUnitMPG;
+      default:;
+    }
   }
 }
 
@@ -995,4 +1381,280 @@ class ItemVehicleInfo : Components::BaseComponent
   $reorder MagicKeyEnabled 1
   $reorder OnSetMagicKeyEnabled 1
   $reorder Title 1
+}
+
+$rect <290,240,490,280>
+$output false
+class EcoMeterChart : Core::Group
+{
+  $rect <30,300,230,340>
+  inherited property Bounds = <0,0,369,156>;
+
+  $rect <650,20,850,60>
+  property float MaxValue;
+
+  $rect <650,60,850,100>
+  onset MaxValue
+  {
+    // Remember the property's new value.
+    pure MaxValue = value;
+  }
+
+  $rect <410,20,610,60>
+  property Resources::Bitmap DotFrame = null;
+
+  $rect <410,60,610,100>
+  onset DotFrame
+  {
+    // Remember the property's new value.
+    pure DotFrame = value;
+
+    /* ...and force an update of the component */
+    InvalidateArea( Bounds.orect );
+  }
+
+  $rect <400,130,600,170>
+  property int32 BarSize;
+
+  $rect <400,170,600,210>
+  onset BarSize
+  {
+    /* check for valid values */
+    if ( value < 0 )
+      value = 0;
+
+    /* check for any news... */
+    if ( value == pure BarSize )
+      return;
+
+    /* store the new value... */
+    pure BarSize = value;
+
+    /* ...and force an update of the component */
+    InvalidateArea( Bounds.orect );
+  }
+
+  $rect <640,130,840,170>
+  property Home::RecordList Records;
+
+  $rect <640,170,840,210>
+  onset Records
+  {
+    pure Records = value;
+
+    if (( Records == null ) || ( Records.NoOfItems < 1 ))
+      return;
+
+    if( Record != null )
+    {
+      if( Record.Value > 2.0 )
+      {
+        Record.Value = 2.0;  
+      }
+
+      var int32 dist = (int32)( 5.6*( Record.Value*10 ) ); // 5.6 is the difference between each bar's height. 118(scale's height)/ 21(0.0~2.0) = 5.6
+
+      if (( pure DotFrame != null ) )
+      {
+        EcoUnit = new Home::EcoMeterComponent;
+       
+        EcoUnit.Bounds = rect(BarPos.x1,BarPos.y1 - dist,BarPos.x2,BarPos.y2);
+        Add( EcoUnit, 0 );
+      }
+      signal StartAnimation;
+    }
+
+
+  }
+
+  $rect <890,70,1090,110>
+  slot OnAnimate
+  {
+    var Core::View view = FindNextView( null, Core::ViewState[] );
+    while (( view != null))
+    {
+      if( classof view == classof EcoUnit )
+      {
+        var Home::EcoMeterComponent bar = (Home::EcoMeterComponent) view;
+        bar.Bounds.x1 = bar.Bounds.x1 - 11;
+        bar.Bounds.x2 = bar.Bounds.x2 - 11;
+      }
+      view = view.next;
+    }
+  }
+
+  $rect <402,230,602,270>
+  property Home::Record Record;
+
+  $rect <648,230,848,270>
+  property slot StartAnimation;
+
+  $rect <648,270,848,310>
+  property slot EndAnimation;
+
+  $rect <400,330,600,370>
+  var Home::EcoMeterComponent EcoUnit;
+
+  $rect <890,20,1090,60>
+  method void RemoveEcoUnit( arg int32 aIndex )
+  {
+    if( aIndex >= 0 )
+    {
+      var Core::View view = GetViewAtIndex( aIndex );
+      var Home::EcoMeterComponent EcoBar = (Home::EcoMeterComponent) view;
+      if( null != EcoBar )
+      {
+        Remove( EcoBar );
+      }
+    }
+    else
+    {
+      trace "Invalid index";
+    }
+  }
+
+  $rect <890,120,1090,160>
+  method void HideEcoUnit( arg int32 aIndex )
+  {
+    if( aIndex >= 0 )
+    {
+      var Core::View view = GetViewAtIndex( aIndex );
+      var Home::EcoMeterComponent EcoBar = (Home::EcoMeterComponent) view;
+      if( null != EcoBar )
+      {
+        EcoBar.Visible = false;
+      }
+    }
+    else
+    {
+      trace "Invalid index";
+    }
+  }
+
+  $rect <650,320,850,360>
+  var rect BarPos = <363,133,369,140>;
+}
+
+$rect <290,290,490,330>
+$output false
+class EcoMeterComponent : Core::Group
+{
+  $rect <0,160,200,200>
+  inherited property Bounds = <0,0,6,118>;
+
+  $rect <20,20,160,60>
+  object Views::Rectangle Bar
+  {
+    preset Bounds = <0,3,6,118>;
+    preset Color = #719E0DFF;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Frame Dot
+  {
+    preset Bounds = <0,0,6,6>;
+    preset Bitmap = Resource::EcoDot;
+  }
+}
+
+$rect <500,290,700,330>
+$output false
+class RecordList
+{
+  $rect <500,10,680,50>
+  var Home::Record firstRecord = null;
+
+  $rect <500,50,680,90>
+  var Home::Record lastRecord = null;
+
+  // The method 'ClearList' is used to clear the list of records.
+  $rect <20,30,200,70>
+  method void ClearList()
+  {
+    firstRecord = null;
+    lastRecord  = null;
+
+    pure NoOfItems = 0;
+  }
+
+  // The method GetRecord returns the record object with the given index.
+  $rect <20,80,200,120>
+  method Home::Record GetRecord( arg int32 aIndex )
+  {
+    if (( aIndex < 0 ) || ( aIndex >= NoOfItems ))
+      return null;
+
+    var Home::Record record = firstRecord;
+
+    /* iterate through the list of records */
+    while (( aIndex > 0 ) && ( record != null ))
+    {
+      aIndex = aIndex - 1;
+      record = record.next;
+    }
+
+    return record;
+  }
+
+  $rect <20,130,220,170>
+  method void AddRecord( arg float aValue )
+  {
+    var Home::Record record = null;
+
+    /* create a new record object */
+    record = new Home::Record;
+
+    /* initialize the record with the given values */
+    record.Value = aValue;
+
+    /* check if the new record object is the first one */
+    if ( firstRecord == null )
+    {
+      firstRecord = record;
+      lastRecord = record;
+      pure NoOfItems = 1;
+    }
+    /* otherwise add the new record object at the end of the list */
+    else if( NoOfItems < MaxValue )
+    {
+      lastRecord.next = record;
+      lastRecord = record;
+      pure NoOfItems = pure NoOfItems + 1;
+    }
+    else
+    {
+      trace "reach maximum capacity";
+    }
+  }
+
+  $rect <20,180,220,220>
+  method void RemoveRecord()
+  {
+    if( firstRecord == null )
+      return;
+
+    var Home::Record record = firstRecord;
+    pure NoOfItems = pure NoOfItems - 1;
+
+    firstRecord = record.next;
+    record = null;
+  }
+
+  $rect <250,60,450,100>
+  var int32 MaxValue = 32;
+
+  $rect <250,20,450,60>
+  property int32 NoOfItems = 0;
+}
+
+$rect <500,240,700,280>
+$output false
+class Record
+{
+  // The variable 'Value' contains the data value to be shown within a chart.
+  $rect <10,10,190,50>
+  var float Value = 0.0;
+
+  $rect <190,10,370,50>
+  var Home::Record next = null;
 }

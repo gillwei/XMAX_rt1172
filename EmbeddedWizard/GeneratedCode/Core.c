@@ -3565,6 +3565,36 @@ void CoreGroup__InvalidateArea( void* _this, XRect aArea )
   ((CoreGroup)_this)->_.VMT->InvalidateArea((CoreGroup)_this, aArea );
 }
 
+/* The method GetViewAtIndex() returns the view stored at the Z-order position aIndex 
+   within the component. The view lying in the background of the component has the 
+   index 0. The next above view has the index 1, and so far. The total number of 
+   views enclosed within this component can be asked by the method @CountViews().
+   If the passed index is negative or the desired view doesn't exist, the method 
+   returns 'null'. */
+CoreView CoreGroup_GetViewAtIndex( CoreGroup _this, XInt32 aIndex )
+{
+  CoreView view;
+
+  if ( aIndex < 0 )
+    return 0;
+
+  view = _this->first;
+
+  while (( view != 0 ) && ( aIndex > 0 ))
+  {
+    aIndex = aIndex - 1;
+    view = view->next;
+  }
+
+  return view;
+}
+
+/* Wrapper function for the virtual method : 'Core::Group.GetViewAtIndex()' */
+CoreView CoreGroup__GetViewAtIndex( void* _this, XInt32 aIndex )
+{
+  return ((CoreGroup)_this)->_.VMT->GetViewAtIndex((CoreGroup)_this, aIndex );
+}
+
 /* The method CountViews() returns the total number of views belonging to this component. 
    In case of an empty component without any views, 0 is returned. */
 XInt32 CoreGroup_CountViews( CoreGroup _this )
@@ -4177,6 +4207,7 @@ EW_DEFINE_CLASS( CoreGroup, CoreRectView, first, Opacity, Opacity, Opacity, Opac
   CoreGroup_UpdateLayout,
   CoreGroup_UpdateViewState,
   CoreGroup_InvalidateArea,
+  CoreGroup_GetViewAtIndex,
   CoreGroup_CountViews,
   CoreGroup_FindNextView,
   CoreGroup_FindSiblingView,
@@ -5640,6 +5671,7 @@ EW_DEFINE_CLASS( CoreRoot, CoreGroup, keyLastTarget, cursorHoldTimer, cursorHold
   CoreGroup_UpdateLayout,
   CoreGroup_UpdateViewState,
   CoreRoot_InvalidateArea,
+  CoreGroup_GetViewAtIndex,
   CoreGroup_CountViews,
   CoreGroup_FindNextView,
   CoreGroup_FindSiblingView,
@@ -6719,6 +6751,21 @@ void CoreVerticalList_UpdateViewState( CoreVerticalList _this, XSet aState )
   _this->loading = 0;
 }
 
+/* The method GetViewAtIndex() returns the view stored at the Z-order position aIndex 
+   within the component. The view lying in the background of the component has the 
+   index 0. The next above view has the index 1, and so far. The total number of 
+   views enclosed within this component can be asked by the method @CountViews().
+   If the passed index is negative or the desired view doesn't exist, the method 
+   returns 'null'. */
+CoreView CoreVerticalList_GetViewAtIndex( CoreVerticalList _this, XInt32 aIndex )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+  EW_UNUSED_ARG( aIndex );
+
+  return 0;
+}
+
 /* The method CountViews() returns the total number of views belonging to this component. 
    In case of an empty component without any views, 0 is returned. */
 XInt32 CoreVerticalList_CountViews( CoreVerticalList _this )
@@ -7263,6 +7310,7 @@ EW_DEFINE_CLASS( CoreVerticalList, CoreGroup, itemsPool, OnLoadItem, invalidTail
   CoreGroup_UpdateLayout,
   CoreVerticalList_UpdateViewState,
   CoreGroup_InvalidateArea,
+  CoreVerticalList_GetViewAtIndex,
   CoreVerticalList_CountViews,
   CoreVerticalList_FindNextView,
   CoreVerticalList_FindSiblingView,

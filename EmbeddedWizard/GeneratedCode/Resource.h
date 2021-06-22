@@ -726,6 +726,21 @@ EW_DECLARE_BITMAP_RES( ResourceIconUnitVolt )
 /* Bitmap resource : 'Resource::Brightness' */
 EW_DECLARE_BITMAP_RES( ResourceBrightness )
 
+/* Bitmap resource : 'Resource::EcoBase' */
+EW_DECLARE_BITMAP_RES( ResourceEcoBase )
+
+/* Bitmap resource : 'Resource::AvgLine' */
+EW_DECLARE_BITMAP_RES( ResourceAvgLine )
+
+/* Bitmap resource : 'Resource::EcoWindowLine' */
+EW_DECLARE_BITMAP_RES( ResourceEcoWindowLine )
+
+/* Bitmap resource : 'Resource::EcoDot' */
+EW_DECLARE_BITMAP_RES( ResourceEcoDot )
+
+/* Bitmap resource : 'Resource::GradientCover' */
+EW_DECLARE_BITMAP_RES( ResourceGradientCover )
+
 /* Bitmap resource : 'Resource::HighTemperature' */
 EW_DECLARE_BITMAP_RES( ResourceHighTemperature )
 

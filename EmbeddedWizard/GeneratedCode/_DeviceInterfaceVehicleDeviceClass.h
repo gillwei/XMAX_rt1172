@@ -215,6 +215,9 @@ XString DeviceInterfaceVehicleDeviceClass_OnGetTireRearPressureStr( DeviceInterf
 /* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetTireSensorEquipped()' */
 XBool DeviceInterfaceVehicleDeviceClass_OnGetTireSensorEquipped( DeviceInterfaceVehicleDeviceClass _this );
 
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetEngineIdling()' */
+XBool DeviceInterfaceVehicleDeviceClass_OnGetEngineIdling( DeviceInterfaceVehicleDeviceClass _this );
+
 #ifdef __cplusplus
   }
 #endif

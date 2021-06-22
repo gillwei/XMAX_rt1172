@@ -860,6 +860,7 @@ EW_DEFINE_CLASS( ApplicationApplication, CoreRoot, FactoryTestEventHandler, Fact
   CoreGroup_UpdateLayout,
   CoreGroup_UpdateViewState,
   CoreRoot_InvalidateArea,
+  CoreGroup_GetViewAtIndex,
   CoreGroup_CountViews,
   CoreGroup_FindNextView,
   CoreGroup_FindSiblingView,

@@ -27,6 +27,8 @@ extern "C"{
 #define TCS_MODE_OFF            ( 0 )
 #define TCS_MODE_ON             ( 1 )
 
+#define ENGINE_SPEED_IDLE_VAL_LOW           ( 0 )
+#define ENGINE_SPEED_IDLE_VAL_HIGH          ( 0x3FF )
 #define INVALID_INSTANT_CONSUMPTION         ( 0x3FF )
 #define INVALID_AVERAGE_CONSUMPTION         ( 0x3FF )
 #define INVALID_RANGE_DISTANCE              ( 0x3FF )
@@ -85,6 +87,7 @@ void VI_trip_time_count( void );
 void VI_trip_time_save( void );
 void VI_clock_notify_meter_time_updated( const snvs_lp_srtc_datetime_t datetime );
 void VI_clock_send_rtc_time_to_meter( void );
+bool VI_is_engine_idling( void );
 
 #ifdef __cplusplus
 }

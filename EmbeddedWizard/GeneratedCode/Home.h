@@ -43,11 +43,15 @@
 #endif
 
 #include "_HomeBaseHome.h"
+#include "_HomeEcoMeterChart.h"
+#include "_HomeEcoMeterComponent.h"
 #include "_HomeHOM03_VehicleInfo.h"
 #include "_HomeHOM11_TachoVisualizer.h"
 #include "_HomeHOM12_EcoVisualizer.h"
 #include "_HomeHOM13_SpeedVisualizer.h"
 #include "_HomeItemVehicleInfo.h"
+#include "_HomeRecord.h"
+#include "_HomeRecordList.h"
 #include "_HomeVehicleInfoMenu.h"
 
 #ifdef __cplusplus

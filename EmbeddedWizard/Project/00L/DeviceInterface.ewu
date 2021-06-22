@@ -2547,7 +2547,9 @@ class VehicleDeviceClass : Templates::DeviceClass
           Enum::VehicleRxType.TIRE_FRONT == aVehicleRxType ||
           Enum::VehicleRxType.TIRE_REAR == aVehicleRxType ||
           Enum::VehicleRxType.TIRE_FRONT_LEFT == aVehicleRxType ||
-          Enum::VehicleRxType.TIRE_FRONT_RIGHT == aVehicleRxType )
+          Enum::VehicleRxType.TIRE_FRONT_RIGHT == aVehicleRxType ||
+          Enum::VehicleRxType.FUEL_RATE_AVERAGE_UNIT_CONVERTED == aVehicleRxType ||
+          Enum::VehicleRxType.FUEL_RATE_INSTANT_UNIT_CONVERTED == aVehicleRxType )
       {
         VehicleData.DataType = Enum::DataType.FLOAT;
       }
@@ -3322,6 +3324,26 @@ class VehicleDeviceClass : Templates::DeviceClass
     var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.TIRE_SENSOR_EQUIPPED );
     pure TireSensorEquipped = (bool)VehicleData.DataUInt32;
     return pure TireSensorEquipped;
+  }
+
+  $rect <270,790,470,830>
+  property bool EngineIdling;
+
+  $rect <270,830,470,870>
+  onget EngineIdling
+  {
+    $if !$prototyper
+      var bool IsEngineIdling = false;
+
+      native( IsEngineIdling )
+      {
+        IsEngineIdling = VI_is_engine_idling();
+      }
+
+      return IsEngineIdling;
+    $else
+      return pure EngineIdling;
+    $endif
   }
 }
 

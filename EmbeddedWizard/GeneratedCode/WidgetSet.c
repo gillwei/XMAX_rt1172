@@ -922,6 +922,7 @@ EW_DEFINE_CLASS( WidgetSetHorizontalSlider, CoreGroup, imageView, RepetitionTime
   CoreGroup_UpdateLayout,
   WidgetSetHorizontalSlider_UpdateViewState,
   CoreGroup_InvalidateArea,
+  CoreGroup_GetViewAtIndex,
   CoreGroup_CountViews,
   CoreGroup_FindNextView,
   CoreGroup_FindSiblingView,

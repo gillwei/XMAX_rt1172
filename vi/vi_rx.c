@@ -1044,7 +1044,7 @@ bool is_valid = true;
 switch( rx_type )
     {
     case EnumVehicleRxTypeENGINE_SPEED:
-        *data = rx_ecu_info.engine_speed;
+        *data = ( rx_ecu_info.engine_speed * 100 ) >> 8; /* factor 100/256 */
         break;
     case EnumVehicleRxTypeTC_MODE:
         *data = rx_ecu_info.tc_mode;
@@ -1261,6 +1261,121 @@ return ( 0 != timeout_err2_status );
 /*********************************************************************
 *
 * @public
+* VI_is_engine_idling
+*
+* Return if the engine is idling
+*
+* @return The status of engine idling
+*
+*********************************************************************/
+bool VI_is_engine_idling
+    (
+    void
+    )
+{
+return ( ENGINE_SPEED_IDLE_VAL_LOW == rx_ecu_info.engine_speed || ENGINE_SPEED_IDLE_VAL_HIGH == rx_ecu_info.engine_speed );
+}
+
+/*********************************************************************
+*
+* @private
+* vi_convert_fuel_rate_avg_by_unit
+*
+* Convert fuel average rate based on the current unit.
+*
+* @param cur_fuel_avg Current fuel average rate.
+* @return             The converted fuel average rate.
+*
+*********************************************************************/
+static float vi_convert_fuel_rate_avg_by_unit
+    (
+    float cur_fuel_avg
+    )
+{
+float cvrt_fuel_avg = cur_fuel_avg;
+switch( rx_unit_setting.fuel_consumption_unit )
+    {
+    case FUEL_CONSUMPTION_UNIT_MILE_GAL:
+        cvrt_fuel_avg = ( cvrt_fuel_avg / 1.6 ) / 0.264;
+        break;
+    case FUEL_CONSUMPTION_UNIT_MILE_LMPGAL:
+        cvrt_fuel_avg = ( cvrt_fuel_avg / 1.6 ) / 0.220;
+        break;
+    case FUEL_CONSUMPTION_UNIT_L_100KM:
+        if( cvrt_fuel_avg > 0 )
+            {
+            cvrt_fuel_avg = 100 / cvrt_fuel_avg;
+            }
+        break;
+    default:
+        break;
+    }
+return cvrt_fuel_avg;
+}
+
+/*********************************************************************
+*
+* @private
+* vi_convert_fuel_rate_inst_by_unit
+*
+* Convert fuel instant rate based on the current unit.
+*
+* @param cur_fuel_inst Current fuel instant rate.
+* @return              The converted fuel instant rate.
+*
+*********************************************************************/
+static float vi_convert_fuel_rate_inst_by_unit
+    (
+    float cur_fuel_inst
+    )
+{
+float cvrt_fuel_inst = cur_fuel_inst;
+switch( rx_unit_setting.fuel_consumption_unit )
+    {
+    case FUEL_CONSUMPTION_UNIT_KM_L:
+        if( cvrt_fuel_inst >= 100.0 )
+            {
+            cvrt_fuel_inst = 99.9;
+            }
+        break;
+    case FUEL_CONSUMPTION_UNIT_MILE_GAL:
+        if( cvrt_fuel_inst >= 100.0 )
+            {
+            cvrt_fuel_inst = 299.9;
+            }
+        cvrt_fuel_inst = ( cvrt_fuel_inst / 1.6 ) / 0.264;
+        break;
+    case FUEL_CONSUMPTION_UNIT_MILE_LMPGAL:
+        if( cvrt_fuel_inst >= 100.0 )
+            {
+            cvrt_fuel_inst = 299.9;
+            }
+        cvrt_fuel_inst = ( cvrt_fuel_inst / 1.6 ) / 0.220;
+        break;
+    case FUEL_CONSUMPTION_UNIT_L_100KM:
+        if( cvrt_fuel_inst == 0.0 )
+            {
+            cvrt_fuel_inst = 99.9;
+            }
+        else if( cvrt_fuel_inst >= 100.0 )
+            {
+            cvrt_fuel_inst = 1;
+            }
+        else
+            {
+            // empty.
+            }
+        cvrt_fuel_inst = 100 / cvrt_fuel_inst;
+        break;
+    default:
+        break;
+    }
+return cvrt_fuel_inst;
+}
+
+/*********************************************************************
+*
+* @public
 * VI_get_rx_data_float
 *
 * Get vehicle rx data of float type
@@ -1385,6 +1500,38 @@ switch( rx_type )
         break;
     case EnumVehicleRxTypeTIRE_REAR:
         *data = rx_tire_pressure.rear * 0.2;
+        break;
+    case EnumVehicleRxTypeFUEL_RATE_INSTANT_UNIT_CONVERTED:
+        if( INVALID_INSTANT_CONSUMPTION != rx_fuel_rate.instant_consumption )
+            {
+            *data = vi_convert_fuel_rate_inst_by_unit( rx_fuel_rate.instant_consumption * 0.1 );
+            }
+        else
+            {
+            switch( rx_unit_setting.fuel_consumption_unit )
+                {
+                case FUEL_CONSUMPTION_UNIT_KM_L:
+                case FUEL_CONSUMPTION_UNIT_MILE_GAL:
+                case FUEL_CONSUMPTION_UNIT_MILE_LMPGAL:
+                    *data = 0;
+                    break;
+                case FUEL_CONSUMPTION_UNIT_L_100KM:
+                    *data = 99.9;
+                    break;
+                default:
+                    break;
+                }
+            }
+        break;
+    case EnumVehicleRxTypeFUEL_RATE_AVERAGE_UNIT_CONVERTED:
+        if( INVALID_AVERAGE_CONSUMPTION != rx_fuel_rate.average_consumption )
+            {
+            *data = vi_convert_fuel_rate_avg_by_unit( rx_fuel_rate.average_consumption * 0.1 );
+            }
+        else
+            {
+            is_valid = false;
+            }
         break;
     default:
         PRINTF( "Err: %s invalid rx type %d\r\n", __FUNCTION__, rx_type );

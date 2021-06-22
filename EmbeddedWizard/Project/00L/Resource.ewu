@@ -3020,6 +3020,72 @@ resource Resources::Bitmap Brightness
   attr bitmapmode Mode = Default;
 }
 
+// Eco Visualizer
+note group Note23
+{
+  attr Bounds = <1120,2220,1600,2440>;
+}
+
+$rect <1140,2280,1340,2320>
+$output false
+resource Resources::Bitmap EcoBase
+{
+  attr bitmapfile FileName = .\Res\home\EcoVisualizer\ecobase.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1140,2330,1340,2370>
+$output false
+resource Resources::Bitmap AvgLine
+{
+  attr bitmapfile FileName = .\Res\home\EcoVisualizer\avgline.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1360,2280,1560,2320>
+$output false
+resource Resources::Bitmap EcoWindowLine
+{
+  attr bitmapfile FileName = .\Res\home\EcoVisualizer\ecowindow_line.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1360,2330,1560,2370>
+$output false
+resource Resources::Bitmap EcoDot
+{
+  attr bitmapfile FileName = .\Res\home\EcoVisualizer\ev_dot.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1140,2380,1340,2420>
+$output false
+resource Resources::Bitmap GradientCover
+{
+  attr bitmapfile FileName = .\Res\home\EcoVisualizer\grd_cover.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
 $rect <30,1390,230,1430>
 $output false
 resource Resources::Bitmap HighTemperature

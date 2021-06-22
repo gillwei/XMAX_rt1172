@@ -142,6 +142,7 @@ EW_DEFINE_METHODS( DevelopmentDEV_TFTBrightness, ComponentsBaseMainBG )
   EW_METHOD( UpdateViewState,   void )( DevelopmentDEV_TFTBrightness _this, XSet 
     aState )
   EW_METHOD( InvalidateArea,    void )( CoreGroup _this, XRect aArea )
+  EW_METHOD( GetViewAtIndex,    CoreView )( CoreGroup _this, XInt32 aIndex )
   EW_METHOD( CountViews,        XInt32 )( CoreGroup _this )
   EW_METHOD( FindNextView,      CoreView )( CoreGroup _this, CoreView aView, XSet 
     aFilter )

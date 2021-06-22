@@ -1,4 +1,4 @@
-﻿$version 10.00
+﻿$version 11.00
 
 // This unit is a part of the Embedded Wizard class library 'Mosaic20'
 $rect <40,70,240,110>
@@ -85,6 +85,7 @@ profile iMX_RT : NXP.iMX_RT_VGLite.RGBA8888
   attr Verbose = false;
   attr OutputDirectory = ..\..\GeneratedCode;
   attr ScreenOrientation = Normal;
+  attr FontConversion = Windows;
 
   $rect <10,10,154,50>
   macro Author = "Dipl. Ing. Paul Banach and Dipl. Ing. Manfred Schweyer, Copyright (C) TARA Systems GmbH";

@@ -1,0 +1,83 @@
+/*******************************************************************************
+*
+* E M B E D D E D   W I Z A R D   P R O J E C T
+*
+*                                                Copyright (c) TARA Systems GmbH
+*                                    written by Paul Banach and Manfred Schweyer
+*
+********************************************************************************
+*
+* This file was generated automatically by Embedded Wizard Studio.
+*
+* Please do not make any modifications of this file! The modifications are lost
+* when the file is generated again by Embedded Wizard Studio!
+*
+* The template of this heading text can be found in the file 'head.ewt' in the
+* directory 'Platforms' of your Embedded Wizard installation directory. If you
+* wish to adapt this text, please copy the template file 'head.ewt' into your
+* project directory and edit the copy only. Please avoid any modifications of
+* the original template file!
+*
+* Version  : 11.00
+* Profile  : iMX_RT
+* Platform : NXP.iMX_RT_VGLite.RGBA8888
+*
+*******************************************************************************/
+
+/* This is a font resource. */
+EW_DEFINE_FONT_RES( FontsNotoSansMedium42pt, 45, 12, 0, 4, 0x0001, 0x000D )
+  EW_GLYPH( 0x0001, 4, -30, 18, 30, 25, 0x00000000 ),
+  EW_GLYPH( 0x002D, 1, -13, 11, 4, 14, 0x000001C1 ),            /* '-' */
+  EW_GLYPH( 0x002E, 2, -6, 7, 6, 11, 0x0000020C ),              /* '.' */
+  EW_GLYPH( 0x0030, 1, -30, 22, 30, 24, 0x00000247 ),           /* '0' */
+  EW_GLYPH( 0x0031, 3, -30, 13, 30, 24, 0x000004F6 ),           /* '1' */
+  EW_GLYPH( 0x0032, 1, -30, 22, 30, 24, 0x00000611 ),           /* '2' */
+  EW_GLYPH( 0x0033, 1, -30, 21, 30, 24, 0x000008E9 ),           /* '3' */
+  EW_GLYPH( 0x0034, 0, -30, 24, 30, 24, 0x00000BE8 ),           /* '4' */
+  EW_GLYPH( 0x0035, 2, -30, 20, 30, 24, 0x00000E77 ),           /* '5' */
+  EW_GLYPH( 0x0036, 2, -30, 21, 30, 24, 0x00001125 ),           /* '6' */
+  EW_GLYPH( 0x0037, 1, -30, 22, 30, 24, 0x0000141B ),           /* '7' */
+  EW_GLYPH( 0x0038, 1, -30, 22, 30, 24, 0x000016B3 ),           /* '8' */
+  EW_GLYPH( 0x0039, 1, -30, 21, 30, 24, 0x00001A09 ),           /* '9' */
+
+  EW_FONT_PIXEL( FontsNotoSansMedium42pt, 0x00001D11 )          /* ratio 54.30 % */
+    0xCF3CF3CF, 0x7DF13CF3, 0xDF7DF7DF, 0xF7BDEE97, 0x000001DE, 0x00000000, 0x00000000,
+    0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x3CF98000, 0xEF04F3CF, 0x97DF7DF7,
+    0xE79E79EA, 0xFBEFBEF9, 0xB34CE000, 0xCC450166, 0xBF77D44A, 0x9E3DF500, 0xD40BE02F,
+    0x427A8544, 0x77DFAB63, 0x9178F242, 0xB681861E, 0x4A528109, 0xC01B1081, 0x00018360,
+    0x0000400A, 0x00000000, 0x00000A00, 0x1B060D82, 0x420528C0, 0x0C528108, 0x78F36D03,
+    0xFD5A1E91, 0x520613BE, 0x6F02A13D, 0xEFA83EA0, 0x9C017CF1, 0x4260981B, 0xE829E84D,
+    0x0730E870, 0x849FA16A, 0x0000209D, 0x00000000, 0x00000000, 0x00000000, 0x7EF00000,
+    0xCEF00BF7, 0xDE05F3C7, 0x9351F509, 0x150A8667, 0x85FBDFFE, 0x4A93FC64, 0x36509BC5,
+    0x00003605, 0xA006C000, 0x00F4806C, 0x56C00C2A, 0x405E9801, 0x3A980187, 0x30130E80,
+    0x261D0075, 0x3A00EA60, 0x01D4C04C, 0xE9809874, 0xE783A00D, 0x89E79E79, 0xEFBEFDE2,
+    0x0004BEFB, 0xFB9EF000, 0x47BFBC05, 0x017C3FBD, 0xFBCF265E, 0xDFA8EAF0, 0xE8F09EF7,
+    0xD0C3A27F, 0xC0030000, 0x98018006, 0xA2F4C01E, 0x5E5BF79E, 0xF789EFE8, 0x78016007,
+    0xBDEEA24E, 0x5F502553, 0x2AFE0254, 0x000D8F00, 0x78000000, 0x7E26C06C, 0xEF086F01,
+    0x17EF9EFD, 0x833BD45E, 0x8FA80557, 0x73C27BEF, 0x07738026, 0x1B000540, 0x8A801300,
+    0x000DB000, 0x62A002B3, 0x800F6803, 0x68E804AC, 0x30048F00, 0x5E3A002A, 0x60018F00,
+    0xBC740054, 0xA0031E00, 0xDB6003B2, 0xA93CF3CF, 0x7DF5289F, 0x4BEA17DF, 0x7D800000,
+    0x0EF7BDEF, 0x00000EFB, 0x00000000, 0xE7000000, 0xFDEF7BDE, 0xE1000001, 0x3BEFBEFD,
+    0x79E79F30, 0x0050001E, 0x1B000A00, 0x3BFB0000, 0x9EAD89BF, 0xA007F7A8, 0x33BD4752,
+    0xF9BF3978, 0x7812A99E, 0x02860043, 0x0000363C, 0x0280D800, 0xC4300A10, 0x590DE13B,
+    0xCF7BEFEF, 0x0667A8D4, 0x43FC03D3, 0x9CF09EFF, 0xF73BEA04, 0x087CCE07, 0xE4E802D4,
+    0xC2A09EF9, 0x87EF9BFB, 0x5E9006F4, 0x6D017940, 0x12801003, 0x385079EA, 0xC61277DF,
+    0x099B2D44, 0xBBDD5626, 0x7C9BD418, 0xC781D82A, 0x608602A6, 0x06000140, 0x02100360,
+    0x8309094A, 0xED8F02AD, 0xC2ABC1D1, 0xA9FBDFD4, 0x51F7AA64, 0x70950989, 0xF9273C66,
+    0xBDEF7BDF, 0x0001DEF7, 0xF7DFBC00, 0x85F7DF7D, 0x9E79E7A8, 0x801879E7, 0xB6C00A8A,
+    0x30051E01, 0x40484004, 0x01B2802B, 0x0C3003C2, 0x60054540, 0x028F00DB, 0x21500218,
+    0x94015B01, 0x801E900D, 0x02A50030, 0x347801B0, 0x0A8010C0, 0x0055B003, 0x7D401B1E,
+    0xBFD00BF7, 0x261273C7, 0x99E1D178, 0xBFA992A1, 0x1E0784F7, 0x68909B4C, 0x8A000005,
+    0x26182810, 0x53ABCD5E, 0xFBC2A4A5, 0xA7C0DE7C, 0x9509A8BE, 0xFE274178, 0xF0CD5301,
+    0xEF7EA3A1, 0xA5E992A7, 0x25455796, 0x0DB62A3A, 0x840A5186, 0x42050000, 0x5B060D94,
+    0x1590DE25, 0x4DF3DFFE, 0x1EF9E4C5, 0x37827A5E, 0xF3C7CEF1, 0x6FDF504D, 0x73C66702,
+    0xC4D42612, 0x92A3EF54, 0x0BF7BFA9, 0x1BC1D1E9, 0xB6055B15, 0xA78F018D, 0xD8001814,
+    0x2A802000, 0x07860C1B, 0x6A3E1526, 0x77BFF362, 0x5E0BCABE, 0xD05E07F8, 0x19FBEFBF,
+    0x00279E06, 0x04200420, 0x8E80DB60, 0x00C3A00A, 0xDFD0F0DE, 0x8BC2FDF3, 0x07C19DE7,
+    0xA89E0B50, 0x000024E7
+
+  EW_FONT_KERNING_CODES( FontsNotoSansMedium42pt )
+  EW_FONT_KERNING_VALUES( FontsNotoSansMedium42pt )
+EW_END_OF_FONT_RES( FontsNotoSansMedium42pt )
+
+/* Embedded Wizard */

@@ -265,7 +265,9 @@ typedef enum
   EnumVehicleRxTypeTFT_DUTY             = 53,
   EnumVehicleRxTypeTIMEOUT_ERROR2_DETECTED = 54,
   EnumVehicleRxTypeTIMEOUT_ERROR2_RECOVERED = 55,
-  EnumVehicleRxTypeTOTAL                = 56
+  EnumVehicleRxTypeFUEL_RATE_INSTANT_UNIT_CONVERTED = 56,
+  EnumVehicleRxTypeFUEL_RATE_AVERAGE_UNIT_CONVERTED = 57,
+  EnumVehicleRxTypeTOTAL                = 58
 } EnumVehicleRxType;
 
 /* User defined enumeration: 'Enum::VehicleTxType' */

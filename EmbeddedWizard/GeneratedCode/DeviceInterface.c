@@ -2721,8 +2721,8 @@ DeviceInterfaceVehicleDataClass DeviceInterfaceVehicleDeviceClass_GetData( Devic
 
   VehicleData = EwNewObject( DeviceInterfaceVehicleDataClass, 0 );
 
-  if (((((((((((((( EnumVehicleRxTypeFUEL_RATE_INSTANT == aVehicleRxType ) || ( 
-      EnumVehicleRxTypeFUEL_RATE_AVERAGE == aVehicleRxType )) || ( EnumVehicleRxTypeODOMETER_VALUE 
+  if (((((((((((((((( EnumVehicleRxTypeFUEL_RATE_INSTANT == aVehicleRxType ) || 
+      ( EnumVehicleRxTypeFUEL_RATE_AVERAGE == aVehicleRxType )) || ( EnumVehicleRxTypeODOMETER_VALUE 
       == aVehicleRxType )) || ( EnumVehicleRxTypeTRIP1_VALUE == aVehicleRxType )) 
       || ( EnumVehicleRxTypeTRIP2_VALUE == aVehicleRxType )) || ( EnumVehicleRxTypeFUEL_CONSUMPTION 
       == aVehicleRxType )) || ( EnumVehicleRxTypeAIR_TEMPERATURE == aVehicleRxType )) 
@@ -2730,7 +2730,9 @@ DeviceInterfaceVehicleDataClass DeviceInterfaceVehicleDeviceClass_GetData( Devic
       == aVehicleRxType )) || ( EnumVehicleRxTypeTRIP_F_VALUE == aVehicleRxType )) 
       || ( EnumVehicleRxTypeTIRE_FRONT == aVehicleRxType )) || ( EnumVehicleRxTypeTIRE_REAR 
       == aVehicleRxType )) || ( EnumVehicleRxTypeTIRE_FRONT_LEFT == aVehicleRxType )) 
-      || ( EnumVehicleRxTypeTIRE_FRONT_RIGHT == aVehicleRxType ))
+      || ( EnumVehicleRxTypeTIRE_FRONT_RIGHT == aVehicleRxType )) || ( EnumVehicleRxTypeFUEL_RATE_AVERAGE_UNIT_CONVERTED 
+      == aVehicleRxType )) || ( EnumVehicleRxTypeFUEL_RATE_INSTANT_UNIT_CONVERTED 
+      == aVehicleRxType ))
     VehicleData->DataType = EnumDataTypeFLOAT;
 
   RxTypeId = aVehicleRxType;
@@ -3399,6 +3401,19 @@ XBool DeviceInterfaceVehicleDeviceClass_OnGetTireSensorEquipped( DeviceInterface
 
   _this->TireSensorEquipped = !!VehicleData->DataUInt32;
   return _this->TireSensorEquipped;
+}
+
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetEngineIdling()' */
+XBool DeviceInterfaceVehicleDeviceClass_OnGetEngineIdling( DeviceInterfaceVehicleDeviceClass _this )
+{
+  XBool IsEngineIdling;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  IsEngineIdling = 0;
+  IsEngineIdling = VI_is_engine_idling();
+  return IsEngineIdling;
 }
 
 /* Variants derived from the class : 'DeviceInterface::VehicleDeviceClass' */
