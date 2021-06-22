@@ -19,6 +19,7 @@
 #include "NTF_pub.h"
 #include "VI_pub.h"
 #include "OTA_pub.h"
+#include "PM_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -42,6 +43,7 @@ void bc_motocon_ota_update_info( const bc_motocon_ota_update_info_t* info );
 void bc_motocon_phone_volume_controllable( const bool enable );
 void bc_motocon_listener_phone_signal_level( const uint8_t level );
 void bc_motocon_phonecall_state_changed( const bc_motocon_call_state_t call_state );
+void bc_motocon_ignition_state_request_received( void );
 
 void BC_motocon_answer_call_callback( const uint32_t uid );
 void BC_motocon_decline_call_callback( const uint32_t uid );
@@ -73,7 +75,8 @@ static bc_motocon_callback_t motocon_callback =
     .volume_controllable_callback      = bc_motocon_phone_volume_controllable,
     .ota_update_info_callback          = bc_motocon_ota_update_info,
     .cell_signal_callback              = bc_motocon_listener_phone_signal_level,
-    .call_changed_callback             = bc_motocon_phonecall_state_changed
+    .call_changed_callback             = bc_motocon_phonecall_state_changed,
+    .ignition_state_request_callback   = bc_motocon_ignition_state_request_received
     };
 
 static notification_callback_t motocon_notification_callback =
@@ -399,6 +402,29 @@ if( motocon_connected )
         default:
             break;
         }
+    }
+}
+
+/*********************************************************************
+*
+* @private
+* bc_motocon_ignition_state_request_received
+*
+* Notify ignition state request received
+*
+*********************************************************************/
+void bc_motocon_ignition_state_request_received
+    (
+    void
+    )
+{
+if( PM_IGN_ON == PM_get_ign_status() )
+    {
+    BC_motocon_send_ignition_state_response( BC_MOTOCON_IGNITION_STATE_ON );
+    }
+else
+    {
+    BC_motocon_send_ignition_state_response( BC_MOTOCON_IGNITION_STATE_OFF );
     }
 }
 
