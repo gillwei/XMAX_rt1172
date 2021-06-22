@@ -575,6 +575,22 @@ while( true )
     }
 }
 
+/*********************************************************************
+*
+* @public
+* PM_get_ign_status
+*
+* @brief return the current IGN status PM_IGN_ON or PM_IGN_OFF
+*
+*********************************************************************/
+bool PM_get_ign_status
+    (
+    void
+    )
+{
+return GPIO_PinRead( BOARD_INITPINS_IGN_WAKE_GPIO, BOARD_INITPINS_IGN_WAKE_GPIO_PIN );
+}
+
 #ifdef __cplusplus
 }
 #endif
