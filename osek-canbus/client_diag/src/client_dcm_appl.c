@@ -316,6 +316,11 @@ void client_appl_check_ble_command
     boolean diagnstic_is_enbale
     );
 
+void client_appl_rsp_server_list_after_ble_connect
+    (
+    void
+    );
+
 
 static client_process_flow_handler_type client_process_flow_handler[SUPPORT_FUCNTION_NUMS - 1] =
 {
@@ -384,11 +389,20 @@ return ydt_connected_state;
 * Function name: client_appl_set_ble_connected_state
 * Description:  Set current BLE connect state
 *********************************************************************/
-static void client_appl_set_ble_connected_state
+void client_appl_set_ble_connected_state
     (
-   boolean next_state
+    boolean next_state
     )
 {
+if( next_state )
+    {
+    CLIENT_DEBUG("Authentication SUCCESS\r\n");
+    client_appl_rsp_server_list_after_ble_connect();
+    }
+else
+    {
+    CLIENT_DEBUG("Authentication FAILED\r\n");
+    }
 ble_connected_state = next_state;
 }
 
@@ -1866,24 +1880,29 @@ void client_appl_rsp_initial_dtc_after_ble_connect
     boolean value
     )
 {
-static uint8 current_send_channel_id = 0;
 uint8 result = 0x00;
-/*const*/ uint8* data_ptr =  NULL;
+uint8* data_ptr =  NULL;
 uint16 data_length = 0;
+static uint8 current_send_channel_id = 0;
+
 
 for( ; current_send_channel_id < SUPPORT_SERVER_NUM; current_send_channel_id++ )
     {
     if( SERVER_CONNECT == server_list_detect_infos[current_send_channel_id].server_connect_status_default )
         {
         client_mem_get_init_dtc_data( current_send_channel_id, &result, &data_length, &data_ptr );
-        if( 0 == result )
+
+        /*current channel is valid and have been storaged initial data*/
+        if( E_OK == result )
             {
+            /*handle the last server*/
             if( current_send_channel_id == client_appl_get_last_detected_server_index() )
                 {
                 client_appl_response_can_related_data( BLE_RSP_CMD_MALFUNCTION, data_length, (uint8*)data_ptr, &client_appl_cmd_rsp_result_notify );
                 current_send_channel_id = 0;
                 return;
                 }
+            /*handle the non-last server*/
             else
                 {
                 current_send_channel_id++;
@@ -1891,9 +1910,9 @@ for( ; current_send_channel_id < SUPPORT_SERVER_NUM; current_send_channel_id++ )
                 return;
                 }
             }
+        /*current channel is valid,but no initial data*/
         else
             {
-            /*current channel is valid,but no initial data*/
             if( current_send_channel_id == client_appl_get_last_detected_server_index() )
                 {
                 current_send_channel_id = 0;
@@ -1920,13 +1939,14 @@ for( ; current_send_channel_id < SUPPORT_SERVER_NUM; current_send_channel_id++ )
 *********************************************************************************/
 void client_appl_rsp_server_list_after_ble_connect
     (
-    boolean result
+    void
     )
 {
 uint8 index = 0x00;
-uint32 resp_data_length = 0;
-uint8 resp_data_pos = 0;
+uint8 resp_data_pos = 0x00;
+uint32 resp_data_length = 0x00;
 
+/*Get connect server list data*/
 for( ; index < SUPPORT_SERVER_NUM; index++ )
     {
     if( SERVER_CONNECT == server_list_detect_infos[index].server_connect_status_default )
@@ -1937,6 +1957,7 @@ for( ; index < SUPPORT_SERVER_NUM; index++ )
         }
     }
 
+/*LC will send init DTC data continuosly if have been storaged init DTC data*/
 if( TRUE == read_dtc_infos.is_storge_init_dtc )
     {
     client_appl_response_can_related_data( BLE_RSP_CMD_SERVERLIST, resp_data_length, (uint8*)connected_server_list, &client_appl_rsp_initial_dtc_after_ble_connect );
@@ -1963,50 +1984,17 @@ void client_appl_ble_req_command_dispatch
 {
 CLIENT_DEBUG("RX-BleRequestcommand\r\n");
 
-if( FALSE == client_appl_get_storage_init_dtc_state() )
-    {
-    return;
-    }
-
+/*Linkcard only handle BLE command after passed Authentication*/
+/*
 if( FALSE == client_appl_get_ble_connected_state() )
     {
-    if( req_command == BLE_REQ_CMD_AUTHENTICATION )
-        {
-        if( TRUE == client_appl_ble_req_authentication( data_size, data ) )
-            {
-            CLIENT_DEBUG("Authentication SUCCESS\r\n");
-            client_appl_set_ble_connected_state( TRUE );
-            client_appl_response_can_related_data( BLE_RSP_CMD_AUTHENTICATION, BLE_RSP_CMD_AUTHENTICATION_length, client_appl_get_ble_connected_state_ptr(), &client_appl_rsp_server_list_after_ble_connect );
-            }
-        else
-            {
-            CLIENT_DEBUG("Authentication FAILED\r\n");
-            client_appl_set_ble_connected_state( FALSE );
-            }
-        }
-    else
-        {
-        CLIENT_DEBUG("Failed CMD with Pass Authentication\r\n");
-        }
+    CLIENT_DEBUG("Failed CMD with Pass Authentication\r\n");
     return;
     }
+*/
 
 switch( req_command )
     {
-    case BLE_REQ_CMD_AUTHENTICATION:
-        if( TRUE == client_appl_ble_req_authentication( data_size, data ) )
-            {
-            client_appl_set_ble_connected_state( TRUE );
-            CLIENT_DEBUG("BleCmdAuthentication SUCCESS\r\n");
-            }
-        else
-            {
-            client_appl_set_ble_connected_state( FALSE );
-            CLIENT_DEBUG("Authentication FAILED\r\n");
-            }
-        client_appl_response_can_related_data( BLE_RSP_CMD_AUTHENTICATION, BLE_RSP_CMD_AUTHENTICATION_length, client_appl_get_ble_connected_state_ptr(), &client_appl_cmd_rsp_result_notify );
-        break;
-
     case BLE_REQ_CMD_SERVERLIST:
         CLIENT_DEBUG("BleCmdReqServerList SUCCESS\r\n");
         client_appl_ble_rsp_connect_server_list( client_appl_ble_req_connect_server_list());

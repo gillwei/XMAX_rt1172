@@ -16,6 +16,8 @@
 #include "BleServiceStructure.pb.h"
 #include <time.h>
 #include "client_ble_cmd.h"
+#include "EW_pub.h"
+
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
@@ -67,7 +69,6 @@ const bc_motocon_command_code_t command_code = TWO_BYTE_BIG( bytes, 0 );
 switch( command_code )
     {
     case BC_MOTOCON_COMMAND_CODE_CONNECT_APP_ID:
-        bc_motocon_set_connected( true );
         ret = BC_MOTOCON_PARSE_SUCCESS;
         break;
 
@@ -189,7 +190,9 @@ const bc_motocon_command_code_t command_code = TWO_BYTE_BIG( bytes, 0 );
 switch( command_code )
     {
     case BC_MOTOCON_COMMAND_CODE_AUTHENTICATION_V2_REQUEST:
-        bc_motocon_set_connected( true );
+        bc_motocon_parser_authenticationv2( bytes, length );
+        ret = BC_MOTOCON_PARSE_SUCCESS;
+        break;
 
     case BC_MOTOCON_COMMAND_CODE_MALFUNCTION_REQUEST:
     case BC_MOTOCON_COMMAND_CODE_MALFUNCTION_INTERVAL_SETTING_REQUEST:
@@ -197,9 +200,7 @@ switch( command_code )
     case BC_MOTOCON_COMMAND_CODE_MARKET_DATA_REQUEST:
     case BC_MOTOCON_COMMAND_CODE_VEHICLE_INFORMATION_REQUEST:
     case BC_MOTOCON_COMMAND_CODE_VEHICLE_INFORMATION_INTERVAL_REQUEST:
-        //ret = bc_motocon_parser_protobuf_to_can( command_code, bytes, length );
-        client_ble_cmd_enter_queue( command_code, length, bytes );
-        ret = BC_MOTOCON_PARSE_SUCCESS;
+        ret = bc_motocon_parser_protobuf_to_can( command_code, bytes, length );
         break;
 
     case BC_MOTOCON_COMMAND_CODE_BLUETOOTH_MUSIC_META_DATA:
@@ -209,6 +210,7 @@ switch( command_code )
     case BC_MOTOCON_COMMAND_CODE_INCOMING_CALL_INFORMATION:
         ret = bc_motocon_parser_incoming_call_info( bytes, length );
         break;
+
     case BC_MOTOCON_COMMAND_CODE_NOTIFICATION_DATA_V2:
         ret = bc_motocon_parser_notification_v2( bytes, length );
         break;
@@ -482,6 +484,46 @@ return BC_MOTOCON_PARSE_INVALID_INPUT;
 /*********************************************************************
 *
 * @private
+* bc_motocon_parser_authenticationv2
+*
+* Parse authenticationv2 data and post callback.
+*
+*********************************************************************/
+bc_motocon_parse_result_t bc_motocon_parser_authenticationv2
+    (
+    const uint8_t* bytes,
+    const uint32_t length
+    )
+{
+if( length >= 22 )
+    {
+    BC_MOTOCON_PRINTF( "%s, ccuid: ", __FUNCTION__ );
+    for( int i = 2; i < 16; i++ )
+        {
+        BC_MOTOCON_PRINTF( "%02X", bytes[i] );
+        }
+    BC_MOTOCON_PRINTF( ", passkey: " );
+    for( int i = 16; i < 22; i++ )
+        {
+        BC_MOTOCON_PRINTF( "%02X", bytes[i] );
+        }
+    BC_MOTOCON_PRINTF( "\r\n" );
+    if( bc_motocon_authentication_verify_data( bytes + 2, bytes + 16 ) )
+        {
+        BC_motocon_send_authenticationv2_result( true );
+        bc_motocon_set_connected( true );
+        return BC_MOTOCON_PARSE_SUCCESS;
+        }
+    }
+BC_motocon_send_authenticationv2_result( false );
+EW_notify_bt_connection_result( EnumBtDeviceConnectionResultYAMAHA_APP_CONNECTION_FAILED );
+bc_motocon_set_connected( false );
+return BC_MOTOCON_PARSE_INVALID_INPUT;
+}
+
+/*********************************************************************
+*
+* @private
 * bc_motocon_parser_short_data_to_can
 *
 * Parse data and post callback.
@@ -497,15 +539,8 @@ bc_motocon_parse_result_t bc_motocon_parser_short_data_to_can
 if( length >= 2 )
     {
     const uint32_t data_length = length - 2;
-    BC_MOTOCON_PRINTF( "%s, command_code: %d, length: %d\r\n", __FUNCTION__, command_code, data_length );
-    for( int i = 0; i < BC_MOTOCON_CALLBACK_MAX; i++ )
-        {
-        if( NULL != bc_motocon_callbacks[i] &&
-            NULL != bc_motocon_callbacks[i]->can_related_callback )
-            {
-            bc_motocon_callbacks[i]->can_related_callback( command_code, data_length, data_length ? bytes + 2 : NULL );
-            }
-        }
+    BC_MOTOCON_PRINTF( "%s, command_code: %d, content length: %d\r\n", __FUNCTION__, command_code, data_length );
+    client_ble_cmd_enter_queue( command_code, data_length, data_length ? bytes + 2 : NULL );
     return BC_MOTOCON_PARSE_SUCCESS;
     }
 return BC_MOTOCON_PARSE_INVALID_INPUT;
@@ -528,15 +563,9 @@ bc_motocon_parse_result_t bc_motocon_parser_protobuf_to_can
 {
 if( length >= 5 )
     {
-    BC_MOTOCON_PRINTF( "%s, command_code: %d, length: %d\r\n", __FUNCTION__, command_code, length );
-    for( int i = 0; i < BC_MOTOCON_CALLBACK_MAX; i++ )
-        {
-        if( NULL != bc_motocon_callbacks[i] &&
-            NULL != bc_motocon_callbacks[i]->can_related_callback )
-            {
-            bc_motocon_callbacks[i]->can_related_callback( command_code, THREE_BYTE_BIG( bytes, 2 ), length == 5 ? NULL : bytes + 5 );
-            }
-        }
+    const uint32_t data_length = length - 5;
+    BC_MOTOCON_PRINTF( "%s, command_code: %d, content length: %d\r\n", __FUNCTION__, command_code, data_length );
+    client_ble_cmd_enter_queue( command_code, THREE_BYTE_BIG( bytes, 2 ), data_length ? bytes + 5 : NULL );
     return BC_MOTOCON_PARSE_SUCCESS;
     }
 return BC_MOTOCON_PARSE_INVALID_INPUT;

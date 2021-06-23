@@ -40,7 +40,6 @@ typedef struct
     void ( *language_type_callback ) ( const bc_motocon_language_t language_type );
     void ( *device_name_callback) ( const uint8_t length, const uint8_t* content );
     void ( *notification_callback ) ( const bc_motocon_notification_v2_t* notification );
-    void ( *can_related_callback ) ( const bc_motocon_command_code_t command, const uint32_t size, const uint8_t* data ); /* 0x0101 ~ 0x0112 */
     void ( *can_request_callback ) ( void );
     void ( *injection_request_callback ) ( void );
     void ( *battery_callback ) ( const uint8_t battery, const bc_motocon_battery_t battery_type );
@@ -103,6 +102,8 @@ bc_motocon_send_result_t BC_motocon_send_vehicle_info( const bc_motocon_vehicle_
 bc_motocon_send_result_t BC_motocon_send_vehicle_setting_request( void );
 
 bc_motocon_send_result_t BC_motocon_send_language_type_request( void );
+
+bc_motocon_send_result_t BC_motocon_send_authenticationv2_result( bool resut );
 
 bc_motocon_send_result_t BC_motocon_send_can_related_data( const bc_motocon_command_code_t command, const uint32_t size, const uint8_t* data, void ( *result_callback ) ( const bc_motocon_send_result_t ) );
 

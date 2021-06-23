@@ -67,30 +67,9 @@ static char weather_location[MAX_LOC_LEN];
 static int weather_weekday;
 static bc_motocon_callback_t weather_callback =
     {
-    NULL,
-    WEA_receive_wea_location,
-    WEA_receive_wea_info,
-    NULL,
-    NULL,
-    WEA_receive_weekday,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL
+    .weather_location_callback = WEA_receive_wea_location,
+    .weather_info_callback     = WEA_receive_wea_info,
+    .vehicle_datetime_callback = WEA_receive_weekday
     };
 static int weather_info_received = 0;
 

@@ -18,8 +18,7 @@
     #include <cycfg_gatt_db.h>
 #endif
 #include "timers.h"
-
-
+#include "client_dcm_appl.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -212,6 +211,7 @@ BC_MOTOCON_PRINTF( "%s: %d\r\n", __FUNCTION__, connected );
 if( bc_motocon_connected != connected )
     {
     bc_motocon_connected = connected;
+    client_appl_set_ble_connected_state( connected );
     if( bc_motocon_connected )
         {
         reset_alive_timer();
@@ -402,6 +402,32 @@ uint8_t data[2];
 data[0] = BC_MOTOCON_COMMAND_CODE_LANGUAGE_TYPE_REQUEST >> 8;
 data[1] = BC_MOTOCON_COMMAND_CODE_LANGUAGE_TYPE_REQUEST & 0xFF;
 return bc_motocon_send_data( BC_MOTOCON_NOTIFY, data, 2 );
+}
+
+/*********************************************************************
+*
+* @public
+* BC_motocon_send_authenticationv2_result
+*
+* Send authenticationv2 result.
+*
+* @param result Authentication result
+*
+* @return bc_motocon_send_result_t
+* Result of send command
+*
+*********************************************************************/
+bc_motocon_send_result_t BC_motocon_send_authenticationv2_result
+    (
+    bool result
+    )
+{
+BC_MOTOCON_PRINTF( "%s\r\n", __FUNCTION__ );
+uint8_t data[3];
+data[0] = BC_MOTOCON_COMMAND_CODE_AUTHENTICATION_V2_RESPONSE >> 8;
+data[1] = BC_MOTOCON_COMMAND_CODE_AUTHENTICATION_V2_RESPONSE & 0xFF;
+data[2] = result;
+return bc_motocon_send_data( BC_MOTOCON_NOTIFY, data, 3 );
 }
 
 /*********************************************************************

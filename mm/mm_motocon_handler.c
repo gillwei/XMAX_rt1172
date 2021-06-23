@@ -46,30 +46,8 @@ void MM_receive_volume_updated( const uint8_t level, const bc_motocon_volume_typ
 --------------------------------------------------------------------*/
 static bc_motocon_callback_t music_callback =
     {
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    MM_receive_music_info,
-    NULL,
-    NULL,
-    NULL,
-    MM_receive_volume_updated,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL
+    .bt_music_meta_data_callback = MM_receive_music_info,
+    .volume_level_callback       = MM_receive_volume_updated
     };
 
 /*--------------------------------------------------------------------
