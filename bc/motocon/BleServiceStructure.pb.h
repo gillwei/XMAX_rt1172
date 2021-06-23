@@ -18,25 +18,6 @@ typedef enum _McMalfunctionStatus {
     McMalfunctionStatus_TEMPORARY_MALFUNCTION = 4
 } McMalfunctionStatus;
 
-typedef enum _McCanResponse_IdData_Id {
-    McCanResponse_IdData_Id_SPEED = 0,
-    McCanResponse_IdData_Id_RPM = 1,
-    McCanResponse_IdData_Id_START_SWITCH = 2,
-    McCanResponse_IdData_Id_FI_ALERT_BLINK = 3,
-    McCanResponse_IdData_Id_FI_ALERT = 4,
-    McCanResponse_IdData_Id_CUMULATIVE_INJECTION_QUANTITY = 5,
-    McCanResponse_IdData_Id_IDLING_RPM = 6,
-    McCanResponse_IdData_Id_TC_INDICATOR = 7,
-    McCanResponse_IdData_Id_TC_MODE = 8,
-    McCanResponse_IdData_Id_GEAR = 9,
-    McCanResponse_IdData_Id_UNIT = 10,
-    McCanResponse_IdData_Id_RESERVE_1 = 11,
-    McCanResponse_IdData_Id_RESERVE_2 = 12,
-    McCanResponse_IdData_Id_RESERVE_3 = 13,
-    McCanResponse_IdData_Id_RESERVE_4 = 14,
-    McCanResponse_IdData_Id_RESERVE_5 = 15
-} McCanResponse_IdData_Id;
-
 typedef enum _McNotificationDataV2_Category {
     McNotificationDataV2_Category_MESSAGE = 0,
     McNotificationDataV2_Category_CALL = 1
@@ -56,7 +37,7 @@ typedef struct _McServerListResponse {
 } McServerListResponse;
 
 typedef struct _McCanResponse_IdData {
-    McCanResponse_IdData_Id id;
+    int32_t id;
     pb_callback_t data;
 } McCanResponse_IdData;
 
@@ -162,10 +143,6 @@ typedef struct _McVehicleIdentificationResponse_IdData {
 #define _McMalfunctionStatus_MAX McMalfunctionStatus_TEMPORARY_MALFUNCTION
 #define _McMalfunctionStatus_ARRAYSIZE ((McMalfunctionStatus)(McMalfunctionStatus_TEMPORARY_MALFUNCTION+1))
 
-#define _McCanResponse_IdData_Id_MIN McCanResponse_IdData_Id_SPEED
-#define _McCanResponse_IdData_Id_MAX McCanResponse_IdData_Id_RESERVE_5
-#define _McCanResponse_IdData_Id_ARRAYSIZE ((McCanResponse_IdData_Id)(McCanResponse_IdData_Id_RESERVE_5+1))
-
 #define _McNotificationDataV2_Category_MIN McNotificationDataV2_Category_MESSAGE
 #define _McNotificationDataV2_Category_MAX McNotificationDataV2_Category_CALL
 #define _McNotificationDataV2_Category_ARRAYSIZE ((McNotificationDataV2_Category)(McNotificationDataV2_Category_CALL+1))
@@ -194,7 +171,7 @@ extern "C" {
 #define McLocalRecordVehicleInformationIntervalRequest_init_default {0, {{NULL}, NULL}, 0, 0}
 #define McFfdResponse_init_default               {0, {{NULL}, NULL}}
 #define McCanResponse_init_default               {{{NULL}, NULL}}
-#define McCanResponse_IdData_init_default        {_McCanResponse_IdData_Id_MIN, {{NULL}, NULL}}
+#define McCanResponse_IdData_init_default        {0, {{NULL}, NULL}}
 #define McNotificationDataV2_init_default        {0, _McNotificationDataV2_Category_MIN, 0, 0, 0, 0, 0, 0, {{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}}
 #define McServerListResponse_init_zero           {{{NULL}, NULL}}
 #define McMalfunctionRequest_init_zero           {0, _McMalfunctionStatus_MIN}
@@ -214,7 +191,7 @@ extern "C" {
 #define McLocalRecordVehicleInformationIntervalRequest_init_zero {0, {{NULL}, NULL}, 0, 0}
 #define McFfdResponse_init_zero                  {0, {{NULL}, NULL}}
 #define McCanResponse_init_zero                  {{{NULL}, NULL}}
-#define McCanResponse_IdData_init_zero           {_McCanResponse_IdData_Id_MIN, {{NULL}, NULL}}
+#define McCanResponse_IdData_init_zero           {0, {{NULL}, NULL}}
 #define McNotificationDataV2_init_zero           {0, _McNotificationDataV2_Category_MIN, 0, 0, 0, 0, 0, 0, {{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}}
 
 /* Field tags (for use in manual encoding/decoding) */
@@ -391,7 +368,7 @@ X(a, CALLBACK, REPEATED, MESSAGE,  data_list,         3)
 #define McCanResponse_data_list_MSGTYPE McCanResponse_IdData
 
 #define McCanResponse_IdData_FIELDLIST(X, a) \
-X(a, STATIC,   SINGULAR, UENUM,    id,                1) \
+X(a, STATIC,   SINGULAR, INT32,    id,                1) \
 X(a, CALLBACK, SINGULAR, BYTES,    data,              2)
 #define McCanResponse_IdData_CALLBACK pb_default_field_callback
 #define McCanResponse_IdData_DEFAULT NULL

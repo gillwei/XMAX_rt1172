@@ -109,26 +109,7 @@ message McFfdResponse {
 
 message McCanResponse {
   message IdData {
-    enum Id {
-      SPEED                         = 0x00;
-      RPM                           = 0x01;
-      START_SWITCH                  = 0x02;
-      FI_ALERT_BLINK                = 0x03;
-      FI_ALERT                      = 0x04;
-      CUMULATIVE_INJECTION_QUANTITY = 0x05;
-      IDLING_RPM                    = 0x06;
-      TC_INDICATOR                  = 0x07;
-      TC_MODE                       = 0x08;
-      GEAR                          = 0x09;
-      UNIT                          = 0x0A;
-      RESERVE_1                     = 0x0B;
-      RESERVE_2                     = 0x0C;
-      RESERVE_3                     = 0x0D;
-      RESERVE_4                     = 0x0E;
-      RESERVE_5                     = 0x0F;
-    }
-
-    Id    id   = 1;
+    int32 id   = 1;  // 2 byte
     bytes data = 2;
   }
 
