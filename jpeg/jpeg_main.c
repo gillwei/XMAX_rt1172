@@ -35,7 +35,7 @@
 #define BYTE_PER_PIXEL      ( 3 )
 #define DEFAULT_SCALE_NUM   ( 8 )
 
-#define JPEG_BUFFER_SIZE_BYTE ( 65 * 1024 )
+#define JPEG_BUFFER_SIZE_BYTE ( 64 * 1024 )
 #define JPEG_BUFFER_NUM       ( 2 )
 #define RGB_BUFFER_SIZE_BYTE  ( EW_FRAME_BUFFER_WIDTH * EW_FRAME_BUFFER_HEIGHT * BYTE_PER_PIXEL )
 #define RGB_BUF_TAKE_SEMAPHORE_TIMEOUT_MS ( 1000 )
@@ -102,10 +102,7 @@ uint8_t*      rgb_buffer = rgb_buf_info.addr;
 JSAMPROW      row_pointer[1] = {0}; /* Output row rgb_buffer */
 uint32_t      row_stride     = 0;   /* physical row width in image rgb_buffer */
 int           result = RESULT_SUCCESS;
-
-#if( ENABLE_JPEG_DEBUG_LOG )
-    uint32_t      start_tick = xTaskGetTickCount();
-#endif
+uint32_t      start_tick = xTaskGetTickCount();
 
 cinfo.err = jpeg_std_error( &jerr );
 jpeg_create_decompress( &cinfo );
@@ -136,11 +133,11 @@ if( EW_FRAME_BUFFER_WIDTH  >= cinfo.image_width  && 0 < cinfo.image_width &&
     jpeg_finish_decompress( &cinfo );
     jpeg_destroy_decompress( &cinfo );
 
-    JPEG_PRINTF( "%s: %d ms\r\n", __FUNCTION__, ( xTaskGetTickCount() - start_tick ) );
+    PRINTF( "decode jpg %d ms\r\n", ( xTaskGetTickCount() - start_tick ) );
     }
 else
     {
-    PRINTF( "%s: size (%d, %d) err\r\n", cinfo.image_width, cinfo.image_height );
+    PRINTF( "%s: size (%d, %d) err\r\n", __FUNCTION__, cinfo.image_width, cinfo.image_height );
     result = RESULT_ERR;
     }
 return result;
@@ -292,7 +289,7 @@ for( int i = 0; i < JPEG_BUFFER_NUM; i++ )
     {
     jpeg_objs[i].buf_info.is_buffer_available = true;
     jpeg_objs[i].buf_info.buffer_size         = JPEG_BUFFER_SIZE_BYTE;
-    jpeg_objs[i].buf_info.addr                = ( void* ) ( jpeg_buffer + i * JPEG_BUFFER_SIZE_BYTE );
+    jpeg_objs[i].buf_info.addr                = (void*)( jpeg_buffer + i * JPEG_BUFFER_SIZE_BYTE );
     }
 
 memset( &rgb_buf_info, 0, sizeof( rgb_buf_info ) );
