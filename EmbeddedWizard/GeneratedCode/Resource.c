@@ -643,11 +643,11 @@ EW_RES_WITHOUT_VARIANTS( ResourceBatteryNotChagingIcon )
 /* Table with links to derived variants of the bitmap resource : 'Resource::HeadsetIcon' */
 EW_RES_WITHOUT_VARIANTS( ResourceHeadsetIcon )
 
-/* Include a file containing the bitmap resource : 'Resource::StatusBarBtIcon' */
-#include "_ResourceStatusBarBtIcon.h"
+/* Include a file containing the bitmap resource : 'Resource::NaviIcon' */
+#include "_ResourceNaviIcon.h"
 
-/* Table with links to derived variants of the bitmap resource : 'Resource::StatusBarBtIcon' */
-EW_RES_WITHOUT_VARIANTS( ResourceStatusBarBtIcon )
+/* Table with links to derived variants of the bitmap resource : 'Resource::NaviIcon' */
+EW_RES_WITHOUT_VARIANTS( ResourceNaviIcon )
 
 /* Include a file containing the bitmap resource : 'Resource::Chessboard' */
 #include "_ResourceChessboard.h"

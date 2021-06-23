@@ -25,12 +25,12 @@
 *******************************************************************************/
 
 #include "ewlocale.h"
-#include "_CorePropertyObserver.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
 #include "_CoreView.h"
 #include "_DeviceInterfaceBluetoothDeviceClass.h"
 #include "_DeviceInterfaceMotoConContext.h"
+#include "_DeviceInterfaceNavigationDeviceClass.h"
 #include "_DeviceInterfaceNotificationDeviceClass.h"
 #include "_DeviceInterfaceRtcTime.h"
 #include "_DeviceInterfaceSystemDeviceClass.h"
@@ -101,9 +101,7 @@ void StatusBarMain__Init( StatusBarMain _this, XObject aLink, XHandle aArg )
   ViewsImage__Init( &_this->BatteryIcon, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->HeadsetIcon, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->AppIcon, &_this->_.XObject, 0 );
-  ViewsImage__Init( &_this->BtIcon, &_this->_.XObject, 0 );
-  CorePropertyObserver__Init( &_this->BTEnabledObserver, &_this->_.XObject, 0 );
-  CorePropertyObserver__Init( &_this->PairdDeviceChangedObserver, &_this->_.XObject, 0 );
+  ViewsImage__Init( &_this->NaviIcon, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->SignalLevelIcon, &_this->_.XObject, 0 );
   CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->PhoneIcon, &_this->_.XObject, 0 );
@@ -115,6 +113,8 @@ void StatusBarMain__Init( StatusBarMain _this, XObject aLink, XHandle aArg )
   ViewsText__Init( &_this->AirTemperatureText, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->UnitImage, &_this->_.XObject, 0 );
   CoreTimer__Init( &_this->BlinkTimer, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->NaviDisconnectEventHandler, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->NaviConnectUpdateEventHandler, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_.VMT = EW_CLASS( StatusBarMain );
@@ -134,8 +134,8 @@ void StatusBarMain__Init( StatusBarMain _this, XObject aLink, XHandle aArg )
   ViewsImage_OnSetVisible( &_this->HeadsetIcon, 0 );
   CoreRectView__OnSetBounds( &_this->AppIcon, _Const0006 );
   ViewsImage_OnSetVisible( &_this->AppIcon, 0 );
-  CoreRectView__OnSetBounds( &_this->BtIcon, _Const0007 );
-  ViewsImage_OnSetVisible( &_this->BtIcon, 0 );
+  CoreRectView__OnSetBounds( &_this->NaviIcon, _Const0007 );
+  ViewsImage_OnSetVisible( &_this->NaviIcon, 0 );
   CoreRectView__OnSetBounds( &_this->SignalLevelIcon, _Const0008 );
   ViewsImage_OnSetVisible( &_this->SignalLevelIcon, 0 );
   CoreRectView__OnSetBounds( &_this->PhoneIcon, _Const0009 );
@@ -161,7 +161,7 @@ void StatusBarMain__Init( StatusBarMain _this, XObject aLink, XHandle aArg )
   CoreGroup__Add( _this, ((CoreView)&_this->BatteryIcon ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->HeadsetIcon ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->AppIcon ), 0 );
-  CoreGroup__Add( _this, ((CoreView)&_this->BtIcon ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->NaviIcon ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->SignalLevelIcon ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->PhoneIcon ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->MessageIcon ), 0 );
@@ -179,16 +179,7 @@ void StatusBarMain__Init( StatusBarMain _this, XObject aLink, XHandle aArg )
   ViewsImage_OnSetBitmap( &_this->HeadsetIcon, EwLoadResource( &ResourceHeadsetIcon, 
   ResourcesBitmap ));
   ViewsImage_OnSetBitmap( &_this->AppIcon, EwLoadResource( &ResourceAppIcon, ResourcesBitmap ));
-  ViewsImage_OnSetBitmap( &_this->BtIcon, EwLoadResource( &ResourceStatusBarBtIcon, 
-  ResourcesBitmap ));
-  _this->BTEnabledObserver.OnEvent = EwNewSlot( _this, StatusBarMain_OnBtcConnectionStatusChangedSlot );
-  CorePropertyObserver_OnSetOutlet( &_this->BTEnabledObserver, EwNewRef( EwGetAutoObject( 
-  &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ), DeviceInterfaceBluetoothDeviceClass_OnGetBluetoothEnable, 
-  DeviceInterfaceBluetoothDeviceClass_OnSetBluetoothEnable ));
-  _this->PairdDeviceChangedObserver.OnEvent = EwNewSlot( _this, StatusBarMain_OnBtcConnectionStatusChangedSlot );
-  CorePropertyObserver_OnSetOutlet( &_this->PairdDeviceChangedObserver, EwNewRef( 
-  EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ), 
-  DeviceInterfaceBluetoothDeviceClass_OnGetRefreshPairedDeviceList, DeviceInterfaceBluetoothDeviceClass_OnSetRefreshPairedDeviceList ));
+  ViewsImage_OnSetBitmap( &_this->NaviIcon, EwLoadResource( &ResourceNaviIcon, ResourcesBitmap ));
   ViewsImage_OnSetBitmap( &_this->SignalLevelIcon, EwLoadResource( &ResourceSignalLevelIcon, 
   ResourcesBitmap ));
   _this->VehicleDataReceivedEventHandler.OnEvent = EwNewSlot( _this, StatusBarMain_OnVehicleDataReceivedSlot );
@@ -213,6 +204,12 @@ void StatusBarMain__Init( StatusBarMain _this, XObject aLink, XHandle aArg )
   ViewsImage_OnSetBitmap( &_this->UnitImage, EwLoadResource( &ResourceTempUnit, 
   ResourcesBitmap ));
   _this->BlinkTimer.OnTrigger = EwNewSlot( _this, StatusBarMain_OnBlinkTimerTriggeredSlot );
+  _this->NaviDisconnectEventHandler.OnEvent = EwNewSlot( _this, StatusBarMain_OnNaviDisconnectedSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->NaviDisconnectEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->DisconnectStatusUpdateEvent );
+  _this->NaviConnectUpdateEventHandler.OnEvent = EwNewSlot( _this, StatusBarMain_OnNaviConnectUpdateSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->NaviConnectUpdateEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->ConnectStatusUpdateEvent );
 
   /* Call the user defined constructor */
   StatusBarMain_Init( _this, aArg );
@@ -232,9 +229,7 @@ void StatusBarMain__ReInit( StatusBarMain _this )
   ViewsImage__ReInit( &_this->BatteryIcon );
   ViewsImage__ReInit( &_this->HeadsetIcon );
   ViewsImage__ReInit( &_this->AppIcon );
-  ViewsImage__ReInit( &_this->BtIcon );
-  CorePropertyObserver__ReInit( &_this->BTEnabledObserver );
-  CorePropertyObserver__ReInit( &_this->PairdDeviceChangedObserver );
+  ViewsImage__ReInit( &_this->NaviIcon );
   ViewsImage__ReInit( &_this->SignalLevelIcon );
   CoreSystemEventHandler__ReInit( &_this->VehicleDataReceivedEventHandler );
   ViewsImage__ReInit( &_this->PhoneIcon );
@@ -246,6 +241,8 @@ void StatusBarMain__ReInit( StatusBarMain _this )
   ViewsText__ReInit( &_this->AirTemperatureText );
   ViewsImage__ReInit( &_this->UnitImage );
   CoreTimer__ReInit( &_this->BlinkTimer );
+  CoreSystemEventHandler__ReInit( &_this->NaviDisconnectEventHandler );
+  CoreSystemEventHandler__ReInit( &_this->NaviConnectUpdateEventHandler );
 }
 
 /* Finalizer method for the class 'StatusBar::Main' */
@@ -262,9 +259,7 @@ void StatusBarMain__Done( StatusBarMain _this )
   ViewsImage__Done( &_this->BatteryIcon );
   ViewsImage__Done( &_this->HeadsetIcon );
   ViewsImage__Done( &_this->AppIcon );
-  ViewsImage__Done( &_this->BtIcon );
-  CorePropertyObserver__Done( &_this->BTEnabledObserver );
-  CorePropertyObserver__Done( &_this->PairdDeviceChangedObserver );
+  ViewsImage__Done( &_this->NaviIcon );
   ViewsImage__Done( &_this->SignalLevelIcon );
   CoreSystemEventHandler__Done( &_this->VehicleDataReceivedEventHandler );
   ViewsImage__Done( &_this->PhoneIcon );
@@ -276,6 +271,8 @@ void StatusBarMain__Done( StatusBarMain _this )
   ViewsText__Done( &_this->AirTemperatureText );
   ViewsImage__Done( &_this->UnitImage );
   CoreTimer__Done( &_this->BlinkTimer );
+  CoreSystemEventHandler__Done( &_this->NaviDisconnectEventHandler );
+  CoreSystemEventHandler__Done( &_this->NaviConnectUpdateEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
   CoreGroup__Done( &_this->_.Super );
@@ -301,11 +298,11 @@ void StatusBarMain_Init( StatusBarMain _this, XHandle aArg )
   EwPostSignal( EwNewSlot( _this, StatusBarMain_OnUpdatePhoneIconSlot ), ((XObject)_this ));
   EwPostSignal( EwNewSlot( _this, StatusBarMain_OnNotificationListUpdatedSlot ), 
     ((XObject)_this ));
-  EwPostSignal( EwNewSlot( _this, StatusBarMain_OnBtcConnectionStatusChangedSlot ), 
-    ((XObject)_this ));
   VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
   DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeTIMEOUT_ERROR2_DETECTED );
   _this->IsTimeoutError2Detected = !!VehicleData->DataUInt32;
+  ViewsImage_OnSetVisible( &_this->NaviIcon, DeviceInterfaceNavigationDeviceClass_GetNaviConnectStatus( 
+  EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )));
 }
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
@@ -424,28 +421,6 @@ void StatusBarMain_UpdateHeadsetIcon( StatusBarMain _this )
     ViewsImage_OnSetVisible( &_this->HeadsetIcon, 1 );
   else
     ViewsImage_OnSetVisible( &_this->HeadsetIcon, 0 );
-}
-
-/* This slot method is executed when the associated property observer 'PropertyObserver' 
-   is notified. */
-void StatusBarMain_OnBtcConnectionStatusChangedSlot( StatusBarMain _this, XObject 
-  sender )
-{
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( sender );
-
-  if ( EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->BluetoothEnable )
-  {
-    if ( DeviceInterfaceBluetoothDeviceClass_IsBtConnected( EwGetAutoObject( &DeviceInterfaceBluetoothDevice, 
-        DeviceInterfaceBluetoothDeviceClass )))
-      ViewsImage_OnSetFrameNumber( &_this->BtIcon, 1 );
-    else
-      ViewsImage_OnSetFrameNumber( &_this->BtIcon, 0 );
-
-    ViewsImage_OnSetVisible( &_this->BtIcon, 1 );
-  }
-  else
-    ViewsImage_OnSetVisible( &_this->BtIcon, 0 );
 }
 
 /* 'C' function for method : 'StatusBar::Main.UpdateAppIcon()' */
@@ -678,6 +653,26 @@ void StatusBarMain_OnBlinkTimerTriggeredSlot( StatusBarMain _this, XObject sende
   }
   else
     ViewsImage_OnSetVisible( &_this->AppIcon, 0 );
+}
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void StatusBarMain_OnNaviDisconnectedSlot( StatusBarMain _this, XObject sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  ViewsImage_OnSetVisible( &_this->NaviIcon, 0 );
+}
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void StatusBarMain_OnNaviConnectUpdateSlot( StatusBarMain _this, XObject sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  ViewsImage_OnSetVisible( &_this->NaviIcon, 1 );
 }
 
 /* Variants derived from the class : 'StatusBar::Main' */

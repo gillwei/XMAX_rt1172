@@ -25,10 +25,11 @@ class Main : Core::Group
 
     postsignal OnUpdatePhoneIconSlot;
     postsignal OnNotificationListUpdatedSlot;
-    postsignal OnBtcConnectionStatusChangedSlot;
 
     var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.TIMEOUT_ERROR2_DETECTED );
     IsTimeoutError2Detected = (bool)VehicleData.DataUInt32;
+
+    NaviIcon.Visible = DeviceInterface::NavigationDevice.GetNaviConnectStatus();
   }
 
   $rect <0,50,200,90>
@@ -218,54 +219,17 @@ class Main : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Image BtIcon
+  object Views::Image NaviIcon
   {
     preset Bounds = <96,3,128,35>;
-    preset Bitmap = Resource::StatusBarBtIcon;
+    preset Bitmap = Resource::NaviIcon;
     preset Visible = false;
   }
 
-  $rect <590,100,880,140>
-  object Core::PropertyObserver BTEnabledObserver
-  {
-    preset OnEvent = OnBtcConnectionStatusChangedSlot;
-    preset Outlet = ^DeviceInterface::BluetoothDevice.BluetoothEnable;
-  }
-
-  // This slot method is executed when the associated property observer 'PropertyObserver' \
-  // is notified.
-  $rect <590,200,880,240>
-  slot OnBtcConnectionStatusChangedSlot
-  {
-    if( DeviceInterface::BluetoothDevice.BluetoothEnable )
-    {
-      if( DeviceInterface::BluetoothDevice.IsBtConnected() )
-      {
-        BtIcon.FrameNumber = 1;
-      }
-      else
-      {
-        BtIcon.FrameNumber = 0;
-      }
-      BtIcon.Visible = true;
-    }
-    else
-    {
-      BtIcon.Visible = false;
-    }
-  }
-
-  $rect <590,150,880,190>
-  object Core::PropertyObserver PairdDeviceChangedObserver
-  {
-    preset OnEvent = OnBtcConnectionStatusChangedSlot;
-    preset Outlet = ^DeviceInterface::BluetoothDevice.RefreshPairedDeviceList;
-  }
-
-  // BT Icon
+  // Navigation Icon
   note group Note1
   {
-    attr Bounds = <570,50,930,260>;
+    attr Bounds = <570,50,930,300>;
   }
 
   $rect <250,390,530,430>
@@ -392,7 +356,7 @@ class Main : Core::Group
   // Notification Icon
   note group Note3
   {
-    attr Bounds = <570,270,930,530>;
+    attr Bounds = <570,320,930,580>;
   }
 
   $rect <20,20,160,60>
@@ -403,14 +367,14 @@ class Main : Core::Group
     preset Visible = false;
   }
 
-  $rect <580,320,880,360>
+  $rect <580,370,880,410>
   object Core::SystemEventHandler PhoneCallStateChangedEventHandler
   {
     preset OnEvent = OnUpdatePhoneIconSlot;
     preset Event = DeviceInterface::NotificationDevice.PhoneCallStateChangedSystemEvent;
   }
 
-  $rect <580,370,880,410>
+  $rect <580,420,880,460>
   slot OnUpdatePhoneIconSlot
   {
     if( DeviceInterface::NotificationDevice.IsPhoneCallStateActive() )
@@ -431,7 +395,7 @@ class Main : Core::Group
 
   // This slot method is executed when the associated property observer 'PropertyObserver' \
   // is notified.
-  $rect <580,470,840,510>
+  $rect <580,520,840,560>
   slot OnNotificationListUpdatedSlot
   {
     if( 0 < DeviceInterface::NotificationDevice.GetNotificationNumOfCategory( Enum::NotificationCategory.MESSAGE ) )
@@ -446,7 +410,7 @@ class Main : Core::Group
     signal OnUpdatePhoneIconSlot;
   }
 
-  $rect <580,420,920,460>
+  $rect <580,470,920,510>
   object Core::SystemEventHandler NotificationListUpdatedSystemEventHandler
   {
     preset OnEvent = OnNotificationListUpdatedSlot;
@@ -617,6 +581,36 @@ class Main : Core::Group
 
   $rect <0,250,200,290>
   var bool BlinkVisible;
+
+  $rect <610,190,860,230>
+  object Core::SystemEventHandler NaviDisconnectEventHandler
+  {
+    preset OnEvent = OnNaviDisconnectedSlot;
+    preset Event = DeviceInterface::NavigationDevice.DisconnectStatusUpdateEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <610,240,860,280>
+  slot OnNaviDisconnectedSlot
+  {
+    NaviIcon.Visible = false;
+  }
+
+  $rect <610,90,890,130>
+  object Core::SystemEventHandler NaviConnectUpdateEventHandler
+  {
+    preset OnEvent = OnNaviConnectUpdateSlot;
+    preset Event = DeviceInterface::NavigationDevice.ConnectStatusUpdateEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <610,140,860,180>
+  slot OnNaviConnectUpdateSlot
+  {
+    NaviIcon.Visible = true;
+  }
 }
 
 $rect <20,60,220,100>

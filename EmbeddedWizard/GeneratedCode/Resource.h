@@ -333,8 +333,8 @@ EW_DECLARE_BITMAP_RES( ResourceBatteryNotChagingIcon )
 /* Bitmap resource : 'Resource::HeadsetIcon' */
 EW_DECLARE_BITMAP_RES( ResourceHeadsetIcon )
 
-/* Bitmap resource : 'Resource::StatusBarBtIcon' */
-EW_DECLARE_BITMAP_RES( ResourceStatusBarBtIcon )
+/* Bitmap resource : 'Resource::NaviIcon' */
+EW_DECLARE_BITMAP_RES( ResourceNaviIcon )
 
 /* Bitmap resource : 'Resource::Chessboard' */
 EW_DECLARE_BITMAP_RES( ResourceChessboard )

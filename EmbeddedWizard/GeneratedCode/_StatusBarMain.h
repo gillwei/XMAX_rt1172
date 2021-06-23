@@ -43,7 +43,6 @@
 #endif
 
 #include "_CoreGroup.h"
-#include "_CorePropertyObserver.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
 #include "_StatusBarClock.h"
@@ -109,9 +108,7 @@ EW_DEFINE_FIELDS( StatusBarMain, CoreGroup )
   EW_OBJECT  ( BatteryIcon,     ViewsImage )
   EW_OBJECT  ( HeadsetIcon,     ViewsImage )
   EW_OBJECT  ( AppIcon,         ViewsImage )
-  EW_OBJECT  ( BtIcon,          ViewsImage )
-  EW_OBJECT  ( BTEnabledObserver, CorePropertyObserver )
-  EW_OBJECT  ( PairdDeviceChangedObserver, CorePropertyObserver )
+  EW_OBJECT  ( NaviIcon,        ViewsImage )
   EW_OBJECT  ( SignalLevelIcon, ViewsImage )
   EW_OBJECT  ( VehicleDataReceivedEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( PhoneIcon,       ViewsImage )
@@ -123,6 +120,8 @@ EW_DEFINE_FIELDS( StatusBarMain, CoreGroup )
   EW_OBJECT  ( AirTemperatureText, ViewsText )
   EW_OBJECT  ( UnitImage,       ViewsImage )
   EW_OBJECT  ( BlinkTimer,      CoreTimer )
+  EW_OBJECT  ( NaviDisconnectEventHandler, CoreSystemEventHandler )
+  EW_OBJECT  ( NaviConnectUpdateEventHandler, CoreSystemEventHandler )
   EW_VARIABLE( BlinkVisible,    XBool )
   EW_VARIABLE( IsTimeoutError2Detected, XBool )
   EW_VARIABLE( IsMotoConConnected, XBool )
@@ -190,11 +189,6 @@ void StatusBarMain_UpdateBatteryIcon( StatusBarMain _this );
 /* 'C' function for method : 'StatusBar::Main.UpdateHeadsetIcon()' */
 void StatusBarMain_UpdateHeadsetIcon( StatusBarMain _this );
 
-/* This slot method is executed when the associated property observer 'PropertyObserver' 
-   is notified. */
-void StatusBarMain_OnBtcConnectionStatusChangedSlot( StatusBarMain _this, XObject 
-  sender );
-
 /* 'C' function for method : 'StatusBar::Main.UpdateAppIcon()' */
 void StatusBarMain_UpdateAppIcon( StatusBarMain _this );
 
@@ -226,6 +220,14 @@ void StatusBarMain_UpdateClockVisible( StatusBarMain _this );
 
 /* 'C' function for method : 'StatusBar::Main.OnBlinkTimerTriggeredSlot()' */
 void StatusBarMain_OnBlinkTimerTriggeredSlot( StatusBarMain _this, XObject sender );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void StatusBarMain_OnNaviDisconnectedSlot( StatusBarMain _this, XObject sender );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void StatusBarMain_OnNaviConnectUpdateSlot( StatusBarMain _this, XObject sender );
 
 #ifdef __cplusplus
   }
