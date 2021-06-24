@@ -28,6 +28,20 @@ bool BT_IAP2_send
     uint8_t* transfer_data
     );
 
+bool BT_SPP_send_y_app
+    (
+    uint8_t  data_length,
+    uint8_t* transfer_data
+    );
+
+bool BT_IAP2_send_y_app
+    (
+    uint8_t  data_length,
+    uint8_t* transfer_data
+    );
+
+
+
 #ifdef __cplusplus
 }
 #endif

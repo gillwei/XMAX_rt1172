@@ -29,7 +29,8 @@ extern "C"{
 #define BT_DEVICE_ADDRESS_LEN       ( 6 )
 #define BT_PIN_CODE_LEN             ( 6 )
 #define BT_SW_VERSION_LEN           ( 2 )
-#define BT_INFO_CB_MAX_NUM          ( 20 )
+#define BT_INFO_CB_MAX_NUM          ( 10 )
+#define BT_INFO_CB_MAX_NUM_Y_APP    ( 10 )
 #define SW_MODULE_DISABLE_FUNCTION  FALSE
 
 /*--------------------------------------------------------------------

@@ -54,7 +54,7 @@ typedef enum
     BT_CONN_TYPE_BT_OTHERS,
     BT_CONN_TYPE_BT_IAP2,
     BT_CONN_TYPE_BT_SPP,
-    BT_CONN_TYPE_BT_IAP2_YAPP
+    BT_CONN_TYPE_BT_YAPP
     } bt_connection_path_type;
 
 typedef enum

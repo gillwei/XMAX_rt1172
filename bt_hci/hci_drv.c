@@ -557,7 +557,7 @@ if( command )
     }
 else
     {
-    return false;
+    return pdFAIL;
     }
 
 if( len > 0 && HCI_MAX_DATA_SIZE >= len  )
@@ -576,7 +576,7 @@ else
     }
 
 if( 0 == totalLength )
-    return false;
+    return pdFAIL;
 
 return PERIPHERAL_uart_tx_data( totalLength, data );
 }

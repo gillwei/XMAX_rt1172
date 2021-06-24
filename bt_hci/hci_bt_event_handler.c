@@ -52,8 +52,8 @@ typedef enum
                             VARIABLES
 --------------------------------------------------------------------*/
 static bool pair_list_update_status = false;
-static spp_iap2_data_callback spp_iap2_data_cb_array[BT_INFO_CB_MAX_NUM]; /* spp iap2 data callback array */
-static spp_iap2_data_callback spp_iap2_data_cb_y_app;               /* spp iap2 data callback for Y-connect */
+static spp_iap2_data_callback spp_iap2_data_cb_array[BT_INFO_CB_MAX_NUM];               /* spp iap2 data callback array */
+static spp_iap2_data_callback spp_iap2_data_cb_array_y_app[BT_INFO_CB_MAX_NUM_Y_APP];         /* spp iap2 data callback for Y-connect */
 
 /*--------------------------------------------------------------------
                               PROCEDURES
@@ -280,6 +280,25 @@ switch( cmd_opcode )
         HCI_wiced_send_command( HCI_CONTROL_IAP2_COMMAND_CONNECT, bd_addr_rev, BT_DEVICE_ADDRESS_LEN );
         break;
 
+    case HCI_CONTROL_SPP_EVENT_CONNECTED_2:
+        connection_is_up = true;
+        BTM_BTC_spp_connected( connection_is_up, data_len, &( p_data[0] ), BT_CONN_TYPE_BT_YAPP );
+        break;
+
+    case HCI_CONTROL_SPP_EVENT_DISCONNECTED_2:
+        connection_is_up = false;
+        BTM_BTC_spp_connected( connection_is_up, data_len, &( p_data[0] ), BT_CONN_TYPE_BT_YAPP );
+        break;
+
+    case HCI_CONTROL_SPP_EVENT_RX_DATA_2:
+        for( int i = 0; i < SPP_IAP2_DATA_CB_MAX_NUM; i++ )
+            {
+            if( spp_iap2_data_cb_array_y_app[i] != NULL )
+                {
+                ( spp_iap2_data_cb_array_y_app[i] )( (uint8_t *)p_data, (uint32_t)data_len );
+                }
+            }
+        break;
     default:
         break;
     }
@@ -355,18 +374,21 @@ switch( cmd_opcode )
 
     case HCI_CONTROL_IAP2_EVENT_CONNECTED_2:
         connection_is_up = true;
-        BTM_BTC_spp_connected( connection_is_up, data_len, &( p_data[0] ), BT_CONN_TYPE_BT_IAP2_YAPP );
+        BTM_BTC_spp_connected( connection_is_up, data_len, &( p_data[0] ), BT_CONN_TYPE_BT_YAPP );
         break;
 
     case HCI_CONTROL_IAP2_EVENT_DISCONNECTED_2:
         connection_is_up = false;
-        BTM_BTC_spp_connected( connection_is_up, data_len, &( p_data[0] ), BT_CONN_TYPE_BT_IAP2_YAPP );
+        BTM_BTC_spp_connected( connection_is_up, data_len, &( p_data[0] ), BT_CONN_TYPE_BT_YAPP );
         break;
 
     case HCI_CONTROL_IAP2_EVENT_RX_DATA_2:
-        if( spp_iap2_data_cb_y_app != NULL )
+        for( int i = 0; i < SPP_IAP2_DATA_CB_MAX_NUM; i++ )
             {
-            spp_iap2_data_cb_y_app( (uint8_t *)p_data, (uint32_t)data_len );
+            if( spp_iap2_data_cb_array_y_app[i] != NULL )
+                {
+                ( spp_iap2_data_cb_array_y_app[i] )( (uint8_t *)p_data, (uint32_t)data_len );
+                }
             }
         break;
 
@@ -428,11 +450,23 @@ bool HCI_spp_iap2_add_data_callback_y_app
     spp_iap2_data_callback data_callback
     )
 {
-if( spp_iap2_data_cb_y_app == NULL )
+int i = 0;
+
+for( i = 0; i < SPP_IAP2_DATA_CB_MAX_NUM; i++ )
     {
-    PRINTF( "This spp iap2 data callback for Y-connect added successfuly!\r\n" );
-    spp_iap2_data_cb_y_app = data_callback;
-    return true;
+    // check if there exists same callback, if yes, return false
+    if( spp_iap2_data_cb_array_y_app[i] == data_callback )
+        {
+        PRINTF( "This spp iap2 data callback already added! skip\r\n" );
+        return false;
+        }
+    // if no, find a free slot to add this callback
+    else if( spp_iap2_data_cb_array_y_app[i] == NULL )
+        {
+        PRINTF( "This spp iap2 data callback added successfuly!\r\n" );
+        spp_iap2_data_cb_array_y_app[i] = data_callback;
+        return true;
+        }
     }
 
 PRINTF( "not able to add spp iap2 data callback for Y-connect!" );

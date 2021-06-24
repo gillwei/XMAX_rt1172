@@ -725,7 +725,7 @@ connection_handle_bytes[1] = (uint8_t)( paired_device_list[paired_device_index].
 PRINTF( "%s: index:%d connect handle:%d connect type:%d\r\n", __FUNCTION__, paired_device_index, paired_device_list[paired_device_index].connection_handle, paired_device_list[paired_device_index].connection_path_type );
 
 // disconnect device through HCI command
-if( ( BT_CONN_TYPE_BT_IAP2 == paired_device_list[paired_device_index].connection_path_type ) || ( BT_CONN_TYPE_BT_IAP2_YAPP == paired_device_list[paired_device_index].connection_path_type ) )
+if( ( BT_CONN_TYPE_BT_IAP2 == paired_device_list[paired_device_index].connection_path_type ) || ( BT_CONN_TYPE_BT_YAPP == paired_device_list[paired_device_index].connection_path_type ) )
     {
     /* Since we don't receive iAP2 disconnect callback after iAP2 disconnect command
      * Here we assume the disconnect always success
@@ -1216,7 +1216,7 @@ for( uint32_t i = 0; i < connection_info_length; i++ )
     }
 PRINTF( "\r\n" );
 
-// Received SPP or iAP2 connected event
+// Received Navi APP SPP or iAP2 connected event
 if( ( ( BT_DEVICE_ADDRESS_LEN + CONNECTION_HANDLE_LENGTH ) == connection_info_length ) && ( true == connection_is_up ) && \
       ( ( BT_CONN_TYPE_BT_IAP2 == connection_path ) || ( BT_CONN_TYPE_BT_SPP == connection_path ) ) )
     {
@@ -1260,8 +1260,9 @@ if( ( ( BT_DEVICE_ADDRESS_LEN + CONNECTION_HANDLE_LENGTH ) == connection_info_le
             }
         }
     }
+// Received Y-connect APP SPP or iAP2 connected event
 else if(  ( ( BT_DEVICE_ADDRESS_LEN + CONNECTION_HANDLE_LENGTH ) == connection_info_length ) && ( true == connection_is_up ) && \
-            ( BT_CONN_TYPE_BT_IAP2_YAPP == connection_path )  )
+            ( BT_CONN_TYPE_BT_YAPP == connection_path )  )
     {
     for( uint8_t i = 0; i < BT_DEVICE_ADDRESS_LEN; i++ )
         {
@@ -1306,7 +1307,7 @@ else if( false == connection_is_up && ( ( BT_CONN_TYPE_BT_IAP2 == connection_pat
         }
     }
 // Receive Y-connect SPP disconnected event
-else if( ( false == connection_is_up ) && ( BT_CONN_TYPE_BT_IAP2_YAPP == connection_path )  )
+else if( ( false == connection_is_up ) && ( BT_CONN_TYPE_BT_YAPP == connection_path )  )
     {
     if( BLE_ADV_OFF == btm_ble_advertising_state )
         {
@@ -1423,7 +1424,7 @@ if( ( BT_CONN_TYPE_BT_IAP2 == connection_path_type ) || ( BT_CONN_TYPE_BT_SPP ==
     memcpy( btc_is_connected, &( btm_btc_connection_status.BTC_is_connected ), sizeof( bool ) );
     memcpy( connection_handle, &( btm_btc_connection_status.current_connection_handle ), sizeof( uint16_t ) );
     }
-else if( BT_CONN_TYPE_BT_IAP2_YAPP == connection_path_type )
+else if( BT_CONN_TYPE_BT_YAPP == connection_path_type )
     {
     memcpy( btc_is_connected, &( btm_btc_connection_status.BTC_y_app_is_connected ), sizeof( bool ) );
     memcpy( connection_handle, &( btm_btc_connection_status.y_app_connection_handle ), sizeof( uint16_t ) );

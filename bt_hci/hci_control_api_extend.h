@@ -42,6 +42,15 @@ extern "C" {
 #define HCI_CONTROL_IAP2_EVENT_TX_COMPLETE_2                 ( ( HCI_CONTROL_GROUP_IAP2 << 8 ) | 0x14 )    /* Data packet has been queued for transmission */
 #define HCI_CONTROL_IAP2_EVENT_RX_DATA_2                     ( ( HCI_CONTROL_GROUP_IAP2 << 8 ) | 0x15 )    /* IAP2 data received */
 
+/* Events for the Y-connect SPP profile use */
+#define HCI_CONTROL_SPP_EVENT_CONNECTED_2                    ( ( HCI_CONTROL_GROUP_SPP << 8 ) | 0x08 )    /* SPP connection opened */
+#define HCI_CONTROL_SPP_EVENT_SERVICE_NOT_FOUND_2            ( ( HCI_CONTROL_GROUP_SPP << 8 ) | 0x09 )    /* SDP record with SPP service not found */
+#define HCI_CONTROL_SPP_EVENT_CONNECTION_FAILED_2            ( ( HCI_CONTROL_GROUP_SPP << 8 ) | 0x0A )    /* Connection attempt failed  */
+#define HCI_CONTROL_SPP_EVENT_DISCONNECTED_2                 ( ( HCI_CONTROL_GROUP_SPP << 8 ) | 0x0B )    /* SPP connection closed */
+#define HCI_CONTROL_SPP_EVENT_TX_COMPLETE_2                  ( ( HCI_CONTROL_GROUP_SPP << 8 ) | 0x0C )    /* Data packet has been queued for transmission */
+#define HCI_CONTROL_SPP_EVENT_RX_DATA_2                      ( ( HCI_CONTROL_GROUP_SPP << 8 ) | 0x0D )    /* SPP data received */
+#define HCI_CONTROL_SPP_EVENT_COMMAND_STATUS_2               ( ( HCI_CONTROL_GROUP_SPP << 8 ) | 0x0E )    /* Command status event for the requested operation */
+
 #ifdef __cplusplus
 }
 #endif
