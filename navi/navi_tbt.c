@@ -257,6 +257,7 @@ switch( has_next_tbt_request )
     case TBT_UPDATE_ONCE:
         if( has_more_tbt_items )
             {
+            has_more_tbt_items = false;
             tbt_list_state = TBT_LIST_STATE_CHECK_40TH_ACTIVE_TBT_IDX;
             }
         else
@@ -293,22 +294,12 @@ return num_of_tbt_list_item;
 * Determine whether to inform user that there are more Tbt items.
 *
 *********************************************************************/
-// TODO: Wait for UX team to provide UI design.
 bool NAVI_is_tbt_message_displayed
     (
     void
     )
 {
-bool res = false;
-
-// When active tbt index is 40th index, this is the time that navi app updates more tbt items.
-// In this case, inform user by showing message.
-if( TBT_LIST_STATE_CHECK_40TH_ACTIVE_TBT_IDX == tbt_list_state &&
-    cur_act_tbt_idx > TBT_NEXT_UPDATE_IDX )
-    {
-    res = true;
-    }
-return res;
+return has_more_tbt_items;
 }
 
 /*********************************************************************

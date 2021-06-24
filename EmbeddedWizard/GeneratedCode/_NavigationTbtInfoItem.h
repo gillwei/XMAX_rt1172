@@ -111,8 +111,10 @@ EW_DEFINE_FIELDS( NavigationTbtInfoItem, CoreGroup )
   EW_OBJECT  ( NextTurnDistUnit, ViewsText )
   EW_OBJECT  ( NextTurnDescription, ViewsText )
   EW_OBJECT  ( ListDivider,     ViewsImage )
+  EW_OBJECT  ( LoadingText,     ViewsText )
   EW_PROPERTY( Distance,        XString )
   EW_PROPERTY( DistanceUnit,    XString )
+  EW_PROPERTY( TbtItemEnabled,  XBool )
 EW_END_OF_FIELDS( NavigationTbtInfoItem )
 
 /* Virtual Method Table (VMT) for the class : 'Navigation::TbtInfoItem' */
@@ -169,6 +171,10 @@ void NavigationTbtInfoItem_OnSetDistanceUnit( NavigationTbtInfoItem _this, XStri
 
 /* 'C' function for method : 'Navigation::TbtInfoItem.OnSetTurnIconBitmap()' */
 void NavigationTbtInfoItem_OnSetTurnIconBitmap( NavigationTbtInfoItem _this, ResourcesBitmap 
+  value );
+
+/* 'C' function for method : 'Navigation::TbtInfoItem.OnSetTbtItemEnabled()' */
+void NavigationTbtInfoItem_OnSetTbtItemEnabled( NavigationTbtInfoItem _this, XBool 
   value );
 
 #ifdef __cplusplus

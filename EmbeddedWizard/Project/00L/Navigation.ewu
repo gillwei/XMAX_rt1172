@@ -2436,14 +2436,17 @@ class NAV03_TBTListView : Home::BaseHome
       AccessNaviView = false;
     }
 
-    if( DeviceInterface::NavigationDevice.IsTbtMessageDisplayed() )
-    {
-    // TODO: show message to inform user that there are more TBT items.
-    }
-
     if( DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() )
     {
-      TbtList.NoOfItems = DeviceInterface::NavigationDevice.GetTbtListSize();
+      if( DeviceInterface::NavigationDevice.IsTbtMessageDisplayed() )
+      {
+        // Show "Loading" in Tbt list.
+        TbtList.NoOfItems = DeviceInterface::NavigationDevice.GetTbtListSize() + 1;
+      }
+      else
+      {
+        TbtList.NoOfItems = DeviceInterface::NavigationDevice.GetTbtListSize();
+      }
       TbtList.InvalidateItems( 0, TbtList.NoOfItems-1 );
     }
   }
@@ -2476,6 +2479,7 @@ class NAV03_TBTListView : Home::BaseHome
     // Clear all items displayed on the tbt list.
     if( !DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() )
     {
+      trace "navigation stops";
       TbtList.NoOfItems = 0;
       // TODO: return to default view when route is finished. Need to consider how to handle start a new route/add as next stop/add as last stop.
     }
@@ -2572,7 +2576,7 @@ class TbtInfoItem : Core::Group
   $rect <20,20,160,60>
   object Views::Text NextTurnDescription
   {
-    preset Bounds = <114,8,417,101>;
+    preset Bounds = <114,8,417,109>;
     preset Ellipsis = true;
     preset WrapText = true;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertTop];
@@ -2658,6 +2662,108 @@ class TbtInfoItem : Core::Group
       NextTurnIcon.Bounds = Navigation::TURN_ICON_BOUNDS_W_DIST;
     }
   }
+
+  $rect <20,20,160,60>
+  object Views::Text LoadingText
+  {
+    preset Bounds = <0,0,480,111>;
+    preset String = "Loading";
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    preset Color = #C8C8C8FF;
+    preset Visible = false;
+  }
+
+  $rect <50,240,250,280>
+  property bool TbtItemEnabled;
+
+  $rect <50,280,250,320>
+  onset TbtItemEnabled
+  {
+    pure TbtItemEnabled = value;
+
+    TbtItemBg.Visible = value;
+    NextTurnDescription.Visible = value;
+    NextTurnDist.Visible = value;
+    NextTurnIcon.Visible = value;
+    NextTurnDistUnit.Visible = value;
+    ListDivider.Visible = value;
+    LoadingText.Visible = !value;
+  }
+
+  $reorder OnSetOpacity 2
+  $reorder OnGetEmbedded 2
+  $reorder OnSetEmbedded 2
+  $reorder OnGetAlphaBlended 2
+  $reorder OnSetAlphaBlended 2
+  $reorder OnGetVisible 2
+  $reorder OnSetVisible 2
+  $reorder DrawForeground 2
+  $reorder DrawBackground 2
+  $reorder GetMinimalSize 2
+  $reorder FindActiveDialogByClass 2
+  $reorder FindDialogByClass 2
+  $reorder FindCurrentDialog 2
+  $reorder IsCurrentDialog 2
+  $reorder IsActiveDialog 2
+  $reorder IsDialog 2
+  $reorder GetIndexOfDialog 2
+  $reorder GetDialogAtIndex 2
+  $reorder CountDialogs 2
+  $reorder SwitchToDialog 2
+  $reorder DismissDialog 2
+  $reorder PresentDialog 2
+  $reorder ObtainFocus 2
+  $reorder HasViewState 2
+  $reorder LocalPosition 2
+  $reorder GlobalPosition 2
+  $reorder DispatchEvent 2
+  $reorder BroadcastEventAtPosition 2
+  $reorder BroadcastEvent 2
+  $reorder UpdateLayout 2
+  $reorder UpdateViewState 2
+  $reorder InvalidateLayout 2
+  $reorder InvalidateViewState 2
+  $reorder InvalidateArea 2
+  $reorder GetIndexOfView 2
+  $reorder GetViewAtIndex 2
+  $reorder CountViews 2
+  $reorder FindViewInDirection 2
+  $reorder FindViewWithinArea 2
+  $reorder FindViewAtPosition 2
+  $reorder FindPrevView 2
+  $reorder FindNextView 2
+  $reorder FindSiblingView 2
+  $reorder GetContentArea 2
+  $reorder FadeGroup 2
+  $reorder RestackBehind 2
+  $reorder RestackBack 2
+  $reorder RestackTop 2
+  $reorder Restack 2
+  $reorder RemoveAll 2
+  $reorder Remove 2
+  $reorder AddBehind 2
+  $reorder Add 2
+  $reorder Focus 2
+  $reorder Buffered 2
+  $reorder Opacity 3
+  $reorder Embedded 3
+  $reorder AlphaBlended 3
+  $reorder Visible 3
+  $reorder TbtItemBg 3
+  $reorder NextTurnIcon 3
+  $reorder NextTurnDist 3
+  $reorder NextTurnDistUnit 3
+  $reorder NextTurnDescription 3
+  $reorder ListDivider 3
+  $reorder Distance 3
+  $reorder OnSetDistance 3
+  $reorder DistanceUnit 3
+  $reorder OnSetDistanceUnit 3
+  $reorder TurnIconBitmap 3
+  $reorder OnSetTurnIconBitmap 3
+  $reorder LoadingText 3
+  $reorder Enabled 2
+  $reorder TbtItemEnabled 1
 }
 
 $rect <20,420,220,460>
@@ -2957,25 +3063,33 @@ class TbtListMenu : Core::Group
     if( item != null )
     {
       var DeviceInterface::NaviTbtDataClass NaviTbtData = DeviceInterface::NavigationDevice.GetNaviTbtData( VerticalList.Item );
-
-      ShowTbtListItemIcon( NaviTbtData.IconIdx );
-
-      item.DistanceUnit = NaviTbtData.DistUnit;
-
-      if( 0.0 == NaviTbtData.Distance.fract )
+      if( null == NaviTbtData )
       {
-        item.Distance = string( (int32)NaviTbtData.Distance );
+        item.TbtItemEnabled = false;
       }
       else
       {
-        item.Distance = string( NaviTbtData.Distance, 0 , 1 );
-      }
-      item.NextTurnDescription.String = NaviTbtData.TbtDescription;
+        item.TbtItemEnabled = true;
 
-      item.TbtItemBg.Visible = false;
-      if( 0 == VerticalList.Item )
-      {
-        item.TbtItemBg.Visible = true;
+        ShowTbtListItemIcon( NaviTbtData.IconIdx );
+
+        item.DistanceUnit = NaviTbtData.DistUnit;
+
+        if( 0.0 == NaviTbtData.Distance.fract )
+        {
+          item.Distance = string( (int32)NaviTbtData.Distance );
+        }
+        else
+        {
+          item.Distance = string( NaviTbtData.Distance, 0 , 1 );
+        }
+        item.NextTurnDescription.String = NaviTbtData.TbtDescription;
+
+        item.TbtItemBg.Visible = false;
+        if( 0 == VerticalList.Item )
+        {
+          item.TbtItemBg.Visible = true;
+        }
       }
 
       item.Bounds.size = point( VerticalList.Bounds.w, VerticalList.ItemHeight );
