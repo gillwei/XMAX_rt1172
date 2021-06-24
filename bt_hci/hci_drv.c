@@ -26,6 +26,7 @@
 #include "factory_test.h"
 #include "fsl_iomuxc.h"
 #include "hci_control_api_extend.h"
+#include "EW_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS

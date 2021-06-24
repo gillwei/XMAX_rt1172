@@ -33,6 +33,8 @@ extern "C" {
 #define HCI_CONTROL_MISC_EVENT_UNPAIR_ALL_DEV               ( ( HCI_CONTROL_GROUP_MISC << 8 ) | 0x07 )
 #define HCI_CONTROL_MISC_EVENT_USER_CONFIRM_RESULT          ( ( HCI_CONTROL_GROUP_MISC << 8 ) | 0x08 )      /* Send the User Confirm Passkey and Device name to BT module */
 #define HCI_CONTROL_MISC_EVENT_ADDR_PAIR_FAIL               ( ( HCI_CONTROL_GROUP_MISC << 8 ) | 0x09 )      /* SPP or iAP2 connect check the authentication error */
+#define HCI_CONTROL_MISC_EVENT_PAIRING_CLT                  ( ( HCI_CONTROL_GROUP_MISC << 8 ) | 0x0A )      /* Add transport type for pairing complete event */
+#define HCI_CONTROL_MISC_EVENT_SECURITY_FAIL                ( ( HCI_CONTROL_GROUP_MISC << 8 ) | 0x0B )      /* Send Authentication security fail event to MCU */
 
 /* Extended Events for IAP2 Y-connect APP */
 #define HCI_CONTROL_IAP2_EVENT_CONNECTED_2                   ( ( HCI_CONTROL_GROUP_IAP2 << 8 ) | 0x10 )    /* IAP2 connection opened */

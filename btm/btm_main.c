@@ -63,6 +63,9 @@
 #define HCI_ERR_PEER_USER                 0x13
 #define HCI_ERR_CONN_CAUSE_LOCAL_HOST     0x16
 
+#define HCI_MISC_PAIRING_CLT_TYPE_BYTE    0
+#define HCI_MISC_PAIRING_CLT_RESULT_BYTE  1
+
 /*--------------------------------------------------------------------
                                  TYPES
 --------------------------------------------------------------------*/
@@ -106,14 +109,6 @@ typedef enum
     AUTO_CONNECT_SEQUENCE_DEVICE_CONNECT,
     AUTO_CONNECT_SEQUENCE_DEVICE_UNPAIRED
     } bt_auto_connect_seq_evt_t;
-
-typedef enum BTM_TIMEOUT_TYPE
-    {
-    BTM_TIMEOUT_IDLE,
-    BTM_CONNECT_TIMEOUT,
-    BTM_BLE_ADV_TIMEOUT,
-    BTM_BLE_PHONE_USER_CONFIRM_TIMEOUT
-    } btm_timeout_type_t;
 
 typedef enum BTM_BLE_PAIRING_RESULT
     {
@@ -236,6 +231,7 @@ static uint8_t                      connect_dev_index = 0;
 static uint8_t                      unpair_dev_index = 0;
 static ble_advertising_type_t       btm_ble_advertising_state = BLE_ADV_OFF;  // Initial state is no BLE advertising
 static bool                         btm_ble_connect_status = false;
+static bt_connection_path_type      latest_connection_type = BT_CONN_TYPE_BT_OTHERS;
 
 /*--------------------------------------------------------------------
                                 MACROS
@@ -363,29 +359,40 @@ switch( btm_timeout_type )
             {
             stop_btm_timeout_timer();
             btm_discoverable_state = BTM_DISCOVERABLE_STATE_NON;
-            BTM_notify_EW_connection_status( BT_CONNECTION_FAIL );
+            if( true == btm_btc_connection_status.BTC_is_connected )
+                {
+                EW_notify_bt_connection_result( EnumBtDeviceConnectionResultONLY_NAVI_APP_CONNECTED );
+                }
+            else
+                {
+                EW_notify_bt_connection_result( EnumBtDeviceConnectionResultFAIL );
+                }
             }
         break;
 
     /* BLE advertising not receive any user confirmation and timeout, send notify to EW  */
-    case BTM_BLE_ADV_TIMEOUT:
+    case BTM_BLE_PAIR_TIMEOUT:
         if( btm_timeout_count > BTM_TIMER_SIXTY_SECONDS )
             {
             stop_btm_timeout_timer();
             btm_pairing_state = BTM_PAIRING_STATE_NON;
-            BTM_set_ble_advertisement( false );
             ble_pairing_fail_count += 1;
             PRINTF( "BTM_BLE_ADV_TIMEOUT Fail Count:%d\r\n", ble_pairing_fail_count );
+            EW_notify_bt_connection_result( EnumBtDeviceConnectionResultYAMAHA_APP_CONNECTION_FAILED );
             }
         break;
 
-    /* BLE pairing Phone User Confirmation timeout, send notify to EW */
-    case BTM_BLE_PHONE_USER_CONFIRM_TIMEOUT:
+    /* [NEW PAGE-04] BTC pairing timeout if not receive any Y-app BTC connect event or BLE pairing complete fail event   */
+    case BTM_BTC_PAIR_TIMEOUT:
         if( btm_timeout_count > BTM_TIMER_THIRTY_SECONDS )
             {
             stop_btm_timeout_timer();
             ble_pairing_fail_count += 1;
             PRINTF( "BTM_BLE_PHONE_USER_CONFIRM_TIMEOUT Fail Count:%d\r\n", ble_pairing_fail_count );
+            if( false == btm_btc_connection_status.BTC_y_app_is_connected )
+                {
+                EW_notify_btc_pairing_state_changed( EnumBtcPairingStateNAVI_APP_CONNECTED );
+                }
             }
         break;
 
@@ -716,32 +723,53 @@ static void disconnect_device
     const uint8_t paired_device_index
     )
 {
-uint8_t connection_handle_bytes[2];
+uint8_t navi_connection_handle_bytes[2];
+uint8_t yapp_connection_handle_bytes[2];
 
-connection_handle_bytes[0] = 0xff & (uint8_t)(paired_device_list[paired_device_index].connection_handle);
-connection_handle_bytes[1] = (uint8_t)( paired_device_list[paired_device_index].connection_handle >> 8 );
-PRINTF( "%s: index:%d connect handle:%d connect type:%d\r\n", __FUNCTION__, paired_device_index, paired_device_list[paired_device_index].connection_handle, paired_device_list[paired_device_index].connection_path_type );
+navi_connection_handle_bytes[0] = 0xff & (uint8_t)(paired_device_list[paired_device_index].connection_handle);
+navi_connection_handle_bytes[1] = (uint8_t)( paired_device_list[paired_device_index].connection_handle >> 8 );
+yapp_connection_handle_bytes[0] = 0xff & (uint8_t)(paired_device_list[paired_device_index].y_app_connection_handle);
+yapp_connection_handle_bytes[1] = (uint8_t)( paired_device_list[paired_device_index].y_app_connection_handle >> 8 );
+PRINTF( "%s: index:%d navi connect handle:%d yapp connect handle:%d\r\n", __FUNCTION__, paired_device_index, paired_device_list[paired_device_index].connection_handle, paired_device_list[paired_device_index].y_app_connection_handle );
 
 // disconnect device through HCI command
-if( ( BT_CONN_TYPE_BT_IAP2 == paired_device_list[paired_device_index].connection_path_type ) || ( BT_CONN_TYPE_BT_YAPP == paired_device_list[paired_device_index].connection_path_type ) )
+if( ( BT_CONN_TYPE_BT_IAP2 == paired_device_list[paired_device_index].connection_path_type ) || ( BT_CONN_TYPE_BT_YAPP_IAP2 == paired_device_list[paired_device_index].connection_path_type ) )
     {
     /* Since we don't receive iAP2 disconnect callback after iAP2 disconnect command
      * Here we assume the disconnect always success
      */
-    paired_device_list[paired_device_index].is_connected = false;
-    paired_device_list[paired_device_index].y_app_is_connected = false;
-    paired_device_list[paired_device_index].connection_handle = 0;
-    paired_device_list[paired_device_index].y_app_connection_handle = 0;
-    HCI_wiced_send_command( HCI_CONTROL_IAP2_COMMAND_DISCONNECT, connection_handle_bytes, sizeof( uint16_t ) );
+    if( true == paired_device_list[paired_device_index].is_connected )
+        {
+        paired_device_list[paired_device_index].is_connected = false;
+        paired_device_list[paired_device_index].connection_handle = 0;
+        HCI_wiced_send_command( HCI_CONTROL_IAP2_COMMAND_DISCONNECT, navi_connection_handle_bytes, sizeof( uint16_t ) );
+        }
+    if( true == paired_device_list[paired_device_index].y_app_is_connected )
+        {
+        paired_device_list[paired_device_index].y_app_is_connected = false;
+        paired_device_list[paired_device_index].y_app_connection_handle = 0;
+        HCI_wiced_send_command( HCI_CONTROL_IAP2_COMMAND_DISCONNECT, yapp_connection_handle_bytes, sizeof( uint16_t ) );
+        }
     }
-else if( BT_CONN_TYPE_BT_SPP == paired_device_list[paired_device_index].connection_path_type )
+else if( BT_CONN_TYPE_BT_SPP == paired_device_list[paired_device_index].connection_path_type || ( BT_CONN_TYPE_BT_YAPP_SPP == paired_device_list[paired_device_index].connection_path_type ) )
     {
-    HCI_wiced_send_command( HCI_CONTROL_SPP_COMMAND_DISCONNECT, connection_handle_bytes, sizeof( uint16_t ) );
+    if( true == paired_device_list[paired_device_index].is_connected )
+        {
+        paired_device_list[paired_device_index].is_connected = false;
+        paired_device_list[paired_device_index].connection_handle = 0;
+        HCI_wiced_send_command( HCI_CONTROL_SPP_COMMAND_DISCONNECT, navi_connection_handle_bytes, sizeof( uint16_t ) );
+        }
+    if( true == paired_device_list[paired_device_index].y_app_is_connected )
+        {
+        paired_device_list[paired_device_index].y_app_is_connected = false;
+        paired_device_list[paired_device_index].y_app_connection_handle = 0;
+        HCI_wiced_send_command( HCI_CONTROL_SPP_COMMAND_DISCONNECT, yapp_connection_handle_bytes, sizeof( uint16_t ) );
+        }
     }
 else if( BT_CONN_TYPE_BT_OTHERS == paired_device_list[paired_device_index].connection_path_type )
     {
-    HCI_wiced_send_command( HCI_CONTROL_SPP_COMMAND_DISCONNECT, connection_handle_bytes, sizeof( uint16_t ) );
-    HCI_wiced_send_command( HCI_CONTROL_IAP2_COMMAND_DISCONNECT, connection_handle_bytes, sizeof( uint16_t ) );
+    HCI_wiced_send_command( HCI_CONTROL_SPP_COMMAND_DISCONNECT, navi_connection_handle_bytes, sizeof( uint16_t ) );
+    HCI_wiced_send_command( HCI_CONTROL_IAP2_COMMAND_DISCONNECT, navi_connection_handle_bytes, sizeof( uint16_t ) );
     PRINTF( "ERROR: BT connection path type not exist\r\n" );
     }
 }
@@ -842,12 +870,10 @@ if( true == enable_ble_adv )
     /* Request BT module start ble advertising */
     btm_discoverable_state = BTM_DISCOVERABLE_STATE_BLE;
     send_cmd_result = HCI_LE_send_advertising_cmd( BLE_ADV_CONNECTABLE );;
-    start_btm_timeout_timer( BTM_BLE_ADV_TIMEOUT );
     }
 else
     {
     /* Request BT module stop ble advertising */
-    stop_btm_timeout_timer();
     btm_discoverable_state = BTM_DISCOVERABLE_STATE_NON;
     send_cmd_result = HCI_LE_send_advertising_cmd( BLE_ADV_OFF );
     }
@@ -877,7 +903,7 @@ if( true == user_confirm_result )
     {
     /* Send user confirm success to BT module */
     send_cmd_result = HCI_wiced_send_command( HCI_CONTROL_MISC_COMMAND_USER_CONFIRM_RESULT, user_confirm_result_arry, sizeof( uint8_t ) );
-    }
+     }
 else
     {
     /* Send user confirm fail to BT module */
@@ -1214,6 +1240,8 @@ for( uint32_t i = 0; i < connection_info_length; i++ )
     }
 PRINTF( "\r\n" );
 
+latest_connection_type = connection_path;
+
 // Received Navi APP SPP or iAP2 connected event
 if( ( ( BT_DEVICE_ADDRESS_LEN + CONNECTION_HANDLE_LENGTH ) == connection_info_length ) && ( true == connection_is_up ) && \
       ( ( BT_CONN_TYPE_BT_IAP2 == connection_path ) || ( BT_CONN_TYPE_BT_SPP == connection_path ) ) )
@@ -1260,7 +1288,7 @@ if( ( ( BT_DEVICE_ADDRESS_LEN + CONNECTION_HANDLE_LENGTH ) == connection_info_le
     }
 // Received Y-connect APP SPP or iAP2 connected event
 else if(  ( ( BT_DEVICE_ADDRESS_LEN + CONNECTION_HANDLE_LENGTH ) == connection_info_length ) && ( true == connection_is_up ) && \
-            ( BT_CONN_TYPE_BT_YAPP == connection_path )  )
+          ( ( BT_CONN_TYPE_BT_YAPP_SPP == connection_path ) || ( BT_CONN_TYPE_BT_YAPP_IAP2 == connection_path ) ) )
     {
     for( uint8_t i = 0; i < BT_DEVICE_ADDRESS_LEN; i++ )
         {
@@ -1283,7 +1311,11 @@ else if(  ( ( BT_DEVICE_ADDRESS_LEN + CONNECTION_HANDLE_LENGTH ) == connection_i
               BTM_set_ble_advertisement( false );
               BTM_set_ble_advertisement( true );
 
-             // TODO Notify EW Y-connect connection status
+              // TODO Notify EW Y-connect connection status
+              EW_notify_btc_pairing_state_changed( EnumBtcPairingStateYAMAHA_APP_CONNECTED );
+              stop_btm_timeout_timer();
+              start_btm_timeout_timer( BTM_BLE_PAIR_TIMEOUT );
+
              // TODO Modify auto connect sequence and write to EEPROM ?
 
              break;
@@ -1305,7 +1337,7 @@ else if( false == connection_is_up && ( ( BT_CONN_TYPE_BT_IAP2 == connection_pat
         }
     }
 // Receive Y-connect SPP disconnected event
-else if( ( false == connection_is_up ) && ( BT_CONN_TYPE_BT_YAPP == connection_path )  )
+else if( ( false == connection_is_up ) && ( ( BT_CONN_TYPE_BT_YAPP_SPP == connection_path ) || ( BT_CONN_TYPE_BT_YAPP_IAP2 == connection_path ) )  )
     {
     if( BLE_ADV_OFF == btm_ble_advertising_state )
         {
@@ -1356,9 +1388,15 @@ if( BT_TRANSPORT_BR_EDR == transport )
                 /* Set BTC connect status false */
                 btm_btc_connection_status.BTC_is_connected = false;
                 btm_btc_connection_status.current_connection_handle = 0;
+                btm_btc_connection_status.BTC_y_app_is_connected = false;
+                btm_btc_connection_status.y_app_connection_handle = 0;
+
                 /* Set paired device connect status false */
                 paired_device_list[i].is_connected = false;
                 paired_device_list[i].connection_handle = 0;
+                paired_device_list[i].y_app_is_connected = false;
+                paired_device_list[i].y_app_connection_handle = 0;
+
                 EW_notify_bt_paired_device_status_changed();
                 if( ( reason == HCI_ERR_CONN_CAUSE_LOCAL_HOST ) || ( reason == HCI_ERR_PEER_USER ) )
                     {
@@ -1422,7 +1460,7 @@ if( ( BT_CONN_TYPE_BT_IAP2 == connection_path_type ) || ( BT_CONN_TYPE_BT_SPP ==
     memcpy( btc_is_connected, &( btm_btc_connection_status.BTC_is_connected ), sizeof( bool ) );
     memcpy( connection_handle, &( btm_btc_connection_status.current_connection_handle ), sizeof( uint16_t ) );
     }
-else if( BT_CONN_TYPE_BT_YAPP == connection_path_type )
+else if( ( BT_CONN_TYPE_BT_YAPP_SPP == connection_path_type )  || ( BT_CONN_TYPE_BT_IAP2 == connection_path_type ) )
     {
     memcpy( btc_is_connected, &( btm_btc_connection_status.BTC_y_app_is_connected ), sizeof( bool ) );
     memcpy( connection_handle, &( btm_btc_connection_status.y_app_connection_handle ), sizeof( uint16_t ) );
@@ -1431,6 +1469,22 @@ else
     {
     PRINTF( "%s ERROR:bt_connection_path_type:%d\r\n", __FUNCTION__, connection_path_type );
     }
+}
+
+/*********************************************************************
+*
+* @public
+* BTM_get_latest_connection_type
+*
+* Get latest connection type
+*
+*********************************************************************/
+bt_connection_path_type BTM_get_latest_connection_type
+    (
+    void
+    )
+{
+return latest_connection_type;
 }
 
 /*********************************************************************
@@ -1777,24 +1831,27 @@ return paired_device_num;
 *
 * @param paired_device_idx The index of paired_device_list.
 * @param device_name The pointer to the pointer of the device name char array.
-* @param is_connected The pointer to the is_connected bool value.
+* @param is_navi_connected The pointer to the is_connected bool value.
+* @param is_y_app_connected The pointer to the Y APP connected bool value
 *
 *********************************************************************/
 int BTM_get_paired_device_info
     (
     const int paired_device_idx,
     uint8_t** device_name,
-    bool*     is_connected
+    bool*     is_navi_connected,
+    bool*     is_y_app_connected
     )
 {
 int result = 0;
 if( paired_device_idx <= paired_device_num )
     {
     *device_name  = paired_device_list[paired_device_idx].device_name;
-    *is_connected = paired_device_list[paired_device_idx].is_connected,
+    *is_navi_connected = paired_device_list[paired_device_idx].is_connected;
+    *is_y_app_connected = paired_device_list[paired_device_idx].y_app_is_connected;
     result = 1;
     }
-PRINTF( "%s, %d, %s, %d\r\n", __FUNCTION__, paired_device_idx, *device_name, *is_connected );
+PRINTF( "%s, %d, %s, %d, %d\r\n", __FUNCTION__, paired_device_idx, *device_name, *is_navi_connected, *is_y_app_connected );
 return result;
 }
 
@@ -1816,6 +1873,7 @@ int BTM_connect_paired_device
 message_object msg_obj;
 msg_obj.type = MSG_CONNECT_DEVICE;
 msg_obj.pair_dev_index = paired_device_idx;
+
 send_message( msg_obj );
 return ERR_NONE;
 }
@@ -2181,6 +2239,23 @@ return btm_btc_connection_status.BTC_is_connected;
 /*********************************************************************
 *
 * @public
+* BTM_is_pairing_device_yapp_spp_connected
+*
+* Return boolean Y-connect BTC is connected or not
+**
+*********************************************************************/
+bool BTM_is_pairing_device_yapp_spp_connected
+    (
+    void
+    )
+{
+PRINTF( "%s:%d\r\n", __FUNCTION__, btm_btc_connection_status.BTC_is_connected );
+return btm_btc_connection_status.BTC_y_app_is_connected;
+}
+
+/*********************************************************************
+*
+* @public
 * BTM_receive_user_confirm_evt
 *
 * MCU receive BT/BLE user confirmation event
@@ -2216,22 +2291,7 @@ if( BTM_DISCOVERABLE_STATE_BTC == btm_discoverable_state )
     PRINTF( "%s BTC_USR_CONFIRM numeric_code:%d\r\n", __FUNCTION__, numeric_code );
     EW_notify_bt_passkey_generated( device_name_char, numeric_code );
     }
-/* BLE Pairing user confirmation request event */
-else if( BTM_DISCOVERABLE_STATE_BLE == btm_discoverable_state )
-    {
-    stop_btm_timeout_timer();
-    btm_pairing_state = BTM_PAIRING_STATE_BLE;
-    numeric_code += (uint32_t)p_data[0];
-    numeric_code += (uint32_t)( p_data[1] << 8 );
-    numeric_code += (uint32_t)( p_data[2] << 16 );
-    numeric_code += (uint32_t)( p_data[3] << 24 );
-    PRINTF( "%s BLE_USR_CONFIRM numeric_code:%d\r\n", __FUNCTION__, numeric_code );
-    start_btm_timeout_timer( BTM_BLE_PHONE_USER_CONFIRM_TIMEOUT );
-    }
-else
-    {
-    PRINTF( "ERROR: Receive User Confirm event when not on BT/BLE discoverable state\r\n" );
-    }
+
 }
 
 /*********************************************************************
@@ -2244,7 +2304,7 @@ else
 * BT/BLE pairing complete event
 **
 **@param  p_data   ERROR code and remote device address
-**@param  data_len 1 + BT_DEVICE_ADDRESS_LEN
+**@param  data_len 2( pairing type & pairing result) + BT_DEVICE_ADDRESS_LEN
 *********************************************************************/
 void BTM_receive_pairing_clt_evt
     (
@@ -2252,29 +2312,35 @@ void BTM_receive_pairing_clt_evt
     const uint32_t data_len
     )
 {
-if( BTM_PAIRING_STATE_BTC == btm_pairing_state )
+PRINTF( "%s:", __FUNCTION__ );
+for(int i = 0;i < data_len;i++ )
+    {
+    PRINTF( " %02x", p_data[i] );
+    }
+PRINTF("\r\n");
+
+if( BT_TRANSPORT_BR_EDR == p_data[HCI_MISC_PAIRING_CLT_TYPE_BYTE] )
     {
     btm_pairing_state = BTM_PAIRING_STATE_NON;
-    if( BTM_BTC_BLE_PAIRING_SUCCESS == p_data[0] )
+    if( BTM_BTC_BLE_PAIRING_SUCCESS == p_data[HCI_MISC_PAIRING_CLT_RESULT_BYTE] )
         {
         PRINTF( "Receive BTC Pairing success\r\n" );
-        EW_notify_btc_pairing_state_changed( EnumBtcPairingStateSUCCESSFUL );
         }
     else
         {
-        PRINTF( "Receive BTC Pairing Fail Error code:%d remote address:", p_data[0] );
+        PRINTF( "Receive BTC Pairing Fail Error code:%d remote address:", p_data[HCI_MISC_PAIRING_CLT_TYPE_BYTE] );
         for( uint8_t i = 0; i < BT_DEVICE_ADDRESS_LEN; i++ )
             {
-            PRINTF( "%02x", p_data[1 + i] );
+            PRINTF( "%02x", p_data[HCI_MISC_PAIRING_CLT_RESULT_BYTE + 1 + i] );
             }
         PRINTF( "\r\n" );
         EW_notify_btc_pairing_state_changed( EnumBtcPairingStateFAIL );
         }
     }
-else if( BTM_PAIRING_STATE_BLE == btm_pairing_state )
+else if( BT_TRANSPORT_LE == p_data[HCI_MISC_PAIRING_CLT_TYPE_BYTE] )
     {
     btm_pairing_state = BTM_PAIRING_STATE_NON;
-    if( BTM_BTC_BLE_PAIRING_SUCCESS == p_data[0] )
+    if( BTM_BTC_BLE_PAIRING_SUCCESS == p_data[HCI_MISC_PAIRING_CLT_RESULT_BYTE] )
         {
         stop_btm_timeout_timer();
         ble_pairing_fail_count = 0;
@@ -2283,14 +2349,44 @@ else if( BTM_PAIRING_STATE_BLE == btm_pairing_state )
         {
         stop_btm_timeout_timer();
         ble_pairing_fail_count += 1;
-        PRINTF( "Receive BLE Pairing Fail Error code:%d Fail count:%d remote address:", p_data[0], ble_pairing_fail_count );
+        EW_notify_bt_connection_result( EnumBtDeviceConnectionResultYAMAHA_APP_CONNECTION_FAILED );
+        PRINTF( "Receive BLE Pairing Fail Error code:%d Fail count:%d remote address:", p_data[HCI_MISC_PAIRING_CLT_RESULT_BYTE], ble_pairing_fail_count );
         for( uint8_t i = 0; i < BT_DEVICE_ADDRESS_LEN; i++ )
             {
-            PRINTF( "%02x", p_data[1 + i] );
+            PRINTF( "%02x", p_data[HCI_MISC_PAIRING_CLT_RESULT_BYTE + 1 + i] );
             }
         PRINTF( "\r\n" );
         }
     }
+}
+
+/*********************************************************************
+*
+* @public
+* BTM_receive_security_fail_evt
+*
+* Event from Cypress Stack BTM_SECURITY_FAILED_EVT, security fail event
+* is caused by when LC connected the remote device, but remote device
+* have delete the pairing device
+*
+**@param  p_data   Result + ERROR code + remote device address
+**@param  data_len 2( result + hci_status ) + BT_DEVICE_ADDRESS_LEN
+*********************************************************************/
+void BTM_receive_security_fail_evt
+    (
+    const uint8_t* p_data,
+    const uint32_t data_len
+    )
+{
+PRINTF( "%s:", __FUNCTION__ );
+for(int i = 0;i < data_len;i++ )
+    {
+    PRINTF( " %02x", p_data[i] );
+    }
+PRINTF("\r\n");
+stop_btm_timeout_timer();
+btm_discoverable_state = BTM_DISCOVERABLE_STATE_NON;
+EW_notify_bt_connection_result( EnumBtDeviceConnectionResultAUTHENTICATION_ERR ); // Stop btm timeout for BTM_CONNECT_TIMEOUT
 }
 
 /*********************************************************************
@@ -2337,6 +2433,12 @@ message_object msg_obj;
 msg_obj.type = MSG_USER_CONFIRM_PASSKEY;
 msg_obj.user_confirm_result = match_result;
 send_message( msg_obj );
+
+if( true == match_result )
+    {
+    start_btm_timeout_timer( BTM_BTC_PAIR_TIMEOUT );
+    }
+
 return ERR_NONE;
 }
 
@@ -2426,6 +2528,43 @@ if( ( true == is_bt_autoconnectable ) && ( false == btm_btc_connection_status.BT
     start_autoconnect_timer();
     }
 return ERR_NONE;
+}
+
+/*********************************************************************
+*
+* @public
+* BTM_start_btm_timeout_timer
+*
+* Called for the UI call btm timeout timer
+*
+*********************************************************************/
+void BTM_start_btm_timeout_timer
+    (
+    btm_timeout_type_t btm_timeout_type
+    )
+{
+if( BTM_BLE_PAIR_TIMEOUT == btm_timeout_type )
+    {
+    start_btm_timeout_timer(btm_timeout_type);
+    }
+}
+
+/*********************************************************************
+*
+* @public
+* BTM_get_LC_is_connecting
+*
+* Called for Navi APP and judge the UI event to feedback Embedded Wizard
+*
+*@param bool   isNaviConnected      For Navi APP layer to judge the UI event
+*
+*********************************************************************/
+void BTM_get_LC_is_connecting
+    (
+    bool* isNaviConnected
+    )
+{
+*isNaviConnected = btm_btc_connection_status.BTC_is_connected;
 }
 
 /*********************************************************************

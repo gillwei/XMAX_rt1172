@@ -127,7 +127,13 @@ int BTM_get_paired_device_info
     (
     const int paired_device_idx,
     uint8_t** device_name,
-    bool*     is_connected
+    bool*     is_navi_connected,
+    bool*     is_y_app_connected
+    );
+
+void BTM_get_LC_is_connecting
+    (
+    bool*  isNaviConnected
     );
 
 int BTM_get_local_device_name
@@ -207,6 +213,11 @@ void BTM_get_connection_info
     bt_connection_path_type connection_path_type
     );
 
+bt_connection_path_type BTM_get_latest_connection_type
+    (
+    void
+    );
+
 int BTM_get_connect_request_bd_addrress_rev
     (
     uint8_t* return_connect_bd_addr_rev
@@ -234,7 +245,18 @@ void BTM_receive_pairing_clt_evt
     const uint32_t data_len
     );
 
+void BTM_receive_security_fail_evt
+    (
+    const uint8_t* p_data,
+    const uint32_t data_len
+    );
+
 bool BTM_is_bt_connected
+    (
+    void
+    );
+
+bool BTM_is_pairing_device_yapp_spp_connected
     (
     void
     );
@@ -268,6 +290,11 @@ void BTM_receive_ble_advertising_state
 int BTM_init_autoconnect
     (
     void
+    );
+
+void BTM_start_btm_timeout_timer
+    (
+    btm_timeout_type_t btm_timeout_type
     );
 
 #ifdef __cplusplus

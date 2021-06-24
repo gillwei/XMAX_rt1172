@@ -37,8 +37,7 @@ extern "C" {
 #define BLE_GATT_CLIENT_CONFIG_INDICATION   ( 0x0002 )
 #define BLE_GATT_WRITE_REQUEST_DATA_MAX_LEN ( 28 )
 
-#define CCUID_LENGTH                        ( 14 )
-#define TEST_CCUID    (const char [])       { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e'  }
+#define TEST_CCUID    (const char [])       { 'T', 'E', 'S', 'T', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' }
 
 /*--------------------------------------------------------------------
                         TYPES
@@ -54,7 +53,8 @@ typedef enum
     BT_CONN_TYPE_BT_OTHERS,
     BT_CONN_TYPE_BT_IAP2,
     BT_CONN_TYPE_BT_SPP,
-    BT_CONN_TYPE_BT_YAPP
+    BT_CONN_TYPE_BT_YAPP_IAP2,
+    BT_CONN_TYPE_BT_YAPP_SPP
     } bt_connection_path_type;
 
 typedef enum
@@ -76,6 +76,15 @@ typedef enum BLE_ADVERTISING_TYPE
     BLE_ADV_NON_CONNECTABLE,
     BLE_ADV_CONNECTABLE
     } ble_advertising_type_t;
+
+typedef enum BTM_TIMEOUT_TYPE
+{
+BTM_TIMEOUT_IDLE,
+BTM_CONNECT_TIMEOUT,
+BTM_BLE_PAIR_TIMEOUT,
+BTM_BTC_PAIR_TIMEOUT,
+BTM_BLE_PHONE_USER_CONFIRM_TIMEOUT
+} btm_timeout_type_t;
 
 typedef struct
     {

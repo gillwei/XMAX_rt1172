@@ -435,8 +435,7 @@ void ew_bt_get_paired_device_at_index
     bool*     is_yamaha_app_connected
     )
 {
-// TODO: is_yamaha_app_connected
-BTM_get_paired_device_info( paired_device_idx, device_name, is_navi_app_connected );
+BTM_get_paired_device_info( paired_device_idx, device_name, is_navi_app_connected, is_yamaha_app_connected );
 }
 
 /*********************************************************************

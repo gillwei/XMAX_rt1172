@@ -97,14 +97,14 @@ else
 /*********************************************************************
  *
  * @public
- * BT_SPP_send_y_app
+ * BT_SPP_IAP2_send_y_app
  *
  * Get BT SPP Y-connect APP connection handle and send data to APP
  *
  * @input data_length Send data length
  * @input transfer_data uint8 pointer of send data
 ********************************************************************/
-bool BT_SPP_send_y_app
+bool BT_SPP_IAP2_send_y_app
     (
     uint8_t  data_length,
     uint8_t* transfer_data
@@ -113,8 +113,11 @@ bool BT_SPP_send_y_app
 uint8_t   transfer_spp_data[HCI_MAX_DATA_SIZE];
 bool      bt_connection_status;
 uint16_t  bt_connection_handle;
+bt_connection_path_type bt_connection_path;
 
-BTM_get_connection_info( &bt_connection_status, &bt_connection_handle, BT_CONN_TYPE_BT_YAPP );
+BTM_get_connection_info( &bt_connection_status, &bt_connection_handle, BT_CONN_TYPE_BT_YAPP_SPP );
+bt_connection_path = BTM_get_latest_connection_type();
+
 #if IAP2_SPP_SEND_TRACE_ENABLE
 PRINTF( "%s handle:%04x connection status:%d\n\r", __FUNCTION__, bt_connection_handle, bt_connection_status );
 #endif
@@ -127,47 +130,25 @@ transfer_spp_data[0] = (uint8_t)bt_connection_handle;
 transfer_spp_data[1] = (uint8_t)( bt_connection_handle >> 8 );
 memcpy( &(transfer_spp_data[2]), transfer_data, data_length );
 
-if( pdPASS == HCI_wiced_send_command( HCI_CONTROL_SPP_COMMAND_DATA, transfer_spp_data, data_length + 2  ) )
-    return true;
-else
-    return false;
-}
-
-/*********************************************************************
- *
- * @public
- * BT_IAP2_send_y_app
- *
- * Get BT iAP2 Y-connect APP connection handle and send data to APP
- *
- * @input data_length Send data length
- * @input transfer_data uint8 pointer of send data
-********************************************************************/
-bool BT_IAP2_send_y_app
-    (
-    uint8_t  data_length,
-    uint8_t* transfer_data
-    )
-{
-uint8_t   transfer_iap2_data[HCI_MAX_DATA_SIZE];
-bool      bt_connection_status;
-uint16_t  bt_connection_handle;
-
-BTM_get_connection_info( &bt_connection_status, &bt_connection_handle, BT_CONN_TYPE_BT_YAPP );
-#if IAP2_SPP_SEND_TRACE_ENABLE
-PRINTF( "%s handle:%04x connection status:%d\n\r", __FUNCTION__, bt_connection_handle, bt_connection_status );
-#endif
-if( ( data_length > ( HCI_MAX_DATA_SIZE - 2 ) ) || ( bt_connection_status != true ) )
+if( ( BT_CONN_TYPE_BT_SPP == bt_connection_path ) || ( BT_CONN_TYPE_BT_YAPP_SPP == bt_connection_path ) )
     {
-    PRINTF( "Send fail data length:%d bt_connection_status:%d\n\r", data_length, bt_connection_status );
-    return false;
+    if( pdPASS == HCI_wiced_send_command( HCI_CONTROL_SPP_COMMAND_DATA, transfer_spp_data, data_length + 2  ) )
+        return true;
+    else
+        return false;
     }
-transfer_iap2_data[0] = (uint8_t)bt_connection_handle;
-transfer_iap2_data[1] = (uint8_t)( bt_connection_handle >> 8 );
-memcpy( &(transfer_iap2_data[2]), transfer_data, data_length );
-
-if( pdPASS == HCI_wiced_send_command( HCI_CONTROL_IAP2_COMMAND_DATA, transfer_iap2_data, data_length + 2  ) )
-    return true;
+else if( ( BT_CONN_TYPE_BT_IAP2 == bt_connection_path ) || ( BT_CONN_TYPE_BT_YAPP_IAP2 == bt_connection_path ) )
+    {
+    if( pdPASS == HCI_wiced_send_command( HCI_CONTROL_IAP2_COMMAND_DATA, transfer_spp_data, data_length + 2  ) )
+        return true;
+    else
+        return false;
+    }
 else
-    return false;
+    {
+    PRINTF( "ERROR: BT connection type unknown\r\n" );
+    HCI_wiced_send_command( HCI_CONTROL_SPP_COMMAND_DATA, transfer_spp_data, data_length + 2  );
+    HCI_wiced_send_command( HCI_CONTROL_IAP2_COMMAND_DATA, transfer_spp_data, data_length + 2  );
+    }
+return false;
 }

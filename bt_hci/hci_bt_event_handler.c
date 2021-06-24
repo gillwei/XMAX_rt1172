@@ -165,12 +165,20 @@ switch( opcode )
         break;
 
     case HCI_CONTROL_MISC_EVENT_USER_CONFIRM_RESULT:
-       BTM_receive_user_confirm_evt( p_data, data_len );
-       break;
+        BTM_receive_user_confirm_evt( p_data, data_len );
+        break;
 
     case HCI_CONTROL_MISC_EVENT_ADDR_PAIR_FAIL:
         BTM_receive_btc_paired_fail( p_data, data_len );
-       break;
+        break;
+
+    case HCI_CONTROL_MISC_EVENT_PAIRING_CLT:
+        BTM_receive_pairing_clt_evt( p_data, data_len );
+        break;
+
+    case HCI_CONTROL_MISC_EVENT_SECURITY_FAIL:
+        BTM_receive_security_fail_evt( p_data, data_len );
+        break;
 
     default:
         break;
@@ -208,11 +216,6 @@ switch( cmd_opcode )
     case HCI_CONTROL_EVENT_DEVICE_STARTED:
         PRINTF( "Receive BT device start event\r\n" );
         break;
-
-    case HCI_CONTROL_EVENT_PAIRING_COMPLETE:
-       PRINTF( "Receive BT or BLE pairing complete event\r\n" );
-       BTM_receive_pairing_clt_evt( p_data, data_len );
-       break;
 
     case HCI_CONTROL_EVENT_CONNECTION_STATUS:
        BTM_receive_connection_status( p_data, data_len );
@@ -282,12 +285,12 @@ switch( cmd_opcode )
 
     case HCI_CONTROL_SPP_EVENT_CONNECTED_2:
         connection_is_up = true;
-        BTM_BTC_spp_connected( connection_is_up, data_len, &( p_data[0] ), BT_CONN_TYPE_BT_YAPP );
+        BTM_BTC_spp_connected( connection_is_up, data_len, &( p_data[0] ), BT_CONN_TYPE_BT_YAPP_SPP );
         break;
 
     case HCI_CONTROL_SPP_EVENT_DISCONNECTED_2:
         connection_is_up = false;
-        BTM_BTC_spp_connected( connection_is_up, data_len, &( p_data[0] ), BT_CONN_TYPE_BT_YAPP );
+        BTM_BTC_spp_connected( connection_is_up, data_len, &( p_data[0] ), BT_CONN_TYPE_BT_YAPP_SPP );
         break;
 
     case HCI_CONTROL_SPP_EVENT_RX_DATA_2:
@@ -374,12 +377,12 @@ switch( cmd_opcode )
 
     case HCI_CONTROL_IAP2_EVENT_CONNECTED_2:
         connection_is_up = true;
-        BTM_BTC_spp_connected( connection_is_up, data_len, &( p_data[0] ), BT_CONN_TYPE_BT_YAPP );
+        BTM_BTC_spp_connected( connection_is_up, data_len, &( p_data[0] ), BT_CONN_TYPE_BT_YAPP_IAP2 );
         break;
 
     case HCI_CONTROL_IAP2_EVENT_DISCONNECTED_2:
         connection_is_up = false;
-        BTM_BTC_spp_connected( connection_is_up, data_len, &( p_data[0] ), BT_CONN_TYPE_BT_YAPP );
+        BTM_BTC_spp_connected( connection_is_up, data_len, &( p_data[0] ), BT_CONN_TYPE_BT_YAPP_IAP2 );
         break;
 
     case HCI_CONTROL_IAP2_EVENT_RX_DATA_2:
