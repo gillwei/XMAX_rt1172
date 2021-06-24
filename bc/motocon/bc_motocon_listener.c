@@ -302,7 +302,7 @@ void bc_motocon_listener_language_type
     )
 {
 phone_language_type = language_type;
-EW_notify_motocon_event_received( EnumMotoConRxEventPHONE_LANGUAGE );
+EW_notify_system_event_received( EnumSystemRxEventPHONE_LANGUAGE_RECEIVED );
 }
 
 /*********************************************************************

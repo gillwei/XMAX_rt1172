@@ -152,6 +152,9 @@ EW_DEFINE_METHODS( SettingsLicenseDetail, CoreGroup )
     aOrder )
 EW_END_OF_METHODS( SettingsLicenseDetail )
 
+/* 'C' function for method : 'Settings::LicenseDetail.ReInit()' */
+void SettingsLicenseDetail_ReInit( SettingsLicenseDetail _this );
+
 /* 'C' function for method : 'Settings::LicenseDetail.ScrollUpPage()' */
 XInt32 SettingsLicenseDetail_ScrollUpPage( SettingsLicenseDetail _this );
 

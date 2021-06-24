@@ -131,6 +131,9 @@ void TopTOP01_Disclaimer__ReInit( TopTOP01_Disclaimer _this )
   ViewsImage__ReInit( &_this->IconWarning );
   ViewsText__ReInit( &_this->WarningText );
   MenuPushButton__ReInit( &_this->AcceptButton );
+
+  /* Call the user defined re-constructor of the class */
+  TopTOP01_Disclaimer_ReInit( _this );
 }
 
 /* Finalizer method for the class 'Top::TOP01_Disclaimer' */
@@ -149,6 +152,15 @@ void TopTOP01_Disclaimer__Done( TopTOP01_Disclaimer _this )
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseComponent__Done( &_this->_.Super );
+}
+
+/* 'C' function for method : 'Top::TOP01_Disclaimer.ReInit()' */
+void TopTOP01_Disclaimer_ReInit( TopTOP01_Disclaimer _this )
+{
+  ViewsText_OnSetString( &_this->DisclaimerText, EwGetVariantOfString( &StringsTOP01_DISCLAIMER ));
+  MenuPushButton_OnSetTitle( &_this->AcceptButton, EwGetVariantOfString( &StringsTOP01_ACCEPT ));
+  ViewsText_OnSetString( &_this->WarningText, EwGetVariantOfString( &StringsTOP01_WARNING ));
+  CoreGroup_InvalidateLayout((CoreGroup)_this );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 

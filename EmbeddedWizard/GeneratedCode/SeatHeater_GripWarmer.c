@@ -111,9 +111,9 @@ void SeatHeater_GripWarmerSHT02_GPW02_Main__Init( SeatHeater_GripWarmerSHT02_GPW
   _this->Super2.SlideOutEffectEnabled = 1;
   ComponentsBaseComponent__OnSetDDModeEnabled( &_this->Super1.Menu, 1 );
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 3 );
-  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &StringsGEN_LOW ));
-  _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &StringsGEN_MIDDLE ));
-  _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &StringsGEN_HIGH ));
+  _this->ItemTitleArray[ 0 ] = EwShareString( EwGetVariantOfString( &StringsGEN_LOW ));
+  _this->ItemTitleArray[ 1 ] = EwShareString( EwGetVariantOfString( &StringsGEN_MIDDLE ));
+  _this->ItemTitleArray[ 2 ] = EwShareString( EwGetVariantOfString( &StringsGEN_HIGH ));
   _this->VehicleDataReceivedEventHandler.OnEvent = EwNewSlot( _this, SeatHeater_GripWarmerSHT02_GPW02_Main_OnVehicleDataReceivedSlot );
   CoreSystemEventHandler_OnSetEvent( &_this->VehicleDataReceivedEventHandler, &EwGetAutoObject( 
   &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->VehicleDataReceivedSystemEvent );
@@ -785,7 +785,7 @@ void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_Init( SeatHeater_Gri
   if ( EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentVehicleFunction 
       == EnumVehicleSupportedFunctionSEAT_HEATER )
   {
-    ViewsText_OnSetString( &_this->CurrentItemTitleText, EwLoadString( &StringsLNC_SEAT_HEATER ));
+    ViewsText_OnSetString( &_this->CurrentItemTitleText, EwGetVariantOfString( &StringsLNC_SEAT_HEATER ));
     SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_UpdateHeaterLevel( _this, 
     EnumVehicleRxTypeSEAT_HEATER_STATUS );
   }
@@ -793,7 +793,8 @@ void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_Init( SeatHeater_Gri
     if ( EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentVehicleFunction 
         == EnumVehicleSupportedFunctionGRIP_WARMER )
     {
-      ViewsText_OnSetString( &_this->CurrentItemTitleText, EwLoadString( &StringsGPW01_GRIP_WARMER ));
+      ViewsText_OnSetString( &_this->CurrentItemTitleText, EwGetVariantOfString( 
+      &StringsGPW01_GRIP_WARMER ));
       SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_UpdateHeaterLevel( 
       _this, EnumVehicleRxTypeGRIP_WARMER_STATUS );
     }
@@ -801,7 +802,8 @@ void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_Init( SeatHeater_Gri
       if ( EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentVehicleFunction 
           == EnumVehicleSupportedFunctionWIND_SCREEN )
       {
-        ViewsText_OnSetString( &_this->CurrentItemTitleText, EwLoadString( &StringsWSC01_WIND_SCREEN ));
+        ViewsText_OnSetString( &_this->CurrentItemTitleText, EwGetVariantOfString( 
+        &StringsWSC01_WIND_SCREEN ));
         ViewsImage_OnSetBitmap( &_this->ControlUpButton, EwLoadResource( &ResourceControlUpButtonArrow, 
         ResourcesBitmap ));
         ViewsImage_OnSetBitmap( &_this->ControlDownButton, EwLoadResource( &ResourceControlDownButtonArrow, 

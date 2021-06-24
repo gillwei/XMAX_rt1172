@@ -1,9 +1,18 @@
-﻿$version 10.00
+﻿$version 11.00
 
 $rect <10,10,250,50>
 $output false
 class TOP01_Disclaimer : Components::BaseComponent
 {
+  $rect <10,390,210,430>
+  inherited method ReInit()
+  {
+    DisclaimerText.String = Strings::TOP01_DISCLAIMER;
+    AcceptButton.Title = Strings::TOP01_ACCEPT;
+    WarningText.String = Strings::TOP01_WARNING;
+    InvalidateLayout();
+  }
+
   $rect <10,340,190,380>
   inherited method Init()
   {
@@ -38,7 +47,7 @@ class TOP01_Disclaimer : Components::BaseComponent
     WarningText.Bounds = NewBounds;
   }
 
-  $rect <510,50,710,90>
+  $rect <510,50,750,90>
   inherited method OnLongHomeKeyActivated()
   {
     // neglect long home key event

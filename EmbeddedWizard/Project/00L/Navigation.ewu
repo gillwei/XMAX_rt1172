@@ -1082,7 +1082,7 @@ class NAV06_NaviSettingMenu : Menu::BaseMenuView
       {
         var Pop::POP03_HomeOfficeSettingError OfficeSettingError = new Pop::POP03_HomeOfficeSettingError;
         OfficeSettingError.ReturnToNaviHomeSlot = ReturnToNaviHome;
-        OfficeSettingError.ErrorMessage = Strings::POP03_NO_OFFICE_LOCATION;
+        OfficeSettingError.ErrorMessage = Strings::POP13_NO_OFFICE_LOCATION;
         PresentDialog( OfficeSettingError, null, null, null, null, null, null, null, null, false );
       }
     }
@@ -1117,21 +1117,22 @@ class NAV08_NaviChageViewMenu : Menu::BaseMenuView
   $rect <510,110,710,150>
   inherited method LoadItemTitle()
   {
-    var string title = "";
-    if( aItemNo < ItemTitleArray.size )
-      {
-      title = ItemTitleArray[aItemNo];
-      }
-    return title;
+    var string Title = "";
+    switch( aItemNo )
+    {
+      case 0: Title = Strings::NAV08_DEFAULT_VIEW;
+      case 1: Title = Strings::NAV08_TURN_BY_TURN;
+      case 2: Title = Strings::NAV08_TURN_LIST;
+      default:;
+    }
+    return Title;
   }
 
   $rect <510,160,710,200>
   inherited method OnItemActivate()
   {
-    if( null == aMenuItem )
-    {
-      // empty body to suppress warning
-    }
+    // suppress warning
+    aMenuItem;
 
     NaviScreenIdx = aItemNo;
     switch( aItemNo )
@@ -1142,7 +1143,7 @@ class NAV08_NaviChageViewMenu : Menu::BaseMenuView
       default:;
     }
 
-    Menu.InvalidateItems( 0, ItemTitleArray.size - 1 );
+    Menu.InvalidateItems( 0, Menu.NoOfItems - 1 );
     CheckMarkUpdateTimer.Enabled = true;
   }
 
@@ -1183,14 +1184,6 @@ class NAV08_NaviChageViewMenu : Menu::BaseMenuView
   {
     preset NoOfItems = 3;
   }
-
-  $rect <750,10,950,50>
-  array string ItemTitleArray[ 3 ] =
-  (
-    Default[0] = Strings::NAV08_DEFAULT_VIEW;
-    Default[1] = Strings::NAV08_TURN_BY_TURN;
-    Default[2] = Strings::NAV08_TURN_LIST;
-  );
 
   $rect <510,240,740,280>
   object Core::Timer CheckMarkUpdateTimer

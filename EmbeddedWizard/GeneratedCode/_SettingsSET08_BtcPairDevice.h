@@ -166,6 +166,9 @@ EW_DEFINE_METHODS( SettingsSET08_BtcPairDevice, ComponentsBaseMainBG )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( SettingsSET08_BtcPairDevice )
 
+/* 'C' function for method : 'Settings::SET08_BtcPairDevice.ReInit()' */
+void SettingsSET08_BtcPairDevice_ReInit( SettingsSET08_BtcPairDevice _this );
+
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 
    statements. */
@@ -184,6 +187,9 @@ void SettingsSET08_BtcPairDevice_OnYesActivatedSlot( SettingsSET08_BtcPairDevice
    receives an event. */
 void SettingsSET08_BtcPairDevice_OnBtcPairingStateChangeSlot( SettingsSET08_BtcPairDevice _this, 
   XObject sender );
+
+/* 'C' function for method : 'Settings::SET08_BtcPairDevice.DisplayString()' */
+void SettingsSET08_BtcPairDevice_DisplayString( SettingsSET08_BtcPairDevice _this );
 
 #ifdef __cplusplus
   }

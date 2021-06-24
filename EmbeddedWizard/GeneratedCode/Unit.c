@@ -92,10 +92,10 @@ void UnitUNT01_UnitSettingMenu__Init( UnitUNT01_UnitSettingMenu _this, XObject a
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 4 );
   MenuVerticalMenu_OnSetItemHeight( &_this->Super1.Menu, 56 );
   MenuVerticalMenu_OnSetItemNumPerPage( &_this->Super1.Menu, 4 );
-  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &StringsUNT01_UNIT_MILEAGE ));
-  _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &StringsUNT01_UNIT_FUEL ));
-  _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &StringsUNT01_UNIT_PRESSURE ));
-  _this->ItemTitleArray[ 3 ] = EwShareString( EwLoadString( &StringsUNT01_UNIT_TEMPERATURE ));
+  _this->ItemTitleArray[ 0 ] = EwShareString( EwGetVariantOfString( &StringsUNT01_UNIT_MILEAGE ));
+  _this->ItemTitleArray[ 1 ] = EwShareString( EwGetVariantOfString( &StringsUNT01_UNIT_FUEL ));
+  _this->ItemTitleArray[ 2 ] = EwShareString( EwGetVariantOfString( &StringsUNT01_UNIT_PRESSURE ));
+  _this->ItemTitleArray[ 3 ] = EwShareString( EwGetVariantOfString( &StringsUNT01_UNIT_TEMPERATURE ));
   _this->ItemVehicleRxTypeArray[ 0 ] = EnumVehicleRxTypeMILEAGE_UNIT;
   _this->ItemVehicleRxTypeArray[ 1 ] = EnumVehicleRxTypeFUEL_CONSUMPTION_UNIT;
   _this->ItemVehicleRxTypeArray[ 2 ] = EnumVehicleRxTypePRESSURE_UNIT;
@@ -185,19 +185,19 @@ XString UnitUNT01_UnitSettingMenu_LoadItemTitle( UnitUNT01_UnitSettingMenu _this
   switch ( _this->ItemVehicleRxTypeArray[ EwCheckIndex( aItemNo, 4 )])
   {
     case EnumVehicleRxTypeMILEAGE_UNIT :
-      title = EwLoadString( &StringsUNT01_UNIT_MILEAGE );
+      title = EwGetVariantOfString( &StringsUNT01_UNIT_MILEAGE );
     break;
 
     case EnumVehicleRxTypeFUEL_CONSUMPTION_UNIT :
-      title = EwLoadString( &StringsUNT01_UNIT_FUEL );
+      title = EwGetVariantOfString( &StringsUNT01_UNIT_FUEL );
     break;
 
     case EnumVehicleRxTypePRESSURE_UNIT :
-      title = EwLoadString( &StringsUNT01_UNIT_PRESSURE );
+      title = EwGetVariantOfString( &StringsUNT01_UNIT_PRESSURE );
     break;
 
     case EnumVehicleRxTypeTEMPERATURE_UNIT :
-      title = EwLoadString( &StringsUNT01_UNIT_TEMPERATURE );
+      title = EwGetVariantOfString( &StringsUNT01_UNIT_TEMPERATURE );
     break;
 
     default :; 

@@ -1,222 +1,598 @@
-﻿↓String-Id  /  Language →,Default,Japanese,French,Spanish,Italian,German,TraditionalChinese,SimplifiedChinese
-ARGUMENT_STR,%s,,,,,,,
-ARGUMENT_DECIMAL,%d,,,,,,,
-GEN_OK,OK,OK,OK,Vale,OK,OK,確定,确定
-GEN_CANCEL,Cancel,キャンセル,Annuler,Cancelar,Annulla,Abbrechen,取消,取消
-GEN_YES,Yes,,,,,,,
-GEN_NO,No,,,,,,,
-GEN_LOW,Low,,,,,,,
-GEN_LOW_ABBREVIATION,Lo,,,,,,,
-GEN_MIDDLE,Mid,,,,,,,
-GEN_HIGH,High,,,,,,,
-GEN_HIGH_ABBREVIATION,Hi,,,,,,,
-GEN_HOUR_ABBREVIATION,h,,,,,,,
-GEN_MINUTE_ABBREVIATION,min,,,,,,,
-GEN_RESET_QUESTION_MARK,Reset?,,,,,,,
-GEN_BLUETOOTH,Bluetooth,,,,,,,
-GEN_THREE_HYPHENS,---,,,,,,,
-GEN_PLEASE_WAIT,Please wait…,,,,,,,
-GEN_SPEED_KM_PER_HOUR,km/h,,,,,,,
-GEN_SPEED_MILE_PER_HOUR,mile/h,,,,,,,
-GEN_FUEL_UNIT_LITTER,L,,,,,,,
-GEN_FUEL_UNIT_GALLON,gal,,,,,,,
-TOP01_WARNING,WARNING,警告,AVERTISSEMENT,ATENCIÓN,AVVERTENZA,WARNUNG,警告,警告
-TOP01_DISCLAIMER,Failure to pay attention while riding could result in death or serious injury. Always concentrate on riding by keeping your eyes and mind on the road. Read the Owner's Manual.,"運転中に注意を怠ると、死亡または重傷を負う可能性があります。常に交通状況を注視し、運転に集中してください。
-取扱説明書をご確認ください。",Toute inattention lors de la conduite peut entraîner la mort ou des blessures graves. Concentrez-vous toujours sur la conduite en gardant vos yeux et votre esprit sur la route. Lisez votre mode d'emploi.,No prestar atención mientras se conduce puede producir heridas graves y la muerte. Concéntrese siempre en la conducción y mantenga la vista siempre en la carretera. Lea su manual de usuario.,Non prestare attenzione mentre si viaggia può causare lesioni gravi o decesso. Rimanete sempre concentrati sulla strada. Leggere il Manuale utente.,Unachtsamkeit während des Fahrens kann zu Verletzungen oder Tod führen. Konzentrieren Sie sich während der Fahrt immer auf die Straße. ,未專心騎乘車輛時，將可能導致重傷或死亡。騎乘中請務必保持專注，並隨時留意周遭之交通狀況。請詳閱車主手冊。,骑行时不注意安全可能会导致死亡或重伤。请随时注意道路状况和周围的环境，专心骑行。请参阅《用户手册》。
-TOP01_ACCEPT,ACCEPT,確認,ACCEPTER,ACEPTAR,ACCETTA,Akzeptiert,知悉並同意,接受
-BRT01_TFT_DISPLAY,TFT display,,,,,,,
-BRT01_SPEED_METER,Speed meter,,,,,,,
-BRT02_MAX,Max.,,,,,,,
-BRT02_MIN,Min.,,,,,,,
-CLK01_AUTO_ADJUSTMENT,Auto Adjustment,,,,,,,
-CLK01_MANUAL_ADJUSTMENT,Manual Adjustment,,,,,,,
-CLK02_DAY,Day,,,,,,,
-CLK02_MONTH,Month,,,,,,,
-CLK02_YEAR,Year,,,,,,,
-CLK02_AM,AM,,,,,,,
-CLK02_PM,PM,,,,,,,
-CLK02_HOUR,Hour,,,,,,,
-CLK02_MINUTE,Min.,,,,,,,
-CLK03_SET_CLOCK,Set Clock?,,,,,,,
-GPW01_GRIP_WARMER,Grip Warmer,,,,,,,
-HOM11_X1000R_MIN,x1000r/min,,,,,,,
-HOM12_AVG,AVG,,,,,,,
-HOM12_AVG_fuel,AVG FUEL,,,,,,,
-HOM13_SPEED_LIMIT,SPEED LIMIT,,,,,,,
-HOM03_AVG_SPEED,AVG SPEED,,,,,,,
-HOM03_AVG_FUEL,AVG FUEL,,,,,,,
-HOM03_INST_FUEL,INST FUEL,,,,,,,
-HOM03_TRIP_TIME,TRIP TIME,,,,,,,
-HOM03_RANGE,RANGE,,,,,,,
-HOM03_FUEL_CONSUMPTION,FUEL CONS,,,,,,,
-HOM03_AIR,AIR,,,,,,,
-HOM03_COOLANT,COOLANT,,,,,,,
-HOM03_BATTERY,BATTERY,,,,,,,
-HOM03_FRONT_R,FRONT (R),,,,,,,
-HOM03_FRONT_L,FRONT (L),,,,,,,
-HOM03_FRONT,FRONT,,,,,,,
-HOM03_REAR,REAR,,,,,,,
-HOM03_CRUISE,CRUISE,,,,,,,
-INF01_TACHO_VISUALIZER,Tacho visualizer,,,,,,,
-INF01_ECHO_VISUALIZER,ECO visualizer,,,,,,,
-INF01_SPEED_VISUALIZER,Speed visualizer,,,,,,,
-INF26_ODO,ODO,,,,,,,
-INF26_TRIP_1,TRIP 1,,,,,,,
-INF26_TRIP_2,TRIP 2,,,,,,,
-INF26_TRIP_F,TRIP F,,,,,,,
-LNC_METER_DISPLAY,Meter display,,,,,,,
-LNC_ODO_TRIP,ODO/TRIP,,,,,,,
-LNC_MUSIC,Music,,,,,,,
-LNC_PHONE,Phone,,,,,,,
-LNC_NAVIGATION,Navigation,,,,,,,
-LNC_WEATHER,Weather,,,,,,,
-LNC_NOTIFICATION,Notification,,,,,,,
-LNC_SEAT_HEATER,Seat Heater,,,,,,,
-LNC_SETTINGS,Settings,,,,,,,
-MED02_DEV_UNAVAILABLE,"Media device
-unavailable",,,,,,,
-MNT01_OIL,OIL,,,,,,,
-MNT01_V_BELT,V-BELT,,,,,,,
-MNT01_FREE1,FREE 1,,,,,,,
-MNT01_FREE2,FREE 2,,,,,,,
-NAV01_CHECK_FIXED,Fixed Camera,,,,,,,
-NAV01_CHECK_TEMPORARY,Temporary Camera,,,,,,,
-NAV01_MOBILE,Mobile Speed Camera,,,,,,,
-NAV01_AVERAGE,Average Speed Camera,,,,,,,
-NAV01_VARIABLE,Variable Speed Camera,,,,,,,
-NAV01_RED_LIGHT,Red Light Camera,,,,,,,
-NAV01_USER,Mobile Camera,,,,,,,
-NAV01_MOBILE_ZONE,Mobile Speed Camera,,,,,,,
-NAV01_DANGEROUS_ZONE,Danger Zone,,,,,,,
-NAV01_RISK_ZONE,Risk Zone,,,,,,,
-NAV01_UNKNOWN,Speed Alert,,,,,,,
-NAV01_STATE_BORDER,State Border,,,,,,,
-NAV01_COUNTRY_BORDER,Country Border,,,,,,,
-NAV01_SCHOOL_ZONE,School Zone,,,,,,,
-NAV01_NO_DESTINATION,No possible route to this destination.,,,,,,,
-NAV06_STOP_NAVIGATION,Stop navigation,,,,,,,
-NAV06_SKIP_NEXT_STOP,Skip next stop,,,,,,,
-NAV06_GO_HOME,Go home,,,,,,,
-NAV06_GO_TO_WORK,Go to work,,,,,,,
-NAV06_FAVORITES,Favorites,,,,,,,
-NAV06_NEARBY_GAS_STATIONS,Nearby Gas stations,,,,,,,
-NAV06_CHANGE_VIEW,Change view,,,,,,,
-NAV08_DEFAULT_VIEW,Default view,,,,,,,
-NAV08_TURN_BY_TURN,Turn-by-turn,,,,,,,
-NAV08_TURN_LIST,Turn list,,,,,,,
-NAV11_NEW_ROUTE,Start a new route,,,,,,,
-NAV11_NEXT_STOP,Add as next stop,,,,,,,
-NAV11_LAST_STOP,Add as last stop,,,,,,,
-OPN02_FACTORY_MODE,Factory mode,,,,,,,
-OPN02_ENTER_TWICE,"Press ""ENTER"" button twice.",,,,,,,
-POP02_CONNECTION_ERR,Connection Error,,,,,,,
-POP02_PLEASE_CHECK,Please Check,,,,,,,
-POP02_DETAILS,Details,,,,,,,
-POP03_NO_HOME_LOCATION,Home location is not set.,,,,,,,
-POP03_NO_OFFICE_LOCATION,Work location is not set.,,,,,,,
-POP07_TROUBLE_SHOOTING,Connection troubleshooting,,,,,,,
-POP07_UNLOCK_PHONE,Unlock smartphone.,,,,,,,
-POP07_TURN_ON_BT,Turn ON smartphone Bluetooth.,,,,,,,
-POP07_LAUNCH_APP,Launch the application.,,,,,,,
+﻿↓String-Id  /  Language →,Default,Japanese,French,Spanish,Italian,German,TraditionalChinese,SimplifiedChinese,Greek,Finnish,Hindi,Indonesian,Polish,PortugueseBrazil,Thai,Vietnamese,Korean,Malay
+ARGUMENT_STR,%s,,,,,,,,,,,,,,,,,
+ARGUMENT_DECIMAL,%d,,,,,,,,,,,,,,,,,
+GEN_OK,OK,OK,OK,Aceptar,OK,OK,確定,确定,ΟΚ,OK,ठीक,OK,OK,OK,ตกลง,OK,확인,OK
+GEN_CANCEL,Cancel,キャンセル,Annuler,Cancelar,Annulla,Abbrechen,取消,取消,Άκυρο,Peruuta,रद्द करें,Batal,Anuluj,Cancelar,ยกเลิก,Hủy,취소,Batal
+GEN_YES,Yes,Yes,Oui,Sí,Sì,Ja,是,是,Ναι,Kyllä,हाँ,Ya,Tak,Sim,ใช่,Có,예,Ya
+GEN_NO,No,No,Non,No,No,Nein,否,否,Όχι,Ei,नहीं,Tidak,Nie,Não,ไม่ใช่,Không,아니오,Tidak
+GEN_LOW,Low,低,Bas,Bajo,Basso,Niedrig,低,低,Χαμηλό,Matala,कम,Rendah,Niskie,Baixo,ต่ำ,Thấp,낮음,Rendah
+GEN_LOW_ABBREVIATION,Lo,,,,,,,,,,,,,,,,,
+GEN_MIDDLE,Mid,中,Moyen,Medio,Medio,Mittel,中,中,Μεσαίο,Keski,मध्यम,Menengah,Średnie,Médio,กลาง,Giữa,중간,Pertengahan
+GEN_HIGH,High,高,Haut,Alto,Alto,Hoch,高,高,Υψηλό,Korkea,अधिक,Tinggi,Wysokie,Alto,สูง,Cao,높음,Tinggi
+GEN_HIGH_ABBREVIATION,Hi,,,,,,,,,,,,,,,,,
+GEN_HOUR_ABBREVIATION,h,,,,,,,,,,,,,,,,,
+GEN_MINUTE_ABBREVIATION,min,,,,,,,,,,,,,,,,,
+GEN_RESET_QUESTION_MARK,Reset?,リセットしますか？,Réinitialiser ?,¿Reiniciar?,Reimpostare?,Zurücksetzen?,是否重設？,重置?,Μηδενισμός;,Nollataanko?,दोबारा सेट करें?,Setel ulang?,Reset?,Redefinir?,รีเซ็ตหรือไม่,Đặt lại?,초기화할까요?,Tetap semula?
+GEN_BLUETOOTH,Bluetooth,Bluetooth,Bluetooth,Bluetooth,Bluetooth,Bluetooth,Bluetooth,蓝牙,Bluetooth,Bluetooth,ब्लूटूथ,Bluetooth,Bluetooth,Bluetooth,บลูทูธ,Bluetooth,Bluetooth,Bluetooth
+GEN_THREE_HYPHENS,---,,,,,,,,,,,,,,,,,
+GEN_PLEASE_WAIT,Please wait...,お待ちください．．．,Veuillez patienter...,Espere por favor…,Attendere prego...,Bitte warten...,請稍候……,请稍候...,Περιμένετε...,Odota...,कृपया प्रतीक्षा करें...,Harap tunggu…,Czekaj…,Aguarde...,โปรดรอ…,Vui lòng đợi…,기다려주세요...,Sila tunggu…
+GEN_SPEED_KM_PER_HOUR,km/h,,,,,,,,,,,,,,,,,
+GEN_SPEED_MILE_PER_HOUR,mile/h,,,,,,,,,,,,,,,,,
+GEN_FUEL_UNIT_LITTER,L,,,,,,,,,,,,,,,,,
+GEN_FUEL_UNIT_GALLON,gal,,,,,,,,,,,,,,,,,
+TOP01_WARNING,WARNING,警告,AVERTISSEMENT,ATENCIÓN,AVVERTENZA,WARNUNG,警告,警告,ΠΡΟΕΙΔΟΠΟΙΗΣΗ,VAROITUS,चेतावनी,PERINGATAN,OSTRZEŻENIE,AVISO,คำเตือน,CẢNH BÁO,경고,AMARAN
+TOP01_DISCLAIMER,"Failure to pay attention while riding could result in death or serious injury.
+Always concentrate on riding by keeping your eyes and mind on the road. Read the Owner's Manual.","運転中に注意を怠ると、死亡または
+重傷を負う可能性があります。
+常に交通状況に注意し、運転に集中
+してください。
+取扱説明書をお読みください。","Toute inattention lors de la conduite peut
+entraîner la mort ou des blessures graves.
+Concentrez-vous toujours sur la conduite
+en gardant vos yeux et votre esprit sur 
+la route. Lisez votre mode d'emploi.","No prestar atención mientras se conduce
+puede producir heridas graves y la 
+muerte. Concéntrese siempre en la 
+conducción y mantenga la vista siempre 
+en la carretera. Lea su manual de usuario.","Non prestare attenzione mentre si 
+viaggia può causare lesioni gravi o 
+decesso. Rimanete sempre concentrati 
+sulla strada. 
+Leggere il Manuale utente.","Unachtsamkeit während des Fahrens kann 
+zu Verletzungen oder Tod führen.
+Konzentrieren Sie sich während der Fahrt 
+immer auf die Straße.
+Lesen Sie Ihr Benutzerhandbuch.
+Akzeptiert","未專心騎乘車輛時，將可能導致重傷或死亡。
+騎乘中請務必保持專注，並隨時留意周遭之
+交通狀況。
+請詳閱車主手冊。","骑行时不注意安全可能会导致死亡或重伤。
+请随时注意道路状况和周围的环境，
+专心骑行。
+请参阅《用户手册》。","Η έλλ. προσοχ. στην οδήγ. μπορεί 
+να οδηγ. σε θάνατο ή σοβ. τραυμ. 
+Να είστε πάντα συγκεν. στην οδήγ., 
+με τα μάτια και το μυαλό στον 
+δρόμ. Διαβ. τις Οδηγ. χρήσ. κατόχ.
+","Huomiokyvyn herpaantuminen ajon
+aikana voi johtaa kuolemaan tai
+vakavaan loukkaantumiseen.
+Keskity aina ajamiseen ja pidä
+katse tiessä. Lue käyttöohje.","गाड़ी चलाते समय ध्यान न देने के कारण
+मौत हो सकती है या गंभीर चोट लग सकती
+है। गाड़ी चलाते समय अपने आँखों और
+दिमाग़ को हमेशा सड़क पर लगाएं। 
+मालिक का मैन्युअल लिखें।","Kelalaian memperhatikan dapat
+sebabkan kematian atau cedera.
+konsentrasi dengan mengarahkan 
+mata dan pikiran ke jalan.
+Baca Panduan Pemilik.","Nieuważna jazda prowadzi do
+poważnych urazów/śmierci.
+Koncentruj się na jeździe,
+skupiając zmysły na drodze.
+Przeczytaj instrukcję.","Não prestar atenção ao dirigir
+pode resultar em morte ou
+lesões. Foque na direção
+mantendo os olhos na estrada. 
+Leia o manual do proprietário.","การไม่ใส่ใจในขณะขับขี่อาจทำ
+ให้เสียชีวิตหรือบาดเจ็บสาหัสได้
+มีสมาธิในการขับขี่เสมอโดยควร
+มองและใส่ใจกับท้องถนนตลอดเวลา
+อ่านคู่มือสำหรับเจ้าของ","Nếu không chú ý khi đi xe có thể dẫn
+đến tử vong hoặc bị thương nặng.
+Luôn tập trung vào việc lái xe bằng
+cách chú tâm trên đường đi.
+Đọc Hướng dẫn sử dụng cho chủ xe.","탑승 중 부주의는 심각한 부상 또는
+사망까지 이어질 수 있습니다.
+탑승 중에는 항상 도로를 주시하고
+주행에 집중하십시오. 
+사용자 매뉴얼을 숙지하십시오.","Gagal memberi tumpuan semasa
+menunggang boleh mengakibatkan 
+kematian atau kecederaan serius. 
+Ketika memandu, sentiasa beri
+tumpuan pandangan dan fikiran 
+di jalan raya. Baca Panduan Pemilik."
+TOP01_ACCEPT,ACCEPT,確認,ACCEPTER,ACEPTAR,ACCETTA,Akzeptiert,知悉並同意,接受,ΑΠΟΔΟΧΗ,HYVÄKSY,स्वीकार करें,TERIMA,AKCEPTUJ,ACEITAR,ยอมรับ,CHẤP NHẬN,수락,TERIMA
+BRT01_TFT_DISPLAY,TFT display,TFTディスプレイ,Écran TFT,Pantalla TFT,Display TFT,TFT Display,TFT 顯示器,TFT 显示器,Οθόνη TFT,TFT-näyttö,TFT डिस्प्ले,Layar TFT,Wyświetlacz TFT,Tela TFT,จอแสดงผล TFT,Màn hình TFT,TFT 표시,Paparan TFT
+BRT01_SPEED_METER,Speed meter,スピードメーター,Compteur de vitesse,Velocímetro,Tachimetro,Tachometer,車速表,速度表,Ταχύμετρο,Nopeusmittari,स्पीड मीटर,Pengukur kecepatan,Prędkościomierz,Velocímetro,เครื่องวัดความเร็ว,Công tơ mét,속도계,Meter Kelajuan
+BRT02_MAX,Max.,,,,,,,,,,,,,,,,,
+BRT02_MIN,Min.,,,,,,,,,,,,,,,,,
+CLK01_AUTO_ADJUSTMENT,Auto Adjustment,自動調整,Ajustement auto.,Ajuste automático,Regolazione automatica,Auto-Anpassung,自動調整,自动调节,Αυτόματη προσαρμογή,Automaattinen säätö,स्वतः समायोजन,Penyesuaian Otomatis,Regulacja automatyczna,Ajuste automático,การปรับอัตโนมัติ,Điều chỉnh tự động,자동 조정,Pelarasan Auto
+CLK01_MANUAL_ADJUSTMENT,Manual Adjustment,手動調整,Ajustement manuel,Ajuste manual,Regolazione manuale,Manuelle Anpassung,手動調整,手动调节,Χειροκίνητη προσαρμογή,Manuaalinen säätö,मैन्युअल समायोजन,Penyesuaian Manual,Regulacja ręczna,Ajuste manual,การปรับด้วยตนเอง,Điều chỉnh thủ công,수동 조정,Pelarasan Manual
+CLK02_DAY,Day,,,,,,,,,,,,,,,,,
+CLK02_MONTH,Month,,,,,,,,,,,,,,,,,
+CLK02_YEAR,Year,,,,,,,,,,,,,,,,,
+CLK02_AM,AM,,,,,,,,,,,,,,,,,
+CLK02_PM,PM,,,,,,,,,,,,,,,,,
+CLK02_HOUR,Hour,,,,,,,,,,,,,,,,,
+CLK02_MINUTE,Min.,,,,,,,,,,,,,,,,,
+CLK03_SET_CLOCK,Set Clock?,設定しますか？,Régler l'horloge ?,¿Configurar reloj?,Impostare l’orologio?,Uhr einstellen?,設定時鐘？,设置时钟?,Ρύθμιση ρολογιού;,Asetetaanko kello?,घड़ी सेट करें?,Setel Jam?,Ustawić zegar?,Definir relógio?,ตั้งนาฬิกาหรือไม่,Đặt đồng hồ?,시간을 설정할까요?,Tetapkan waktu?
+GPW01_GRIP_WARMER,Grip Warmer,グリップウォーマー,Poignées chauffantes,Calentador de agarre,Scalda manopole,Beheizbare Griffe,把手電熱器,把手加热器,Θερμαντήρας χειρολαβής,Kahvanlämmitin,ग्रिप वार्मर,Grip Warmer,Ocieplacz chwytów,Aquecedor de manopla,เครื่องอุ่นกริป,Bộ làm ấm tay cầm,손잡이 온열,Cengkaman Panas
+HOM11_X1000R_MIN,x1000r/min,,,,,,,,,,,,,,,,,
+HOM12_AVG,AVG,,,,,,,,,,,,,,,,,
+HOM12_AVG_fuel,AVG FUEL,,,,,,,,,,,,,,,,,
+HOM13_SPEED_LIMIT,SPEED LIMIT,制限速度,LIMITE VIT.,LÍM. VELOC.,LIM. VEL.,TEMPOLIMIT,速限,限速,ΟΡΙΟ ΤΑΧΥΤΗΤΑΣ,NOPEUSRAJ.,गति सीमा,BATAS KECEPATAN,LIMIT PRĘD.,LIMITE VEL.,จำกัดความเร็ว,T.ĐỘ G.HẠN,속도 제한,HAD LAJU
+HOM03_AVG_SPEED,AVG SPEED,,,,,,,,,,,,,,,,,
+HOM03_AVG_FUEL,AVG FUEL,,,,,,,,,,,,,,,,,
+HOM03_INST_FUEL,INST FUEL,,,,,,,,,,,,,,,,,
+HOM03_TRIP_TIME,TRIP TIME,,,,,,,,,,,,,,,,,
+HOM03_RANGE,RANGE,,,,,,,,,,,,,,,,,
+HOM03_FUEL_CONSUMPTION,FUEL CONS,,,,,,,,,,,,,,,,,
+HOM03_AIR,AIR,,,,,,,,,,,,,,,,,
+HOM03_COOLANT,COOLANT,,,,,,,,,,,,,,,,,
+HOM03_BATTERY,BATTERY,,,,,,,,,,,,,,,,,
+HOM03_FRONT_R,FRONT (R),,,,,,,,,,,,,,,,,
+HOM03_FRONT_L,FRONT (L),,,,,,,,,,,,,,,,,
+HOM03_FRONT,FRONT,,,,,,,,,,,,,,,,,
+HOM03_REAR,REAR,,,,,,,,,,,,,,,,,
+HOM03_CRUISE,CRUISE,,,,,,,,,,,,,,,,,
+INF01_TACHO_VISUALIZER,Tacho visualizer,タコビジュアライザー,Indicateur de tours,Visualizador tacómetro,Vis. tachimetro,Tacho-Anzeiger,圖形化轉速表,转速可视设备,Απεικόνιση ταχογράφου,Kierroslukunäyttö,Tacho विजुअलाइज़र,Visualizer Tacho,Wizualizator obrotów,Visualizador do tacógrafo,เครื่องแสดงความเร็วรอบ,Trình h.thị t.độ v.quay,Tacho 표시기,Penampak Tacho
+INF01_ECHO_VISUALIZER,ECO visualizer,エコビジュアライザー,Indicateur ECO,Visualizador ECO,Visualizzatore ECO,ECO-Anzeiger,圖形化 ECO 表,ECO 可视设备,Απεικόνιση ECO,ECO-näyttö,ECO विजुअलाइज़र,Visualizer ECO,Wizualizator ECO,Visualizador do ECO,เครื่องแสดงภาพ ECO,Trình hiển thị ECO,ECO 표시기,Penampak ECO
+INF01_SPEED_VISUALIZER,Speed visualizer,スピードビジュアライザー,Indicateur de vitesse,Visualizador velocidad,Visualizzatore velocità,Geschw.-Anzeiger,圖形化速度表,速度可视设备,Απεικόνιση ταχύτητας,Nopeusnäyttö,गति विजुअलाइज़र,Visualizer kecepatan,Wizualizator prędkości,Velocímetro,เครื่องแสดงความเร็ว,Trình hiển thị ECO,속도 표시기,Penampak Kelajuan
+INF26_ODO,ODO,,,,,,,,,,,,,,,,,
+INF26_TRIP_1,TRIP 1,,,,,,,,,,,,,,,,,
+INF26_TRIP_2,TRIP 2,,,,,,,,,,,,,,,,,
+INF26_TRIP_F,TRIP F,,,,,,,,,,,,,,,,,
+LNC_METER_DISPLAY,Meter display,メータ表示,Affichage des compteurs,Pantalla velocímetro,Display contachilometri,Zähleranzeige,儀表顯示,仪表显示器,Οθόνη μετρητή,Mittarinäyttö,मीटर डिस्प्ले,Tampilan meter,Licznik,Visor do medidor,จอแสดงผลมิเตอร์,Hiển thị đồng hồ,미터 표시,Paparan Meter
+LNC_ODO_TRIP,ODO/TRIP,,,,,,,,,,,,,,,,,
+LNC_MUSIC,Music,音楽,Musique,Música,Musica,Musik,音樂,音乐,Μουσική,Musiikki,संगीत,Musik,Muzyka,Música,ดนตรี,Âm nhạc,음악,Muzik
+LNC_PHONE,Phone,電話,Téléphone,Teléfono,Telefono,Telefon,電話,手机,Τηλέφωνο,Puhelin,फ़ोन,Telepon,Telefon,Telefone,โทรศัพท์,Điện thoại,전화,Telefon
+LNC_NAVIGATION,Navigation,ナビゲーション,Navigation,Navegación,Navigazione,Navigation,導航,导航,Πλοήγηση,Navigointi,नेविगेशन,Navigasi,Nawigacja,Navegação,การนำทาง,Điều hướng,내비게이션,Navigasi
+LNC_WEATHER,Weather,天気,Météo,Tiempo,Tempo,Wetter,天氣,天气,Καιρός,Sää,मौसम,Cuaca,Pogoda,Tempo,สภาพอากาศ,Thời tiết,날씨,Cuaca
+LNC_NOTIFICATION,Notification,通知,Notification,Notificación,Notifica,Benachrichtigung,通知,通知,Ειδοποίηση,Ilmoitus,अधिसूचना,Notifikasi,Powiadomienie,Notificação,การแจ้งเตือน,Thông báo,알림,Notifikasi
+LNC_SEAT_HEATER,Seat Heater,シートヒーター,Selle chauffante,Calentador asiento,Scalda sedile,Sitzheizung,座椅電熱器,座椅加热器,Θερμαντήρας σέλας,Istuinlämmitin,सीट हीटर,Pemanas Kursi,Podgrzewacz siodełka,Aquecedor de assento,เครื่องอุ่นเบาะนั่ง,Bộ sưởi ghế,시트 온열,Pemanas Tempat Duduk
+LNC_SETTINGS,Settings,設定,Paramètres,Ajustes,Impostazioni,Einstellungen,設定,设置,Ρυθμίσεις,Asetukset,सेटिंग्स,Setelan,Ustawienia,Configurações,การตั้งค่า,Cài đặt,설정,Tetapan
+MED02_DEV_UNAVAILABLE,"Media device 
+unavailable",利用できません。,"Media device 
+unavailable",Dispositivo no disponible,Dispositivo media non disponibile,Wiedergabegerät nicht verfügbar,媒體裝置無法使用,媒体设备不可用,"Συσκευή μέσων 
+μη διαθέσιμη","Medialaite 
+ei käytettävissä","मीडिया डिवाइस
+अनुपलब्ध","Perangkat media
+tidak tersedia","Urządzenie multi-
+medialne niedostępne","Dispositivo de mídia 
+indisponível","อุปกรณ์สื่อ
+ไม่พร้อมใช้งาน","Không có thiết bị
+phát phương tiện","미디어 장치
+이용 불가","Alat media
+tidak tersedia"
+MNT01_OIL,OIL,,,,,,,,,,,,,,,,,
+MNT01_V_BELT,V-BELT,,,,,,,,,,,,,,,,,
+MNT01_FREE1,FREE 1,,,,,,,,,,,,,,,,,
+MNT01_FREE2,FREE 2,,,,,,,,,,,,,,,,,
+NAV01_CHECK_FIXED,Fixed Camera,,,,,,,,,,,,,,,,,
+NAV01_CHECK_TEMPORARY,Temporary Camera,,,,,,,,,,,,,,,,,
+NAV01_MOBILE,Mobile Speed Camera,,,,,,,,,,,,,,,,,
+NAV01_AVERAGE,Average Speed Camera,,,,,,,,,,,,,,,,,
+NAV01_VARIABLE,Variable Speed Camera,,,,,,,,,,,,,,,,,
+NAV01_RED_LIGHT,Red Light Camera,,,,,,,,,,,,,,,,,
+NAV01_USER,Mobile Camera,,,,,,,,,,,,,,,,,
+NAV01_MOBILE_ZONE,Mobile Speed Camera,,,,,,,,,,,,,,,,,
+NAV01_DANGEROUS_ZONE,Danger Zone,,,,,,,,,,,,,,,,,
+NAV01_RISK_ZONE,Risk Zone,,,,,,,,,,,,,,,,,
+NAV01_UNKNOWN,Speed Alert,,,,,,,,,,,,,,,,,
+NAV01_STATE_BORDER,State Border,,,,,,,,,,,,,,,,,
+NAV01_COUNTRY_BORDER,Country Border,,,,,,,,,,,,,,,,,
+NAV01_SCHOOL_ZONE,School Zone,,,,,,,,,,,,,,,,,
+NAV01_NO_DESTINATION,No possible route to this destination.,,,,,,,,,,,,,,,,,
+NAV06_STOP_NAVIGATION,Stop navigation,案内中止,Arrêter la navigation,Detener navegación,Ferma navigazione,Navigation stoppen,停止導航,停止导航,Διακοπή πλοήγησης,Lopeta navigointi,नेविगेशन रोकें,Hentikan navigasi,Zatrzymaj nawigację,Parar navegação,หยุดการนำทาง,Dừng điều hướng,내비게이션 중지,Henti navigasi
+NAV06_SKIP_NEXT_STOP,Skip next stop,次の経由地をスキップ,Ignorer le prochain arrêt,Omitir la próxima parada,Salta prossima tappa,Nächsten Stopp überspringen,跳過下一站,跳过下一站,Παράλειψη επόμενης στάσης,Ohita seuraava pysähdys,अगला स्टॉप छोड़ें,Lewati perhentian berikutnya,Pomiń następny krok,Pular próxima parada,ข้ามจุดจอดถัดไป,Bỏ qua điểm dừng tiếp theo,다음 종착지 건너뛰기,Langkau hentian seterusnya
+NAV06_GO_HOME,Go home,自宅,Retourner à la maison,Ir a casa,Vai a casa,Nach Hause fahren,住家,回家,Μετάβαση στο σπίτι,Mene kotiin,घर जाएं,Ke rumah,Jedź do domu,Ir para casa,ไปบ้าน,Về nhà,집으로,Pulang ke rumah
+NAV06_GO_TO_WORK,Go to work,職場,Aller au travail,Ir al trabajo,Vai al lavoro,Zur Arbeit fahren,公司,上班,Μετάβαση στη δουλειά,Mene työpaikalle,काम पर जाएं,Pergi bekerja,Jedź do pracy,Ir para o trabalho,ไปทำงาน,Đi làm,직장으로,Pergi kerja
+NAV06_FAVORITES,Favorites,お気に入り,Favoris,Favoritos,Preferiti,Favoriten,我的最愛,收藏夹,Αγαπημένα,Suosikit,पसंदीदा,Favorit,Ulubione,Favoritos,โปรดปราน,Yêu thích,즐겨찾기,Kegemaran
+NAV06_NEARBY_GAS_STATIONS,Nearby Gas stations,近くのガソリンスタンド,Stations essence à proximité,Gasolineras cercanas,Stazioni di servizio vicine,Tankstellen in der Nähe,附近的加油站,附近的加油站,Κοντινά πρατήρια καυσίμων,Läheiset huoltoasemat,नज़दीकी गैस स्टेशन,SPBU terdekat,Pobliskie stacje paliw,Postos gas. mais próximos,สถานีบริการน้ำมันใกล้เคียง,Trạm xăng gần đó,근처 주유소,Berdekatan Stesen Minyak
+NAV06_CHANGE_VIEW,Change view,表示切替,Changer l'affichage,Cambiar vista,Cambia vista,Ansicht ändern,變更視圖,更改视图,Αλλαγή προβολής,Vaihda näkymä,व्यू बदलें,Ubah tampilan,Zmień widok,Mudar visualização,เปลี่ยนมุมมอง,Thay đổi chế độ xem,뷰 전환,Tukar paparan
+NAV08_DEFAULT_VIEW,Default view,標準表示,Affichage par défaut,Vista predeterminada,Vista di default,Standardansicht,預設視圖,默认视图,Προεπιλεγμένη προβολή,Oletusnäkymä,डिफ़ॉल्ट व्यू,Tampilan default,Widok domyślny,Visualização padrão,มุมมองเริ่มต้น,Chế độ xem mặc định,기본 뷰,Paparan lalai
+NAV08_TURN_BY_TURN,Turn-by-turn,ターンバイターン表示,Virage après virage,Indicaciones paso a paso,Navi. passo a passo,Abbiegehinweise,語音導航,逐向导航,Στροφή προς στροφή,Reittiohjeet,टर्न-बाय-टर्न,Belokan demi belokan,Po zakrętach,Curva a curva,เลี้ยวต่อเลี้ยว,Lần lượt,턴-바이-턴,Pusingan demi pusingan
+NAV08_TURN_LIST,Turn list,ターンリスト表示,Liste des virages,Listado de indicaciones,Elenco svolte,Liste Abbiegungen,導航點清單,转向列表,Λίστα στροφών,Käännösluettelo,टर्न लिस्ट,Daftar putar,Lista zakrętów,Lista de viradas,เปิดรายการ,Chuyển danh sách,턴 목록,Senarai paparan
+NAV11_NEW_ROUTE,Start a new route,,,,,,,,,,,,,,,,,
+NAV11_NEXT_STOP,Add as next stop,,,,,,,,,,,,,,,,,
+NAV11_LAST_STOP,Add as last stop,,,,,,,,,,,,,,,,,
+OPN02_FACTORY_MODE,Factory mode,,,,,,,,,,,,,,,,,
+OPN02_ENTER_TWICE,"Press ""ENTER"" button twice.",,,,,,,,,,,,,,,,,
+POP02_CONNECTION_ERR,Connection Error,接続エラー,Erreur de connexion,Error de conexión,Errore di connessione,Verbindungsfehler,連線錯誤,连接错误,Σφάλμα σύνδεσης,Yhteysvirhe,कनेक्शन त्रुटि,Gangguan Koneksi,Błąd połączenia,Erro de conexão,ข้อผิดพลาดในการเชื่อมต่อ,Lỗi kết nối,연결 오류,Ralat Sambungan
+POP02_PLEASE_CHECK,Please Check,確認してください。,Merci de vérifier.,Eche un vistazo.,Controllare.,Bitte überprüfen.,請確認。,请检查。,Ελέγξτε,Tarkista,कृपया जांचें,Silakan Periksa,Sprawdź,Verifique,โปรดตรวจสอบ,Vui lòng kiểm tra,점검해주세요,Sila Periksa
+POP02_DETAILS,Details,詳細,Détails,Detalles,Dettagli,Details,詳細資料,详细信息,Λεπτομέρειες,Tiedot,विवरण,Perincian,Szczegóły,Detalhes,รายละเอียด,Chi tiết,상세 정보,Perincian
+POP03_NO_HOME_LOCATION,Home location is not set.,自宅が設定されていません。,"La position de votre maison n'a pas été
+paramétrée.",Ubicación de casa no configurada.,La posizione della casa non è impostata.,Der Heimatort ist nicht eingestellt.,未設定住家地點。,未设置家的位置。,Η τοποθεσία του σπιτιού δεν έχει οριστεί.,Kodin sijaintia ei ole asetettu.,घर का लोकेशन सेट नहीं है,Lokasi rumah tidak disetel.,Nie ustawiono lokalizacji domowej.,A localização de casa não está definida.,ไม่ได้ตั้งค่าตำแหน่งบ้าน,Chưa đặt vị trí nhà.,집 위치가 설정되지 않았습니다.,Lokasi rumah tidak ditetapkan.
+POP07_TROUBLE_SHOOTING,Connection troubleshooting,こんなときは,Dépannage de connexion,Solucionador de problemas,Risol. problemi connessione,Behebung von Verbindungsfehlern,連線疑難排解,连接故障排除,Αντιμετώπιση προβλημάτων σύνδεσης,Yhteyden vianmääritys,कनेक्शन का समस्या समाधान,Pemecahan masalah koneksi,Przywracanie połączenia,Solução de problemas de conexão,การแก้ไขปัญหาการเชื่อมต่อ,Khắc phục sự cố kết nối,연결 문제 해결,Mengesan kerosakan sambungan
+POP07_UNLOCK_PHONE,Unlock smartphone.,"スマートフォンのロックを解除
+してください。",Déverrouillez le smartphone.,Desbloquee el teléfono.,Sblocca lo smartphone.,Entsperren Sie das Smartphone.,將智慧型手機解除鎖定。,解锁智能手机。,Ξεκλείδωμα smartphone.,Avaa älypuhelimen lukitus.,स्मार्टफ़ोन अनलॉक करें।,Buka kunci ponsel pintar.,Odblokuj smartfona.,Desbloquear smartphone.,ปลดล็อกสมาร์ทโฟน,Mở khóa điện thoại thông minh.,스마트폰 잠금을 해제하세요.,Buka kunci telefon pintar.
+POP07_TURN_ON_BT,Turn ON smartphone Bluetooth.,"スマートフォンのBluetoothをONに
+してください。",Activez le Bluetooth sur le smartphone.,Active el Bluetooth del teléfono.,"Attiva il Bluetooth dello
+smartphone.","Schalten Sie das Bluetooth des
+Smartphones ein.",開啟智慧型手機的 Bluetooth。,开启智能手机蓝牙。,"Ενεργοποιήστε το Bluetooth στο
+smartphone.",Laita älypuhelimen Bluetooth PÄÄLLE.,स्मार्टफ़ोन ब्लूटूथ को चालू करें।,"NYALAKAN Bluetooth ponsel 
+pintar.",Włącz Bluetooth na smartfonie.,ATIVE o Bluetooth do smartphone.,เปิดบลูทูธสมาร์ทโฟน,"BẬT Bluetooth của điện thoại
+thông minh.",스마트폰에서 Bluetooth를 활성화하세요.,HIDUPKAN Bluetooth telefon pintar.
+POP07_LAUNCH_APP,Launch the application.,Appを起動してください。,Lancez l'appli.,Abra la aplicación.,Avviare l'applicazione.,App starten.,啟動應用程式。,启动应用程序。,Εκκινήστε την εφαρμογή.,Käynnistä sovellus.,एप्लीकेशन शुरू करें।,Luncurkan aplikasinya.,Uruchom aplikację.,Inicie o aplicativo.,เปิดแอปพลิเคชัน,Khởi chạy ứng dụng.,애플리케이션을 실행하세요.,Lancarkan aplikasi.
 POP09_CONNECTION_FAILED,"Connection failed.
 Check Bluetooth connection settings.
-Check smartphone reception.",,,,,,,
+Check smartphone reception.","接続に失敗しました。
+Bluetoothの接続を確認してください。
+スマートフォンの電波状況を確認してください。","Échec de connexion.
+Vérifiez les paramètres de connexion
+Bluetooth.
+Vérifiez l'état du réseau du smartphone.","Conexión fallida.
+Verifique los ajustes de la conexión
+Bluetooth.
+Verifique la recepción del teléfono.","Connessione fallita.
+Controlla le impostazioni di connessione
+Bluetooth.
+Controlla la ricezione dello smartphone.","Verbindung fehlgeschlagen.
+Überprüfen Sie die Bluetooth
+-Verbindungseinstellungen.
+Überprüfen Sie den Smartphone
+-Empfang.","連線失敗。
+請檢查 Bluetooth 連線設定。
+請確認智慧型手機的收訊狀態。","连接失败。
+检查蓝牙连接设置。
+检查智能手机信号接收效果。","Η σύνδεση απέτυχε.
+Ελέγξτε τις ρυθμίσεις συνδεσιμότητας
+Bluetooth.
+Ελέγξτε το σήμα του smartphone.","Yhteys epäonnistui.
+Tarkista Bluetooth-yhteysasetukset.
+Tarkista älypuhelimen kuuluvuus.","कनेक्शन असफल।
+ब्लूटूथ कनेक्शन सेटिंग।
+स्मार्टफ़ोन का रिसेप्शन चेक करें.","Koneksi gagal.
+Periksa pengaturan koneksi Bluetooth.
+Periksa penerimaan ponsel pintar.","Połączenie nieudane.
+Sprawdź ustawienia połączenia
+Bluetooth.
+Sprawdź odbieranie na smartfonie.","Conexão com falha.
+Verifique as configurações de conexão
+Bluetooth.
+Verifique a recepção do smartphone.","การเชื่อมต่อไม่สำเร็จ
+ตรวจสอบการตั้งค่าการเชื่อมต่อบลูทูธ
+ตรวจสอบการรับสมาร์ทโฟน","Kết nối thất bại.
+Kiểm tra cài đặt kết nối Bluetooth.
+Kiểm tra tiếp nhận điện thoại thông minh.","연결을 실패했습니다.
+Bluetooth 연결 설정을 점검하세요.
+스마트폰에서 메시지를 확인하세요.","Sambungan gagal.
+Periksa tetapan sambungan Bluetooth.
+Periksa penerimaan telefon pintar."
+POP13_NO_OFFICE_LOCATION,Work location is not set.,職場が設定されていません。,"La position de votre lieu de travail n'a pas
+été paramétrée.",Ubicación de trabajo no configurada.,"La posizione del luogo di lavoro non è
+impostata.",Der Arbeitsort ist nicht festgelegt.,未設定公司地點。,未设置公司的位置。,Η τοποθεσία της δουλειάς δεν έχει οριστεί.,Työpaikan sijaintia ei ole asetettu.,काम का लोकेशन सेट नहीं है।,Lokasi kerja belum ditetapkan.,Nie ustawiono miejsca pracy.,A localização do trabalho não está definida.,ไม่ได้ตั้งสถานที่ทำงาน,Chưa đặt vị trí làm việc.,직장 위치가 설정되지 않았습니다.,Lokasi tempat kerja tidak ditetapkan.
 POP17_APP_INIT_SETTING_FAILED,"Initial settings incomplete.
-Follow the instructions of LC Navi on your phone to complete the initial settings.",,,,,,,
-POP18_POI_LOADING_FAILED,Cannot retrieve data from your phone. Try again later.,,,,,,,
+Follow the instructions of [Navigation app name] on your phone to complete the initial settings.","初期設定が完了していません。
+[Navigation app name]の説明に従い、
+初期設定を完了してください。","Paramètres de base incomplets.
+Suivez les instructions de
+[Navigation app name] sur votre
+téléphone pour terminer les paramètres
+de base.","Configuración inicial incompleta.
+Siga las instrucciones de [Navigation app
+name] en su teléfono para completar la
+configuración inicial.","Impostazioni iniziali non completate.
+Segui le istruzioni di [Navigation app 
+name] sul tuo telefono per completare 
+le impostazioni iniziali.","Initial settings incomplete.
+Folgen Sie den Anweisungen von
+[Navigation app name] auf Ihrem Telefon,
+um die Grundeinstellungen abzuschließen.","未完成初始化設定。
+請遵照手機上的 [Navigation app name]
+指示，以完成初始化設定。","初始设置不完整。
+请按照手机上 [Navigation app name] 
+的说明完成初始设置。","Οι αρχικές ρυθμίσεις είναι ελλιπείς.
+Ακολουθήστε της οδηγίες της εφαρμογής
+[Navigation app name] στο τηλέφωνό
+σας για να ολοκληρώσετε τις αρχικές
+ρυθμίσεις.","Alkuasetukset ovat puutteelliset.
+Suorita alkuasetukset puhelimen
+[Navigation app name] -sovelluksen
+ohjeiden mukaisesti.","आरंभिक सेटिंग अपूर्ण।
+आरंभिक सेटिंग को पूरा करने के लिए अपने फ़ोन
+पर
+[Navigation app name] के निर्देशों का
+अनुसरण करें।","Pengaturan awal belum selesai.
+Ikuti petunjuk [Navigation app name] di
+ponsel Anda untuk menyelesaikan
+pengaturan awal.","Niekompletne ustawienia początkowe.
+Aby zakończyć ustawianie początkowe,
+postępuj zgodnie z instrukcjami
+aplikacji [Navigation app name] na
+telefonie.","Configurações iniciais incompletas.
+Siga as instruções de [Navigation app
+name] em seu telefone para concluir as
+configurações iniciais.","การตั้งค่าเริ่มต้นไม่เสร็จสมบูรณ์
+ทำตามคำแนะนำของ 
+[Navigation app name]
+ในโทรศัพท์ของคุณเพื่อทำการ
+ตั้งค่าเริ่มต้นให้เสร็จสมบูรณ์","Cài đặt ban đầu chưa hoàn tất.
+Làm theo hướng dẫn ở 
+[Navigation app name] trên điện thoại 
+của bạn để hoàn tất các cài đặt ban
+đầu.","초기 설정이 완료되지 않았습니다.
+스마트폰의 [Navigation app name]
+에 표시된 지시에 따라 초기 설정을
+완료하세요.","Tetapan awal tidak lengkap. Ikuti
+arahan [Navigation app name] di
+telefon anda untuk menyelesaikan
+tetapan awal."
+POP18_POI_LOADING_FAILED,Cannot retrieve data from your phone. Try again later.,,,,,,,,,,,,,,,,,
 POP18_NO_FAVORITE_PLACE,"No favorites.
-Pinned favorites in LC Navi will be shown here.",,,,,,,
-POP18_NO_GAS_STATION,No nearby gas stations.,,,,,,,
-SET01_TRACTION_CONTROL,Traction Control,,,,,,,
-SET01_CONNECTION,Connection,,,,,,,
-SET01_CLOCK,Clock,,,,,,,
-SET01_BRIGHTNESS,Brightness,,,,,,,
-SET01_UNIT,Unit,,,,,,,
-SET01_GRIP_WARMER_SETTINGS,Grip warmer settings,,,,,,,
-SET01_SEAT_HEATER_SETTINGS,Seat heater settings,,,,,,,
-SET01_SYSTEM_INFO,System information,,,,,,,
-SET01_LEGAL_INFO,Legal information,,,,,,,
-SET01_INFO_RESET,Information / Reset,,,,,,,
-SET03_Y_CONNECT_APP_PAIRING,Y-connect App pairing,,,,,,,
-SET04_DISCOVERY_MODE,Discovery mode,,,,,,,
-SET04_PAIRED_DEVICES,Paired devices,,,,,,,
-SET04_BT_AUTO_CONNECT,Bluetooth auto connect,,,,,,,
+Pinned favorites in LC Navi will be shown here.",,,,,,,,,,,,,,,,,
+POP18_NO_GAS_STATION,No nearby gas stations.,,,,,,,,,,,,,,,,,
+SET01_TRACTION_CONTROL,Traction Control,トラクションコントロール,Antipatinage,Control de tracción,Controllo trazione,Traktionskontrolle,循跡控制,牵引力控制,Έλεγχος πρόσφυσης,Luistonesto,ट्रैक्शन कंट्रोल,Kontrol Traksi,Kontrola trakcji,Controle de tração,การควบคุมแรงฉุด,Kiểm soát lực kéo,정지 마찰력 제어,Kawalan Cengkaman
+SET01_CONNECTION,Connection,コネクション,Connexion,Conexión,Connessione,Verbindung,連線,连接,Σύνδεση,Yhteys,कनेक्शन,Sambungan,Połączenie,Conexão,การเชื่อมต่อ,Kết nối,연결,Sambungan
+SET01_CLOCK,Clock,時計,Horloge,Reloj,Orologio,Uhr,時鐘,时钟,Ρολόι,Kello,घड़ी,Jam,Zegar,Relógio,นาฬิกา,Đồng hồ,시계,Jam
+SET01_BRIGHTNESS,Brightness,明るさ,Luminosité,Brillo,Luminosità,Helligkeit,亮度,亮度,Φωτεινότητα,Kirkkaus,चमक,Kecerahan,Jasność,Brilho,ความสว่าง,Độ sáng,밝기,Kecerahan
+SET01_UNIT,Unit,単位,Unité,Unidad,Unità,Einheit,單位,单位,Μονάδα,Yksikkö,इकाई,Unit,Jedn.,Unidade,หน่วย,Đơn vị,단위,Unit
+SET01_GRIP_WARMER_SETTINGS,Grip warmer settings,グリップウォーマー,Param. poignées chauffantes,Ajustes calentador agarre,Impostaz. scalda manopole,Einstellung beheizb. Griffe,把手電熱器設定,把手加热器设置,Ρυθμίσ. θερμαντήρα χειρολαβής,Kahvanlämmitinasetukset,ग्रिप वार्मर सेटिंग्स,Pengaturan grip warmer,Ustaw. ocieplacza chwytów,Config. aquecedor manopla,การตั้งค่าเครื่องอุ่นกริป,Cài đặt bộ làm ấm tay cầm,손잡이 온열 설정,Tetapan cengkaman panas
+SET01_SEAT_HEATER_SETTINGS,Seat heater settings,シートヒータ,Param. selle chauffante,Ajustes calentador asiento,Impostazioni scalda sedile,Einstellungen Sitzheizung,座椅電熱器設定,座椅加热器设置,Ρυθμίσεις θερμαντήρα σέλας,Istuinlämmitinasetukset,सीट हीटर सेटिंग्स,Pengaturan pemanas kursi,Ustaw. podgrzewacza siodełka,Config. aquecedor assento,การตั้งค่าเครื่องทำความร้อนที่นั่ง,Cài đặt bộ sưởi ghế,시트 온열 설정,Tetapan pemanas tempat duduk
+SET01_SYSTEM_INFO,System information,システム情報,Informations sur le système,Información del sistema,Informazioni sistema,Systeminformationen,系統資訊,系统信息,Πληροφορίες συστήματος,Järjestelmätiedot,सिस्टम जानकारी,Informasi Sistem,Informacje o systemie,Informações do sistema,ข้อมูลระบบ,Thông tin hệ thống,시스템 정보,Maklumat sistem
+SET01_LEGAL_INFO,Legal information,法的情報,Informations légales,Información legal,Informazioni legali,Rechtliche Informationen,法律資訊,法律信息,Νομικές πληροφορίες,Oikeudelliset tiedot,क़ानूनी जानकारी,Informasi hukum,Informacje prawne,Informações legais,ข้อมูลทางกฎหมาย,Thông tin pháp lý,법적 정보,Maklumat undang-undang
+SET01_INFO_RESET,Information / Reset,インフォメーション / リセット,Information / Réinitialiser,Información/Reiniciar,Informazioni/Reimposta,Informationen/Zurücksetzen,資訊／重設,信息/重置,Πληροφορίες/Μηδενισμός,Tiedot / Nollaa,जानकारी/दोबारा सेट करें,Informasi/Setel Ulang,Informacje / Reset,Informações / Redefinir,ข้อมูล / รีเซ็ต,Thông tin/Đặt lại,정보 / 초기화,Maklumat/Tetapkan Semula
+SET03_Y_CONNECT_APP_PAIRING,Y-connect App pairing,,,,,,,,,,,,,,,,,
+SET04_DISCOVERY_MODE,Discovery mode,デバイス検出モード,Mode découverte,Modo descubrimiento,Modalità scoperta,Entdeckungsmodus,探索模式,发现模式,Λειτουργία εντοπισμού,Löytämistila,डिस्कवरी मोड,Mode penemuan,Tryb wykrywania,Modo de descoberta,โหมดการค้นพบ,Chế độ khám phá,탐색 모드,Mod penemuan
+SET04_PAIRED_DEVICES,Paired devices,登録済みデバイス,Appareils appairés,Dispositivos emparejados,Dispositivi accoppiati,Gekoppelte Geräte,已配對裝置,配对设备,Συσκευές σε ζεύξη,Laiteparit,जोड़े में डिवाइस,Perangkat yang dipasangkan,Sparowane urządzenia,Dispositivos pareados,อุปกรณ์ที่จับคู่,Các thiết bị được ghép nối,페어링된 장치,Peranti pasangan
+SET04_BT_AUTO_CONNECT,Bluetooth auto connect,Bluetooth自動接続,Conn. Bluetooth auto,Autoconexión Bluetooth,Auto conn. Bluetooth,Bluetooth-Autoverbind.,Bluetooth 自動連線,蓝牙自动连接,Αυτόματη σύνδεση Bluetooth,Autom. Bluetooth-yhteys,ब्लूटूथ ऑटो कनेक्ट,Koneksi oto. Bluetooth,Auto łączenie Bluetooth,Con. Bluetooth aut.,เชื่อมต่อบลูทูธอัตโนมัติ,Tự động kết nối Bluetooth,Bluetooth 자동 연결,Sambungan auto Bluetooth
 SET05_MAX_DEVICES,"Max number of devices reached.
-Do you want to edit paired device list?",,,,,,,
+Do you want to edit paired device list?","登録上限に達しました。
+デバイスリストを編集しますか？","Limite d'appareils atteinte.
+Souhaitez-vous modifier la liste des
+appareils appairés ?","Número máx. de dispositivos alcanzado.
+¿Quiere editar la lista de dispositivos?","Numero massimo di dispositivi raggiunto.
+Vuoi modificare la lista dei dispositivi
+accoppiati?","Maximale Anzahl von Geräten erreicht.
+Möchten Sie die Liste der gekoppelten
+Geräte bearbeiten?","已達裝置數量上限。
+是否要編輯已配對裝置清單？","已达到最大设备数。
+是否要修改配对设备列表?","Συμπληρώθηκε ο μέγιστος αριθμός
+συσκευών.
+Θέλετε να επεξεργαστείτε τη λίστα συσκευών
+σε ζεύξη;","Laitteiden enimmäismäärä saavutettu.
+Haluatko muokata laiteparien luetteloa?","डिवाइस की अधिक्कतम संख्या पहुंची।
+क्या आप जोड़ा लगा डिवाइस की सूची संपादित
+करना चाहते हैं?","Jumlah perangkat maksimum tercapai.
+Apakah Anda ingin mengedit daftar
+perangkat yang dipasangkan?","Maks. liczba osiągalnych urządzeń.
+Edytować listę sparowanych urządzeń?","Número máximo de dispositivos
+alcançados.
+Deseja editar a lista de dispositivos
+pareados?","ถึงจำนวนสูงสุดของอุปกรณ์แล้ว
+คุณต้องการแก้ไขรายการอุปกรณ์
+ที่จับคู่หรือไม่","Đã đạt đến số lượng thiết bị tối đa.
+Bạn có muốn chỉnh sửa danh sách thiết bị
+được ghép nối không?","연결 장치 최대 개수에 도달했습니다.
+페어링된 장치 목록을 편집할까요?","Jumlah maksimum peranti dicapai.
+Adakah anda mahu mengedit senarai
+peranti berpasangan?"
 SET06_DISCOVERABLE,"Now discoverable by other
-Bluetooth devices.",,,,,,,
-SET06_NAME,Name : %s,,,,,,,
-SET06_TIME_LEFT,Time left : ,,,,,,,
-SET07_PAIRING_FAILED,Bluetooth pairing failed.,,,,,,,
+Bluetooth devices.",周辺のデバイスに表示されます。,"Vous êtes à présent détectable par les 
+autres appareils Bluetooth.","Ahora el sistema puede ser detectado 
+por otros dispositivos Bluetooth.","Ora individuabile da altri 
+dispositivi Bluetooth.","Jetzt für andere Bluetooth-Geräte
+sichtbar.","現在可透過其他
+Bluetooth 裝置探索。",现可被其他蓝牙设备所发现。,"Τώρα μπορεί να ανιχνευτεί από άλλες
+συσκευές Bluetooth.","Nyt muiden Bluetooth-laitteiden
+löydettävissä.","अन्य ब्लूटूथ डिवाइस 
+द्वारा अब खोजे जाने योग्य।","Sekarang dapat ditemukan oleh
+perangkat Bluetooth lain.","Wykrywalny przez inne
+urządzenia Bluetooth.","Agora pode ser descoberto por outros
+dispositivos Bluetooth.","ขณะนี้อุปกรณ์บลูทูธ
+อื่น ๆ สามารถค้นพบได้แล้ว","Hiện có thể được người khác tìm thấy
+các thiết bị Bluetooth.","이제 다른 Bluetooth 장치에서도
+탐색 가능합니다.","Kini dapat ditemui oleh
+peranti Bluetooth lain."
+SET06_NAME,Name : %s,名称：%s,Nom :%s,Nombre:%s,Nome:%s,Name:%s,名稱：%s,名称:%s,Όνομα: %s,Nimi: %s,नाम: %s,Nama: %s,Nazwa: %s,Nome : %s,ชื่อ: %s,Tên: %s,이름 : %s,Nama: %s
+SET06_TIME_LEFT,Time left : ,残り時間：,Temps restant : ,Tiempo restante: ,Tempo rimasto: ,Verbleibende Zeit: ,剩餘時間：,剩余时间: ,Χρόνος που απομένει: ,Aikaa jäljellä: ,शेष समय: ,Waktu tersisa: ,Pozostały czas: ,Tempo restante : ,เวลาที่เหลือ: 3:00 น,Thời gian còn lại: 3:00,남은 시간 : 3:00,Masa tinggal: 3:00
+SET07_PAIRING_FAILED,Bluetooth pairing failed.,ペアリングに失敗しました。,Échec de l'appairage Bluetooth.,Emparejamiento de Bluetooth fallido.,Accoppiamento Bluetooth fallito.,"Die Bluetooth-Kopplung ist
+fehlgeschlagen.",Bluetooth 配對失敗。,蓝牙配对失败。,Η ζεύξη Bluetooth απέτυχε.,Bluetooth-parinmuodostus epäonnistui.,ब्लूटूथ पेयरिंग असफल:,Pemasangan Bluetooth gagal.,Parowanie przez Bluetooth nieudane.,Pareamento de Bluetooth com falha.,การจับคู่บลูทูธล้มเหลว,Ghép nối Bluetooth không thành công.,Bluetooth 페어링을 실패했습니다.,Pasangan Bluetooth gagal.
 SET08_PAIR_WITH,"Pair with
-""%s""?",,,,,,,
-SET08_PASSKEY,Passkey:,,,,,,,
+""%s""?","""%s""とペアリングしますか？","Appairer
+à « %s » ?","¿Emparejar con
+""%s""?","Accoppia con
+""%s""?",Mit „%s“ koppeln?,"是否與
+「%s」配對？","与
+“%s”配对?","Ζεύξη με
+""%s"";","Muodostetaanko pari laitteen
+ %s kanssa?","
+""%s"" के साथ जोड़ा लगाएं?","Pasangkan dengan
+""%s""?","Sparować z
+„%s”?","Parear com
+""%s""?","จับคู่กับ
+""%s"" หรือไม่","Ghép nối với
+""%s""?","""%s""에
+페어링할까요?","Pasangkan dengan
+""%s""?"
+SET08_PASSKEY,Passkey:,パスキー：,Clé de vérification :,Clave de acceso:,Chiave d’accesso:,Passkey:,認證碼：,密码: ,Κλειδί πρόσβασης:,Salasana:,पासकुंजी:,Kode sandi:,Kod:,Senha:,รหัสประจำตัว:,Mật khẩu:,암호키:,Kata kunci:
 SET09_BT_CONNECTED,"""%s""
 Bluetooth
-connected.",,,,,,,
+connected.",,,,,,,,,,,,,,,,,
 SET10_CONNECTION_FAILED,"""%s""
 Bluetooth
-connection failed.",,,,,,,
+connection failed.",,,,,,,,,,,,,,,,,
 SET11_NO_LONGER_PAIRED,"""%s"" is no longer paired with the vehicle.
-Please pair it again.",,,,,,,
-SET18_DELETE_PAIRING_RECORD,"Please delete the pairing record on ""%s"", otherwise, you may not be able to reconnect with LinkCard in the future.",,,,,,,
-SET19_DELETE_PAIRING,Delete pairing,,,,,,,
-SET19_CONNECT,Connect,,,,,,,
-SET19_DISCONNECT,Disconnect,,,,,,,
-SET20_COMPLETE_BT_PAIRING_FIRST,You must complete Bluetooth pairing before pairing with the Y-connect app.,,,,,,,
-SET21_BLE_ALREADY_CONNECTED,"""%s"" is now connected. To pair another smartphone with the Y-connect app, connect it via Bluetooth first.",,,,,,,
-SET22_DEVICE_NAME,"Device name:
-",,,,,,,
-SET22_WAIT_APP_CONNECTION,"Waiting for app connection.
-Check the app for instructions.",,,,,,,
-SET23_PAIRING_FAILED,Pairing failed.,,,,,,,
-SET24_CHECK_BT_PAIRING_RECORD,Please check the bluetooth pairing record on your previously paired Smartphone. You may need to delete the unused pairing record.,,,,,,,
-SET25_PIN,PIN,,,,,,,
-SET26_PAIRING_SUCCESSFUL,Pairing successful.,,,,,,,
-SET27_UPDATE_SYSTEM,Update system ?,,,,,,,
-SET28_ESN,Electronic Serial Number,,,,,,,
-SET28_SW_VERSION,Software version,,,,,,,
-SET28_UNIT_ID,Unit ID,,,,,,,
-SET28_SW_UPDATE,Software update,,,,,,,
-SET29_DRIVING_NO_SW_UPDATE,Software update cannot be executed while driving.,,,,,,,
-SET35_LICENSE,3rd party licenses,,,,,,,
-SET38_RESET_TO_FACTORY,Reset LinkCard to factory settings?,,,,,,,
+Please pair it again.",,,,,,,,,,,,,,,,,
+SET18_DELETE_PAIRING_RECORD,"Please delete the pairing record on ""%s"", otherwise, you may not be able to reconnect with LinkCard in the future.",,,,,,,,,,,,,,,,,
+SET19_DELETE_PAIRING,Delete pairing,,,,,,,,,,,,,,,,,
+SET19_CONNECT,Connect,接続,Connecter,Conectar,Connetti,Verbinden,連線,连接,Σύνδεση,Yhdistä,कनेक्ट करें,Hubungkan,Połącz,Conectar,เชื่อมต่อ,Kết nối,연결,Sambung
+SET19_DISCONNECT,Disconnect,切断,Déconnecter,Desconectar,Disconnetti,Trennen,中斷連線,断开连接,Αποσύνδεση,Katkaise,डिसकनेक्ट करें,Putuskan sambungan,Rozłącz,Desconectar,ตัดเชื่อมต่อ,Ngắt kết nối,연결 해제,Putuskan sambungan
+SET20_COMPLETE_BT_PAIRING_FIRST,You must complete Bluetooth pairing before pairing with the Y-connect app.,,,,,,,,,,,,,,,,,
+SET21_BLE_ALREADY_CONNECTED,"""%s"" is now connected. To pair another smartphone with the Y-connect app, connect it via Bluetooth first.",,,,,,,,,,,,,,,,,
+SET22_WAIT_APP_CONNECTION,"%s is connecting.
+Check the Yamaha Motorcycle connect app for instructions.","%sを接続しています。
+Yamaha Motorccycle connect appを
+確認してください",,,,,,,,,,,,,,,,
+SET23_PAIRING_FAILED,Pairing failed.,ペアリングに失敗しました。,Échec de l'appairage.,Emparejamiento fallido.,Accoppiamento fallito.,Kopplung fehlgeschlagen.,配對失敗。,配对失败。,Η ζεύξη απέτυχε.,Parinmuodostus epäonnistui.,पेयरिंग असफल।,Pemasangan gagal.,Parowanie nieudane.,Falha no pareamento.,การจับคู่ล้มเหลว,Ghép nối không thành công.,페어링을 실패했습니다.,Pasangan gagal.
+SET24_CHECK_BT_PAIRING_RECORD,Please check the bluetooth pairing record on your previously paired Smartphone. You may need to delete the unused pairing record.,,,,,,,,,,,,,,,,,
+SET25_PIN,PIN,,,,,,,,,,,,,,,,,
+SET26_PAIRING_SUCCESSFUL,Pairing successful.,ペアリング完了,Association réussie.,Vinculación completada.,Accoppiamento riuscito.,Kopplung erfolgreich.,配對成功。,配对成功。,Η ζεύξη ήταν επιτυχής.,Parinmuodostus onnistui.,पेयरिंग सफल।,Pemasangan berhasil.,Parowanie udane.,Pareamento bem-sucedido.,จับคู่สำเร็จ,Ghép nối thành công.,페어링을 성공했습니다.,Pasangan berjaya.
+SET27_UPDATE_SYSTEM,Update system ?,ソフトウェアを更新しますか？,Mettre le système à jour ?,¿Actualizar sistema?,Aggiornare sistema?,System updaten?,是否要更新系統？,要更新系统吗?,Ενημέρωση συστήματος;,Päivitetäänkö järjestelmä?,सिस्टम अपडेट करें?,Perbarui sistem?,Zaktualizować system?,Atualizar sistema?,อัปเดตระบบหรือไม่,Cập nhật hệ thống?,시스템을 업데이트할까요?,Kemaskini sistem?
+SET28_ESN,Electronic Serial Number,Electronic Serial Number,Numéro de série électronique,Número de serie electrónico,Numero di serie elettronico,Elektronische Seriennummer,電子序號,电子序列号,Ηλεκτρονικός σειριακός αριθμός,Elektroninen sarjanumero,इलेक्ट्रॉनिक क्रम संख्या,Nomor Seri Elektronik,Elektroniczny numer seryjny,Número de série eletrônico,หมายเลขซีเรียลอิเล็กทรอนิกส์,Số sê-ri điện tử,전자 일련 번호,Nombor Siri Elektronik
+SET28_SW_VERSION,Software version,ソフトウェアバージョン,Version du logiciel ,Versión del software,Versione software,Software-Version,軟體版本,软件版本,Έκδοση λογισμικού,Ohjelmistoversio,सॉफ्टवेयर,Versi perangkat lunak,Wersja oprogramowania,Versão do software,เวอร์ชันซอฟต์แวร์,Phiên bản phần mềm,소프트웨어 버전,Versi perisian
+SET28_UNIT_ID,Unit ID,ユニットID,ID de l'unité,ID de unidad,ID unità,Geräte-ID,裝置 ID,单位 ID,Αναγν. μονάδας,Laitetunnus,इकाई ID,ID Unit,ID urządzenia,ID da unidade,ID ชุดอุปกรณ์,ID đơn vị,장치 ID,ID Unit
+SET28_SW_UPDATE,Software update,ソフトウェア更新,Mise à jour du logiciel,Actualización de software,Aggiorn. Software,Software-Update,軟體更新,软件更新,Ενημέρωση λογισμικού,Ohjelmistopäivitys,सॉफ्टवेयर अपडेट,Pembaruan PL,Aktualizacja oprogramowania,Atualização do software,อัปเดตซอฟต์แวร์,Cập nhật phần mềm,소프트웨어 업데이트,Kemas kini perisian.
+SET29_DRIVING_NO_SW_UPDATE,Software update cannot be executed while driving.,運転中、ソフトウェアの更新はできません。,"Les mises à jour de logiciel ne peuvent
+pas être faites en conduisant.","La actualización de software no se puede
+ejecutar mientras se conduce.","L’aggiornamento del software non può
+essere eseguito durante la guida.","Das Software-Update kann nicht während
+der Fahrt durchgeführt werden.",無法在騎車時執行軟體更新。,行驶时无法执行软件更新。,"Η ενημέρωση λογισμικού δεν μπορεί να
+εκτελεστεί κατά την οδήγηση.","Ohjelmistopäivitystä ei voida suorittaa
+ajon aikana.","सॉफ्टवेयर अपडेट ड्राइविंग के दौरान निष्पादित
+नहीं किया जा सकता।","Pembaruan perangkat lunak tidak dapat
+dijalankan saat mengemudi.","Podczas jazdy nie można aktualizować
+oprogramowania.","A atualização do software não pode ser
+executada durante a condução.","ไม่สามารถดำเนินการอัปเดต
+ซอฟต์แวร์ในขณะขับรถได้","Không thể thực hiện cập nhật phần
+mềm khi đang lái xe.","주행 중에 소프트웨어 업데이트를 실행할 수
+없습니다.","Kemas kini perisian tidak dapat
+dilaksanakan semasa memandu."
+SET35_LICENSE,3rd party licenses,サードパーティライセンス,Licence d'un tiers,Licencias de terceros,Licenze di terze parti,Lizenzen von Drittanbietern,第三方授權,第三方许可证,Άδειες χρήσης τρίτων μερών,Kolmannen osapuolen lisenssit,थर्ड पार्टी लाइसेंस,Lisensi pihak ketiga,Licencje innych firm,Licenças de terceiros,ใบอนุญาตของบุคคลที่สาม,Giấy phép của bên thứ 3,제3자 라이선스,Lesen pihak ketiga
+SET38_RESET_TO_FACTORY,Reset LinkCard to factory settings?,LinkCardを工場出荷状態にリセットしますか？,Restaurer LinkCard à l'état d'usine ?,"¿Reiniciar LinkCard a la configuración de
+fábrica?","Reimposta LinkCard alle impostazioni di
+fabbrica?","LinkCard auf Werkseinstellungen
+zurücksetzen?",將 LinkCard 重設為原廠設定？,将 LinkCard 重置为出厂设置?,"Επαναφορά LinkCard στις εργοστασιακές
+ρυθμίσεις;",Palauta LinkCard tehdasasetuksiin?,फैक्ट्री सेटिंग में LinkCard दोबारा सेट करें?,"Setel ulang LinkCard ke pengaturan
+pabrik?","Zresetować LinkCard do ustawień
+fabrycznych?","Redefinir LinkCard para as configurações
+de fábrica?","รีเซ็ต LinkCard เป็นการตั้งค่าจาก
+โรงงานหรือไม่",Đặt lại LinkCard về cài đặt gốc?,LinkCard를 초기 설정으로 초기화할까요?,"Tetapkan semula LinkCard kepada
+tetapan kilang?"
 SET39_DELETE_PAIRING,"Please delete the pairing record on the smartphones.
-Otherwise, you may not be able to reconnect with LinkCard in the future.",,,,,,,
-SET40_CANNOT_EXECUTE,Cannot execute while driving.,,,,,,,
-SET42_RESET_COMPLETE,Reset complete.,,,,,,,
-SET43_TRIP_MILEAGE_RESET,Trip mileage reset,,,,,,,
-SET43_MAINTENANCE_RESET,Maintenance reset,,,,,,,
-SET43_VEHICLE_INFO,Vehicle info.,,,,,,,
-SET43_ALL_RESET,All reset,,,,,,,
-TCS01_TCS,TCS,,,,,,,
-UNT01_UNIT_MILEAGE,Mileage,,,,,,,
-UNT01_UNIT_FUEL,Fuel,,,,,,,
-UNT01_UNIT_PRESSURE,Pressure,,,,,,,
-UNT01_UNIT_TEMPERATURE,Temperature,,,,,,,
-UNT02_UNIT_MILEAGE_KILOMETER,km,,,,,,,
-UNT02_UNIT_MILEAGE_MILE,mile,,,,,,,
-UNT03_UNIT_FUEL_KM_PER_LITER,km/L,,,,,,,
-UNT03_UNIT_FUEL_LITER_PER_HUNDRED_KM,L/100km,,,,,,,
-UNT03_UNIT_FUEL_MILE_PER_GALLON,MPG,,,,,,,
-UNT04_UNIT_PRESSURE_KPA,kPa,,,,,,,
-UNT04_UNIT_PRESSURE_PSI,psi,,,,,,,
-UNT04_UNIT_PRESSURE_KGF,kgf/cm²,,,,,,,
-UNT05_UNIT_TEMPERATURE_C,℃,,,,,,,
-UNT05_UNIT_TEMPERATURE_F,℉,,,,,,,
-WSC01_WIND_SCREEN,Wind Screen,,,,,,,
+Otherwise, you may not be able to reconnect with LinkCard in the future.","スマートフォンからペアリング情報を削除
+してください。","Veuillez supprimer l'historique
+d'appairage des smartphones.
+Cela pourrait causer l'impossibilité de
+vous reconnecter à LinkCard à l’avenir.","Elimine el registro de emparejamiento en
+los teléfonos.
+O de lo contrario, es posible que no
+pueda volver a conectarse con LinkCard
+en el futuro.","Elimina i dati di accoppiamento sullo
+smartphone.
+In caso contrario, potresti non essere in
+grado di riconnetterti con LinkCard in
+futuro.","Bitte löschen Sie den Kopplungsdatensatz
+auf den Smartphones.
+Ansonsten können Sie sich in Zukunft
+möglicherweise nicht mehr mit LinkCard
+verbinden.","請刪除智慧型手機的配對紀錄，
+否則之後將無法重新連線至
+LinkCard。","请删除智能手机上的配对记录。
+否则，以后可能无法重新连接
+LinkCard。","Διαγράψτε την εγγραφή ζεύξης στα
+smartphone.
+Διαφορετικά, μπορεί να μην μπορείτε να
+επανασυνδεθείτε με τη LinkCard στο
+μέλλον.","Poista parinmuodostustietue
+älypuhelimista. Muuten yhteyden
+muodostaminen LinkCardiin ei ehkä
+myöhemmin onnistu uudelleen.","कृपया स्मार्टफोन पर पेयरिंग रिकॉर्ड मिटाएं।
+अन्यथा, आप भविष्य में LinkCard के साथ दोबारा
+कनेक्ट नहीं कर पाएंगे।","Silakan hapus catatan pemasangan
+pada ponsel pintar.
+Jika tidak, Anda mungkin tidak dapat
+terhubung kembali dengan LinkCard
+di kemudian hari.","Usuń zapisane parowanie na smartfonach.
+W przeciwnym razie nie połączysz się
+ponownie z LinkCard.","Exclua o registro de pareamento dos
+smartphones.
+Caso contrário, você não poderá se
+reconectar com o  LinkCard no futuro.","โปรดลบบันทึกการจับคู่ในสมาร์ทโฟน
+มิฉะนั้นคุณอาจไม่สามารถเชื่อมต่อกับ
+LinkCard ได้ในอนาคต","Vui lòng xóa bản ghi ghép nối trên điện
+thoại thông minh. Nếu không, sau này
+bạn có thể không kết nối lại được với
+LinkCard.","스마트폰에서 페어링 기록을 삭제해주세요.
+그렇지 않을 경우, 앞으로 LinkCard
+재연결이 어려울 수 있습니다.","Sila padamkan rekod pasangan pada
+telefon pintar. Jika tidak, anda mungkin
+tidak dapat menyambung semula
+dengan LinkCard pada masa hadapan."
+SET40_CANNOT_EXECUTE,Cannot execute while driving.,運転中は実行できません。,Ne peut pas être lancé en conduisant.,"No se puede ejecutar mientras se
+conduce.",Esecuzione non possibile durante la guida.,"Kann nicht während der Fahrt ausgeführt
+werden.",無法在騎車時執行。,行驶时无法执行。,Αδύνατη η εκτέλεση κατά την οδήγηση.,Ei voida suorittaa ajon aikana.,ड्राइविंग के दौरान निष्पादित नहीं किया जा सकता।,"Tidak dapat mengeksekusi saat
+mengemudi.",Nie można wykonać podczas jazdy.,"Não é possível executar durante a
+condução.",ไม่สามารถดำเนินการได้ในขณะขับรถ,Không thể thực thi khi đang lái xe.,주행 중에는 실행할 수 없습니다.,"Tidak dapat dilaksanakan semasa
+memandu."
+SET42_RESET_COMPLETE,Reset complete.,リセットしました。,Réinitialisation terminée.,Reinicio completo.,Reimpostazione completata.,Zurücksetzen abgeschlossen.,重設完成。,重置完成。,Ο μηδενισμός ολοκληρώθηκε.,Nollaus suoritettu.,दोबारा सेट करना पूरा हुआ।,Setel ulang selesai.,Reset zakończony.,Redefinição concluída.,รีเซ็ตเสร็จสมบูรณ์,Đặt lại hoàn tất.,초기화 완료.,Tetapan semula selesai.
+SET43_TRIP_MILEAGE_RESET,Trip mileage reset,トリップリセット,Réinitialiser le kilométrage,Reinicio del kilometraje,Reimposta km viaggio,Zurücksetzen Trip-KM-Stand,重設行駛里程數,行程里程重置,Μηδενισμός χιλιομέτρων διαδρομής,Ajokilometrit nollattu,ट्रिप माइलेज दोबारा सेट किया गया,Atur ulang jarak perjalanan,Reset dystansu jazdy,Redef. Km de viagem,รีเซ็ตระยะการเดินทาง,Đã đặt lại số dặm chuyến đi,주행 거리 초기화,Set Semula Perbatuan
+SET43_MAINTENANCE_RESET,Maintenance reset,メンテナンスリセット,Réinitialisation de maintenance,Reinicio del mantenimiento,Reimposta manutenzione,Zurücksetzen der Wartung,重設保養,保养信息重置,Μηδενισμός συντήρησης,Huolto nollattu,मेंटेनेंस दोबारा सेट किया गया,Atur ulang pemeliharaan,Reset konserwacji,Rein. Manutenção,รีเซ็ตการบำรุงรักษา,Đặt lại bảo trì,유지 관리 초기화,Set Semula Penyenggaraan
+SET43_VEHICLE_INFO,Vehicle info.,車両情報,Info. du véhicule,Información del vehículo,Info. veicolo,Fahrzeuginformationen,車輛資訊,车辆信息,Πληροφ. οχήματος,Ajoneuvon tiedot,गाड़ी की जानकारी,Info kendaraan.,Informacje o pojeździe.,Informações do veículo.,ข้อมูลยานพาหนะ,Thông tin xe,바이크 정보,Maklumat Kenderaan
+SET43_ALL_RESET,All reset,リセット,Tout réinitialiser,Reinicio global,Reimposta tutto,Alles zurücksetzen,全部重設,全部重置,Μηδενισμός όλων,Kaikki nollattu,सभी को दोबारा सेट किया गया,Setel ulang semua,Reset całkowity,Tudo redefinido,ทั้งหมดรีเซ็ต,Tất cả đặt lại,모두 초기화,Tetapkan Semula Semua
+SET47_WAIT_APPROVAL,"Waiting for request approval from ""%s"".",スマートフォン 側の操作を待っています。,,,,,,,,,,,,,,,,
+SET49_LAUNCH_YAMAHA_APP,(Navi app name) connected. Launch YAMAHA MOTORCYCLE CONNECT on “%s” to complete the connection.,"(Navi app name)を接続しました。
+接続を完了させるため、YAMAHA　
+MOTORCYCLE CONNECTアプリを起動
+してください。",,,,,,,,,,,,,,,,
+SET50_LAUNCH_NAVI_APP,YAMAHA MOTORCYCLE CONNECT connected. Launch (Navi app name) on “%s” to complete the connection.,"YAMAHA MOTORCYCLE CONNECTアプリを
+接続しました。
+接続を完了させるため、(Navi app name)
+アプリを起動してください。",,,,,,,,,,,,,,,,
+TCS01_TCS,Traction Control,トラクションコントロール,Antipatinage,Control de tracción,Controllo trazione,Traktionskontrolle,循跡控制,牵引力控制,Έλεγχος πρόσφυσης,Luistonesto,ट्रैक्शन कंट्रोल,Kontrol Traksi,Kontrola trakcji,Controle de tração,การควบคุมแรงฉุด,Kiểm soát lực kéo,정지 마찰력 제어,Kawalan Cengkaman
+UNT01_UNIT_MILEAGE,Mileage,距離,Kilométrage,Kilometraje,Chilometraggio,Kilometerstand,里程數,里程,Χιλιόμετρα,Ajokilometrit,माइलेज,Jarak tempuh,Dystans,Quilometragem,ไมล์สะสม,Dặm đi,거리,Perbatuan
+UNT01_UNIT_FUEL,Fuel,燃料,Essence,Combustible,Carburante,Treibstoff,燃油,燃油,Καύσιμο,Polttoaine,ईंधन,Bahan bakar,Paliwo,Combustível,เชื้อเพลิง,Nhiên liệu,연료,Minyak
+UNT01_UNIT_PRESSURE,Pressure,圧力,Pression,Presión,Pressione,Druck,壓力,胎压,Πίεση,Paine,दबाव,Tekanan,Ciśnienie,Pressão,แรงดัน,Áp suất,압력,Tekanan
+UNT01_UNIT_TEMPERATURE,Temperature,温度,Température,Temperatura,Temperatura,Temperatur,溫度,温度,Θερμοκρασία,Lämpötila,तापमान,Suhu,Temperatura,Temperatura,อุณหภูมิ,Nhiệt độ,온도,Suhu
+UNT02_UNIT_MILEAGE_KILOMETER,km,,,,,,,,,,,,,,,,,
+UNT02_UNIT_MILEAGE_MILE,mile,,,,,,,,,,,,,,,,,
+UNT03_UNIT_FUEL_KM_PER_LITER,km/L,,,,,,,,,,,,,,,,,
+UNT03_UNIT_FUEL_LITER_PER_HUNDRED_KM,L/100km,,,,,,,,,,,,,,,,,
+UNT03_UNIT_FUEL_MILE_PER_GALLON,MPG,,,,,,,,,,,,,,,,,
+UNT04_UNIT_PRESSURE_KPA,kPa,,,,,,,,,,,,,,,,,
+UNT04_UNIT_PRESSURE_PSI,psi,,,,,,,,,,,,,,,,,
+UNT04_UNIT_PRESSURE_KGF,kgf/cm²,,,,,,,,,,,,,,,,,
+UNT05_UNIT_TEMPERATURE_C,℃,,,,,,,,,,,,,,,,,
+UNT05_UNIT_TEMPERATURE_F,℉,,,,,,,,,,,,,,,,,
+WEA01_MONDAY,Mon,月,Lun.,Lun.,Lun.,Mo,週一,周一,Δευτ,Ma,सोम,Sen,pon.,Seg,จ.,T2,월,ISN
+WEA01_TUESDAY,Tue,火,Mar.,Mar.,Mar.,Di,週二,周二,Τρ,Ti,मंगल,Sel,wt.,Ter,อ.,T3,화,SEL
+WEA01_WEDNESDAY,Wed,水,Mer.,Mié.,Mer.,Mi,週三,周三,Τετ,Ke,बुध,Rab,śr.,Qua,พ.,T4,수,RAB
+WEA01_THURSDAY,Thu,木,Jeu.,Jue.,Gio.,Do,週四,周四,Πέμ,To,गुरु,Kam,czw.,Qui,พฤ.,T5,목,KHA
+WEA01_FRIDAY,Fri,金,Ven.,Vie.,Ven.,Fr,週五,周五,Παρ,Pe,शुक्र,Jum,pt.,Sex,ศ.,T6,금,JUM
+WEA01_SATURDAY,Sat,土,Sam.,Sáb.,Sab.,Sa,週六,周六,Σάβ,La,शनि,Sab,sob.,Sáb,ส.,T7,토,SAB
+WEA01_SUNDAY,Sun,日,Dim.,Dom.,Dom.,So,週日,周日,Κυρ,Su,रवि,Min,niedz.,Dom,อา.,CN,일,AHD
+WSC01_WIND_SCREEN,Wind Screen,ウインドスクリーン,Pare-brise,Pantalla de viento,Parabrezza,Windschutzscheibe,擋風玻璃,挡风屏,Παρμπρίζ,Tuulilasi,विंड स्क्रीन,Kaca Depan Mobil,Owiewka,Proteção contra vento,กระจกบังลม,Kính chắn gió,앞 유리,Cermin Hadapan
 YDT01_MESSAGE,"YDT / GST device connection has been detected.
-Some functions are limited.",,,,,,,
-DEV_TEST_CHINESE,台灣國際航電台湾国际航电，；。（）［］？！＼／０１２３４５６７８９,,,,,,,
+Some functions are limited.","Yamaha Diagnostic Tool / GSTの接続が
+検出されました。
+いくつかの機能がご利用できなくなります。","Connexion d'un appareil Yamaha
+Diagnostic Tool / GST détectée.
+Certaines fonctionnalités sont limitées.","Se ha detectado la conexión del
+dispositivo Yamaha Diagnostic Tool/GST.
+Algunas funciones están limitadas.","Connessione al dispositivo Yamaha
+Diagnostic Tool / GST individuata.
+Alcune funzioni sono state limitate.","Die Geräteverbindung von Yamaha
+Diagnostic Tool / GST wurde erkannt.
+Einige Funktionen sind eingeschränkt.","已刪除 Yamaha Diagnostic Tool /
+ GST 裝置連線。
+部分的功能受限。","检测到 Yamaha Diagnostic Tool / 
+GST 设备连接。
+某些功能受限。","Η σύνδεση συσκευής Yamaha Diagnostic
+Tool / GST εντοπίστηκε.
+Ορισμένες λειτουργίες είναι περιορισμένες.","Yamaha Diagnostic Tool / GST 
+-laiteyhteys on havaittu.
+Joitakin toimintoja on rajoitettu.","Yamaha Diagnostic Tool / GST डिवाइस
+कनेक्शन का पता लगाया गया है.
+कुछ फंक्शन सीमित हैं।","Alat Yamaha Diagnostic Tool / GST
+koneksi perangkat telah terdeteksi.
+Beberapa fungsi terbatas.","Wykryto połączenie z urządzeniem
+Yamaha Diagnostic Tool / GST.
+Niektóre funkcje są ograniczone.","Yamaha Diagnostic Tool / GST a conexão
+com o dispositivo foi detectada.
+Algumas funções são limitadas.","ตรวจพบการเชื่อมต่ออุปกรณ์
+Yamaha Diagnostic Tool / GST
+ฟังก์ชันบางอย่างมีจำกัด","Đã phát hiện kết nối
+Yamaha Diagnostic Tool/thiết bị GST.
+Một số chức năng bị hạn chế.","Yamaha Diagnostic Tool / GST 장치 연결이
+탐지되었습니다.
+일부 기능은 제한됩니다.","Yamaha Diagnostic Tool / GST
+sambungan peranti telah dikesan.
+Beberapa fungsi adalah terhad."
+DD_WARNING,NOT AVAILABLE WHILE MOVING.,運転中は使用できません。,INDISPONIBLE EN PLEIN MOUVEMENT.,NO DISPONIBLE EN MOVIMIENTO.,"NON DISPONIBILE DURANTE IL
+MOVIMENTO.","WÄHREND DER FAHRT NICHT
+VERFÜGBAR.",請勿在騎車時使用。,行驶时不可用。,ΜΗ ΔΙΑΘΕΣΙΜΟ ΕΝΩ ΚΙΝΕΙΣΤΕ.,EI KÄYTETTÄVISSÄ AJON AIKANA.,चलते समय उपलब्ध नहीं,TIDAK TERSEDIA SAAT BERGERAK.,NIEDOSTĘPNE PODCZAS RUCHU.,"NÃO DISPONÍVEL DURANTE O
+MOVIMENTO.",ไม่สามารถใช้ได้ในขณะกำลังเคลื่อนที่,KHÔNG KHẢ DỤNG KHI ĐANG DI CHUYỂN.,이동 중 이용 불가.,TIDAK TERSEDIA KETIKA BERGERAK.
+DEV_TEST_CHINESE,台灣國際航電台湾国际航电，；。（）［］？！＼／０１２３４５６７８９,,,,,,,,,,,,,,,,,
 DEV_TEST_JAPANESE,"あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん
 がぎぐげござじずぜぞばびぶべぼぱぴぷぺぽ
 アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン
-ガギグゲゴザジズゼドバビブベボパピプペポ",,,,,,,
-DEV_TEST_KOREAN,"다가오는 갈림길에서 어느 도로로 가야할 지 더 이상 추측할 필요가 없습니다. 정션 뷰가 기능은 다가오는 갈림길,출구 또는 교차로의 안내와 검색이 가능합니다 올바른 도로를 안내해 주는 네비게이션 화살표와 함께 경로 상에 실제 도로 표지판과 교차로가 표시됩니다. 정션 뷰 기능은 지정된 대도시에서 이용할 수 있습니다.",,,,,,,
+ガギグゲゴザジズゼドバビブベボパピプペポ",,,,,,,,,,,,,,,,,
+DEV_TEST_KOREAN,"다가오는 갈림길에서 어느 도로로 가야할 지 더 이상 추측할 필요가 없습니다. 정션 뷰가 기능은 다가오는 갈림길,출구 또는 교차로의 안내와 검색이 가능합니다 올바른 도로를 안내해 주는 네비게이션 화살표와 함께 경로 상에 실제 도로 표지판과 교차로가 표시됩니다. 정션 뷰 기능은 지정된 대도시에서 이용할 수 있습니다.",,,,,,,,,,,,,,,,,
 DEV_TEST_LETTERS,"ABCDEFGHIJKLMNOPQRSTUVWXYZ
 abcdefghijklmnopqrstuvwxyz
 0123456789,;.()[]/\
 ÄÖÜß
 ÀàÂâÇçÉéÈèÊêËëÌìÍíÎîÏïÔôÛûÙùÜüŸÿÑñŠšŽžÅåÄäÖöćńóśźżąęł
 çáéíóúâêôãõàèìòù
-ĂÂÊÔƠƯăâđêôơư",,,,,,,
+ĂÂÊÔƠƯăâđêôơư",,,,,,,,,,,,,,,,,

@@ -4,6 +4,13 @@ $rect <20,20,220,60>
 $output false
 class YDT01_Main : Components::BaseMainBG
 {
+  $rect <10,340,210,380>
+  inherited method ReInit()
+  {
+    Text.String = Strings::YDT01_MESSAGE;
+    PushButton.Title = Strings::GEN_OK;
+  }
+
   $rect <10,290,210,330>
   inherited method Init()
   {

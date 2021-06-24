@@ -687,6 +687,14 @@ $rect <270,80,470,120>
 $output false
 class CLK03_SetClock : Components::BaseMainBG
 {
+  $rect <500,240,700,280>
+  inherited method ReInit()
+  {
+    Title.String = Strings::CLK03_SET_CLOCK;
+    UpDownPushButtonSet.UpButtonTitle = Strings::GEN_CANCEL;
+    UpDownPushButtonSet.DownButtonTitle = Strings::GEN_OK;
+  }
+
   $rect <490,300,690,340>
   inherited method OnShortHomeKeyActivated()
   {

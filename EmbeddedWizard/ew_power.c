@@ -84,7 +84,7 @@ if( PM_IGN_OFF == ew_ignition_status )
 * @public
 * EW_power_write_last_page_callback
 *
-* The callback function of writing last page saved in EEPROM
+* Callback function of writing last page in EEPROM
 *
 * @param result True if writing last page to EEPROM succeeded.
 *               False if writing last page to EEPROM failed.
@@ -99,9 +99,34 @@ void EW_power_write_last_page_callback
 {
 if( !result )
     {
-    EwPrint( "EW set last page fail\r\n" );
+    EwPrint( "save last pg fail\r\n" );
     }
 EW_power_update_ignoff_task_status( IGN_OFF_TASK_WRITE_LAST_PAGE );
+}
+
+/*********************************************************************
+*
+* @public
+* EW_power_write_language_callback
+*
+* Callback function of writing language in EEPROM
+*
+* @param result True if writing language to EEPROM succeeded.
+*               False if writing language to EEPROM failed.
+* @param data Pointer to the value of last page
+*
+*********************************************************************/
+void EW_power_write_language_callback
+    (
+    bool  result,
+    void* data
+    )
+{
+if( !result )
+    {
+    EwPrint( "save lang fail\r\n" );
+    }
+EW_power_update_ignoff_task_status( IGN_OFF_TASK_WRITE_LANGUAGE );
 }
 
 /*********************************************************************
@@ -142,10 +167,12 @@ uint8_t last_page = ( ( ew_get_last_home_group() & LAST_PAGE_HOME_GROUP_MASK ) <
 EwPrint( "last pg 0x%x\r\n", last_page );
 if( pdFALSE == EEPM_set_last_page( last_page, &EW_power_write_last_page_callback ) )
     {
-    EwPrint( "Err: set last page\r\n" );
+    EwPrint( "save last pg err\r\n" );
     }
-
-//TODO: save language to EEPROM
+if( pdFALSE == EEPM_set_language( last_page, &EW_power_write_language_callback ) )
+    {
+    EwPrint( "save lang err\r\n" );
+    }
 
 // write trip time to EEPROM
 VI_trip_time_save();

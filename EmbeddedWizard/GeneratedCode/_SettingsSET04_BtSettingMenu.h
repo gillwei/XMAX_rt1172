@@ -114,7 +114,6 @@
 
 /* Deklaration of class : 'Settings::SET04_BtSettingMenu' */
 EW_DEFINE_FIELDS( SettingsSET04_BtSettingMenu, MenuBaseMenuView )
-  EW_ARRAY   ( ItemTitleArray,  XString, [4])
   EW_ARRAY   ( ItemClassArray,  XClass, [4])
 EW_END_OF_FIELDS( SettingsSET04_BtSettingMenu )
 

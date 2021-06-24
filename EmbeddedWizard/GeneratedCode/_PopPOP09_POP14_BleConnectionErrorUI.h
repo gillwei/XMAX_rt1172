@@ -163,8 +163,11 @@ EW_DEFINE_METHODS( PopPOP09_POP14_BleConnectionErrorUI, ComponentsBaseMainBG )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( PopPOP09_POP14_BleConnectionErrorUI )
 
-/* 'C' function for method : 'Pop::POP09_POP14_BleConnectionErrorUI.OnLauncherScreenUpdateSlot()' */
-void PopPOP09_POP14_BleConnectionErrorUI_OnLauncherScreenUpdateSlot( PopPOP09_POP14_BleConnectionErrorUI _this, 
+/* 'C' function for method : 'Pop::POP09_POP14_BleConnectionErrorUI.ReInit()' */
+void PopPOP09_POP14_BleConnectionErrorUI_ReInit( PopPOP09_POP14_BleConnectionErrorUI _this );
+
+/* 'C' function for method : 'Pop::POP09_POP14_BleConnectionErrorUI.OnCountDownTimeoutSlot()' */
+void PopPOP09_POP14_BleConnectionErrorUI_OnCountDownTimeoutSlot( PopPOP09_POP14_BleConnectionErrorUI _this, 
   XObject sender );
 
 #ifdef __cplusplus

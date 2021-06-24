@@ -592,7 +592,7 @@ $rect <20,120,220,160>
 $output false
 class DDModeMask : Core::Group
 {
-  $rect <10,320,210,360>
+  $rect <0,250,200,290>
   inherited property Bounds = <0,0,480,236>;
 
   $rect <20,20,160,60>
@@ -607,8 +607,17 @@ class DDModeMask : Core::Group
   object Views::Image DDModeIcon
   {
     preset StackingPriority = 0;
-    preset Bounds = <195,62,285,152>;
+    preset Bounds = <195,37,285,127>;
     preset Bitmap = Resource::IconDDActive;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text WarningText
+  {
+    preset Bounds = <10,138,470,200>;
+    preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertCenter];
+    preset String = Strings::DD_WARNING;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 }
 

@@ -4,7 +4,13 @@ $rect <10,210,250,250>
 $output false
 class POP08_WeatherLoadingUI : Components::BaseMainBG
 {
-  $rect <530,60,730,100>
+  $rect <510,60,710,100>
+  inherited method ReInit()
+  {
+    LoadingText.String = Strings::GEN_PLEASE_WAIT;
+  }
+
+  $rect <510,20,710,60>
   inherited method Init()
   {
     DeviceInterface::WeatherDevice.SendWeatherInfoRequest();
@@ -19,7 +25,7 @@ class POP08_WeatherLoadingUI : Components::BaseMainBG
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
-  $rect <530,110,730,150>
+  $rect <510,110,710,150>
   object Core::PropertyObserver WeatherLoadingObserver
   {
     preset OnEvent = OnWeatherLoadingUpdateSlot;
@@ -28,7 +34,7 @@ class POP08_WeatherLoadingUI : Components::BaseMainBG
 
   // This slot method is executed when the associated property observer 'PropertyObserver' \
   // is notified.
-  $rect <730,110,930,150>
+  $rect <510,150,710,190>
   slot OnWeatherLoadingUpdateSlot
   {
     if( DeviceInterface::WeatherDevice.IsWeatherInfoReceived )
@@ -46,7 +52,7 @@ class POP08_WeatherLoadingUI : Components::BaseMainBG
     preset Bitmap = Resource::LoadingAnimation;
   }
 
-  $rect <530,170,720,210>
+  $rect <520,210,710,250>
   object Core::Timer ConnectionFailedTimer
   {
     preset OnTrigger = OnConnectionFailedUpdateSlot;
@@ -54,14 +60,14 @@ class POP08_WeatherLoadingUI : Components::BaseMainBG
     preset Enabled = true;
   }
 
-  $rect <730,170,930,210>
+  $rect <520,250,720,290>
   slot OnConnectionFailedUpdateSlot
   {
     ConnectionFailedTimer.Enabled = false;
     PresentDialog( new Pop::POP09_POP14_BleConnectionErrorUI, null, null, null, null, null, null, null, null, false );
   }
 
-  $rect <530,260,730,300>
+  $rect <520,300,720,340>
   object Core::SystemEventHandler MotoConConnectionEventHandler
   {
     preset OnEvent = OnMotoConConnectionUpdateEvent;
@@ -70,7 +76,7 @@ class POP08_WeatherLoadingUI : Components::BaseMainBG
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <730,260,930,300>
+  $rect <520,340,720,380>
   slot OnMotoConConnectionUpdateEvent
   {
     var DeviceInterface::MotoConContext MotoConContext = ( DeviceInterface::MotoConContext )MotoConConnectionEventHandler.Context;
@@ -88,6 +94,12 @@ $rect <10,260,210,300>
 $output false
 class POP09_POP14_BleConnectionErrorUI : Components::BaseMainBG
 {
+  $rect <520,30,720,70>
+  inherited method ReInit()
+  {
+    ConnectionFailedMessage.String = Strings::POP09_CONNECTION_FAILED;
+  }
+
   $rect <20,20,160,60>
   object Views::Text ConnectionFailedMessage
   {
@@ -96,16 +108,16 @@ class POP09_POP14_BleConnectionErrorUI : Components::BaseMainBG
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
-  $rect <570,80,760,120>
+  $rect <520,80,710,120>
   object Core::Timer CountDownTimer
   {
-    preset OnTrigger = OnLauncherScreenUpdateSlot;
+    preset OnTrigger = OnCountDownTimeoutSlot;
     preset Period = 2000;
     preset Enabled = true;
   }
 
-  $rect <760,80,960,120>
-  slot OnLauncherScreenUpdateSlot
+  $rect <520,130,750,170>
+  slot OnCountDownTimeoutSlot
   {
     CountDownTimer.Enabled = false;
     var Application::Application App = (Application::Application)GetRoot();
@@ -120,6 +132,16 @@ $rect <10,60,250,100>
 $output false
 class POP02_ConnectionError : Components::BaseComponent
 {
+  $rect <10,390,190,430>
+  inherited method ReInit()
+  {
+    ConnectionErrText.String = Strings::POP02_CONNECTION_ERR;
+    CheckText.String = Strings::POP02_PLEASE_CHECK;
+    UpDownPushButtonSet.UpButtonTitle = Strings::GEN_OK;
+    UpDownPushButtonSet.DownButtonTitle = Strings::POP02_DETAILS;
+    InvalidateLayout();
+  }
+
   $rect <10,340,190,380>
   inherited method Init()
   {
@@ -272,7 +294,16 @@ $rect <10,160,260,200>
 $output false
 class POP07_TROUBLE_SHOOTING : Components::BaseMainBG
 {
-  $rect <10,340,240,380>
+  $rect <10,290,210,330>
+  inherited method ReInit()
+  {
+    TroubleShootingTitle.String = Strings::POP07_TROUBLE_SHOOTING;
+    TroubleShootingText1.String = Strings::POP07_UNLOCK_PHONE;
+    TroubleShootingText2.String = Strings::POP07_TURN_ON_BT;
+    TroubleShootingText3.String = Strings::POP07_LAUNCH_APP;
+  }
+
+  $rect <10,390,240,430>
   inherited method OnShortEnterKeyActivated()
   {
     var Application::Application App = (Application::Application)GetRoot();
@@ -282,7 +313,7 @@ class POP07_TROUBLE_SHOOTING : Components::BaseMainBG
     }
   }
 
-  $rect <10,290,240,330>
+  $rect <10,340,240,380>
   inherited method OnLongHomeKeyActivated()
   {
     var Application::Application App = (Application::Application)GetRoot();
@@ -334,7 +365,7 @@ class POP07_TROUBLE_SHOOTING : Components::BaseMainBG
   }
 
   $rect <20,20,160,60>
-  object Views::Text TroubleShootingText
+  object Views::Text TroubleShootingTitle
   {
     preset Bounds = <10,4,470,41>;
     preset AutoSize = true;
@@ -410,6 +441,12 @@ $rect <10,10,250,50>
 $output false
 class POP01_PleaseWait : Components::BaseMainBG
 {
+  $rect <530,110,730,150>
+  inherited method ReInit()
+  {
+    LoadingText.String = Strings::GEN_PLEASE_WAIT; 
+  }
+
   $rect <530,60,730,100>
   inherited method Init()
   {
@@ -506,8 +543,16 @@ $rect <10,110,210,150>
 $output false
 class POP04_Reset : Components::BaseMainBG
 {
+  $rect <510,90,710,130>
+  inherited method ReInit()
+  {
+    ResetText.String = Strings::GEN_RESET_QUESTION_MARK;
+    UpDownPushButtonSet.UpButtonTitle = Strings::GEN_CANCEL;
+    UpDownPushButtonSet.DownButtonTitle = Strings::GEN_OK; 
+  }
+
   $rect <20,20,160,60>
-  object Views::Text ConnectionFailedMessage
+  object Views::Text ResetText
   {
     preset Bounds = <10,46,470,170>;
     preset String = Strings::GEN_RESET_QUESTION_MARK;

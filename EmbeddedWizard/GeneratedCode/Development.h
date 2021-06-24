@@ -46,6 +46,7 @@
 #include "_DevelopmentDEV_EEPROMTest.h"
 #include "_DevelopmentDEV_FontMenu.h"
 #include "_DevelopmentDEV_FontTest.h"
+#include "_DevelopmentDEV_LanguageTest.h"
 #include "_DevelopmentDEV_Main.h"
 #include "_DevelopmentDEV_MotoCon.h"
 #include "_DevelopmentDEV_RealTimeClock.h"

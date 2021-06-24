@@ -114,7 +114,6 @@
 
 /* Deklaration of class : 'Settings::SET43_ResetMenu' */
 EW_DEFINE_FIELDS( SettingsSET43_ResetMenu, MenuBaseMenuView )
-  EW_ARRAY   ( ItemTitleArray,  XString, [4])
 EW_END_OF_FIELDS( SettingsSET43_ResetMenu )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET43_ResetMenu' */

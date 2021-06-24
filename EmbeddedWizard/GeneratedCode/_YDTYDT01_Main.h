@@ -165,6 +165,9 @@ EW_DEFINE_METHODS( YDTYDT01_Main, ComponentsBaseMainBG )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( YDTYDT01_Main )
 
+/* 'C' function for method : 'YDT::YDT01_Main.ReInit()' */
+void YDTYDT01_Main_ReInit( YDTYDT01_Main _this );
+
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 
    statements. */

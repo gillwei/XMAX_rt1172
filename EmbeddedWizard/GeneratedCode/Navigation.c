@@ -1175,31 +1175,31 @@ XString NavigationNAV06_NaviSettingMenu_LoadItemTitle( NavigationNAV06_NaviSetti
   switch ( _this->NaviSettings[ EwCheckIndex( aItemNo, 7 )])
   {
     case EnumNaviSettingItemStopNavigation :
-      Title = EwLoadString( &StringsNAV06_STOP_NAVIGATION );
+      Title = EwGetVariantOfString( &StringsNAV06_STOP_NAVIGATION );
     break;
 
     case EnumNaviSettingItemSkipNextStop :
-      Title = EwLoadString( &StringsNAV06_SKIP_NEXT_STOP );
+      Title = EwGetVariantOfString( &StringsNAV06_SKIP_NEXT_STOP );
     break;
 
     case EnumNaviSettingItemGoHome :
-      Title = EwLoadString( &StringsNAV06_GO_HOME );
+      Title = EwGetVariantOfString( &StringsNAV06_GO_HOME );
     break;
 
     case EnumNaviSettingItemGoToWork :
-      Title = EwLoadString( &StringsNAV06_GO_TO_WORK );
+      Title = EwGetVariantOfString( &StringsNAV06_GO_TO_WORK );
     break;
 
     case EnumNaviSettingItemFavorites :
-      Title = EwLoadString( &StringsNAV06_FAVORITES );
+      Title = EwGetVariantOfString( &StringsNAV06_FAVORITES );
     break;
 
     case EnumNaviSettingItemNearbyGasStations :
-      Title = EwLoadString( &StringsNAV06_NEARBY_GAS_STATIONS );
+      Title = EwGetVariantOfString( &StringsNAV06_NEARBY_GAS_STATIONS );
     break;
 
     case EnumNaviSettingItemChangeView :
-      Title = EwLoadString( &StringsNAV06_CHANGE_VIEW );
+      Title = EwGetVariantOfString( &StringsNAV06_CHANGE_VIEW );
     break;
 
     default :; 
@@ -1483,7 +1483,7 @@ void NavigationNAV06_NaviSettingMenu_UpdateHomeSetting( NavigationNAV06_NaviSett
       PopPOP03_HomeOfficeSettingError HomeSettingError = EwNewObject( PopPOP03_HomeOfficeSettingError, 
         0 );
       HomeSettingError->ReturnToNaviHomeSlot = EwNewSlot( _this, NavigationNAV06_NaviSettingMenu_ReturnToNaviHome );
-      PopPOP03_HomeOfficeSettingError_OnSetErrorMessage( HomeSettingError, EwLoadString( 
+      PopPOP03_HomeOfficeSettingError_OnSetErrorMessage( HomeSettingError, EwGetVariantOfString( 
       &StringsPOP03_NO_HOME_LOCATION ));
       CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)HomeSettingError ), 
       0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
@@ -1515,8 +1515,8 @@ void NavigationNAV06_NaviSettingMenu_UpdateOfficeSetting( NavigationNAV06_NaviSe
       PopPOP03_HomeOfficeSettingError OfficeSettingError = EwNewObject( PopPOP03_HomeOfficeSettingError, 
         0 );
       OfficeSettingError->ReturnToNaviHomeSlot = EwNewSlot( _this, NavigationNAV06_NaviSettingMenu_ReturnToNaviHome );
-      PopPOP03_HomeOfficeSettingError_OnSetErrorMessage( OfficeSettingError, EwLoadString( 
-      &StringsPOP03_NO_OFFICE_LOCATION ));
+      PopPOP03_HomeOfficeSettingError_OnSetErrorMessage( OfficeSettingError, EwGetVariantOfString( 
+      &StringsPOP13_NO_OFFICE_LOCATION ));
       CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)OfficeSettingError ), 
       0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
     }
@@ -1616,9 +1616,6 @@ void NavigationNAV08_NaviChageViewMenu__Init( NavigationNAV08_NaviChageViewMenu 
   CoreRectView__OnSetBounds( _this, _Const0002 );
   _this->Super2.SlideOutEffectEnabled = 1;
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 3 );
-  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &StringsNAV08_DEFAULT_VIEW ));
-  _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &StringsNAV08_TURN_BY_TURN ));
-  _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &StringsNAV08_TURN_LIST ));
   CoreTimer_OnSetPeriod( &_this->CheckMarkUpdateTimer, 450 );
   _this->CheckMarkUpdateTimer.OnTrigger = EwNewSlot( _this, NavigationNAV08_NaviChageViewMenu_OnCheckMarkUpdateSlot );
 }
@@ -1667,12 +1664,31 @@ XClass NavigationNAV08_NaviChageViewMenu_LoadItemClass( NavigationNAV08_NaviChag
 XString NavigationNAV08_NaviChageViewMenu_LoadItemTitle( NavigationNAV08_NaviChageViewMenu _this, 
   XInt32 aItemNo )
 {
-  XString title = 0;
+  XString Title;
 
-  if ( aItemNo < 3 )
-    title = _this->ItemTitleArray[ EwCheckIndex( aItemNo, 3 )];
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
 
-  return title;
+  Title = 0;
+
+  switch ( aItemNo )
+  {
+    case 0 :
+      Title = EwGetVariantOfString( &StringsNAV08_DEFAULT_VIEW );
+    break;
+
+    case 1 :
+      Title = EwGetVariantOfString( &StringsNAV08_TURN_BY_TURN );
+    break;
+
+    case 2 :
+      Title = EwGetVariantOfString( &StringsNAV08_TURN_LIST );
+    break;
+
+    default :; 
+  }
+
+  return Title;
 }
 
 /* 'C' function for method : 'Navigation::NAV08_NaviChageViewMenu.OnItemActivate()' */
@@ -1704,7 +1720,8 @@ void NavigationNAV08_NaviChageViewMenu_OnItemActivate( NavigationNAV08_NaviChage
     default :; 
   }
 
-  MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 2 );
+  MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, _this->Super1.Menu.NoOfItems 
+  - 1 );
   CoreTimer_OnSetEnabled( &_this->CheckMarkUpdateTimer, 1 );
 }
 
@@ -1772,7 +1789,7 @@ EW_END_OF_CLASS_VARIANTS( NavigationNAV08_NaviChageViewMenu )
 /* Virtual Method Table (VMT) for the class : 'Navigation::NAV08_NaviChageViewMenu' */
 EW_DEFINE_CLASS( NavigationNAV08_NaviChageViewMenu, MenuBaseMenuView, CheckMarkUpdateTimer, 
                  CheckMarkUpdateTimer, CheckMarkUpdateTimer, CheckMarkUpdateTimer, 
-                 ItemTitleArray, NaviScreenIdx, "Navigation::NAV08_NaviChageViewMenu" )
+                 NaviScreenIdx, NaviScreenIdx, "Navigation::NAV08_NaviChageViewMenu" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -3955,12 +3972,12 @@ void NavigationNaviDialog_OnSetDialogButton( NavigationNaviDialog _this, XClass
 
         _this->CountDownTime = DeviceInterfaceNavigationDeviceClass_GetNaviDialogTimeOut( 
         EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ));
-        MenuUpDownPushButtonSet_OnSetUpButtonTitle( _this->ButtonSet, EwLoadString( 
+        MenuUpDownPushButtonSet_OnSetUpButtonTitle( _this->ButtonSet, EwGetVariantOfString( 
         &StringsGEN_YES ));
         MenuUpDownPushButtonSet_OnSetDownButtonTitle( _this->ButtonSet, EwConcatString( 
-        EwConcatString( EwConcatString( EwLoadString( &StringsGEN_NO ), EwLoadString( 
-        &_Const0051 )), EwNewStringInt( _this->CountDownTime, 0, 10 )), EwLoadString( 
-        &_Const0052 )));
+        EwConcatString( EwConcatString( EwGetVariantOfString( &StringsGEN_NO ), 
+        EwLoadString( &_Const0051 )), EwNewStringInt( _this->CountDownTime, 0, 10 )), 
+        EwLoadString( &_Const0052 )));
         CoreRectView__OnSetBounds( _this->ButtonSet, _Const0053 );
         CoreGroup__Add( _this, ((CoreView)_this->ButtonSet ), 0 );
         CoreRectView__OnSetBounds( &_this->DialogContent, _Const0054 );
@@ -4033,7 +4050,7 @@ void NavigationNaviDialog_UpdateCountDownTimeSlot( NavigationNaviDialog _this, X
   {
     _this->CountDownTime--;
     MenuUpDownPushButtonSet_OnSetDownButtonTitle( _this->ButtonSet, EwConcatString( 
-    EwConcatString( EwConcatString( EwLoadString( &StringsGEN_NO ), EwLoadString( 
+    EwConcatString( EwConcatString( EwGetVariantOfString( &StringsGEN_NO ), EwLoadString( 
     &_Const0051 )), EwNewStringInt( _this->CountDownTime, 0, 10 )), EwLoadString( 
     &_Const0052 )));
     CoreGroup_InvalidateViewState((CoreGroup)_this );

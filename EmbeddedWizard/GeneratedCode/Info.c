@@ -95,9 +95,6 @@ void InfoINF01_MeterDisplaySettingMenu__Init( InfoINF01_MeterDisplaySettingMenu 
   /* ... and initialize objects, variables, properties, etc. */
   _this->Super2.SlideOutEffectEnabled = 1;
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 3 );
-  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &StringsINF01_TACHO_VISUALIZER ));
-  _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &StringsINF01_ECHO_VISUALIZER ));
-  _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &StringsINF01_SPEED_VISUALIZER ));
   CoreTimer_OnSetPeriod( &_this->CheckMarkUpdateTimer, 0 );
   CoreTimer_OnSetBegin( &_this->CheckMarkUpdateTimer, 450 );
   _this->CheckMarkUpdateTimer.OnTrigger = EwNewSlot( _this, InfoINF01_MeterDisplaySettingMenu_OnCheckMarkUpdateSlot );
@@ -185,12 +182,31 @@ XClass InfoINF01_MeterDisplaySettingMenu_LoadItemClass( InfoINF01_MeterDisplaySe
 XString InfoINF01_MeterDisplaySettingMenu_LoadItemTitle( InfoINF01_MeterDisplaySettingMenu _this, 
   XInt32 aItemNo )
 {
-  XString title = 0;
+  XString Title;
 
-  if ( aItemNo < 3 )
-    title = _this->ItemTitleArray[ EwCheckIndex( aItemNo, 3 )];
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
 
-  return title;
+  Title = 0;
+
+  switch ( aItemNo )
+  {
+    case 0 :
+      Title = EwGetVariantOfString( &StringsINF01_TACHO_VISUALIZER );
+    break;
+
+    case 1 :
+      Title = EwGetVariantOfString( &StringsINF01_ECHO_VISUALIZER );
+    break;
+
+    case 2 :
+      Title = EwGetVariantOfString( &StringsINF01_SPEED_VISUALIZER );
+    break;
+
+    default :; 
+  }
+
+  return Title;
 }
 
 /* 'C' function for method : 'Info::INF01_MeterDisplaySettingMenu.OnItemActivate()' */
@@ -296,7 +312,7 @@ EW_END_OF_CLASS_VARIANTS( InfoINF01_MeterDisplaySettingMenu )
 /* Virtual Method Table (VMT) for the class : 'Info::INF01_MeterDisplaySettingMenu' */
 EW_DEFINE_CLASS( InfoINF01_MeterDisplaySettingMenu, MenuBaseMenuView, CheckMarkUpdateTimer, 
                  CheckMarkUpdateTimer, CheckMarkUpdateTimer, CheckMarkUpdateTimer, 
-                 ItemTitleArray, SelectedHomeType, "Info::INF01_MeterDisplaySettingMenu" )
+                 SelectedHomeType, SelectedHomeType, "Info::INF01_MeterDisplaySettingMenu" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,

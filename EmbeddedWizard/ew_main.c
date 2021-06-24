@@ -251,9 +251,6 @@ void EwDone( void )
   EwDoneHeap();
   #endif
 
-  EwPrint( "Deinitialize Touch Driver...                 " );
-  EwPrint( "[OK]\n" );
-
   /* deinitialize display */
   EwBspDisplayDone( &DisplayInfo );
 

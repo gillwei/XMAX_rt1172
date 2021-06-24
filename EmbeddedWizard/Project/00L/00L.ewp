@@ -63,7 +63,7 @@ note group Note2
 // Default is English.
 note group Note3
 {
-  attr Bounds = <760,20,1000,500>;
+  attr Bounds = <760,20,1220,600>;
 }
 
 // Project Units
@@ -182,31 +182,31 @@ unit Development
 }
 
 // Simplified Chinese
-$rect <780,390,980,430>
+$rect <780,440,980,480>
 language SimplifiedChinese;
 
 // French
-$rect <780,139,980,179>
+$rect <780,240,980,280>
 language French;
 
 // Italian
-$rect <780,189,980,229>
+$rect <780,290,980,330>
 language Italian;
 
 // German
-$rect <780,239,980,279>
+$rect <780,340,980,380>
 language German;
 
 // Japanese
-$rect <780,289,980,329>
+$rect <780,140,980,180>
 language Japanese;
 
 // Spanish
-$rect <780,339,980,379>
+$rect <780,190,980,230>
 language Spanish;
 
 // Traditional Chinese
-$rect <780,440,980,480>
+$rect <780,390,980,430>
 language TraditionalChinese;
 
 $rect <290,500,490,540>
@@ -328,3 +328,43 @@ unit Maintenance
 {
   attr Directory = .\;
 }
+
+// German
+$rect <780,490,980,530>
+language Greek;
+
+// German
+$rect <780,540,980,580>
+language Finnish;
+
+// German
+$rect <1000,90,1200,130>
+language Hindi;
+
+// German
+$rect <1000,140,1200,180>
+language Indonesian;
+
+// German
+$rect <1000,190,1200,230>
+language Polish;
+
+// German
+$rect <1000,240,1200,280>
+language PortugueseBrazil;
+
+// German
+$rect <1000,290,1200,330>
+language Thai;
+
+// German
+$rect <1000,340,1200,380>
+language Vietnamese;
+
+// German
+$rect <1000,390,1200,430>
+language Korean;
+
+// German
+$rect <1000,440,1200,480>
+language Malay;

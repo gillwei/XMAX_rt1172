@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _PopPOP02_ConnectionError_H
-#define _PopPOP02_ConnectionError_H
+#ifndef _DevelopmentDEV_LanguageTest_H
+#define _DevelopmentDEV_LanguageTest_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,12 +42,20 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_ComponentsBaseComponent.h"
+#include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
-#include "_MenuUpDownPushButtonSet.h"
+#include "_CoreSystemEventHandler.h"
+#include "_CoreTimer.h"
+#include "_MenuBaseMenuView.h"
+#include "_MenuVerticalMenu.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
-#include "_ViewsText.h"
+
+/* Forward declaration of the class Components::BaseMainBG */
+#ifndef _ComponentsBaseMainBG_
+  EW_DECLARE_CLASS( ComponentsBaseMainBG )
+#define _ComponentsBaseMainBG_
+#endif
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -79,6 +87,12 @@
 #define _CoreView_
 #endif
 
+/* Forward declaration of the class Development::DEV_LanguageTest */
+#ifndef _DevelopmentDEV_LanguageTest_
+  EW_DECLARE_CLASS( DevelopmentDEV_LanguageTest )
+#define _DevelopmentDEV_LanguageTest_
+#endif
+
 /* Forward declaration of the class Effects::Fader */
 #ifndef _EffectsFader_
   EW_DECLARE_CLASS( EffectsFader )
@@ -91,28 +105,21 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Pop::POP02_ConnectionError */
-#ifndef _PopPOP02_ConnectionError_
-  EW_DECLARE_CLASS( PopPOP02_ConnectionError )
-#define _PopPOP02_ConnectionError_
+/* Forward declaration of the class Menu::ItemBase */
+#ifndef _MenuItemBase_
+  EW_DECLARE_CLASS( MenuItemBase )
+#define _MenuItemBase_
 #endif
 
 
-/* Deklaration of class : 'Pop::POP02_ConnectionError' */
-EW_DEFINE_FIELDS( PopPOP02_ConnectionError, ComponentsBaseComponent )
-  EW_OBJECT  ( BlackBackground, ViewsRectangle )
-  EW_OBJECT  ( CheckText,       ViewsText )
-  EW_OBJECT  ( TopBar,          ViewsRectangle )
-  EW_OBJECT  ( ErrorIcon,       ViewsImage )
-  EW_OBJECT  ( ConnectionErrText, ViewsText )
-  EW_OBJECT  ( ErrorBTIcon,     ViewsImage )
-  EW_OBJECT  ( ErrorNavigationIcon, ViewsImage )
-  EW_OBJECT  ( ErrorPhoneLockIcon, ViewsImage )
-  EW_OBJECT  ( UpDownPushButtonSet, MenuUpDownPushButtonSet )
-EW_END_OF_FIELDS( PopPOP02_ConnectionError )
+/* Deklaration of class : 'Development::DEV_LanguageTest' */
+EW_DEFINE_FIELDS( DevelopmentDEV_LanguageTest, MenuBaseMenuView )
+  EW_OBJECT  ( ReceivedSystemEventHandler, CoreSystemEventHandler )
+  EW_VARIABLE( CurrentLanguage, XEnum )
+EW_END_OF_FIELDS( DevelopmentDEV_LanguageTest )
 
-/* Virtual Method Table (VMT) for the class : 'Pop::POP02_ConnectionError' */
-EW_DEFINE_METHODS( PopPOP02_ConnectionError, ComponentsBaseComponent )
+/* Virtual Method Table (VMT) for the class : 'Development::DEV_LanguageTest' */
+EW_DEFINE_METHODS( DevelopmentDEV_LanguageTest, MenuBaseMenuView )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -139,7 +146,7 @@ EW_DEFINE_METHODS( PopPOP02_ConnectionError, ComponentsBaseComponent )
   EW_METHOD( DispatchEvent,     XObject )( CoreGroup _this, CoreEvent aEvent )
   EW_METHOD( BroadcastEvent,    XObject )( CoreGroup _this, CoreEvent aEvent, XSet 
     aFilter )
-  EW_METHOD( UpdateLayout,      void )( PopPOP02_ConnectionError _this, XPoint aSize )
+  EW_METHOD( UpdateLayout,      void )( CoreGroup _this, XPoint aSize )
   EW_METHOD( UpdateViewState,   void )( CoreGroup _this, XSet aState )
   EW_METHOD( InvalidateArea,    void )( CoreGroup _this, XRect aArea )
   EW_METHOD( GetViewAtIndex,    CoreView )( CoreGroup _this, XInt32 aIndex )
@@ -157,53 +164,74 @@ EW_DEFINE_METHODS( PopPOP02_ConnectionError, ComponentsBaseComponent )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( PopPOP02_ConnectionError _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseMainBG _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnLongHomeKeyActivated, void )( PopPOP02_ConnectionError _this )
+  EW_METHOD( OnLongHomeKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseComponent _this, XBool value )
+  EW_METHOD( OnSetDDModeEnabled, void )( MenuBaseMenuView _this, XBool value )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
-EW_END_OF_METHODS( PopPOP02_ConnectionError )
-
-/* 'C' function for method : 'Pop::POP02_ConnectionError.ReInit()' */
-void PopPOP02_ConnectionError_ReInit( PopPOP02_ConnectionError _this );
+  EW_METHOD( LoadItemClass,     XClass )( DevelopmentDEV_LanguageTest _this, XInt32 
+    aItemNo )
+  EW_METHOD( LoadItemTitle,     XString )( DevelopmentDEV_LanguageTest _this, XInt32 
+    aItemNo )
+  EW_METHOD( OnItemActivate,    void )( DevelopmentDEV_LanguageTest _this, XInt32 
+    aItemNo, MenuItemBase aMenuItem )
+  EW_METHOD( LoadItemChecked,   XBool )( DevelopmentDEV_LanguageTest _this, XInt32 
+    aItemNo )
+  EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemBaseValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemMessage,   XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemReceivedTime, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemCategory,  XEnum )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemUid,       XUInt32 )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemToggle,    XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemUnit,      XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemValue,     XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( OnItemLongEnterKeyActivate, void )( MenuBaseMenuView _this, XInt32 
+    aItemNo, MenuItemBase aMenuItem )
+  EW_METHOD( LoadItemHour,      XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemMinute,    XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadPoiListItemValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadPoiListItemUnit, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+EW_END_OF_METHODS( DevelopmentDEV_LanguageTest )
 
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 
    statements. */
-void PopPOP02_ConnectionError_Init( PopPOP02_ConnectionError _this, XHandle aArg );
+void DevelopmentDEV_LanguageTest_Init( DevelopmentDEV_LanguageTest _this, XHandle 
+  aArg );
 
-/* The method UpdateLayout() is invoked automatically after the size of the component 
-   has been changed. This method can be overridden and filled with logic to perform 
-   a sophisticated arrangement calculation for one or more enclosed views. In this 
-   case the parameter aSize can be used. It contains the current size of the component. 
-   Usually, all enclosed views are arranged automatically accordingly to their @Layout 
-   property. UpdateLayout() gives the derived components a chance to extend this 
-   automatism by a user defined algorithm. */
-void PopPOP02_ConnectionError_UpdateLayout( PopPOP02_ConnectionError _this, XPoint 
-  aSize );
+/* 'C' function for method : 'Development::DEV_LanguageTest.LoadItemClass()' */
+XClass DevelopmentDEV_LanguageTest_LoadItemClass( DevelopmentDEV_LanguageTest _this, 
+  XInt32 aItemNo );
 
-/* 'C' function for method : 'Pop::POP02_ConnectionError.OnShortHomeKeyActivated()' */
-void PopPOP02_ConnectionError_OnShortHomeKeyActivated( PopPOP02_ConnectionError _this );
+/* 'C' function for method : 'Development::DEV_LanguageTest.LoadItemTitle()' */
+XString DevelopmentDEV_LanguageTest_LoadItemTitle( DevelopmentDEV_LanguageTest _this, 
+  XInt32 aItemNo );
 
-/* 'C' function for method : 'Pop::POP02_ConnectionError.OnLongHomeKeyActivated()' */
-void PopPOP02_ConnectionError_OnLongHomeKeyActivated( PopPOP02_ConnectionError _this );
+/* 'C' function for method : 'Development::DEV_LanguageTest.OnItemActivate()' */
+void DevelopmentDEV_LanguageTest_OnItemActivate( DevelopmentDEV_LanguageTest _this, 
+  XInt32 aItemNo, MenuItemBase aMenuItem );
 
-/* 'C' function for method : 'Pop::POP02_ConnectionError.OnOkButtonActivatedSlot()' */
-void PopPOP02_ConnectionError_OnOkButtonActivatedSlot( PopPOP02_ConnectionError _this, 
+/* 'C' function for method : 'Development::DEV_LanguageTest.LoadItemChecked()' */
+XBool DevelopmentDEV_LanguageTest_LoadItemChecked( DevelopmentDEV_LanguageTest _this, 
+  XInt32 aItemNo );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void DevelopmentDEV_LanguageTest_OnSystemEventReceived( DevelopmentDEV_LanguageTest _this, 
   XObject sender );
 
-/* 'C' function for method : 'Pop::POP02_ConnectionError.OnDetailsButtonActivatedSlot()' */
-void PopPOP02_ConnectionError_OnDetailsButtonActivatedSlot( PopPOP02_ConnectionError _this, 
-  XObject sender );
+/* 'C' function for method : 'Development::DEV_LanguageTest.GetCurrentLanguage()' */
+void DevelopmentDEV_LanguageTest_GetCurrentLanguage( DevelopmentDEV_LanguageTest _this );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _PopPOP02_ConnectionError_H */
+#endif /* _DevelopmentDEV_LanguageTest_H */
 
 /* Embedded Wizard */

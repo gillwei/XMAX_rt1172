@@ -41,15 +41,20 @@
 #include "_MenuBaseMenuView.h"
 #include "_MenuVerticalMenu.h"
 #include "_ResourcesBitmap.h"
+#include "_ResourcesFont.h"
 #include "_ViewsBorder.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
+#include "_ViewsText.h"
 #include "Components.h"
 #include "Core.h"
 #include "DeviceInterface.h"
 #include "Effect.h"
 #include "Enum.h"
+#include "Fonts.h"
 #include "Resource.h"
+#include "Strings.h"
+#include "Views.h"
 
 /* Constant values used in this 'C' module only. */
 static const XRect _Const0000 = {{ 0, 0 }, { 480, 272 }};
@@ -59,7 +64,8 @@ static const XColor _Const0003 = { 0x00, 0x00, 0x00, 0xFF };
 static const XRect _Const0004 = {{ 0, 36 }, { 480, 272 }};
 static const XRect _Const0005 = {{ 0, 0 }, { 480, 236 }};
 static const XColor _Const0006 = { 0x00, 0x00, 0x00, 0xCD };
-static const XRect _Const0007 = {{ 195, 62 }, { 285, 152 }};
+static const XRect _Const0007 = {{ 195, 37 }, { 285, 127 }};
+static const XRect _Const0008 = {{ 10, 138 }, { 470, 200 }};
 
 /* Initializer for the class 'Components::BaseComponent' */
 void ComponentsBaseComponent__Init( ComponentsBaseComponent _this, XObject aLink, XHandle aArg )
@@ -843,6 +849,7 @@ void ComponentsDDModeMask__Init( ComponentsDDModeMask _this, XObject aLink, XHan
   /* ... then construct all embedded objects */
   ViewsRectangle__Init( &_this->DDModeBG, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->DDModeIcon, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->WarningText, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_.VMT = EW_CLASS( ComponentsDDModeMask );
@@ -854,10 +861,17 @@ void ComponentsDDModeMask__Init( ComponentsDDModeMask _this, XObject aLink, XHan
   ViewsRectangle_OnSetColor( &_this->DDModeBG, _Const0006 );
   CoreView_OnSetStackingPriority((CoreView)&_this->DDModeIcon, 0 );
   CoreRectView__OnSetBounds( &_this->DDModeIcon, _Const0007 );
+  CoreRectView__OnSetBounds( &_this->WarningText, _Const0008 );
+  ViewsText_OnSetAlignment( &_this->WarningText, ViewsTextAlignmentAlignHorzCenter 
+  | ViewsTextAlignmentAlignVertCenter );
+  ViewsText_OnSetString( &_this->WarningText, EwGetVariantOfString( &StringsDD_WARNING ));
   CoreGroup__Add( _this, ((CoreView)&_this->DDModeBG ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->DDModeIcon ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->WarningText ), 0 );
   ViewsImage_OnSetBitmap( &_this->DDModeIcon, EwLoadResource( &ResourceIconDDActive, 
   ResourcesBitmap ));
+  ViewsText_OnSetFont( &_this->WarningText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ResourcesFont ));
 }
 
 /* Re-Initializer for the class 'Components::DDModeMask' */
@@ -869,6 +883,7 @@ void ComponentsDDModeMask__ReInit( ComponentsDDModeMask _this )
   /* ... then re-construct all embedded objects */
   ViewsRectangle__ReInit( &_this->DDModeBG );
   ViewsImage__ReInit( &_this->DDModeIcon );
+  ViewsText__ReInit( &_this->WarningText );
 }
 
 /* Finalizer method for the class 'Components::DDModeMask' */
@@ -880,6 +895,7 @@ void ComponentsDDModeMask__Done( ComponentsDDModeMask _this )
   /* Finalize all embedded objects */
   ViewsRectangle__Done( &_this->DDModeBG );
   ViewsImage__Done( &_this->DDModeIcon );
+  ViewsText__Done( &_this->WarningText );
 
   /* Don't forget to deinitialize the super class ... */
   CoreGroup__Done( &_this->_.Super );

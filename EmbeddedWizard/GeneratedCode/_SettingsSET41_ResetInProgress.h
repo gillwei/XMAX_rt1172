@@ -164,6 +164,9 @@ EW_DEFINE_METHODS( SettingsSET41_ResetInProgress, ComponentsBaseMainBG )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( SettingsSET41_ResetInProgress )
 
+/* 'C' function for method : 'Settings::SET41_ResetInProgress.ReInit()' */
+void SettingsSET41_ResetInProgress_ReInit( SettingsSET41_ResetInProgress _this );
+
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 
    statements. */

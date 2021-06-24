@@ -4,6 +4,12 @@ $rect <10,10,250,50>
 $output false
 class LNC_Main : Components::BaseComponent
 {
+  $rect <250,330,450,370>
+  inherited method ReInit()
+  {
+    LNC_Base.SetItems( PreviousItem, CurrentItem, NextItem );
+  }
+
   $rect <250,290,450,330>
   inherited method Init()
   {
@@ -126,7 +132,7 @@ class LNC_Main : Components::BaseComponent
     attr Bounds = <540,0,980,350>;
   }
 
-  $rect <250,570,490,610>
+  $rect <250,610,490,650>
   slot OnCurrentItemChangedSlot
   {
     PreviousItem = LNC_RotaryPlate.PreviousItem;
@@ -136,7 +142,7 @@ class LNC_Main : Components::BaseComponent
     LNC_Base.SetItems( PreviousItem, CurrentItem, NextItem );
   }
 
-  $rect <250,450,450,490>
+  $rect <250,490,450,530>
   method Enum::LauncherItem GetInitialSelectedItem()
   {
     if( DeviceInterface::NotificationDevice.IsPhoneCallStateActive() )
@@ -164,7 +170,7 @@ class LNC_Main : Components::BaseComponent
   $rect <850,560,1050,600>
   var bool WindScreenEnabled = false;
 
-  $rect <250,490,450,530>
+  $rect <250,530,450,570>
   method Enum::LauncherItem GetNextItem( arg Enum::LauncherItem aBaseItem )
   {
     var uint32 TotalItemNum = ( uint32 )Enum::LauncherItem.TOTAL;
@@ -190,16 +196,16 @@ class LNC_Main : Components::BaseComponent
     return BaseItemNext;
   }
 
-  $rect <250,370,450,410>
+  $rect <250,410,450,450>
   var Enum::LauncherItem PreviousItem;
 
-  $rect <250,330,450,370>
+  $rect <250,370,450,410>
   var Enum::LauncherItem CurrentItem;
 
-  $rect <250,410,450,450>
+  $rect <250,450,450,490>
   var Enum::LauncherItem NextItem;
 
-  $rect <250,530,450,570>
+  $rect <250,570,450,610>
   method Enum::LauncherItem GetPreviousItem( arg Enum::LauncherItem aBaseItem )
   {
     var uint32 TotalItemNum = ( uint32 )Enum::LauncherItem.TOTAL;
@@ -411,7 +417,7 @@ class LNC_Main : Components::BaseComponent
   }
 
   // Dismiss dialogs presented from launcher
-  $rect <250,630,450,670>
+  $rect <250,670,450,710>
   method void DismissChildDialogs()
   {
     while( CountDialogs() > 0 )

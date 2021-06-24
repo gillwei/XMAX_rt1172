@@ -804,15 +804,12 @@ enum MotoConRxEvent
   item PHONE_BATTERY;
 
   $rect <10,110,210,150>
-  item PHONE_LANGUAGE;
-
-  $rect <10,160,210,200>
   item PHONE_THERMAL;
 
-  $rect <10,210,210,250>
+  $rect <10,160,210,200>
   item PHONE_HEADSET;
 
-  $rect <10,260,210,300>
+  $rect <10,210,210,250>
   item PHONE_CELL_SIGNAL_LEVEL;
 }
 
@@ -1321,7 +1318,7 @@ enum Language
   item POLISH;
 
   $rect <220,210,420,250>
-  item PORTUGUESE;
+  item PORTUGUESE_BRAZIL;
 
   $rect <220,260,420,300>
   item THAI;
@@ -1646,13 +1643,19 @@ enum SystemRxEvent
   $rect <10,460,230,500>
   item UNIT_ID_UPDATED;
 
-  $rect <10,510,230,550>
+  $rect <250,10,470,50>
   item UNIT_ID_READ_OK;
 
-  $rect <10,560,230,600>
+  $rect <250,60,470,100>
   item QRCODE_READY;
 
-  $rect <10,610,230,650>
+  $rect <250,110,470,150>
+  item LANGUAGE_CHANGED;
+
+  $rect <250,160,470,200>
+  item PHONE_LANGUAGE_RECEIVED;
+
+  $rect <250,210,470,250>
   item TOTAL;
 }
 
@@ -1785,7 +1788,10 @@ enum SystemStatus
   $rect <10,160,290,200>
   item IS_QRCODE_READY;
 
-  $rect <10,210,230,250>
+  $rect <10,210,290,250>
+  item LANGUAGE;
+
+  $rect <10,260,230,300>
   item TOTAL;
 }
 

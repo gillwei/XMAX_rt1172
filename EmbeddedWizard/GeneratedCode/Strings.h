@@ -43,7 +43,7 @@
 #endif
 
 /* This file is generated automatically.
-   Generated: 2021/06/25 11:56:37 */
+   Generated: 2021/06/28 14:19:22 */
 extern const XStringRes StringsARGUMENT_STR;
 
 /* User defined constant: 'Strings::GEN_OK' */
@@ -53,22 +53,22 @@ EW_DECLARE_CONST( StringsGEN_OK )
 EW_DECLARE_CONST( StringsGEN_CANCEL )
 
 /* User defined constant: 'Strings::GEN_YES' */
-extern const XStringRes StringsGEN_YES;
+EW_DECLARE_CONST( StringsGEN_YES )
 
 /* User defined constant: 'Strings::GEN_NO' */
-extern const XStringRes StringsGEN_NO;
+EW_DECLARE_CONST( StringsGEN_NO )
 
 /* User defined constant: 'Strings::GEN_LOW' */
-extern const XStringRes StringsGEN_LOW;
+EW_DECLARE_CONST( StringsGEN_LOW )
 
 /* User defined constant: 'Strings::GEN_LOW_ABBREVIATION' */
 extern const XStringRes StringsGEN_LOW_ABBREVIATION;
 
 /* User defined constant: 'Strings::GEN_MIDDLE' */
-extern const XStringRes StringsGEN_MIDDLE;
+EW_DECLARE_CONST( StringsGEN_MIDDLE )
 
 /* User defined constant: 'Strings::GEN_HIGH' */
-extern const XStringRes StringsGEN_HIGH;
+EW_DECLARE_CONST( StringsGEN_HIGH )
 
 /* User defined constant: 'Strings::GEN_HIGH_ABBREVIATION' */
 extern const XStringRes StringsGEN_HIGH_ABBREVIATION;
@@ -80,16 +80,16 @@ extern const XStringRes StringsGEN_HOUR_ABBREVIATION;
 extern const XStringRes StringsGEN_MINUTE_ABBREVIATION;
 
 /* User defined constant: 'Strings::GEN_RESET_QUESTION_MARK' */
-extern const XStringRes StringsGEN_RESET_QUESTION_MARK;
+EW_DECLARE_CONST( StringsGEN_RESET_QUESTION_MARK )
 
 /* User defined constant: 'Strings::GEN_BLUETOOTH' */
-extern const XStringRes StringsGEN_BLUETOOTH;
+EW_DECLARE_CONST( StringsGEN_BLUETOOTH )
 
 /* User defined constant: 'Strings::GEN_THREE_HYPHENS' */
 extern const XStringRes StringsGEN_THREE_HYPHENS;
 
 /* User defined constant: 'Strings::GEN_PLEASE_WAIT' */
-extern const XStringRes StringsGEN_PLEASE_WAIT;
+EW_DECLARE_CONST( StringsGEN_PLEASE_WAIT )
 
 /* User defined constant: 'Strings::GEN_SPEED_KM_PER_HOUR' */
 extern const XStringRes StringsGEN_SPEED_KM_PER_HOUR;
@@ -113,16 +113,16 @@ EW_DECLARE_CONST( StringsTOP01_DISCLAIMER )
 EW_DECLARE_CONST( StringsTOP01_ACCEPT )
 
 /* User defined constant: 'Strings::BRT01_TFT_DISPLAY' */
-extern const XStringRes StringsBRT01_TFT_DISPLAY;
+EW_DECLARE_CONST( StringsBRT01_TFT_DISPLAY )
 
 /* User defined constant: 'Strings::BRT01_SPEED_METER' */
-extern const XStringRes StringsBRT01_SPEED_METER;
+EW_DECLARE_CONST( StringsBRT01_SPEED_METER )
 
 /* User defined constant: 'Strings::CLK01_AUTO_ADJUSTMENT' */
-extern const XStringRes StringsCLK01_AUTO_ADJUSTMENT;
+EW_DECLARE_CONST( StringsCLK01_AUTO_ADJUSTMENT )
 
 /* User defined constant: 'Strings::CLK01_MANUAL_ADJUSTMENT' */
-extern const XStringRes StringsCLK01_MANUAL_ADJUSTMENT;
+EW_DECLARE_CONST( StringsCLK01_MANUAL_ADJUSTMENT )
 
 /* User defined constant: 'Strings::CLK02_AM' */
 extern const XStringRes StringsCLK02_AM;
@@ -131,10 +131,10 @@ extern const XStringRes StringsCLK02_AM;
 extern const XStringRes StringsCLK02_PM;
 
 /* User defined constant: 'Strings::CLK03_SET_CLOCK' */
-extern const XStringRes StringsCLK03_SET_CLOCK;
+EW_DECLARE_CONST( StringsCLK03_SET_CLOCK )
 
 /* User defined constant: 'Strings::GPW01_GRIP_WARMER' */
-extern const XStringRes StringsGPW01_GRIP_WARMER;
+EW_DECLARE_CONST( StringsGPW01_GRIP_WARMER )
 
 /* User defined constant: 'Strings::HOM03_AVG_SPEED' */
 extern const XStringRes StringsHOM03_AVG_SPEED;
@@ -179,13 +179,13 @@ extern const XStringRes StringsHOM03_REAR;
 extern const XStringRes StringsHOM03_CRUISE;
 
 /* User defined constant: 'Strings::INF01_TACHO_VISUALIZER' */
-extern const XStringRes StringsINF01_TACHO_VISUALIZER;
+EW_DECLARE_CONST( StringsINF01_TACHO_VISUALIZER )
 
 /* User defined constant: 'Strings::INF01_ECHO_VISUALIZER' */
-extern const XStringRes StringsINF01_ECHO_VISUALIZER;
+EW_DECLARE_CONST( StringsINF01_ECHO_VISUALIZER )
 
 /* User defined constant: 'Strings::INF01_SPEED_VISUALIZER' */
-extern const XStringRes StringsINF01_SPEED_VISUALIZER;
+EW_DECLARE_CONST( StringsINF01_SPEED_VISUALIZER )
 
 /* User defined constant: 'Strings::INF26_ODO' */
 extern const XStringRes StringsINF26_ODO;
@@ -200,34 +200,34 @@ extern const XStringRes StringsINF26_TRIP_2;
 extern const XStringRes StringsINF26_TRIP_F;
 
 /* User defined constant: 'Strings::LNC_METER_DISPLAY' */
-extern const XStringRes StringsLNC_METER_DISPLAY;
+EW_DECLARE_CONST( StringsLNC_METER_DISPLAY )
 
 /* User defined constant: 'Strings::LNC_ODO_TRIP' */
 extern const XStringRes StringsLNC_ODO_TRIP;
 
 /* User defined constant: 'Strings::LNC_MUSIC' */
-extern const XStringRes StringsLNC_MUSIC;
+EW_DECLARE_CONST( StringsLNC_MUSIC )
 
 /* User defined constant: 'Strings::LNC_PHONE' */
-extern const XStringRes StringsLNC_PHONE;
+EW_DECLARE_CONST( StringsLNC_PHONE )
 
 /* User defined constant: 'Strings::LNC_NAVIGATION' */
-extern const XStringRes StringsLNC_NAVIGATION;
+EW_DECLARE_CONST( StringsLNC_NAVIGATION )
 
 /* User defined constant: 'Strings::LNC_WEATHER' */
-extern const XStringRes StringsLNC_WEATHER;
+EW_DECLARE_CONST( StringsLNC_WEATHER )
 
 /* User defined constant: 'Strings::LNC_NOTIFICATION' */
-extern const XStringRes StringsLNC_NOTIFICATION;
+EW_DECLARE_CONST( StringsLNC_NOTIFICATION )
 
 /* User defined constant: 'Strings::LNC_SEAT_HEATER' */
-extern const XStringRes StringsLNC_SEAT_HEATER;
+EW_DECLARE_CONST( StringsLNC_SEAT_HEATER )
 
 /* User defined constant: 'Strings::LNC_SETTINGS' */
-extern const XStringRes StringsLNC_SETTINGS;
+EW_DECLARE_CONST( StringsLNC_SETTINGS )
 
 /* User defined constant: 'Strings::MED02_DEV_UNAVAILABLE' */
-extern const XStringRes StringsMED02_DEV_UNAVAILABLE;
+EW_DECLARE_CONST( StringsMED02_DEV_UNAVAILABLE )
 
 /* User defined constant: 'Strings::MNT01_OIL' */
 extern const XStringRes StringsMNT01_OIL;
@@ -278,34 +278,34 @@ extern const XStringRes StringsNAV01_UNKNOWN;
 extern const XStringRes StringsNAV01_SCHOOL_ZONE;
 
 /* User defined constant: 'Strings::NAV06_STOP_NAVIGATION' */
-extern const XStringRes StringsNAV06_STOP_NAVIGATION;
+EW_DECLARE_CONST( StringsNAV06_STOP_NAVIGATION )
 
 /* User defined constant: 'Strings::NAV06_SKIP_NEXT_STOP' */
-extern const XStringRes StringsNAV06_SKIP_NEXT_STOP;
+EW_DECLARE_CONST( StringsNAV06_SKIP_NEXT_STOP )
 
 /* User defined constant: 'Strings::NAV06_GO_HOME' */
-extern const XStringRes StringsNAV06_GO_HOME;
+EW_DECLARE_CONST( StringsNAV06_GO_HOME )
 
 /* User defined constant: 'Strings::NAV06_GO_TO_WORK' */
-extern const XStringRes StringsNAV06_GO_TO_WORK;
+EW_DECLARE_CONST( StringsNAV06_GO_TO_WORK )
 
 /* User defined constant: 'Strings::NAV06_FAVORITES' */
-extern const XStringRes StringsNAV06_FAVORITES;
+EW_DECLARE_CONST( StringsNAV06_FAVORITES )
 
 /* User defined constant: 'Strings::NAV06_NEARBY_GAS_STATIONS' */
-extern const XStringRes StringsNAV06_NEARBY_GAS_STATIONS;
+EW_DECLARE_CONST( StringsNAV06_NEARBY_GAS_STATIONS )
 
 /* User defined constant: 'Strings::NAV06_CHANGE_VIEW' */
-extern const XStringRes StringsNAV06_CHANGE_VIEW;
+EW_DECLARE_CONST( StringsNAV06_CHANGE_VIEW )
 
 /* User defined constant: 'Strings::NAV08_DEFAULT_VIEW' */
-extern const XStringRes StringsNAV08_DEFAULT_VIEW;
+EW_DECLARE_CONST( StringsNAV08_DEFAULT_VIEW )
 
 /* User defined constant: 'Strings::NAV08_TURN_BY_TURN' */
-extern const XStringRes StringsNAV08_TURN_BY_TURN;
+EW_DECLARE_CONST( StringsNAV08_TURN_BY_TURN )
 
 /* User defined constant: 'Strings::NAV08_TURN_LIST' */
-extern const XStringRes StringsNAV08_TURN_LIST;
+EW_DECLARE_CONST( StringsNAV08_TURN_LIST )
 
 /* User defined constant: 'Strings::NAV11_NEW_ROUTE' */
 extern const XStringRes StringsNAV11_NEW_ROUTE;
@@ -323,37 +323,37 @@ extern const XStringRes StringsOPN02_FACTORY_MODE;
 extern const XStringRes StringsOPN02_ENTER_TWICE;
 
 /* User defined constant: 'Strings::POP02_CONNECTION_ERR' */
-extern const XStringRes StringsPOP02_CONNECTION_ERR;
+EW_DECLARE_CONST( StringsPOP02_CONNECTION_ERR )
 
 /* User defined constant: 'Strings::POP02_PLEASE_CHECK' */
-extern const XStringRes StringsPOP02_PLEASE_CHECK;
+EW_DECLARE_CONST( StringsPOP02_PLEASE_CHECK )
 
 /* User defined constant: 'Strings::POP02_DETAILS' */
-extern const XStringRes StringsPOP02_DETAILS;
+EW_DECLARE_CONST( StringsPOP02_DETAILS )
 
 /* User defined constant: 'Strings::POP03_NO_HOME_LOCATION' */
-extern const XStringRes StringsPOP03_NO_HOME_LOCATION;
-
-/* User defined constant: 'Strings::POP03_NO_OFFICE_LOCATION' */
-extern const XStringRes StringsPOP03_NO_OFFICE_LOCATION;
+EW_DECLARE_CONST( StringsPOP03_NO_HOME_LOCATION )
 
 /* User defined constant: 'Strings::POP07_TROUBLE_SHOOTING' */
-extern const XStringRes StringsPOP07_TROUBLE_SHOOTING;
+EW_DECLARE_CONST( StringsPOP07_TROUBLE_SHOOTING )
 
 /* User defined constant: 'Strings::POP07_UNLOCK_PHONE' */
-extern const XStringRes StringsPOP07_UNLOCK_PHONE;
+EW_DECLARE_CONST( StringsPOP07_UNLOCK_PHONE )
 
 /* User defined constant: 'Strings::POP07_TURN_ON_BT' */
-extern const XStringRes StringsPOP07_TURN_ON_BT;
+EW_DECLARE_CONST( StringsPOP07_TURN_ON_BT )
 
 /* User defined constant: 'Strings::POP07_LAUNCH_APP' */
-extern const XStringRes StringsPOP07_LAUNCH_APP;
+EW_DECLARE_CONST( StringsPOP07_LAUNCH_APP )
 
 /* User defined constant: 'Strings::POP09_CONNECTION_FAILED' */
-extern const XStringRes StringsPOP09_CONNECTION_FAILED;
+EW_DECLARE_CONST( StringsPOP09_CONNECTION_FAILED )
+
+/* User defined constant: 'Strings::POP13_NO_OFFICE_LOCATION' */
+EW_DECLARE_CONST( StringsPOP13_NO_OFFICE_LOCATION )
 
 /* User defined constant: 'Strings::POP17_APP_INIT_SETTING_FAILED' */
-extern const XStringRes StringsPOP17_APP_INIT_SETTING_FAILED;
+EW_DECLARE_CONST( StringsPOP17_APP_INIT_SETTING_FAILED )
 
 /* User defined constant: 'Strings::POP18_POI_LOADING_FAILED' */
 extern const XStringRes StringsPOP18_POI_LOADING_FAILED;
@@ -365,67 +365,67 @@ extern const XStringRes StringsPOP18_NO_FAVORITE_PLACE;
 extern const XStringRes StringsPOP18_NO_GAS_STATION;
 
 /* User defined constant: 'Strings::SET01_TRACTION_CONTROL' */
-extern const XStringRes StringsSET01_TRACTION_CONTROL;
+EW_DECLARE_CONST( StringsSET01_TRACTION_CONTROL )
 
 /* User defined constant: 'Strings::SET01_CONNECTION' */
-extern const XStringRes StringsSET01_CONNECTION;
+EW_DECLARE_CONST( StringsSET01_CONNECTION )
 
 /* User defined constant: 'Strings::SET01_CLOCK' */
-extern const XStringRes StringsSET01_CLOCK;
+EW_DECLARE_CONST( StringsSET01_CLOCK )
 
 /* User defined constant: 'Strings::SET01_BRIGHTNESS' */
-extern const XStringRes StringsSET01_BRIGHTNESS;
+EW_DECLARE_CONST( StringsSET01_BRIGHTNESS )
 
 /* User defined constant: 'Strings::SET01_UNIT' */
-extern const XStringRes StringsSET01_UNIT;
+EW_DECLARE_CONST( StringsSET01_UNIT )
 
 /* User defined constant: 'Strings::SET01_GRIP_WARMER_SETTINGS' */
-extern const XStringRes StringsSET01_GRIP_WARMER_SETTINGS;
+EW_DECLARE_CONST( StringsSET01_GRIP_WARMER_SETTINGS )
 
 /* User defined constant: 'Strings::SET01_SEAT_HEATER_SETTINGS' */
-extern const XStringRes StringsSET01_SEAT_HEATER_SETTINGS;
+EW_DECLARE_CONST( StringsSET01_SEAT_HEATER_SETTINGS )
 
 /* User defined constant: 'Strings::SET01_SYSTEM_INFO' */
-extern const XStringRes StringsSET01_SYSTEM_INFO;
+EW_DECLARE_CONST( StringsSET01_SYSTEM_INFO )
 
 /* User defined constant: 'Strings::SET01_LEGAL_INFO' */
-extern const XStringRes StringsSET01_LEGAL_INFO;
+EW_DECLARE_CONST( StringsSET01_LEGAL_INFO )
 
 /* User defined constant: 'Strings::SET01_INFO_RESET' */
-extern const XStringRes StringsSET01_INFO_RESET;
+EW_DECLARE_CONST( StringsSET01_INFO_RESET )
 
 /* User defined constant: 'Strings::SET03_Y_CONNECT_APP_PAIRING' */
 extern const XStringRes StringsSET03_Y_CONNECT_APP_PAIRING;
 
 /* User defined constant: 'Strings::SET04_DISCOVERY_MODE' */
-extern const XStringRes StringsSET04_DISCOVERY_MODE;
+EW_DECLARE_CONST( StringsSET04_DISCOVERY_MODE )
 
 /* User defined constant: 'Strings::SET04_PAIRED_DEVICES' */
-extern const XStringRes StringsSET04_PAIRED_DEVICES;
+EW_DECLARE_CONST( StringsSET04_PAIRED_DEVICES )
 
 /* User defined constant: 'Strings::SET04_BT_AUTO_CONNECT' */
-extern const XStringRes StringsSET04_BT_AUTO_CONNECT;
+EW_DECLARE_CONST( StringsSET04_BT_AUTO_CONNECT )
 
 /* User defined constant: 'Strings::SET05_MAX_DEVICES' */
-extern const XStringRes StringsSET05_MAX_DEVICES;
+EW_DECLARE_CONST( StringsSET05_MAX_DEVICES )
 
 /* User defined constant: 'Strings::SET06_DISCOVERABLE' */
-extern const XStringRes StringsSET06_DISCOVERABLE;
+EW_DECLARE_CONST( StringsSET06_DISCOVERABLE )
 
 /* User defined constant: 'Strings::SET06_NAME' */
-extern const XStringRes StringsSET06_NAME;
+EW_DECLARE_CONST( StringsSET06_NAME )
 
 /* User defined constant: 'Strings::SET06_TIME_LEFT' */
-extern const XStringRes StringsSET06_TIME_LEFT;
+EW_DECLARE_CONST( StringsSET06_TIME_LEFT )
 
 /* User defined constant: 'Strings::SET07_PAIRING_FAILED' */
-extern const XStringRes StringsSET07_PAIRING_FAILED;
+EW_DECLARE_CONST( StringsSET07_PAIRING_FAILED )
 
 /* User defined constant: 'Strings::SET08_PAIR_WITH' */
-extern const XStringRes StringsSET08_PAIR_WITH;
+EW_DECLARE_CONST( StringsSET08_PAIR_WITH )
 
 /* User defined constant: 'Strings::SET08_PASSKEY' */
-extern const XStringRes StringsSET08_PASSKEY;
+EW_DECLARE_CONST( StringsSET08_PASSKEY )
 
 /* User defined constant: 'Strings::SET09_BT_CONNECTED' */
 extern const XStringRes StringsSET09_BT_CONNECTED;
@@ -443,10 +443,10 @@ extern const XStringRes StringsSET18_DELETE_PAIRING_RECORD;
 extern const XStringRes StringsSET19_DELETE_PAIRING;
 
 /* User defined constant: 'Strings::SET19_CONNECT' */
-extern const XStringRes StringsSET19_CONNECT;
+EW_DECLARE_CONST( StringsSET19_CONNECT )
 
 /* User defined constant: 'Strings::SET19_DISCONNECT' */
-extern const XStringRes StringsSET19_DISCONNECT;
+EW_DECLARE_CONST( StringsSET19_DISCONNECT )
 
 /* User defined constant: 'Strings::SET20_COMPLETE_BT_PAIRING_FIRST' */
 extern const XStringRes StringsSET20_COMPLETE_BT_PAIRING_FIRST;
@@ -454,14 +454,11 @@ extern const XStringRes StringsSET20_COMPLETE_BT_PAIRING_FIRST;
 /* User defined constant: 'Strings::SET21_BLE_ALREADY_CONNECTED' */
 extern const XStringRes StringsSET21_BLE_ALREADY_CONNECTED;
 
-/* User defined constant: 'Strings::SET22_DEVICE_NAME' */
-extern const XStringRes StringsSET22_DEVICE_NAME;
-
 /* User defined constant: 'Strings::SET22_WAIT_APP_CONNECTION' */
-extern const XStringRes StringsSET22_WAIT_APP_CONNECTION;
+EW_DECLARE_CONST( StringsSET22_WAIT_APP_CONNECTION )
 
 /* User defined constant: 'Strings::SET23_PAIRING_FAILED' */
-extern const XStringRes StringsSET23_PAIRING_FAILED;
+EW_DECLARE_CONST( StringsSET23_PAIRING_FAILED )
 
 /* User defined constant: 'Strings::SET24_CHECK_BT_PAIRING_RECORD' */
 extern const XStringRes StringsSET24_CHECK_BT_PAIRING_RECORD;
@@ -470,67 +467,67 @@ extern const XStringRes StringsSET24_CHECK_BT_PAIRING_RECORD;
 extern const XStringRes StringsSET25_PIN;
 
 /* User defined constant: 'Strings::SET26_PAIRING_SUCCESSFUL' */
-extern const XStringRes StringsSET26_PAIRING_SUCCESSFUL;
+EW_DECLARE_CONST( StringsSET26_PAIRING_SUCCESSFUL )
 
 /* User defined constant: 'Strings::SET27_UPDATE_SYSTEM' */
-extern const XStringRes StringsSET27_UPDATE_SYSTEM;
+EW_DECLARE_CONST( StringsSET27_UPDATE_SYSTEM )
 
 /* User defined constant: 'Strings::SET28_ESN' */
-extern const XStringRes StringsSET28_ESN;
+EW_DECLARE_CONST( StringsSET28_ESN )
 
 /* User defined constant: 'Strings::SET28_SW_VERSION' */
-extern const XStringRes StringsSET28_SW_VERSION;
+EW_DECLARE_CONST( StringsSET28_SW_VERSION )
 
 /* User defined constant: 'Strings::SET28_UNIT_ID' */
-extern const XStringRes StringsSET28_UNIT_ID;
+EW_DECLARE_CONST( StringsSET28_UNIT_ID )
 
 /* User defined constant: 'Strings::SET28_SW_UPDATE' */
-extern const XStringRes StringsSET28_SW_UPDATE;
+EW_DECLARE_CONST( StringsSET28_SW_UPDATE )
 
 /* User defined constant: 'Strings::SET29_DRIVING_NO_SW_UPDATE' */
-extern const XStringRes StringsSET29_DRIVING_NO_SW_UPDATE;
+EW_DECLARE_CONST( StringsSET29_DRIVING_NO_SW_UPDATE )
 
 /* User defined constant: 'Strings::SET35_LICENSE' */
-extern const XStringRes StringsSET35_LICENSE;
+EW_DECLARE_CONST( StringsSET35_LICENSE )
 
 /* User defined constant: 'Strings::SET38_RESET_TO_FACTORY' */
-extern const XStringRes StringsSET38_RESET_TO_FACTORY;
+EW_DECLARE_CONST( StringsSET38_RESET_TO_FACTORY )
 
 /* User defined constant: 'Strings::SET39_DELETE_PAIRING' */
-extern const XStringRes StringsSET39_DELETE_PAIRING;
+EW_DECLARE_CONST( StringsSET39_DELETE_PAIRING )
 
 /* User defined constant: 'Strings::SET40_CANNOT_EXECUTE' */
-extern const XStringRes StringsSET40_CANNOT_EXECUTE;
+EW_DECLARE_CONST( StringsSET40_CANNOT_EXECUTE )
 
 /* User defined constant: 'Strings::SET42_RESET_COMPLETE' */
-extern const XStringRes StringsSET42_RESET_COMPLETE;
+EW_DECLARE_CONST( StringsSET42_RESET_COMPLETE )
 
 /* User defined constant: 'Strings::SET43_TRIP_MILEAGE_RESET' */
-extern const XStringRes StringsSET43_TRIP_MILEAGE_RESET;
+EW_DECLARE_CONST( StringsSET43_TRIP_MILEAGE_RESET )
 
 /* User defined constant: 'Strings::SET43_MAINTENANCE_RESET' */
-extern const XStringRes StringsSET43_MAINTENANCE_RESET;
+EW_DECLARE_CONST( StringsSET43_MAINTENANCE_RESET )
 
 /* User defined constant: 'Strings::SET43_VEHICLE_INFO' */
-extern const XStringRes StringsSET43_VEHICLE_INFO;
+EW_DECLARE_CONST( StringsSET43_VEHICLE_INFO )
 
 /* User defined constant: 'Strings::SET43_ALL_RESET' */
-extern const XStringRes StringsSET43_ALL_RESET;
+EW_DECLARE_CONST( StringsSET43_ALL_RESET )
 
 /* User defined constant: 'Strings::TCS01_TCS' */
-extern const XStringRes StringsTCS01_TCS;
+EW_DECLARE_CONST( StringsTCS01_TCS )
 
 /* User defined constant: 'Strings::UNT01_UNIT_MILEAGE' */
-extern const XStringRes StringsUNT01_UNIT_MILEAGE;
+EW_DECLARE_CONST( StringsUNT01_UNIT_MILEAGE )
 
 /* User defined constant: 'Strings::UNT01_UNIT_FUEL' */
-extern const XStringRes StringsUNT01_UNIT_FUEL;
+EW_DECLARE_CONST( StringsUNT01_UNIT_FUEL )
 
 /* User defined constant: 'Strings::UNT01_UNIT_PRESSURE' */
-extern const XStringRes StringsUNT01_UNIT_PRESSURE;
+EW_DECLARE_CONST( StringsUNT01_UNIT_PRESSURE )
 
 /* User defined constant: 'Strings::UNT01_UNIT_TEMPERATURE' */
-extern const XStringRes StringsUNT01_UNIT_TEMPERATURE;
+EW_DECLARE_CONST( StringsUNT01_UNIT_TEMPERATURE )
 
 /* User defined constant: 'Strings::UNT02_UNIT_MILEAGE_KILOMETER' */
 extern const XStringRes StringsUNT02_UNIT_MILEAGE_KILOMETER;
@@ -562,11 +559,35 @@ extern const XStringRes StringsUNT05_UNIT_TEMPERATURE_C;
 /* User defined constant: 'Strings::UNT05_UNIT_TEMPERATURE_F' */
 extern const XStringRes StringsUNT05_UNIT_TEMPERATURE_F;
 
+/* User defined constant: 'Strings::WEA01_MONDAY' */
+EW_DECLARE_CONST( StringsWEA01_MONDAY )
+
+/* User defined constant: 'Strings::WEA01_TUESDAY' */
+EW_DECLARE_CONST( StringsWEA01_TUESDAY )
+
+/* User defined constant: 'Strings::WEA01_WEDNESDAY' */
+EW_DECLARE_CONST( StringsWEA01_WEDNESDAY )
+
+/* User defined constant: 'Strings::WEA01_THURSDAY' */
+EW_DECLARE_CONST( StringsWEA01_THURSDAY )
+
+/* User defined constant: 'Strings::WEA01_FRIDAY' */
+EW_DECLARE_CONST( StringsWEA01_FRIDAY )
+
+/* User defined constant: 'Strings::WEA01_SATURDAY' */
+EW_DECLARE_CONST( StringsWEA01_SATURDAY )
+
+/* User defined constant: 'Strings::WEA01_SUNDAY' */
+EW_DECLARE_CONST( StringsWEA01_SUNDAY )
+
 /* User defined constant: 'Strings::WSC01_WIND_SCREEN' */
-extern const XStringRes StringsWSC01_WIND_SCREEN;
+EW_DECLARE_CONST( StringsWSC01_WIND_SCREEN )
 
 /* User defined constant: 'Strings::YDT01_MESSAGE' */
-extern const XStringRes StringsYDT01_MESSAGE;
+EW_DECLARE_CONST( StringsYDT01_MESSAGE )
+
+/* User defined constant: 'Strings::DD_WARNING' */
+EW_DECLARE_CONST( StringsDD_WARNING )
 
 /* User defined constant: 'Strings::DEV_TEST_CHINESE' */
 extern const XStringRes StringsDEV_TEST_CHINESE;

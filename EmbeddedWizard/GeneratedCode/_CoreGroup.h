@@ -766,6 +766,11 @@ void CoreGroup_UpdateViewState( CoreGroup _this, XSet aState );
 /* Wrapper function for the virtual method : 'Core::Group.UpdateViewState()' */
 void CoreGroup__UpdateViewState( void* _this, XSet aState );
 
+/* The method InvalidateLayout() declares the state of this component as changed, 
+   so its layout possibly doesn't reflect its current state anymore. To update the 
+   layout, the framework will invoke the @UpdateLayout() method. */
+void CoreGroup_InvalidateLayout( CoreGroup _this );
+
 /* The method InvalidateViewState() declares the state of this component as changed, 
    so its visual aspect possibly doesn't reflect its current state anymore. To update 
    the visual aspect, the framework will invoke the @UpdateViewState() method. */

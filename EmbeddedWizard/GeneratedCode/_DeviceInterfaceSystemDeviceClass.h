@@ -307,6 +307,10 @@ void DeviceInterfaceSystemDeviceClass_SendSystemCommand( DeviceInterfaceSystemDe
 XInt32 DeviceInterfaceSystemDeviceClass_GetSystemStatus( DeviceInterfaceSystemDeviceClass _this, 
   XEnum aStatusType );
 
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.ChangeLanguage()' */
+void DeviceInterfaceSystemDeviceClass_ChangeLanguage( DeviceInterfaceSystemDeviceClass _this, 
+  XEnum aLanguage );
+
 #ifdef __cplusplus
   }
 #endif

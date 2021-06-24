@@ -102,9 +102,7 @@
 
 /* Deklaration of class : 'Settings::SET22_BleAdvertising' */
 EW_DEFINE_FIELDS( SettingsSET22_BleAdvertising, ComponentsBaseMainBG )
-  EW_OBJECT  ( DeviceNameText,  ViewsText )
   EW_OBJECT  ( WaitText,        ViewsText )
-  EW_OBJECT  ( LocalDeviceNameText, ViewsText )
   EW_OBJECT  ( Image,           ViewsImage )
   EW_OBJECT  ( BlePairingStateChangedEventHandler, CoreSystemEventHandler )
 EW_END_OF_FIELDS( SettingsSET22_BleAdvertising )
@@ -166,6 +164,9 @@ EW_DEFINE_METHODS( SettingsSET22_BleAdvertising, ComponentsBaseMainBG )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( SettingsSET22_BleAdvertising )
 
+/* 'C' function for method : 'Settings::SET22_BleAdvertising.ReInit()' */
+void SettingsSET22_BleAdvertising_ReInit( SettingsSET22_BleAdvertising _this );
+
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 
    statements. */
@@ -182,6 +183,9 @@ void SettingsSET22_BleAdvertising_OnLongHomeKeyActivated( SettingsSET22_BleAdver
    receives an event. */
 void SettingsSET22_BleAdvertising_OnBlePairingStateChangedSlot( SettingsSET22_BleAdvertising _this, 
   XObject sender );
+
+/* 'C' function for method : 'Settings::SET22_BleAdvertising.DisplayString()' */
+void SettingsSET22_BleAdvertising_DisplayString( SettingsSET22_BleAdvertising _this );
 
 #ifdef __cplusplus
   }

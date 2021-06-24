@@ -114,7 +114,6 @@
 
 /* Deklaration of class : 'Settings::SET03_ConnectionSettingMenu' */
 EW_DEFINE_FIELDS( SettingsSET03_ConnectionSettingMenu, MenuBaseMenuView )
-  EW_ARRAY   ( ItemTitleArray,  XString, [2])
 EW_END_OF_FIELDS( SettingsSET03_ConnectionSettingMenu )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET03_ConnectionSettingMenu' */

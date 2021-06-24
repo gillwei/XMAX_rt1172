@@ -1449,7 +1449,7 @@ class EcoMeterChart : Core::Group
     {
       if( Record.Value > 2.0 )
       {
-        Record.Value = 2.0;  
+        Record.Value = 2.0;
       }
 
       var int32 dist = (int32)( 5.6*( Record.Value*10 ) ); // 5.6 is the difference between each bar's height. 118(scale's height)/ 21(0.0~2.0) = 5.6
@@ -1457,7 +1457,7 @@ class EcoMeterChart : Core::Group
       if (( pure DotFrame != null ) )
       {
         EcoUnit = new Home::EcoMeterComponent;
-       
+
         EcoUnit.Bounds = rect(BarPos.x1,BarPos.y1 - dist,BarPos.x2,BarPos.y2);
         Add( EcoUnit, 0 );
       }

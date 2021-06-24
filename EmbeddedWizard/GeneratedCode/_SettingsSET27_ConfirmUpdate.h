@@ -166,6 +166,9 @@ EW_DEFINE_METHODS( SettingsSET27_ConfirmUpdate, ComponentsBaseMainBG )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( SettingsSET27_ConfirmUpdate )
 
+/* 'C' function for method : 'Settings::SET27_ConfirmUpdate.ReInit()' */
+void SettingsSET27_ConfirmUpdate_ReInit( SettingsSET27_ConfirmUpdate _this );
+
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 
    statements. */

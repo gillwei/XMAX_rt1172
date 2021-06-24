@@ -853,8 +853,8 @@ void ClockCLK01_ClockSettingMenu__Init( ClockCLK01_ClockSettingMenu _this, XObje
   _this->Super2.SlideOutEffectEnabled = 1;
   ComponentsBaseComponent__OnSetDDModeEnabled( &_this->Super1.Menu, 1 );
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 2 );
-  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &StringsCLK01_AUTO_ADJUSTMENT ));
-  _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &StringsCLK01_MANUAL_ADJUSTMENT ));
+  _this->ItemTitleArray[ 0 ] = EwShareString( EwGetVariantOfString( &StringsCLK01_AUTO_ADJUSTMENT ));
+  _this->ItemTitleArray[ 1 ] = EwShareString( EwGetVariantOfString( &StringsCLK01_MANUAL_ADJUSTMENT ));
   _this->ItemClassArray[ 0 ] = EW_CLASS( MenuItemCheckbox );
   _this->ItemClassArray[ 1 ] = EW_CLASS( MenuItemBase );
 
@@ -1108,7 +1108,7 @@ void ClockCLK03_SetClock__Init( ClockCLK03_SetClock _this, XObject aLink, XHandl
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
   CoreRectView__OnSetBounds( &_this->Title, _Const0015 );
-  ViewsText_OnSetString( &_this->Title, EwLoadString( &StringsCLK03_SET_CLOCK ));
+  ViewsText_OnSetString( &_this->Title, EwGetVariantOfString( &StringsCLK03_SET_CLOCK ));
   CoreRectView__OnSetBounds( &_this->DayText, _Const0016 );
   ViewsText_OnSetAlignment( &_this->DayText, ViewsTextAlignmentAlignHorzRight | 
   ViewsTextAlignmentAlignVertCenter );
@@ -1199,6 +1199,9 @@ void ClockCLK03_SetClock__ReInit( ClockCLK03_SetClock _this )
   ViewsText__ReInit( &_this->MinuteText );
   ViewsText__ReInit( &_this->Colon );
   MenuUpDownPushButtonSet__ReInit( &_this->UpDownPushButtonSet );
+
+  /* Call the user defined re-constructor of the class */
+  ClockCLK03_SetClock_ReInit( _this );
 }
 
 /* Finalizer method for the class 'Clock::CLK03_SetClock' */
@@ -1222,6 +1225,16 @@ void ClockCLK03_SetClock__Done( ClockCLK03_SetClock _this )
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseMainBG__Done( &_this->_.Super );
+}
+
+/* 'C' function for method : 'Clock::CLK03_SetClock.ReInit()' */
+void ClockCLK03_SetClock_ReInit( ClockCLK03_SetClock _this )
+{
+  ViewsText_OnSetString( &_this->Title, EwGetVariantOfString( &StringsCLK03_SET_CLOCK ));
+  MenuUpDownPushButtonSet_OnSetUpButtonTitle( &_this->UpDownPushButtonSet, EwGetVariantOfString( 
+  &StringsGEN_CANCEL ));
+  MenuUpDownPushButtonSet_OnSetDownButtonTitle( &_this->UpDownPushButtonSet, EwGetVariantOfString( 
+  &StringsGEN_OK ));
 }
 
 /* 'C' function for method : 'Clock::CLK03_SetClock.OnShortHomeKeyActivated()' */

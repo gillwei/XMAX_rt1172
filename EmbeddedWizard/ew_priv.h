@@ -22,7 +22,7 @@ extern "C" {
 #include "BC_motocon_pub_type.h"
 #include "NTF_pub.h"
 
-// the last page in EEPROM inclues
+// the last page in EEPROM includes
 // home group index (1,2,3): 2 bits
 // navigation setting (0,1,2): 2 bits
 // meter setting (0,1,2,3): 4 bits
@@ -40,8 +40,15 @@ typedef struct
     key_state   state;
     } ew_key_event;
 
+typedef enum
+    {
+    LANGUAGE_SRC_PRIORITY_EEPROM,
+    LANGUAGE_SRC_PRIORITY_PHONE
+    } language_src_prority_e;
+
 void ew_system_int( void );
 void ew_start_ota( void );
+void ew_system_set_language( const language_src_prority_e lang_src_prority, const EnumLanguage language );
 
 void ew_device_interface_init( void );
 void ew_device_interface_deinit( void );

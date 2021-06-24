@@ -1428,6 +1428,12 @@ $rect <460,10,660,50>
 $output false
 class BaseMenuView : Components::BaseMainBG
 {
+  $rect <10,390,210,430>
+  inherited method ReInit()
+  {
+    Menu.InvalidateItems( 0, Menu.NoOfItems - 1 );
+  }
+
   $rect <10,290,210,330>
   inherited property Bounds = <0,0,480,272>;
 

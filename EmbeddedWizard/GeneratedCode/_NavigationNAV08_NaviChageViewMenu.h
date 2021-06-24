@@ -115,7 +115,6 @@
 /* Deklaration of class : 'Navigation::NAV08_NaviChageViewMenu' */
 EW_DEFINE_FIELDS( NavigationNAV08_NaviChageViewMenu, MenuBaseMenuView )
   EW_OBJECT  ( CheckMarkUpdateTimer, CoreTimer )
-  EW_ARRAY   ( ItemTitleArray,  XString, [3])
   EW_VARIABLE( NaviScreenIdx,   XInt32 )
 EW_END_OF_FIELDS( NavigationNAV08_NaviChageViewMenu )
 

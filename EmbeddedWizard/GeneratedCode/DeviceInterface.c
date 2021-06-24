@@ -51,34 +51,36 @@
 /* Compressed strings for the language 'Default'. */
 EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
-  0x00000234, /* ratio 53.90 % */
+  0x00000252, /* ratio 52.53 % */
   0xB8002500, 0x000A6452, 0x00C2003A, 0x80107390, 0x16750010, 0x20037002, 0x540044C9,
   0x30019400, 0x000021A7, 0x04160619, 0x1BC00680, 0x421C7700, 0x22D14894, 0x3B1B8CC5,
-  0x91A29422, 0x0D364AE3, 0xF1000075, 0x9105C011, 0x4C364C4E, 0x800CC003, 0x1001183C,
-  0xE3738845, 0x2F099210, 0x0649A99E, 0x1F9E4E80, 0x8A150031, 0xA451A890, 0xB5762441,
-  0x4969F089, 0x6EA71485, 0xE7B57AAC, 0x4F41824F, 0x200AFD8E, 0x2B314E2C, 0x1B3000DB,
-  0xAB552D35, 0x10427B3B, 0x4E000459, 0xAE6C7085, 0xEF544A4D, 0x1B1FB6C6, 0x92B22488,
-  0x27B1C2A1, 0xA0064229, 0x8B93E095, 0x7C223706, 0x68A23388, 0x16A172A1, 0x6F10A8A6,
-  0x2B1FC0D3, 0xF5ED4D6C, 0x46844AA8, 0x88300206, 0x8ECAF2F0, 0x7C88199B, 0x00251B88,
-  0x6E19352B, 0x687B30F6, 0xA050DB51, 0x54F9AE66, 0xBC9C4E21, 0x0A7422A3, 0xB5002D15,
-  0xA47EAA00, 0x6DAE7CD0, 0x02C94A26, 0x712002A8, 0x3F8BDF55, 0x9E9F287E, 0xD392F46E,
-  0x7C375BB9, 0x0069685C, 0x9DD5ED8E, 0xD4F57F54, 0x00004053, 0x00000000
+  0x91A29422, 0x0D364AE3, 0xF1000075, 0x9103C011, 0xBC264843, 0x9326A678, 0xEA8B14A1,
+  0x82F1F9E4, 0x1B262748, 0x066001A6, 0x008C1E40, 0xB9C422A6, 0x85496831, 0x01926B49,
+  0x8627B4B0, 0x4E1151A7, 0x88357AAD, 0x1136B544, 0xA00A457A, 0x65B1C6E8, 0x093DA29B,
+  0xB7002D97, 0x6CACC538, 0xD82E6003, 0xEEC962BA, 0x644109EC, 0x15380011, 0x1779B1C2,
+  0x1BC254EB, 0x206802F3, 0x864AC892, 0xA49EE10A, 0xC12CF9A8, 0x6E0D1727, 0x6710F844,
+  0xF951D5C4, 0x514C7D0A, 0x8BAE60A1, 0x2BD8563F, 0x9555AA95, 0x040C8D08, 0xE8611060,
+  0x33351D95, 0x3830F910, 0x6A56004A, 0x81ECD432, 0x50DFDF77, 0x19AE8E84, 0x9C4E2154,
+  0xEC2287C5, 0x5DB0F42A, 0x523F6300, 0xF7D59EB0, 0x6553A3D5, 0x6002A802, 0x95E3D8F2,
+  0xBF607E3F, 0x8BF6BB16, 0x190779E4, 0x06B95174, 0x95856600, 0x3D625447, 0x001014F5,
+  0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
 static const XStringRes _Const0000 = { _StringsDefault0, 0x0002 };
 static const XStringRes _Const0001 = { _StringsDefault0, 0x0014 };
 static const XStringRes _Const0002 = { _StringsDefault0, 0x002D };
-static const XStringRes _Const0003 = { _StringsDefault0, 0x0044 };
-static const XStringRes _Const0004 = { _StringsDefault0, 0x005C };
-static const XStringRes _Const0005 = { _StringsDefault0, 0x0073 };
-static const XStringRes _Const0006 = { _StringsDefault0, 0x0083 };
-static const XStringRes _Const0007 = { _StringsDefault0, 0x0090 };
-static const XStringRes _Const0008 = { _StringsDefault0, 0x00A8 };
-static const XStringRes _Const0009 = { _StringsDefault0, 0x00BD };
-static const XStringRes _Const000A = { _StringsDefault0, 0x00C9 };
-static const XStringRes _Const000B = { _StringsDefault0, 0x00E7 };
-static const XStringRes _Const000C = { _StringsDefault0, 0x00FB };
+static const XStringRes _Const0003 = { _StringsDefault0, 0x003C };
+static const XStringRes _Const0004 = { _StringsDefault0, 0x0053 };
+static const XStringRes _Const0005 = { _StringsDefault0, 0x006B };
+static const XStringRes _Const0006 = { _StringsDefault0, 0x0082 };
+static const XStringRes _Const0007 = { _StringsDefault0, 0x0092 };
+static const XStringRes _Const0008 = { _StringsDefault0, 0x009F };
+static const XStringRes _Const0009 = { _StringsDefault0, 0x00B7 };
+static const XStringRes _Const000A = { _StringsDefault0, 0x00CC };
+static const XStringRes _Const000B = { _StringsDefault0, 0x00D8 };
+static const XStringRes _Const000C = { _StringsDefault0, 0x00F6 };
+static const XStringRes _Const000D = { _StringsDefault0, 0x010A };
 
 /* User defined inline code: 'DeviceInterface::Inline' */
 #include <stddef.h>
@@ -891,6 +893,94 @@ XInt32 DeviceInterfaceSystemDeviceClass_GetSystemStatus( DeviceInterfaceSystemDe
   Status = 0;
   Status = ew_system_get_status( aStatusType );
   return Status;
+}
+
+/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.ChangeLanguage()' */
+void DeviceInterfaceSystemDeviceClass_ChangeLanguage( DeviceInterfaceSystemDeviceClass _this, 
+  XEnum aLanguage )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  EwTrace( "%s%e", EwLoadString( &_Const0002 ), aLanguage );
+
+  switch ( aLanguage )
+  {
+    case EnumLanguageENGLISH :
+      EwSetLanguage( Default );
+    break;
+
+    case EnumLanguageFRENCH :
+      EwSetLanguage( French );
+    break;
+
+    case EnumLanguageGERMAN :
+      EwSetLanguage( German );
+    break;
+
+    case EnumLanguageITALIAN :
+      EwSetLanguage( Italian );
+    break;
+
+    case EnumLanguageJAPANESE :
+      EwSetLanguage( Japanese );
+    break;
+
+    case EnumLanguageSPANISH :
+      EwSetLanguage( Spanish );
+    break;
+
+    case EnumLanguageTRADITIONAL_CHINESE :
+      EwSetLanguage( TraditionalChinese );
+    break;
+
+    case EnumLanguageSIMPLIFIED_CHINESE :
+      EwSetLanguage( SimplifiedChinese );
+    break;
+
+    case EnumLanguageGREEK :
+      EwSetLanguage( Greek );
+    break;
+
+    case EnumLanguageFINNISH :
+      EwSetLanguage( Finnish );
+    break;
+
+    case EnumLanguageHINDI :
+      EwSetLanguage( Hindi );
+    break;
+
+    case EnumLanguageINDONESIAN :
+      EwSetLanguage( Indonesian );
+    break;
+
+    case EnumLanguagePOLISH :
+      EwSetLanguage( Polish );
+    break;
+
+    case EnumLanguagePORTUGUESE_BRAZIL :
+      EwSetLanguage( PortugueseBrazil );
+    break;
+
+    case EnumLanguageTHAI :
+      EwSetLanguage( Thai );
+    break;
+
+    case EnumLanguageVIETNAMESE :
+      EwSetLanguage( Vietnamese );
+    break;
+
+    case EnumLanguageKOREAN :
+      EwSetLanguage( Korean );
+    break;
+
+    case EnumLanguageMALAY :
+      EwSetLanguage( Malay );
+    break;
+
+    default : 
+      EwSetLanguage( Default );
+  }
 }
 
 /* Variants derived from the class : 'DeviceInterface::SystemDeviceClass' */
@@ -1779,7 +1869,7 @@ void DeviceInterfaceMediaManagerDeviceClass_SendRemoteCommand( DeviceInterfaceMe
 void DeviceInterfaceMediaManagerDeviceClass_NotifyTitleChanged( DeviceInterfaceMediaManagerDeviceClass _this, 
   XString aTitle )
 {
-  EwTrace( "%s", EwConcatString( EwLoadString( &_Const0002 ), aTitle ));
+  EwTrace( "%s", EwConcatString( EwLoadString( &_Const0003 ), aTitle ));
   _this->IsTitleReceived = 1;
   DeviceInterfaceMediaManagerDeviceClass_OnSetTitle( _this, aTitle );
 }
@@ -1796,7 +1886,7 @@ void DeviceInterfaceMediaManagerDeviceClass__NotifyTitleChanged( void* _this, XS
 void DeviceInterfaceMediaManagerDeviceClass_NotifyArtistChanged( DeviceInterfaceMediaManagerDeviceClass _this, 
   XString aArtist )
 {
-  EwTrace( "%s", EwConcatString( EwLoadString( &_Const0003 ), aArtist ));
+  EwTrace( "%s", EwConcatString( EwLoadString( &_Const0004 ), aArtist ));
   _this->IsArtistReceived = 1;
   DeviceInterfaceMediaManagerDeviceClass_OnSetArtist( _this, aArtist );
 }
@@ -1813,7 +1903,7 @@ void DeviceInterfaceMediaManagerDeviceClass__NotifyArtistChanged( void* _this, X
 void DeviceInterfaceMediaManagerDeviceClass_NotifyAlbumChanged( DeviceInterfaceMediaManagerDeviceClass _this, 
   XString aAlbum )
 {
-  EwTrace( "%s", EwConcatString( EwLoadString( &_Const0004 ), aAlbum ));
+  EwTrace( "%s", EwConcatString( EwLoadString( &_Const0005 ), aAlbum ));
   _this->IsAlbumReceived = 1;
   DeviceInterfaceMediaManagerDeviceClass_OnSetAlbum( _this, aAlbum );
 }
@@ -1883,8 +1973,8 @@ void DeviceInterfaceMediaManagerDeviceClass_GetTrackInfo( DeviceInterfaceMediaMa
 void DeviceInterfaceMediaManagerDeviceClass_NotifyPlayBackTimeChanged( DeviceInterfaceMediaManagerDeviceClass _this, 
   XInt32 aElapsedTimeSec, XInt32 aDurationTimeSec )
 {
-  EwTrace( "%s%i", EwLoadString( &_Const0005 ), aElapsedTimeSec );
-  EwTrace( "%s%i", EwLoadString( &_Const0006 ), aDurationTimeSec );
+  EwTrace( "%s%i", EwLoadString( &_Const0006 ), aElapsedTimeSec );
+  EwTrace( "%s%i", EwLoadString( &_Const0007 ), aDurationTimeSec );
   _this->ElapsedTimeSec = aElapsedTimeSec;
   _this->DurationTimeSec = aDurationTimeSec;
   CoreSystemEvent_Trigger( &_this->NotifyPlayBackTimeChangedSystemEvent, 0, 0 );
@@ -2115,7 +2205,7 @@ void DeviceInterfaceBluetoothDeviceClass_OnSetDiscoverable( DeviceInterfaceBluet
 void DeviceInterfaceBluetoothDeviceClass_OnSetBluetoothEnable( DeviceInterfaceBluetoothDeviceClass _this, 
   XBool value )
 {
-  EwTrace( "%s%b", EwLoadString( &_Const0007 ), value );
+  EwTrace( "%s%b", EwLoadString( &_Const0008 ), value );
 
   if ( _this->BluetoothEnable != value )
   {
@@ -2266,8 +2356,8 @@ void DeviceInterfaceBluetoothDeviceClass_OnSetBtFwStatus( DeviceInterfaceBluetoo
 void DeviceInterfaceBluetoothDeviceClass_NotifyBtFwStatus( DeviceInterfaceBluetoothDeviceClass _this, 
   XEnum status, XString version )
 {
-  EwTrace( "%s%e", EwLoadString( &_Const0008 ), status );
-  EwTrace( "%s%s", EwLoadString( &_Const0009 ), version );
+  EwTrace( "%s%e", EwLoadString( &_Const0009 ), status );
+  EwTrace( "%s%s", EwLoadString( &_Const000A ), version );
   DeviceInterfaceBluetoothDeviceClass_OnSetBtFwStatus( _this, status );
 }
 
@@ -3897,7 +3987,7 @@ XBool DeviceInterfaceNotificationDeviceClass__IsPhoneCallStateActive( void* _thi
    about a particular system event. */
 void DeviceInterfaceNotificationDeviceClass_NotifyPhoneCallStateChanged( DeviceInterfaceNotificationDeviceClass _this )
 {
-  EwTrace( "%s", EwLoadString( &_Const000A ));
+  EwTrace( "%s", EwLoadString( &_Const000B ));
   CoreSystemEvent_Trigger( &_this->PhoneCallStateChangedSystemEvent, 0, 0 );
 }
 
@@ -3911,7 +4001,7 @@ void DeviceInterfaceNotificationDeviceClass__NotifyPhoneCallStateChanged( void* 
    about a particular system event. */
 void DeviceInterfaceNotificationDeviceClass_NotifyListUpdated( DeviceInterfaceNotificationDeviceClass _this )
 {
-  EwTrace( "%s", EwLoadString( &_Const000B ));
+  EwTrace( "%s", EwLoadString( &_Const000C ));
   CoreSystemEvent_Trigger( &_this->NotificationListUpdatedSystemEvent, 0, 0 );
 }
 
@@ -4114,7 +4204,7 @@ void DeviceInterfaceNotificationDeviceClass_PhoneCallVolumeControl( DeviceInterf
    about a particular system event. */
 void DeviceInterfaceNotificationDeviceClass_NotifyPhoneCallVolumeChanged( DeviceInterfaceNotificationDeviceClass _this )
 {
-  EwTrace( "%s", EwLoadString( &_Const000C ));
+  EwTrace( "%s", EwLoadString( &_Const000D ));
   CoreSystemEvent_Trigger( &_this->PhoneCallVolumeChangedSystemEvent, 0, 0 );
 }
 

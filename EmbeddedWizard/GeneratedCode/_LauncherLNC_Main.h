@@ -174,6 +174,9 @@ EW_DEFINE_METHODS( LauncherLNC_Main, ComponentsBaseComponent )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( LauncherLNC_Main )
 
+/* 'C' function for method : 'Launcher::LNC_Main.ReInit()' */
+void LauncherLNC_Main_ReInit( LauncherLNC_Main _this );
+
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 
    statements. */

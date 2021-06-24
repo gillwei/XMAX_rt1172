@@ -103,7 +103,7 @@
 
 /* Deklaration of class : 'Pop::POP04_Reset' */
 EW_DEFINE_FIELDS( PopPOP04_Reset, ComponentsBaseMainBG )
-  EW_OBJECT  ( ConnectionFailedMessage, ViewsText )
+  EW_OBJECT  ( ResetText,       ViewsText )
   EW_OBJECT  ( UpDownPushButtonSet, MenuUpDownPushButtonSet )
   EW_OBJECT  ( Divider,         ViewsImage )
   EW_PROPERTY( SelectedMeterInfo, XEnum )
@@ -165,6 +165,9 @@ EW_DEFINE_METHODS( PopPOP04_Reset, ComponentsBaseMainBG )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( PopPOP04_Reset )
+
+/* 'C' function for method : 'Pop::POP04_Reset.ReInit()' */
+void PopPOP04_Reset_ReInit( PopPOP04_Reset _this );
 
 /* 'C' function for method : 'Pop::POP04_Reset.OnOkButtonActivatedSlot()' */
 void PopPOP04_Reset_OnOkButtonActivatedSlot( PopPOP04_Reset _this, XObject sender );

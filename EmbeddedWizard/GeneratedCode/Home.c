@@ -167,7 +167,7 @@ void HomeHOM11_TachoVisualizer__Init( HomeHOM11_TachoVisualizer _this, XObject a
   _this->Super1.HomeType = EnumHomeTypeTACHO_VISUALIZER;
   CoreRectView__OnSetBounds( &_this->Title, _Const0000 );
   ViewsText_OnSetAlignment( &_this->Title, ViewsTextAlignmentAlignHorzCenter | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->Title, EwLoadString( &StringsINF01_TACHO_VISUALIZER ));
+  ViewsText_OnSetString( &_this->Title, EwGetVariantOfString( &StringsINF01_TACHO_VISUALIZER ));
   CoreGroup__Add( _this, ((CoreView)&_this->Title ), 0 );
   ViewsText_OnSetFont( &_this->Title, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
@@ -782,7 +782,7 @@ void HomeHOM13_SpeedVisualizer__Init( HomeHOM13_SpeedVisualizer _this, XObject a
   _this->Super1.HomeType = EnumHomeTypeSPEED_VISUALIZER;
   CoreRectView__OnSetBounds( &_this->Title, _Const0000 );
   ViewsText_OnSetAlignment( &_this->Title, ViewsTextAlignmentAlignHorzCenter | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->Title, EwLoadString( &StringsINF01_SPEED_VISUALIZER ));
+  ViewsText_OnSetString( &_this->Title, EwGetVariantOfString( &StringsINF01_SPEED_VISUALIZER ));
   CoreGroup__Add( _this, ((CoreView)&_this->Title ), 0 );
   ViewsText_OnSetFont( &_this->Title, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));

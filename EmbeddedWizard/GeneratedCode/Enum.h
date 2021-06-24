@@ -375,10 +375,9 @@ typedef enum
 {
   EnumMotoConRxEventCONNECTION_STATUS   = 0,
   EnumMotoConRxEventPHONE_BATTERY       = 1,
-  EnumMotoConRxEventPHONE_LANGUAGE      = 2,
-  EnumMotoConRxEventPHONE_THERMAL       = 3,
-  EnumMotoConRxEventPHONE_HEADSET       = 4,
-  EnumMotoConRxEventPHONE_CELL_SIGNAL_LEVEL = 5
+  EnumMotoConRxEventPHONE_THERMAL       = 2,
+  EnumMotoConRxEventPHONE_HEADSET       = 3,
+  EnumMotoConRxEventPHONE_CELL_SIGNAL_LEVEL = 4
 } EnumMotoConRxEvent;
 
 /* User defined enumeration: 'Enum::TemperatureSettingItem' */
@@ -609,7 +608,7 @@ typedef enum
   EnumLanguageHINDI                     = 10,
   EnumLanguageINDONESIAN                = 11,
   EnumLanguagePOLISH                    = 12,
-  EnumLanguagePORTUGUESE                = 13,
+  EnumLanguagePORTUGUESE_BRAZIL         = 13,
   EnumLanguageTHAI                      = 14,
   EnumLanguageVIETNAMESE                = 15,
   EnumLanguageKOREAN                    = 16,
@@ -756,7 +755,9 @@ typedef enum
   EnumSystemRxEventUNIT_ID_UPDATED      = 9,
   EnumSystemRxEventUNIT_ID_READ_OK      = 10,
   EnumSystemRxEventQRCODE_READY         = 11,
-  EnumSystemRxEventTOTAL                = 12
+  EnumSystemRxEventLANGUAGE_CHANGED     = 12,
+  EnumSystemRxEventPHONE_LANGUAGE_RECEIVED = 13,
+  EnumSystemRxEventTOTAL                = 14
 } EnumSystemRxEvent;
 
 /* User defined enumeration: 'Enum::MotoConTx' */
@@ -814,7 +815,8 @@ typedef enum
   EnumSystemStatusIS_TFT_BRIGHTNESS_LEVEL_MIN = 1,
   EnumSystemStatusIS_TFT_DERATING_ON    = 2,
   EnumSystemStatusIS_QRCODE_READY       = 3,
-  EnumSystemStatusTOTAL                 = 4
+  EnumSystemStatusLANGUAGE              = 4,
+  EnumSystemStatusTOTAL                 = 5
 } EnumSystemStatus;
 
 /* User defined enumeration: 'Enum::NotificationNativeCall' */

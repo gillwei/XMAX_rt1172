@@ -3507,6 +3507,15 @@ void CoreGroup__UpdateViewState( void* _this, XSet aState )
   ((CoreGroup)_this)->_.VMT->UpdateViewState((CoreGroup)_this, aState );
 }
 
+/* The method InvalidateLayout() declares the state of this component as changed, 
+   so its layout possibly doesn't reflect its current state anymore. To update the 
+   layout, the framework will invoke the @UpdateLayout() method. */
+void CoreGroup_InvalidateLayout( CoreGroup _this )
+{
+  _this->Super2.viewState = _this->Super2.viewState | CoreViewStatePendingLayout;
+  EwPostSignal( EwNewSlot( _this, CoreGroup_updateComponent ), ((XObject)_this ));
+}
+
 /* The method InvalidateViewState() declares the state of this component as changed, 
    so its visual aspect possibly doesn't reflect its current state anymore. To update 
    the visual aspect, the framework will invoke the @UpdateViewState() method. */

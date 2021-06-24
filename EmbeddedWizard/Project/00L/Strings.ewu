@@ -1,7 +1,7 @@
-$version 10.00
+$version 11.00
 
 // This file is generated automatically.
-// Generated: 2021/06/25 11:56:37
+// Generated: 2021/06/28 14:19:22
 
 $output false
 const string ARGUMENT_STR =
@@ -21,11 +21,21 @@ const string GEN_OK =
   Default = "OK";
   Japanese = "OK";
   French = "OK";
-  Spanish = "Vale";
+  Spanish = "Aceptar";
   Italian = "OK";
   German = "OK";
   TraditionalChinese = "\u78ba\u5b9a";
   SimplifiedChinese = "\u786e\u5b9a";
+  Greek = "\u039f\u039a";
+  Finnish = "OK";
+  Hindi = "\u0920\u0940\u0915";
+  Indonesian = "OK";
+  Polish = "OK";
+  PortugueseBrazil = "OK";
+  Thai = "\u0e15\u0e01\u0e25\u0e07";
+  Vietnamese = "OK";
+  Korean = "\ud655\uc778";
+  Malay = "OK";
 );
 
 $output false
@@ -39,24 +49,85 @@ const string GEN_CANCEL =
   German = "Abbrechen";
   TraditionalChinese = "\u53d6\u6d88";
   SimplifiedChinese = "\u53d6\u6d88";
+  Greek = "\u0386\u03ba\u03c5\u03c1\u03bf";
+  Finnish = "Peruuta";
+  Hindi = "\u0930\u0926\u094d\u0926 \u0915\u0930\u0947\u0902";
+  Indonesian = "Batal";
+  Polish = "Anuluj";
+  PortugueseBrazil = "Cancelar";
+  Thai = "\u0e22\u0e01\u0e40\u0e25\u0e34\u0e01";
+  Vietnamese = "H\u1ee7y";
+  Korean = "\ucde8\uc18c";
+  Malay = "Batal";
 );
 
 $output false
 const string GEN_YES =
 (
   Default = "Yes";
+  Japanese = "Yes";
+  French = "Oui";
+  Spanish = "S\u00ed";
+  Italian = "S\u00ec";
+  German = "Ja";
+  TraditionalChinese = "\u662f";
+  SimplifiedChinese = "\u662f";
+  Greek = "\u039d\u03b1\u03b9";
+  Finnish = "Kyll\u00e4";
+  Hindi = "\u0939\u093e\u0901";
+  Indonesian = "Ya";
+  Polish = "Tak";
+  PortugueseBrazil = "Sim";
+  Thai = "\u0e43\u0e0a\u0e48";
+  Vietnamese = "C\u00f3";
+  Korean = "\uc608";
+  Malay = "Ya";
 );
 
 $output false
 const string GEN_NO =
 (
   Default = "No";
+  Japanese = "No";
+  French = "Non";
+  Spanish = "No";
+  Italian = "No";
+  German = "Nein";
+  TraditionalChinese = "\u5426";
+  SimplifiedChinese = "\u5426";
+  Greek = "\u038c\u03c7\u03b9";
+  Finnish = "Ei";
+  Hindi = "\u0928\u0939\u0940\u0902";
+  Indonesian = "Tidak";
+  Polish = "Nie";
+  PortugueseBrazil = "N\u00e3o";
+  Thai = "\u0e44\u0e21\u0e48\u0e43\u0e0a\u0e48";
+  Vietnamese = "Kh\u00f4ng";
+  Korean = "\uc544\ub2c8\uc624";
+  Malay = "Tidak";
 );
 
 $output false
 const string GEN_LOW =
 (
   Default = "Low";
+  Japanese = "\u4f4e";
+  French = "Bas";
+  Spanish = "Bajo";
+  Italian = "Basso";
+  German = "Niedrig";
+  TraditionalChinese = "\u4f4e";
+  SimplifiedChinese = "\u4f4e";
+  Greek = "\u03a7\u03b1\u03bc\u03b7\u03bb\u03cc";
+  Finnish = "Matala";
+  Hindi = "\u0915\u092e";
+  Indonesian = "Rendah";
+  Polish = "Niskie";
+  PortugueseBrazil = "Baixo";
+  Thai = "\u0e15\u0e48\u0e33";
+  Vietnamese = "Th\u1ea5p";
+  Korean = "\ub0ae\uc74c";
+  Malay = "Rendah";
 );
 
 $output false
@@ -69,12 +140,46 @@ $output false
 const string GEN_MIDDLE =
 (
   Default = "Mid";
+  Japanese = "\u4e2d";
+  French = "Moyen";
+  Spanish = "Medio";
+  Italian = "Medio";
+  German = "Mittel";
+  TraditionalChinese = "\u4e2d";
+  SimplifiedChinese = "\u4e2d";
+  Greek = "\u039c\u03b5\u03c3\u03b1\u03af\u03bf";
+  Finnish = "Keski";
+  Hindi = "\u092e\u0927\u094d\u092f\u092e";
+  Indonesian = "Menengah";
+  Polish = "\u015arednie";
+  PortugueseBrazil = "M\u00e9dio";
+  Thai = "\u0e01\u0e25\u0e32\u0e07";
+  Vietnamese = "Gi\u1eefa";
+  Korean = "\uc911\uac04";
+  Malay = "Pertengahan";
 );
 
 $output false
 const string GEN_HIGH =
 (
   Default = "High";
+  Japanese = "\u9ad8";
+  French = "Haut";
+  Spanish = "Alto";
+  Italian = "Alto";
+  German = "Hoch";
+  TraditionalChinese = "\u9ad8";
+  SimplifiedChinese = "\u9ad8";
+  Greek = "\u03a5\u03c8\u03b7\u03bb\u03cc";
+  Finnish = "Korkea";
+  Hindi = "\u0905\u0927\u093f\u0915";
+  Indonesian = "Tinggi";
+  Polish = "Wysokie";
+  PortugueseBrazil = "Alto";
+  Thai = "\u0e2a\u0e39\u0e07";
+  Vietnamese = "Cao";
+  Korean = "\ub192\uc74c";
+  Malay = "Tinggi";
 );
 
 $output false
@@ -99,12 +204,46 @@ $output false
 const string GEN_RESET_QUESTION_MARK =
 (
   Default = "Reset?";
+  Japanese = "\u30ea\u30bb\u30c3\u30c8\u3057\u307e\u3059\u304b\uff1f";
+  French = "R\u00e9initialiser\u00a0?";
+  Spanish = "\u00bfReiniciar?";
+  Italian = "Reimpostare?";
+  German = "Zur\u00fccksetzen?";
+  TraditionalChinese = "\u662f\u5426\u91cd\u8a2d\uff1f";
+  SimplifiedChinese = "\u91cd\u7f6e?";
+  Greek = "\u039c\u03b7\u03b4\u03b5\u03bd\u03b9\u03c3\u03bc\u03cc\u03c2;";
+  Finnish = "Nollataanko?";
+  Hindi = "\u0926\u094b\u092c\u093e\u0930\u093e \u0938\u0947\u091f \u0915\u0930\u0947\u0902?";
+  Indonesian = "Setel ulang?";
+  Polish = "Reset?";
+  PortugueseBrazil = "Redefinir?";
+  Thai = "\u0e23\u0e35\u0e40\u0e0b\u0e47\u0e15\u0e2b\u0e23\u0e37\u0e2d\u0e44\u0e21\u0e48";
+  Vietnamese = "\u0110\u1eb7t l\u1ea1i?";
+  Korean = "\ucd08\uae30\ud654\ud560\uae4c\uc694?";
+  Malay = "Tetap semula?";
 );
 
 $output false
 const string GEN_BLUETOOTH =
 (
   Default = "Bluetooth";
+  Japanese = "Bluetooth";
+  French = "Bluetooth";
+  Spanish = "Bluetooth";
+  Italian = "Bluetooth";
+  German = "Bluetooth";
+  TraditionalChinese = "Bluetooth";
+  SimplifiedChinese = "\u84dd\u7259";
+  Greek = "Bluetooth";
+  Finnish = "Bluetooth";
+  Hindi = "\u092c\u094d\u0932\u0942\u091f\u0942\u0925";
+  Indonesian = "Bluetooth";
+  Polish = "Bluetooth";
+  PortugueseBrazil = "Bluetooth";
+  Thai = "\u0e1a\u0e25\u0e39\u0e17\u0e39\u0e18";
+  Vietnamese = "Bluetooth";
+  Korean = "Bluetooth";
+  Malay = "Bluetooth";
 );
 
 $output false
@@ -116,7 +255,24 @@ const string GEN_THREE_HYPHENS =
 $output false
 const string GEN_PLEASE_WAIT =
 (
-  Default = "Please wait\u2026";
+  Default = "Please wait...";
+  Japanese = "\u304a\u5f85\u3061\u304f\u3060\u3055\u3044\uff0e\uff0e\uff0e";
+  French = "Veuillez patienter...";
+  Spanish = "Espere por favor\u2026";
+  Italian = "Attendere prego...";
+  German = "Bitte warten...";
+  TraditionalChinese = "\u8acb\u7a0d\u5019\u2026\u2026";
+  SimplifiedChinese = "\u8bf7\u7a0d\u5019...";
+  Greek = "\u03a0\u03b5\u03c1\u03b9\u03bc\u03ad\u03bd\u03b5\u03c4\u03b5...";
+  Finnish = "Odota...";
+  Hindi = "\u0915\u0943\u092a\u092f\u093e \u092a\u094d\u0930\u0924\u0940\u0915\u094d\u0937\u093e \u0915\u0930\u0947\u0902...";
+  Indonesian = "Harap tunggu\u2026";
+  Polish = "Czekaj\u2026";
+  PortugueseBrazil = "Aguarde...";
+  Thai = "\u0e42\u0e1b\u0e23\u0e14\u0e23\u0e2d\u2026";
+  Vietnamese = "Vui l\u00f2ng \u0111\u1ee3i\u2026";
+  Korean = "\uae30\ub2e4\ub824\uc8fc\uc138\uc694...";
+  Malay = "Sila tunggu\u2026";
 );
 
 $output false
@@ -154,19 +310,39 @@ const string TOP01_WARNING =
   German = "WARNUNG";
   TraditionalChinese = "\u8b66\u544a";
   SimplifiedChinese = "\u8b66\u544a";
+  Greek = "\u03a0\u03a1\u039f\u0395\u0399\u0394\u039f\u03a0\u039f\u0399\u0397\u03a3\u0397";
+  Finnish = "VAROITUS";
+  Hindi = "\u091a\u0947\u0924\u093e\u0935\u0928\u0940";
+  Indonesian = "PERINGATAN";
+  Polish = "OSTRZE\u017bENIE";
+  PortugueseBrazil = "AVISO";
+  Thai = "\u0e04\u0e33\u0e40\u0e15\u0e37\u0e2d\u0e19";
+  Vietnamese = "C\u1ea2NH B\u00c1O";
+  Korean = "\uacbd\uace0";
+  Malay = "AMARAN";
 );
 
 $output false
 const string TOP01_DISCLAIMER =
 (
-  Default = "Failure to pay attention while riding could result in death or serious injury. Always concentrate on riding by keeping your eyes and mind on the road. Read the Owner's Manual.";
-  Japanese = "\u904b\u8ee2\u4e2d\u306b\u6ce8\u610f\u3092\u6020\u308b\u3068\u3001\u6b7b\u4ea1\u307e\u305f\u306f\u91cd\u50b7\u3092\u8ca0\u3046\u53ef\u80fd\u6027\u304c\u3042\u308a\u307e\u3059\u3002\u5e38\u306b\u4ea4\u901a\u72b6\u6cc1\u3092\u6ce8\u8996\u3057\u3001\u904b\u8ee2\u306b\u96c6\u4e2d\u3057\u3066\u304f\u3060\u3055\u3044\u3002\n\u53d6\u6271\u8aac\u660e\u66f8\u3092\u3054\u78ba\u8a8d\u304f\u3060\u3055\u3044\u3002";
-  French = "Toute inattention lors de la conduite peut entra\u00eener la mort ou des blessures graves. Concentrez-vous toujours sur la conduite en gardant vos yeux et votre esprit sur la route. Lisez votre mode d'emploi.";
-  Spanish = "No prestar atenci\u00f3n mientras se conduce puede producir heridas graves y la muerte. Conc\u00e9ntrese siempre en la conducci\u00f3n y mantenga la vista siempre en la carretera. Lea su manual de usuario.";
-  Italian = "Non prestare attenzione mentre si viaggia pu\u00f2 causare lesioni gravi o decesso. Rimanete sempre concentrati sulla strada. Leggere il Manuale utente.";
-  German = "Unachtsamkeit w\u00e4hrend des Fahrens kann zu Verletzungen oder Tod f\u00fchren. Konzentrieren Sie sich w\u00e4hrend der Fahrt immer auf die Stra\u00dfe. ";
-  TraditionalChinese = "\u672a\u5c08\u5fc3\u9a0e\u4e58\u8eca\u8f1b\u6642\uff0c\u5c07\u53ef\u80fd\u5c0e\u81f4\u91cd\u50b7\u6216\u6b7b\u4ea1\u3002\u9a0e\u4e58\u4e2d\u8acb\u52d9\u5fc5\u4fdd\u6301\u5c08\u6ce8\uff0c\u4e26\u96a8\u6642\u7559\u610f\u5468\u906d\u4e4b\u4ea4\u901a\u72c0\u6cc1\u3002\u8acb\u8a73\u95b1\u8eca\u4e3b\u624b\u518a\u3002";
-  SimplifiedChinese = "\u9a91\u884c\u65f6\u4e0d\u6ce8\u610f\u5b89\u5168\u53ef\u80fd\u4f1a\u5bfc\u81f4\u6b7b\u4ea1\u6216\u91cd\u4f24\u3002\u8bf7\u968f\u65f6\u6ce8\u610f\u9053\u8def\u72b6\u51b5\u548c\u5468\u56f4\u7684\u73af\u5883\uff0c\u4e13\u5fc3\u9a91\u884c\u3002\u8bf7\u53c2\u9605\u300a\u7528\u6237\u624b\u518c\u300b\u3002";
+  Default = "Failure to pay attention while riding could result in death or serious injury.\nAlways concentrate on riding by keeping your eyes and mind on the road. Read the Owner's Manual.";
+  Japanese = "\u904b\u8ee2\u4e2d\u306b\u6ce8\u610f\u3092\u6020\u308b\u3068\u3001\u6b7b\u4ea1\u307e\u305f\u306f\n\u91cd\u50b7\u3092\u8ca0\u3046\u53ef\u80fd\u6027\u304c\u3042\u308a\u307e\u3059\u3002\n\u5e38\u306b\u4ea4\u901a\u72b6\u6cc1\u306b\u6ce8\u610f\u3057\u3001\u904b\u8ee2\u306b\u96c6\u4e2d\n\u3057\u3066\u304f\u3060\u3055\u3044\u3002\n\u53d6\u6271\u8aac\u660e\u66f8\u3092\u304a\u8aad\u307f\u304f\u3060\u3055\u3044\u3002";
+  French = "Toute inattention lors de la conduite peut\nentra\u00eener la mort ou des blessures graves.\nConcentrez-vous toujours sur la conduite\nen gardant vos yeux et votre esprit sur \nla route. Lisez votre mode d'emploi.";
+  Spanish = "No prestar atenci\u00f3n mientras se conduce\npuede producir heridas graves y la \nmuerte. Conc\u00e9ntrese siempre en la \nconducci\u00f3n y mantenga la vista siempre \nen la carretera. Lea su manual de usuario.";
+  Italian = "Non prestare attenzione mentre si \nviaggia pu\u00f2 causare lesioni gravi o \ndecesso. Rimanete sempre concentrati \nsulla strada. \nLeggere il Manuale utente.";
+  German = "Unachtsamkeit w\u00e4hrend des Fahrens kann \nzu Verletzungen oder Tod f\u00fchren.\nKonzentrieren Sie sich w\u00e4hrend der Fahrt \nimmer auf die Stra\u00dfe.\nLesen Sie Ihr Benutzerhandbuch.\nAkzeptiert";
+  TraditionalChinese = "\u672a\u5c08\u5fc3\u9a0e\u4e58\u8eca\u8f1b\u6642\uff0c\u5c07\u53ef\u80fd\u5c0e\u81f4\u91cd\u50b7\u6216\u6b7b\u4ea1\u3002\n\u9a0e\u4e58\u4e2d\u8acb\u52d9\u5fc5\u4fdd\u6301\u5c08\u6ce8\uff0c\u4e26\u96a8\u6642\u7559\u610f\u5468\u906d\u4e4b\n\u4ea4\u901a\u72c0\u6cc1\u3002\n\u8acb\u8a73\u95b1\u8eca\u4e3b\u624b\u518a\u3002";
+  SimplifiedChinese = "\u9a91\u884c\u65f6\u4e0d\u6ce8\u610f\u5b89\u5168\u53ef\u80fd\u4f1a\u5bfc\u81f4\u6b7b\u4ea1\u6216\u91cd\u4f24\u3002\n\u8bf7\u968f\u65f6\u6ce8\u610f\u9053\u8def\u72b6\u51b5\u548c\u5468\u56f4\u7684\u73af\u5883\uff0c\n\u4e13\u5fc3\u9a91\u884c\u3002\n\u8bf7\u53c2\u9605\u300a\u7528\u6237\u624b\u518c\u300b\u3002";
+  Greek = "\u0397 \u03ad\u03bb\u03bb. \u03c0\u03c1\u03bf\u03c3\u03bf\u03c7. \u03c3\u03c4\u03b7\u03bd \u03bf\u03b4\u03ae\u03b3. \u03bc\u03c0\u03bf\u03c1\u03b5\u03af \n\u03bd\u03b1 \u03bf\u03b4\u03b7\u03b3. \u03c3\u03b5 \u03b8\u03ac\u03bd\u03b1\u03c4\u03bf \u03ae \u03c3\u03bf\u03b2. \u03c4\u03c1\u03b1\u03c5\u03bc. \n\u039d\u03b1 \u03b5\u03af\u03c3\u03c4\u03b5 \u03c0\u03ac\u03bd\u03c4\u03b1 \u03c3\u03c5\u03b3\u03ba\u03b5\u03bd. \u03c3\u03c4\u03b7\u03bd \u03bf\u03b4\u03ae\u03b3., \n\u03bc\u03b5 \u03c4\u03b1 \u03bc\u03ac\u03c4\u03b9\u03b1 \u03ba\u03b1\u03b9 \u03c4\u03bf \u03bc\u03c5\u03b1\u03bb\u03cc \u03c3\u03c4\u03bf\u03bd \n\u03b4\u03c1\u03cc\u03bc. \u0394\u03b9\u03b1\u03b2. \u03c4\u03b9\u03c2 \u039f\u03b4\u03b7\u03b3. \u03c7\u03c1\u03ae\u03c3. \u03ba\u03b1\u03c4\u03cc\u03c7.\n";
+  Finnish = "Huomiokyvyn herpaantuminen ajon\naikana voi johtaa kuolemaan tai\nvakavaan loukkaantumiseen.\nKeskity aina ajamiseen ja pid\u00e4\nkatse tiess\u00e4. Lue k\u00e4ytt\u00f6ohje.";
+  Hindi = "\u0917\u093e\u095c\u0940 \u091a\u0932\u093e\u0924\u0947 \u0938\u092e\u092f \u0927\u094d\u092f\u093e\u0928 \u0928 \u0926\u0947\u0928\u0947 \u0915\u0947 \u0915\u093e\u0930\u0923\n\u092e\u094c\u0924 \u0939\u094b \u0938\u0915\u0924\u0940 \u0939\u0948 \u092f\u093e \u0917\u0902\u092d\u0940\u0930 \u091a\u094b\u091f \u0932\u0917 \u0938\u0915\u0924\u0940\n\u0939\u0948\u0964 \u0917\u093e\u095c\u0940 \u091a\u0932\u093e\u0924\u0947 \u0938\u092e\u092f \u0905\u092a\u0928\u0947 \u0906\u0901\u0916\u094b\u0902 \u0914\u0930\n\u0926\u093f\u092e\u093e\u095a \u0915\u094b \u0939\u092e\u0947\u0936\u093e \u0938\u095c\u0915 \u092a\u0930 \u0932\u0917\u093e\u090f\u0902\u0964 \n\u092e\u093e\u0932\u093f\u0915 \u0915\u093e \u092e\u0948\u0928\u094d\u092f\u0941\u0905\u0932 \u0932\u093f\u0916\u0947\u0902\u0964";
+  Indonesian = "Kelalaian memperhatikan dapat\nsebabkan kematian atau cedera.\nkonsentrasi dengan mengarahkan \nmata dan pikiran ke jalan.\nBaca Panduan Pemilik.";
+  Polish = "Nieuwa\u017cna jazda prowadzi do\npowa\u017cnych uraz\u00f3w/\u015bmierci.\nKoncentruj si\u0119 na je\u017adzie,\nskupiaj\u0105c zmys\u0142y na drodze.\nPrzeczytaj instrukcj\u0119.";
+  PortugueseBrazil = "N\u00e3o prestar aten\u00e7\u00e3o ao dirigir\npode resultar em morte ou\nles\u00f5es. Foque na dire\u00e7\u00e3o\nmantendo os olhos na estrada. \nLeia o manual do propriet\u00e1rio.";
+  Thai = "\u0e01\u0e32\u0e23\u0e44\u0e21\u0e48\u0e43\u0e2a\u0e48\u0e43\u0e08\u0e43\u0e19\u0e02\u0e13\u0e30\u0e02\u0e31\u0e1a\u0e02\u0e35\u0e48\u0e2d\u0e32\u0e08\u0e17\u0e33\n\u0e43\u0e2b\u0e49\u0e40\u0e2a\u0e35\u0e22\u0e0a\u0e35\u0e27\u0e34\u0e15\u0e2b\u0e23\u0e37\u0e2d\u0e1a\u0e32\u0e14\u0e40\u0e08\u0e47\u0e1a\u0e2a\u0e32\u0e2b\u0e31\u0e2a\u0e44\u0e14\u0e49\n\u0e21\u0e35\u0e2a\u0e21\u0e32\u0e18\u0e34\u0e43\u0e19\u0e01\u0e32\u0e23\u0e02\u0e31\u0e1a\u0e02\u0e35\u0e48\u0e40\u0e2a\u0e21\u0e2d\u0e42\u0e14\u0e22\u0e04\u0e27\u0e23\n\u0e21\u0e2d\u0e07\u0e41\u0e25\u0e30\u0e43\u0e2a\u0e48\u0e43\u0e08\u0e01\u0e31\u0e1a\u0e17\u0e49\u0e2d\u0e07\u0e16\u0e19\u0e19\u0e15\u0e25\u0e2d\u0e14\u0e40\u0e27\u0e25\u0e32\n\u0e2d\u0e48\u0e32\u0e19\u0e04\u0e39\u0e48\u0e21\u0e37\u0e2d\u0e2a\u0e33\u0e2b\u0e23\u0e31\u0e1a\u0e40\u0e08\u0e49\u0e32\u0e02\u0e2d\u0e07";
+  Vietnamese = "N\u1ebfu kh\u00f4ng ch\u00fa \u00fd khi \u0111i xe c\u00f3 th\u1ec3 d\u1eabn\n\u0111\u1ebfn t\u1eed vong ho\u1eb7c b\u1ecb th\u01b0\u01a1ng n\u1eb7ng.\nLu\u00f4n t\u1eadp trung v\u00e0o vi\u1ec7c l\u00e1i xe b\u1eb1ng\nc\u00e1ch ch\u00fa t\u00e2m tr\u00ean \u0111\u01b0\u1eddng \u0111i.\n\u0110\u1ecdc H\u01b0\u1edbng d\u1eabn s\u1eed d\u1ee5ng cho ch\u1ee7 xe.";
+  Korean = "\ud0d1\uc2b9 \uc911 \ubd80\uc8fc\uc758\ub294 \uc2ec\uac01\ud55c \ubd80\uc0c1 \ub610\ub294\n\uc0ac\ub9dd\uae4c\uc9c0 \uc774\uc5b4\uc9c8 \uc218 \uc788\uc2b5\ub2c8\ub2e4.\n\ud0d1\uc2b9 \uc911\uc5d0\ub294 \ud56d\uc0c1 \ub3c4\ub85c\ub97c \uc8fc\uc2dc\ud558\uace0\n\uc8fc\ud589\uc5d0 \uc9d1\uc911\ud558\uc2ed\uc2dc\uc624. \n\uc0ac\uc6a9\uc790 \ub9e4\ub274\uc5bc\uc744 \uc219\uc9c0\ud558\uc2ed\uc2dc\uc624.";
+  Malay = "Gagal memberi tumpuan semasa\nmenunggang boleh mengakibatkan \nkematian atau kecederaan serius. \nKetika memandu, sentiasa beri\ntumpuan pandangan dan fikiran \ndi jalan raya. Baca Panduan Pemilik.";
 );
 
 $output false
@@ -180,18 +356,62 @@ const string TOP01_ACCEPT =
   German = "Akzeptiert";
   TraditionalChinese = "\u77e5\u6089\u4e26\u540c\u610f";
   SimplifiedChinese = "\u63a5\u53d7";
+  Greek = "\u0391\u03a0\u039f\u0394\u039f\u03a7\u0397";
+  Finnish = "HYV\u00c4KSY";
+  Hindi = "\u0938\u094d\u0935\u0940\u0915\u093e\u0930 \u0915\u0930\u0947\u0902";
+  Indonesian = "TERIMA";
+  Polish = "AKCEPTUJ";
+  PortugueseBrazil = "ACEITAR";
+  Thai = "\u0e22\u0e2d\u0e21\u0e23\u0e31\u0e1a";
+  Vietnamese = "CH\u1ea4P NH\u1eacN";
+  Korean = "\uc218\ub77d";
+  Malay = "TERIMA";
 );
 
 $output false
 const string BRT01_TFT_DISPLAY =
 (
   Default = "TFT display";
+  Japanese = "TFT\u30c7\u30a3\u30b9\u30d7\u30ec\u30a4";
+  French = "\u00c9cran TFT";
+  Spanish = "Pantalla TFT";
+  Italian = "Display TFT";
+  German = "TFT Display";
+  TraditionalChinese = "TFT \u986f\u793a\u5668";
+  SimplifiedChinese = "TFT \u663e\u793a\u5668";
+  Greek = "\u039f\u03b8\u03cc\u03bd\u03b7 TFT";
+  Finnish = "TFT-n\u00e4ytt\u00f6";
+  Hindi = "TFT \u0921\u093f\u0938\u094d\u092a\u094d\u0932\u0947";
+  Indonesian = "Layar TFT";
+  Polish = "Wy\u015bwietlacz TFT";
+  PortugueseBrazil = "Tela TFT";
+  Thai = "\u0e08\u0e2d\u0e41\u0e2a\u0e14\u0e07\u0e1c\u0e25 TFT";
+  Vietnamese = "M\u00e0n h\u00ecnh TFT";
+  Korean = "TFT \ud45c\uc2dc";
+  Malay = "Paparan TFT";
 );
 
 $output false
 const string BRT01_SPEED_METER =
 (
   Default = "Speed meter";
+  Japanese = "\u30b9\u30d4\u30fc\u30c9\u30e1\u30fc\u30bf\u30fc";
+  French = "Compteur de vitesse";
+  Spanish = "Veloc\u00edmetro";
+  Italian = "Tachimetro";
+  German = "Tachometer";
+  TraditionalChinese = "\u8eca\u901f\u8868";
+  SimplifiedChinese = "\u901f\u5ea6\u8868";
+  Greek = "\u03a4\u03b1\u03c7\u03cd\u03bc\u03b5\u03c4\u03c1\u03bf";
+  Finnish = "Nopeusmittari";
+  Hindi = "\u0938\u094d\u092a\u0940\u0921 \u092e\u0940\u091f\u0930";
+  Indonesian = "Pengukur kecepatan";
+  Polish = "Pr\u0119dko\u015bciomierz";
+  PortugueseBrazil = "Veloc\u00edmetro";
+  Thai = "\u0e40\u0e04\u0e23\u0e37\u0e48\u0e2d\u0e07\u0e27\u0e31\u0e14\u0e04\u0e27\u0e32\u0e21\u0e40\u0e23\u0e47\u0e27";
+  Vietnamese = "C\u00f4ng t\u01a1 m\u00e9t";
+  Korean = "\uc18d\ub3c4\uacc4";
+  Malay = "Meter Kelajuan";
 );
 
 $output false
@@ -210,12 +430,46 @@ $output false
 const string CLK01_AUTO_ADJUSTMENT =
 (
   Default = "Auto Adjustment";
+  Japanese = "\u81ea\u52d5\u8abf\u6574";
+  French = "Ajustement auto.";
+  Spanish = "Ajuste autom\u00e1tico";
+  Italian = "Regolazione automatica";
+  German = "Auto-Anpassung";
+  TraditionalChinese = "\u81ea\u52d5\u8abf\u6574";
+  SimplifiedChinese = "\u81ea\u52a8\u8c03\u8282";
+  Greek = "\u0391\u03c5\u03c4\u03cc\u03bc\u03b1\u03c4\u03b7 \u03c0\u03c1\u03bf\u03c3\u03b1\u03c1\u03bc\u03bf\u03b3\u03ae";
+  Finnish = "Automaattinen s\u00e4\u00e4t\u00f6";
+  Hindi = "\u0938\u094d\u0935\u0924\u0903 \u0938\u092e\u093e\u092f\u094b\u091c\u0928";
+  Indonesian = "Penyesuaian Otomatis";
+  Polish = "Regulacja automatyczna";
+  PortugueseBrazil = "Ajuste autom\u00e1tico";
+  Thai = "\u0e01\u0e32\u0e23\u0e1b\u0e23\u0e31\u0e1a\u0e2d\u0e31\u0e15\u0e42\u0e19\u0e21\u0e31\u0e15\u0e34";
+  Vietnamese = "\u0110i\u1ec1u ch\u1ec9nh t\u1ef1 \u0111\u1ed9ng";
+  Korean = "\uc790\ub3d9 \uc870\uc815";
+  Malay = "Pelarasan Auto";
 );
 
 $output false
 const string CLK01_MANUAL_ADJUSTMENT =
 (
   Default = "Manual Adjustment";
+  Japanese = "\u624b\u52d5\u8abf\u6574";
+  French = "Ajustement manuel";
+  Spanish = "Ajuste manual";
+  Italian = "Regolazione manuale";
+  German = "Manuelle Anpassung";
+  TraditionalChinese = "\u624b\u52d5\u8abf\u6574";
+  SimplifiedChinese = "\u624b\u52a8\u8c03\u8282";
+  Greek = "\u03a7\u03b5\u03b9\u03c1\u03bf\u03ba\u03af\u03bd\u03b7\u03c4\u03b7 \u03c0\u03c1\u03bf\u03c3\u03b1\u03c1\u03bc\u03bf\u03b3\u03ae";
+  Finnish = "Manuaalinen s\u00e4\u00e4t\u00f6";
+  Hindi = "\u092e\u0948\u0928\u094d\u092f\u0941\u0905\u0932 \u0938\u092e\u093e\u092f\u094b\u091c\u0928";
+  Indonesian = "Penyesuaian Manual";
+  Polish = "Regulacja r\u0119czna";
+  PortugueseBrazil = "Ajuste manual";
+  Thai = "\u0e01\u0e32\u0e23\u0e1b\u0e23\u0e31\u0e1a\u0e14\u0e49\u0e27\u0e22\u0e15\u0e19\u0e40\u0e2d\u0e07";
+  Vietnamese = "\u0110i\u1ec1u ch\u1ec9nh th\u1ee7 c\u00f4ng";
+  Korean = "\uc218\ub3d9 \uc870\uc815";
+  Malay = "Pelarasan Manual";
 );
 
 $output false
@@ -264,12 +518,46 @@ $output false
 const string CLK03_SET_CLOCK =
 (
   Default = "Set Clock?";
+  Japanese = "\u8a2d\u5b9a\u3057\u307e\u3059\u304b\uff1f";
+  French = "R\u00e9gler l'horloge\u00a0?";
+  Spanish = "\u00bfConfigurar reloj?";
+  Italian = "Impostare l\u2019orologio?";
+  German = "Uhr einstellen?";
+  TraditionalChinese = "\u8a2d\u5b9a\u6642\u9418\uff1f";
+  SimplifiedChinese = "\u8bbe\u7f6e\u65f6\u949f?";
+  Greek = "\u03a1\u03cd\u03b8\u03bc\u03b9\u03c3\u03b7 \u03c1\u03bf\u03bb\u03bf\u03b3\u03b9\u03bf\u03cd;";
+  Finnish = "Asetetaanko kello?";
+  Hindi = "\u0918\u095c\u0940 \u0938\u0947\u091f \u0915\u0930\u0947\u0902?";
+  Indonesian = "Setel Jam?";
+  Polish = "Ustawi\u0107 zegar?";
+  PortugueseBrazil = "Definir rel\u00f3gio?";
+  Thai = "\u0e15\u0e31\u0e49\u0e07\u0e19\u0e32\u0e2c\u0e34\u0e01\u0e32\u0e2b\u0e23\u0e37\u0e2d\u0e44\u0e21\u0e48";
+  Vietnamese = "\u0110\u1eb7t \u0111\u1ed3ng h\u1ed3?";
+  Korean = "\uc2dc\uac04\uc744 \uc124\uc815\ud560\uae4c\uc694?";
+  Malay = "Tetapkan waktu?";
 );
 
 $output false
 const string GPW01_GRIP_WARMER =
 (
   Default = "Grip Warmer";
+  Japanese = "\u30b0\u30ea\u30c3\u30d7\u30a6\u30a9\u30fc\u30de\u30fc";
+  French = "Poign\u00e9es chauffantes";
+  Spanish = "Calentador de agarre";
+  Italian = "Scalda manopole";
+  German = "Beheizbare Griffe";
+  TraditionalChinese = "\u628a\u624b\u96fb\u71b1\u5668";
+  SimplifiedChinese = "\u628a\u624b\u52a0\u70ed\u5668";
+  Greek = "\u0398\u03b5\u03c1\u03bc\u03b1\u03bd\u03c4\u03ae\u03c1\u03b1\u03c2 \u03c7\u03b5\u03b9\u03c1\u03bf\u03bb\u03b1\u03b2\u03ae\u03c2";
+  Finnish = "Kahvanl\u00e4mmitin";
+  Hindi = "\u0917\u094d\u0930\u093f\u092a \u0935\u093e\u0930\u094d\u092e\u0930";
+  Indonesian = "Grip Warmer";
+  Polish = "Ocieplacz chwyt\u00f3w";
+  PortugueseBrazil = "Aquecedor de manopla";
+  Thai = "\u0e40\u0e04\u0e23\u0e37\u0e48\u0e2d\u0e07\u0e2d\u0e38\u0e48\u0e19\u0e01\u0e23\u0e34\u0e1b";
+  Vietnamese = "B\u1ed9 l\u00e0m \u1ea5m tay c\u1ea7m";
+  Korean = "\uc190\uc7a1\uc774 \uc628\uc5f4";
+  Malay = "Cengkaman Panas";
 );
 
 $output false
@@ -294,6 +582,23 @@ $output false
 const string HOM13_SPEED_LIMIT =
 (
   Default = "SPEED LIMIT";
+  Japanese = "\u5236\u9650\u901f\u5ea6";
+  French = "LIMITE VIT.";
+  Spanish = "L\u00cdM. VELOC.";
+  Italian = "LIM. VEL.";
+  German = "TEMPOLIMIT";
+  TraditionalChinese = "\u901f\u9650";
+  SimplifiedChinese = "\u9650\u901f";
+  Greek = "\u039f\u03a1\u0399\u039f \u03a4\u0391\u03a7\u03a5\u03a4\u0397\u03a4\u0391\u03a3";
+  Finnish = "NOPEUSRAJ.";
+  Hindi = "\u0917\u0924\u093f \u0938\u0940\u092e\u093e";
+  Indonesian = "BATAS KECEPATAN";
+  Polish = "LIMIT PR\u0118D.";
+  PortugueseBrazil = "LIMITE VEL.";
+  Thai = "\u0e08\u0e33\u0e01\u0e31\u0e14\u0e04\u0e27\u0e32\u0e21\u0e40\u0e23\u0e47\u0e27";
+  Vietnamese = "T.\u0110\u1ed8 G.H\u1ea0N";
+  Korean = "\uc18d\ub3c4 \uc81c\ud55c";
+  Malay = "HAD LAJU";
 );
 
 $output false
@@ -384,18 +689,69 @@ $output false
 const string INF01_TACHO_VISUALIZER =
 (
   Default = "Tacho visualizer";
+  Japanese = "\u30bf\u30b3\u30d3\u30b8\u30e5\u30a2\u30e9\u30a4\u30b6\u30fc";
+  French = "Indicateur de tours";
+  Spanish = "Visualizador tac\u00f3metro";
+  Italian = "Vis. tachimetro";
+  German = "Tacho-Anzeiger";
+  TraditionalChinese = "\u5716\u5f62\u5316\u8f49\u901f\u8868";
+  SimplifiedChinese = "\u8f6c\u901f\u53ef\u89c6\u8bbe\u5907";
+  Greek = "\u0391\u03c0\u03b5\u03b9\u03ba\u03cc\u03bd\u03b9\u03c3\u03b7 \u03c4\u03b1\u03c7\u03bf\u03b3\u03c1\u03ac\u03c6\u03bf\u03c5";
+  Finnish = "Kierroslukun\u00e4ytt\u00f6";
+  Hindi = "Tacho \u0935\u093f\u091c\u0941\u0905\u0932\u093e\u0907\u095b\u0930";
+  Indonesian = "Visualizer Tacho";
+  Polish = "Wizualizator obrot\u00f3w";
+  PortugueseBrazil = "Visualizador do tac\u00f3grafo";
+  Thai = "\u0e40\u0e04\u0e23\u0e37\u0e48\u0e2d\u0e07\u0e41\u0e2a\u0e14\u0e07\u0e04\u0e27\u0e32\u0e21\u0e40\u0e23\u0e47\u0e27\u0e23\u0e2d\u0e1a";
+  Vietnamese = "Tr\u00ecnh h.th\u1ecb t.\u0111\u1ed9 v.quay";
+  Korean = "Tacho \ud45c\uc2dc\uae30";
+  Malay = "Penampak Tacho";
 );
 
 $output false
 const string INF01_ECHO_VISUALIZER =
 (
   Default = "ECO visualizer";
+  Japanese = "\u30a8\u30b3\u30d3\u30b8\u30e5\u30a2\u30e9\u30a4\u30b6\u30fc";
+  French = "Indicateur ECO";
+  Spanish = "Visualizador ECO";
+  Italian = "Visualizzatore ECO";
+  German = "ECO-Anzeiger";
+  TraditionalChinese = "\u5716\u5f62\u5316 ECO \u8868";
+  SimplifiedChinese = "ECO \u53ef\u89c6\u8bbe\u5907";
+  Greek = "\u0391\u03c0\u03b5\u03b9\u03ba\u03cc\u03bd\u03b9\u03c3\u03b7 ECO";
+  Finnish = "ECO-n\u00e4ytt\u00f6";
+  Hindi = "ECO \u0935\u093f\u091c\u0941\u0905\u0932\u093e\u0907\u095b\u0930";
+  Indonesian = "Visualizer ECO";
+  Polish = "Wizualizator ECO";
+  PortugueseBrazil = "Visualizador do ECO";
+  Thai = "\u0e40\u0e04\u0e23\u0e37\u0e48\u0e2d\u0e07\u0e41\u0e2a\u0e14\u0e07\u0e20\u0e32\u0e1e ECO";
+  Vietnamese = "Tr\u00ecnh hi\u1ec3n th\u1ecb ECO";
+  Korean = "ECO \ud45c\uc2dc\uae30";
+  Malay = "Penampak ECO";
 );
 
 $output false
 const string INF01_SPEED_VISUALIZER =
 (
   Default = "Speed visualizer";
+  Japanese = "\u30b9\u30d4\u30fc\u30c9\u30d3\u30b8\u30e5\u30a2\u30e9\u30a4\u30b6\u30fc";
+  French = "Indicateur de vitesse";
+  Spanish = "Visualizador velocidad";
+  Italian = "Visualizzatore velocit\u00e0";
+  German = "Geschw.-Anzeiger";
+  TraditionalChinese = "\u5716\u5f62\u5316\u901f\u5ea6\u8868";
+  SimplifiedChinese = "\u901f\u5ea6\u53ef\u89c6\u8bbe\u5907";
+  Greek = "\u0391\u03c0\u03b5\u03b9\u03ba\u03cc\u03bd\u03b9\u03c3\u03b7 \u03c4\u03b1\u03c7\u03cd\u03c4\u03b7\u03c4\u03b1\u03c2";
+  Finnish = "Nopeusn\u00e4ytt\u00f6";
+  Hindi = "\u0917\u0924\u093f \u0935\u093f\u091c\u0941\u0905\u0932\u093e\u0907\u095b\u0930";
+  Indonesian = "Visualizer kecepatan";
+  Polish = "Wizualizator pr\u0119dko\u015bci";
+  PortugueseBrazil = "Veloc\u00edmetro";
+  Thai = "\u0e40\u0e04\u0e23\u0e37\u0e48\u0e2d\u0e07\u0e41\u0e2a\u0e14\u0e07\u0e04\u0e27\u0e32\u0e21\u0e40\u0e23\u0e47\u0e27";
+  Vietnamese = "Tr\u00ecnh hi\u1ec3n th\u1ecb ECO";
+  Korean = "\uc18d\ub3c4 \ud45c\uc2dc\uae30";
+  Malay = "Penampak Kelajuan";
 );
 
 $output false
@@ -426,6 +782,23 @@ $output false
 const string LNC_METER_DISPLAY =
 (
   Default = "Meter display";
+  Japanese = "\u30e1\u30fc\u30bf\u8868\u793a";
+  French = "Affichage des compteurs";
+  Spanish = "Pantalla veloc\u00edmetro";
+  Italian = "Display contachilometri";
+  German = "Z\u00e4hleranzeige";
+  TraditionalChinese = "\u5100\u8868\u986f\u793a";
+  SimplifiedChinese = "\u4eea\u8868\u663e\u793a\u5668";
+  Greek = "\u039f\u03b8\u03cc\u03bd\u03b7 \u03bc\u03b5\u03c4\u03c1\u03b7\u03c4\u03ae";
+  Finnish = "Mittarin\u00e4ytt\u00f6";
+  Hindi = "\u092e\u0940\u091f\u0930 \u0921\u093f\u0938\u094d\u092a\u094d\u0932\u0947";
+  Indonesian = "Tampilan meter";
+  Polish = "Licznik";
+  PortugueseBrazil = "Visor do medidor";
+  Thai = "\u0e08\u0e2d\u0e41\u0e2a\u0e14\u0e07\u0e1c\u0e25\u0e21\u0e34\u0e40\u0e15\u0e2d\u0e23\u0e4c";
+  Vietnamese = "Hi\u1ec3n th\u1ecb \u0111\u1ed3ng h\u1ed3";
+  Korean = "\ubbf8\ud130 \ud45c\uc2dc";
+  Malay = "Paparan Meter";
 );
 
 $output false
@@ -438,48 +811,184 @@ $output false
 const string LNC_MUSIC =
 (
   Default = "Music";
+  Japanese = "\u97f3\u697d";
+  French = "Musique";
+  Spanish = "M\u00fasica";
+  Italian = "Musica";
+  German = "Musik";
+  TraditionalChinese = "\u97f3\u6a02";
+  SimplifiedChinese = "\u97f3\u4e50";
+  Greek = "\u039c\u03bf\u03c5\u03c3\u03b9\u03ba\u03ae";
+  Finnish = "Musiikki";
+  Hindi = "\u0938\u0902\u0917\u0940\u0924";
+  Indonesian = "Musik";
+  Polish = "Muzyka";
+  PortugueseBrazil = "M\u00fasica";
+  Thai = "\u0e14\u0e19\u0e15\u0e23\u0e35";
+  Vietnamese = "\u00c2m nh\u1ea1c";
+  Korean = "\uc74c\uc545";
+  Malay = "Muzik";
 );
 
 $output false
 const string LNC_PHONE =
 (
   Default = "Phone";
+  Japanese = "\u96fb\u8a71";
+  French = "T\u00e9l\u00e9phone";
+  Spanish = "Tel\u00e9fono";
+  Italian = "Telefono";
+  German = "Telefon";
+  TraditionalChinese = "\u96fb\u8a71";
+  SimplifiedChinese = "\u624b\u673a";
+  Greek = "\u03a4\u03b7\u03bb\u03ad\u03c6\u03c9\u03bd\u03bf";
+  Finnish = "Puhelin";
+  Hindi = "\u095e\u094b\u0928";
+  Indonesian = "Telepon";
+  Polish = "Telefon";
+  PortugueseBrazil = "Telefone";
+  Thai = "\u0e42\u0e17\u0e23\u0e28\u0e31\u0e1e\u0e17\u0e4c";
+  Vietnamese = "\u0110i\u1ec7n tho\u1ea1i";
+  Korean = "\uc804\ud654";
+  Malay = "Telefon";
 );
 
 $output false
 const string LNC_NAVIGATION =
 (
   Default = "Navigation";
+  Japanese = "\u30ca\u30d3\u30b2\u30fc\u30b7\u30e7\u30f3";
+  French = "Navigation";
+  Spanish = "Navegaci\u00f3n";
+  Italian = "Navigazione";
+  German = "Navigation";
+  TraditionalChinese = "\u5c0e\u822a";
+  SimplifiedChinese = "\u5bfc\u822a";
+  Greek = "\u03a0\u03bb\u03bf\u03ae\u03b3\u03b7\u03c3\u03b7";
+  Finnish = "Navigointi";
+  Hindi = "\u0928\u0947\u0935\u093f\u0917\u0947\u0936\u0928";
+  Indonesian = "Navigasi";
+  Polish = "Nawigacja";
+  PortugueseBrazil = "Navega\u00e7\u00e3o";
+  Thai = "\u0e01\u0e32\u0e23\u0e19\u0e33\u0e17\u0e32\u0e07";
+  Vietnamese = "\u0110i\u1ec1u h\u01b0\u1edbng";
+  Korean = "\ub0b4\ube44\uac8c\uc774\uc158";
+  Malay = "Navigasi";
 );
 
 $output false
 const string LNC_WEATHER =
 (
   Default = "Weather";
+  Japanese = "\u5929\u6c17";
+  French = "M\u00e9t\u00e9o";
+  Spanish = "Tiempo";
+  Italian = "Tempo";
+  German = "Wetter";
+  TraditionalChinese = "\u5929\u6c23";
+  SimplifiedChinese = "\u5929\u6c14";
+  Greek = "\u039a\u03b1\u03b9\u03c1\u03cc\u03c2";
+  Finnish = "S\u00e4\u00e4";
+  Hindi = "\u092e\u094c\u0938\u092e";
+  Indonesian = "Cuaca";
+  Polish = "Pogoda";
+  PortugueseBrazil = "Tempo";
+  Thai = "\u0e2a\u0e20\u0e32\u0e1e\u0e2d\u0e32\u0e01\u0e32\u0e28";
+  Vietnamese = "Th\u1eddi ti\u1ebft";
+  Korean = "\ub0a0\uc528";
+  Malay = "Cuaca";
 );
 
 $output false
 const string LNC_NOTIFICATION =
 (
   Default = "Notification";
+  Japanese = "\u901a\u77e5";
+  French = "Notification";
+  Spanish = "Notificaci\u00f3n";
+  Italian = "Notifica";
+  German = "Benachrichtigung";
+  TraditionalChinese = "\u901a\u77e5";
+  SimplifiedChinese = "\u901a\u77e5";
+  Greek = "\u0395\u03b9\u03b4\u03bf\u03c0\u03bf\u03af\u03b7\u03c3\u03b7";
+  Finnish = "Ilmoitus";
+  Hindi = "\u0905\u0927\u093f\u0938\u0942\u091a\u0928\u093e";
+  Indonesian = "Notifikasi";
+  Polish = "Powiadomienie";
+  PortugueseBrazil = "Notifica\u00e7\u00e3o";
+  Thai = "\u0e01\u0e32\u0e23\u0e41\u0e08\u0e49\u0e07\u0e40\u0e15\u0e37\u0e2d\u0e19";
+  Vietnamese = "Th\u00f4ng b\u00e1o";
+  Korean = "\uc54c\ub9bc";
+  Malay = "Notifikasi";
 );
 
 $output false
 const string LNC_SEAT_HEATER =
 (
   Default = "Seat Heater";
+  Japanese = "\u30b7\u30fc\u30c8\u30d2\u30fc\u30bf\u30fc";
+  French = "Selle chauffante";
+  Spanish = "Calentador asiento";
+  Italian = "Scalda sedile";
+  German = "Sitzheizung";
+  TraditionalChinese = "\u5ea7\u6905\u96fb\u71b1\u5668";
+  SimplifiedChinese = "\u5ea7\u6905\u52a0\u70ed\u5668";
+  Greek = "\u0398\u03b5\u03c1\u03bc\u03b1\u03bd\u03c4\u03ae\u03c1\u03b1\u03c2 \u03c3\u03ad\u03bb\u03b1\u03c2";
+  Finnish = "Istuinl\u00e4mmitin";
+  Hindi = "\u0938\u0940\u091f \u0939\u0940\u091f\u0930";
+  Indonesian = "Pemanas Kursi";
+  Polish = "Podgrzewacz siode\u0142ka";
+  PortugueseBrazil = "Aquecedor de assento";
+  Thai = "\u0e40\u0e04\u0e23\u0e37\u0e48\u0e2d\u0e07\u0e2d\u0e38\u0e48\u0e19\u0e40\u0e1a\u0e32\u0e30\u0e19\u0e31\u0e48\u0e07";
+  Vietnamese = "B\u1ed9 s\u01b0\u1edfi gh\u1ebf";
+  Korean = "\uc2dc\ud2b8 \uc628\uc5f4";
+  Malay = "Pemanas Tempat Duduk";
 );
 
 $output false
 const string LNC_SETTINGS =
 (
   Default = "Settings";
+  Japanese = "\u8a2d\u5b9a";
+  French = "Param\u00e8tres";
+  Spanish = "Ajustes";
+  Italian = "Impostazioni";
+  German = "Einstellungen";
+  TraditionalChinese = "\u8a2d\u5b9a";
+  SimplifiedChinese = "\u8bbe\u7f6e";
+  Greek = "\u03a1\u03c5\u03b8\u03bc\u03af\u03c3\u03b5\u03b9\u03c2";
+  Finnish = "Asetukset";
+  Hindi = "\u0938\u0947\u091f\u093f\u0902\u0917\u094d\u0938";
+  Indonesian = "Setelan";
+  Polish = "Ustawienia";
+  PortugueseBrazil = "Configura\u00e7\u00f5es";
+  Thai = "\u0e01\u0e32\u0e23\u0e15\u0e31\u0e49\u0e07\u0e04\u0e48\u0e32";
+  Vietnamese = "C\u00e0i \u0111\u1eb7t";
+  Korean = "\uc124\uc815";
+  Malay = "Tetapan";
 );
 
 $output false
 const string MED02_DEV_UNAVAILABLE =
 (
-  Default = "Media device\nunavailable";
+  Default = "Media device \nunavailable";
+  Japanese = "\u5229\u7528\u3067\u304d\u307e\u305b\u3093\u3002";
+  French = "Media device \nunavailable";
+  Spanish = "Dispositivo no disponible";
+  Italian = "Dispositivo media non disponibile";
+  German = "Wiedergabeger\u00e4t nicht verf\u00fcgbar";
+  TraditionalChinese = "\u5a92\u9ad4\u88dd\u7f6e\u7121\u6cd5\u4f7f\u7528";
+  SimplifiedChinese = "\u5a92\u4f53\u8bbe\u5907\u4e0d\u53ef\u7528";
+  Greek = "\u03a3\u03c5\u03c3\u03ba\u03b5\u03c5\u03ae \u03bc\u03ad\u03c3\u03c9\u03bd \n\u03bc\u03b7 \u03b4\u03b9\u03b1\u03b8\u03ad\u03c3\u03b9\u03bc\u03b7";
+  Finnish = "Medialaite \nei k\u00e4ytett\u00e4viss\u00e4";
+  Hindi = "\u092e\u0940\u0921\u093f\u092f\u093e \u0921\u093f\u0935\u093e\u0907\u0938\n\u0905\u0928\u0941\u092a\u0932\u092c\u094d\u0927";
+  Indonesian = "Perangkat media\ntidak tersedia";
+  Polish = "Urz\u0105dzenie multi-\nmedialne niedost\u0119pne";
+  PortugueseBrazil = "Dispositivo de m\u00eddia \nindispon\u00edvel";
+  Thai = "\u0e2d\u0e38\u0e1b\u0e01\u0e23\u0e13\u0e4c\u0e2a\u0e37\u0e48\u0e2d\n\u0e44\u0e21\u0e48\u0e1e\u0e23\u0e49\u0e2d\u0e21\u0e43\u0e0a\u0e49\u0e07\u0e32\u0e19";
+  Vietnamese = "Kh\u00f4ng c\u00f3 thi\u1ebft b\u1ecb\nph\u00e1t ph\u01b0\u01a1ng ti\u1ec7n";
+  Korean = "\ubbf8\ub514\uc5b4 \uc7a5\uce58\n\uc774\uc6a9 \ubd88\uac00";
+  Malay = "Alat media\ntidak tersedia";
 );
 
 $output false
@@ -600,60 +1109,230 @@ $output false
 const string NAV06_STOP_NAVIGATION =
 (
   Default = "Stop navigation";
+  Japanese = "\u6848\u5185\u4e2d\u6b62";
+  French = "Arr\u00eater la navigation";
+  Spanish = "Detener navegaci\u00f3n";
+  Italian = "Ferma navigazione";
+  German = "Navigation stoppen";
+  TraditionalChinese = "\u505c\u6b62\u5c0e\u822a";
+  SimplifiedChinese = "\u505c\u6b62\u5bfc\u822a";
+  Greek = "\u0394\u03b9\u03b1\u03ba\u03bf\u03c0\u03ae \u03c0\u03bb\u03bf\u03ae\u03b3\u03b7\u03c3\u03b7\u03c2";
+  Finnish = "Lopeta navigointi";
+  Hindi = "\u0928\u0947\u0935\u093f\u0917\u0947\u0936\u0928 \u0930\u094b\u0915\u0947\u0902";
+  Indonesian = "Hentikan navigasi";
+  Polish = "Zatrzymaj nawigacj\u0119";
+  PortugueseBrazil = "Parar navega\u00e7\u00e3o";
+  Thai = "\u0e2b\u0e22\u0e38\u0e14\u0e01\u0e32\u0e23\u0e19\u0e33\u0e17\u0e32\u0e07";
+  Vietnamese = "D\u1eebng \u0111i\u1ec1u h\u01b0\u1edbng";
+  Korean = "\ub0b4\ube44\uac8c\uc774\uc158 \uc911\uc9c0";
+  Malay = "Henti navigasi";
 );
 
 $output false
 const string NAV06_SKIP_NEXT_STOP =
 (
   Default = "Skip next stop";
+  Japanese = "\u6b21\u306e\u7d4c\u7531\u5730\u3092\u30b9\u30ad\u30c3\u30d7";
+  French = "Ignorer le prochain arr\u00eat";
+  Spanish = "Omitir la pr\u00f3xima parada";
+  Italian = "Salta prossima tappa";
+  German = "N\u00e4chsten Stopp \u00fcberspringen";
+  TraditionalChinese = "\u8df3\u904e\u4e0b\u4e00\u7ad9";
+  SimplifiedChinese = "\u8df3\u8fc7\u4e0b\u4e00\u7ad9";
+  Greek = "\u03a0\u03b1\u03c1\u03ac\u03bb\u03b5\u03b9\u03c8\u03b7 \u03b5\u03c0\u03cc\u03bc\u03b5\u03bd\u03b7\u03c2 \u03c3\u03c4\u03ac\u03c3\u03b7\u03c2";
+  Finnish = "Ohita seuraava pys\u00e4hdys";
+  Hindi = "\u0905\u0917\u0932\u093e \u0938\u094d\u091f\u0949\u092a \u091b\u094b\u095c\u0947\u0902";
+  Indonesian = "Lewati perhentian berikutnya";
+  Polish = "Pomi\u0144 nast\u0119pny krok";
+  PortugueseBrazil = "Pular pr\u00f3xima parada";
+  Thai = "\u0e02\u0e49\u0e32\u0e21\u0e08\u0e38\u0e14\u0e08\u0e2d\u0e14\u0e16\u0e31\u0e14\u0e44\u0e1b";
+  Vietnamese = "B\u1ecf qua \u0111i\u1ec3m d\u1eebng ti\u1ebfp theo";
+  Korean = "\ub2e4\uc74c \uc885\ucc29\uc9c0 \uac74\ub108\ub6f0\uae30";
+  Malay = "Langkau hentian seterusnya";
 );
 
 $output false
 const string NAV06_GO_HOME =
 (
   Default = "Go home";
+  Japanese = "\u81ea\u5b85";
+  French = "Retourner \u00e0 la maison";
+  Spanish = "Ir a casa";
+  Italian = "Vai a casa";
+  German = "Nach Hause fahren";
+  TraditionalChinese = "\u4f4f\u5bb6";
+  SimplifiedChinese = "\u56de\u5bb6";
+  Greek = "\u039c\u03b5\u03c4\u03ac\u03b2\u03b1\u03c3\u03b7 \u03c3\u03c4\u03bf \u03c3\u03c0\u03af\u03c4\u03b9";
+  Finnish = "Mene kotiin";
+  Hindi = "\u0918\u0930 \u091c\u093e\u090f\u0902";
+  Indonesian = "Ke rumah";
+  Polish = "Jed\u017a do domu";
+  PortugueseBrazil = "Ir para casa";
+  Thai = "\u0e44\u0e1b\u0e1a\u0e49\u0e32\u0e19";
+  Vietnamese = "V\u1ec1 nh\u00e0";
+  Korean = "\uc9d1\uc73c\ub85c";
+  Malay = "Pulang ke rumah";
 );
 
 $output false
 const string NAV06_GO_TO_WORK =
 (
   Default = "Go to work";
+  Japanese = "\u8077\u5834";
+  French = "Aller au travail";
+  Spanish = "Ir al trabajo";
+  Italian = "Vai al lavoro";
+  German = "Zur Arbeit fahren";
+  TraditionalChinese = "\u516c\u53f8";
+  SimplifiedChinese = "\u4e0a\u73ed";
+  Greek = "\u039c\u03b5\u03c4\u03ac\u03b2\u03b1\u03c3\u03b7 \u03c3\u03c4\u03b7 \u03b4\u03bf\u03c5\u03bb\u03b5\u03b9\u03ac";
+  Finnish = "Mene ty\u00f6paikalle";
+  Hindi = "\u0915\u093e\u092e \u092a\u0930 \u091c\u093e\u090f\u0902";
+  Indonesian = "Pergi bekerja";
+  Polish = "Jed\u017a do pracy";
+  PortugueseBrazil = "Ir para o trabalho";
+  Thai = "\u0e44\u0e1b\u0e17\u0e33\u0e07\u0e32\u0e19";
+  Vietnamese = "\u0110i l\u00e0m";
+  Korean = "\uc9c1\uc7a5\uc73c\ub85c";
+  Malay = "Pergi kerja";
 );
 
 $output false
 const string NAV06_FAVORITES =
 (
   Default = "Favorites";
+  Japanese = "\u304a\u6c17\u306b\u5165\u308a";
+  French = "Favoris";
+  Spanish = "Favoritos";
+  Italian = "Preferiti";
+  German = "Favoriten";
+  TraditionalChinese = "\u6211\u7684\u6700\u611b";
+  SimplifiedChinese = "\u6536\u85cf\u5939";
+  Greek = "\u0391\u03b3\u03b1\u03c0\u03b7\u03bc\u03ad\u03bd\u03b1";
+  Finnish = "Suosikit";
+  Hindi = "\u092a\u0938\u0902\u0926\u0940\u0926\u093e";
+  Indonesian = "Favorit";
+  Polish = "Ulubione";
+  PortugueseBrazil = "Favoritos";
+  Thai = "\u0e42\u0e1b\u0e23\u0e14\u0e1b\u0e23\u0e32\u0e19";
+  Vietnamese = "Y\u00eau th\u00edch";
+  Korean = "\uc990\uaca8\ucc3e\uae30";
+  Malay = "Kegemaran";
 );
 
 $output false
 const string NAV06_NEARBY_GAS_STATIONS =
 (
   Default = "Nearby Gas stations";
+  Japanese = "\u8fd1\u304f\u306e\u30ac\u30bd\u30ea\u30f3\u30b9\u30bf\u30f3\u30c9";
+  French = "Stations essence \u00e0 proximit\u00e9";
+  Spanish = "Gasolineras cercanas";
+  Italian = "Stazioni di servizio vicine";
+  German = "Tankstellen in der N\u00e4he";
+  TraditionalChinese = "\u9644\u8fd1\u7684\u52a0\u6cb9\u7ad9";
+  SimplifiedChinese = "\u9644\u8fd1\u7684\u52a0\u6cb9\u7ad9";
+  Greek = "\u039a\u03bf\u03bd\u03c4\u03b9\u03bd\u03ac \u03c0\u03c1\u03b1\u03c4\u03ae\u03c1\u03b9\u03b1 \u03ba\u03b1\u03c5\u03c3\u03af\u03bc\u03c9\u03bd";
+  Finnish = "L\u00e4heiset huoltoasemat";
+  Hindi = "\u0928\u095b\u0926\u0940\u0915\u0940 \u0917\u0948\u0938 \u0938\u094d\u091f\u0947\u0936\u0928";
+  Indonesian = "SPBU terdekat";
+  Polish = "Pobliskie stacje paliw";
+  PortugueseBrazil = "Postos gas. mais pr\u00f3ximos";
+  Thai = "\u0e2a\u0e16\u0e32\u0e19\u0e35\u0e1a\u0e23\u0e34\u0e01\u0e32\u0e23\u0e19\u0e49\u0e33\u0e21\u0e31\u0e19\u0e43\u0e01\u0e25\u0e49\u0e40\u0e04\u0e35\u0e22\u0e07";
+  Vietnamese = "Tr\u1ea1m x\u0103ng g\u1ea7n \u0111\u00f3";
+  Korean = "\uadfc\ucc98 \uc8fc\uc720\uc18c";
+  Malay = "Berdekatan Stesen Minyak";
 );
 
 $output false
 const string NAV06_CHANGE_VIEW =
 (
   Default = "Change view";
+  Japanese = "\u8868\u793a\u5207\u66ff";
+  French = "Changer l'affichage";
+  Spanish = "Cambiar vista";
+  Italian = "Cambia vista";
+  German = "Ansicht \u00e4ndern";
+  TraditionalChinese = "\u8b8a\u66f4\u8996\u5716";
+  SimplifiedChinese = "\u66f4\u6539\u89c6\u56fe";
+  Greek = "\u0391\u03bb\u03bb\u03b1\u03b3\u03ae \u03c0\u03c1\u03bf\u03b2\u03bf\u03bb\u03ae\u03c2";
+  Finnish = "Vaihda n\u00e4kym\u00e4";
+  Hindi = "\u0935\u094d\u092f\u0942 \u092c\u0926\u0932\u0947\u0902";
+  Indonesian = "Ubah tampilan";
+  Polish = "Zmie\u0144 widok";
+  PortugueseBrazil = "Mudar visualiza\u00e7\u00e3o";
+  Thai = "\u0e40\u0e1b\u0e25\u0e35\u0e48\u0e22\u0e19\u0e21\u0e38\u0e21\u0e21\u0e2d\u0e07";
+  Vietnamese = "Thay \u0111\u1ed5i ch\u1ebf \u0111\u1ed9 xem";
+  Korean = "\ubdf0 \uc804\ud658";
+  Malay = "Tukar paparan";
 );
 
 $output false
 const string NAV08_DEFAULT_VIEW =
 (
   Default = "Default view";
+  Japanese = "\u6a19\u6e96\u8868\u793a";
+  French = "Affichage par d\u00e9faut";
+  Spanish = "Vista predeterminada";
+  Italian = "Vista di default";
+  German = "Standardansicht";
+  TraditionalChinese = "\u9810\u8a2d\u8996\u5716";
+  SimplifiedChinese = "\u9ed8\u8ba4\u89c6\u56fe";
+  Greek = "\u03a0\u03c1\u03bf\u03b5\u03c0\u03b9\u03bb\u03b5\u03b3\u03bc\u03ad\u03bd\u03b7 \u03c0\u03c1\u03bf\u03b2\u03bf\u03bb\u03ae";
+  Finnish = "Oletusn\u00e4kym\u00e4";
+  Hindi = "\u0921\u093f\u095e\u0949\u0932\u094d\u091f \u0935\u094d\u092f\u0942";
+  Indonesian = "Tampilan default";
+  Polish = "Widok domy\u015blny";
+  PortugueseBrazil = "Visualiza\u00e7\u00e3o padr\u00e3o";
+  Thai = "\u0e21\u0e38\u0e21\u0e21\u0e2d\u0e07\u0e40\u0e23\u0e34\u0e48\u0e21\u0e15\u0e49\u0e19";
+  Vietnamese = "Ch\u1ebf \u0111\u1ed9 xem m\u1eb7c \u0111\u1ecbnh";
+  Korean = "\uae30\ubcf8 \ubdf0";
+  Malay = "Paparan lalai";
 );
 
 $output false
 const string NAV08_TURN_BY_TURN =
 (
   Default = "Turn-by-turn";
+  Japanese = "\u30bf\u30fc\u30f3\u30d0\u30a4\u30bf\u30fc\u30f3\u8868\u793a";
+  French = "Virage apr\u00e8s virage";
+  Spanish = "Indicaciones paso a paso";
+  Italian = "Navi. passo a passo";
+  German = "Abbiegehinweise";
+  TraditionalChinese = "\u8a9e\u97f3\u5c0e\u822a";
+  SimplifiedChinese = "\u9010\u5411\u5bfc\u822a";
+  Greek = "\u03a3\u03c4\u03c1\u03bf\u03c6\u03ae \u03c0\u03c1\u03bf\u03c2 \u03c3\u03c4\u03c1\u03bf\u03c6\u03ae";
+  Finnish = "Reittiohjeet";
+  Hindi = "\u091f\u0930\u094d\u0928-\u092c\u093e\u092f-\u091f\u0930\u094d\u0928";
+  Indonesian = "Belokan demi belokan";
+  Polish = "Po zakr\u0119tach";
+  PortugueseBrazil = "Curva a curva";
+  Thai = "\u0e40\u0e25\u0e35\u0e49\u0e22\u0e27\u0e15\u0e48\u0e2d\u0e40\u0e25\u0e35\u0e49\u0e22\u0e27";
+  Vietnamese = "L\u1ea7n l\u01b0\u1ee3t";
+  Korean = "\ud134-\ubc14\uc774-\ud134";
+  Malay = "Pusingan demi pusingan";
 );
 
 $output false
 const string NAV08_TURN_LIST =
 (
   Default = "Turn list";
+  Japanese = "\u30bf\u30fc\u30f3\u30ea\u30b9\u30c8\u8868\u793a";
+  French = "Liste des virages";
+  Spanish = "Listado de indicaciones";
+  Italian = "Elenco svolte";
+  German = "Liste Abbiegungen";
+  TraditionalChinese = "\u5c0e\u822a\u9ede\u6e05\u55ae";
+  SimplifiedChinese = "\u8f6c\u5411\u5217\u8868";
+  Greek = "\u039b\u03af\u03c3\u03c4\u03b1 \u03c3\u03c4\u03c1\u03bf\u03c6\u03ce\u03bd";
+  Finnish = "K\u00e4\u00e4nn\u00f6sluettelo";
+  Hindi = "\u091f\u0930\u094d\u0928 \u0932\u093f\u0938\u094d\u091f";
+  Indonesian = "Daftar putar";
+  Polish = "Lista zakr\u0119t\u00f3w";
+  PortugueseBrazil = "Lista de viradas";
+  Thai = "\u0e40\u0e1b\u0e34\u0e14\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23";
+  Vietnamese = "Chuy\u1ec3n danh s\u00e1ch";
+  Korean = "\ud134 \ubaa9\ub85d";
+  Malay = "Senarai paparan";
 );
 
 $output false
@@ -690,66 +1369,253 @@ $output false
 const string POP02_CONNECTION_ERR =
 (
   Default = "Connection Error";
+  Japanese = "\u63a5\u7d9a\u30a8\u30e9\u30fc";
+  French = "Erreur de connexion";
+  Spanish = "Error de conexi\u00f3n";
+  Italian = "Errore di connessione";
+  German = "Verbindungsfehler";
+  TraditionalChinese = "\u9023\u7dda\u932f\u8aa4";
+  SimplifiedChinese = "\u8fde\u63a5\u9519\u8bef";
+  Greek = "\u03a3\u03c6\u03ac\u03bb\u03bc\u03b1 \u03c3\u03cd\u03bd\u03b4\u03b5\u03c3\u03b7\u03c2";
+  Finnish = "Yhteysvirhe";
+  Hindi = "\u0915\u0928\u0947\u0915\u094d\u0936\u0928 \u0924\u094d\u0930\u0941\u091f\u093f";
+  Indonesian = "Gangguan Koneksi";
+  Polish = "B\u0142\u0105d po\u0142\u0105czenia";
+  PortugueseBrazil = "Erro de conex\u00e3o";
+  Thai = "\u0e02\u0e49\u0e2d\u0e1c\u0e34\u0e14\u0e1e\u0e25\u0e32\u0e14\u0e43\u0e19\u0e01\u0e32\u0e23\u0e40\u0e0a\u0e37\u0e48\u0e2d\u0e21\u0e15\u0e48\u0e2d";
+  Vietnamese = "L\u1ed7i k\u00ea\u0301t n\u00f4\u0301i";
+  Korean = "\uc5f0\uacb0 \uc624\ub958";
+  Malay = "Ralat Sambungan";
 );
 
 $output false
 const string POP02_PLEASE_CHECK =
 (
   Default = "Please Check";
+  Japanese = "\u78ba\u8a8d\u3057\u3066\u304f\u3060\u3055\u3044\u3002";
+  French = "Merci de v\u00e9rifier.";
+  Spanish = "Eche un vistazo.";
+  Italian = "Controllare.";
+  German = "Bitte \u00fcberpr\u00fcfen.";
+  TraditionalChinese = "\u8acb\u78ba\u8a8d\u3002";
+  SimplifiedChinese = "\u8bf7\u68c0\u67e5\u3002";
+  Greek = "\u0395\u03bb\u03ad\u03b3\u03be\u03c4\u03b5";
+  Finnish = "Tarkista";
+  Hindi = "\u0915\u0943\u092a\u092f\u093e \u091c\u093e\u0902\u091a\u0947\u0902";
+  Indonesian = "Silakan Periksa";
+  Polish = "Sprawd\u017a";
+  PortugueseBrazil = "Verifique";
+  Thai = "\u0e42\u0e1b\u0e23\u0e14\u0e15\u0e23\u0e27\u0e08\u0e2a\u0e2d\u0e1a";
+  Vietnamese = "Vui l\u00f2ng ki\u1ec3m tra";
+  Korean = "\uc810\uac80\ud574\uc8fc\uc138\uc694";
+  Malay = "Sila Periksa";
 );
 
 $output false
 const string POP02_DETAILS =
 (
   Default = "Details";
+  Japanese = "\u8a73\u7d30";
+  French = "D\u00e9tails";
+  Spanish = "Detalles";
+  Italian = "Dettagli";
+  German = "Details";
+  TraditionalChinese = "\u8a73\u7d30\u8cc7\u6599";
+  SimplifiedChinese = "\u8be6\u7ec6\u4fe1\u606f";
+  Greek = "\u039b\u03b5\u03c0\u03c4\u03bf\u03bc\u03ad\u03c1\u03b5\u03b9\u03b5\u03c2";
+  Finnish = "Tiedot";
+  Hindi = "\u0935\u093f\u0935\u0930\u0923";
+  Indonesian = "Perincian";
+  Polish = "Szczeg\u00f3\u0142y";
+  PortugueseBrazil = "Detalhes";
+  Thai = "\u0e23\u0e32\u0e22\u0e25\u0e30\u0e40\u0e2d\u0e35\u0e22\u0e14";
+  Vietnamese = "Chi ti\u1ebft";
+  Korean = "\uc0c1\uc138 \uc815\ubcf4";
+  Malay = "Perincian";
 );
 
 $output false
 const string POP03_NO_HOME_LOCATION =
 (
   Default = "Home location is not set.";
-);
-
-$output false
-const string POP03_NO_OFFICE_LOCATION =
-(
-  Default = "Work location is not set.";
+  Japanese = "\u81ea\u5b85\u304c\u8a2d\u5b9a\u3055\u308c\u3066\u3044\u307e\u305b\u3093\u3002";
+  French = "La position de votre maison n'a pas \u00e9t\u00e9\nparam\u00e9tr\u00e9e.";
+  Spanish = "Ubicaci\u00f3n de casa no configurada.";
+  Italian = "La posizione della casa non \u00e8 impostata.";
+  German = "Der Heimatort ist nicht eingestellt.";
+  TraditionalChinese = "\u672a\u8a2d\u5b9a\u4f4f\u5bb6\u5730\u9ede\u3002";
+  SimplifiedChinese = "\u672a\u8bbe\u7f6e\u5bb6\u7684\u4f4d\u7f6e\u3002";
+  Greek = "\u0397 \u03c4\u03bf\u03c0\u03bf\u03b8\u03b5\u03c3\u03af\u03b1 \u03c4\u03bf\u03c5 \u03c3\u03c0\u03b9\u03c4\u03b9\u03bf\u03cd \u03b4\u03b5\u03bd \u03ad\u03c7\u03b5\u03b9 \u03bf\u03c1\u03b9\u03c3\u03c4\u03b5\u03af.";
+  Finnish = "Kodin sijaintia ei ole asetettu.";
+  Hindi = "\u0918\u0930 \u0915\u093e \u0932\u094b\u0915\u0947\u0936\u0928 \u0938\u0947\u091f \u0928\u0939\u0940\u0902 \u0939\u0948";
+  Indonesian = "Lokasi rumah tidak disetel.";
+  Polish = "Nie ustawiono lokalizacji domowej.";
+  PortugueseBrazil = "A localiza\u00e7\u00e3o de casa n\u00e3o est\u00e1 definida.";
+  Thai = "\u0e44\u0e21\u0e48\u0e44\u0e14\u0e49\u0e15\u0e31\u0e49\u0e07\u0e04\u0e48\u0e32\u0e15\u0e33\u0e41\u0e2b\u0e19\u0e48\u0e07\u0e1a\u0e49\u0e32\u0e19";
+  Vietnamese = "Ch\u01b0a \u0111\u1eb7t v\u1ecb tr\u00ed nh\u00e0.";
+  Korean = "\uc9d1 \uc704\uce58\uac00 \uc124\uc815\ub418\uc9c0 \uc54a\uc558\uc2b5\ub2c8\ub2e4.";
+  Malay = "Lokasi rumah tidak ditetapkan.";
 );
 
 $output false
 const string POP07_TROUBLE_SHOOTING =
 (
   Default = "Connection troubleshooting";
+  Japanese = "\u3053\u3093\u306a\u3068\u304d\u306f";
+  French = "D\u00e9pannage de connexion";
+  Spanish = "Solucionador de problemas";
+  Italian = "Risol. problemi connessione";
+  German = "Behebung von Verbindungsfehlern";
+  TraditionalChinese = "\u9023\u7dda\u7591\u96e3\u6392\u89e3";
+  SimplifiedChinese = "\u8fde\u63a5\u6545\u969c\u6392\u9664";
+  Greek = "\u0391\u03bd\u03c4\u03b9\u03bc\u03b5\u03c4\u03ce\u03c0\u03b9\u03c3\u03b7 \u03c0\u03c1\u03bf\u03b2\u03bb\u03b7\u03bc\u03ac\u03c4\u03c9\u03bd \u03c3\u03cd\u03bd\u03b4\u03b5\u03c3\u03b7\u03c2";
+  Finnish = "Yhteyden vianm\u00e4\u00e4ritys";
+  Hindi = "\u0915\u0928\u0947\u0915\u094d\u0936\u0928 \u0915\u093e \u0938\u092e\u0938\u094d\u092f\u093e \u0938\u092e\u093e\u0927\u093e\u0928";
+  Indonesian = "Pemecahan masalah koneksi";
+  Polish = "Przywracanie po\u0142\u0105czenia";
+  PortugueseBrazil = "Solu\u00e7\u00e3o de problemas de conex\u00e3o";
+  Thai = "\u0e01\u0e32\u0e23\u0e41\u0e01\u0e49\u0e44\u0e02\u0e1b\u0e31\u0e0d\u0e2b\u0e32\u0e01\u0e32\u0e23\u0e40\u0e0a\u0e37\u0e48\u0e2d\u0e21\u0e15\u0e48\u0e2d";
+  Vietnamese = "Kh\u1eafc ph\u1ee5c s\u1ef1 c\u1ed1 k\u1ebft n\u1ed1i";
+  Korean = "\uc5f0\uacb0 \ubb38\uc81c \ud574\uacb0";
+  Malay = "Mengesan kerosakan sambungan";
 );
 
 $output false
 const string POP07_UNLOCK_PHONE =
 (
   Default = "Unlock smartphone.";
+  Japanese = "\u30b9\u30de\u30fc\u30c8\u30d5\u30a9\u30f3\u306e\u30ed\u30c3\u30af\u3092\u89e3\u9664\n\u3057\u3066\u304f\u3060\u3055\u3044\u3002";
+  French = "D\u00e9verrouillez le smartphone.";
+  Spanish = "Desbloquee el tel\u00e9fono.";
+  Italian = "Sblocca lo smartphone.";
+  German = "Entsperren Sie das Smartphone.";
+  TraditionalChinese = "\u5c07\u667a\u6167\u578b\u624b\u6a5f\u89e3\u9664\u9396\u5b9a\u3002";
+  SimplifiedChinese = "\u89e3\u9501\u667a\u80fd\u624b\u673a\u3002";
+  Greek = "\u039e\u03b5\u03ba\u03bb\u03b5\u03af\u03b4\u03c9\u03bc\u03b1 smartphone.";
+  Finnish = "Avaa \u00e4lypuhelimen lukitus.";
+  Hindi = "\u0938\u094d\u092e\u093e\u0930\u094d\u091f\u095e\u094b\u0928 \u0905\u0928\u0932\u0949\u0915 \u0915\u0930\u0947\u0902\u0964";
+  Indonesian = "Buka kunci ponsel pintar.";
+  Polish = "Odblokuj smartfona.";
+  PortugueseBrazil = "Desbloquear smartphone.";
+  Thai = "\u0e1b\u0e25\u0e14\u0e25\u0e47\u0e2d\u0e01\u0e2a\u0e21\u0e32\u0e23\u0e4c\u0e17\u0e42\u0e1f\u0e19";
+  Vietnamese = "M\u1edf kh\u00f3a \u0111i\u1ec7n tho\u1ea1i th\u00f4ng minh.";
+  Korean = "\uc2a4\ub9c8\ud2b8\ud3f0 \uc7a0\uae08\uc744 \ud574\uc81c\ud558\uc138\uc694.";
+  Malay = "Buka kunci telefon pintar.";
 );
 
 $output false
 const string POP07_TURN_ON_BT =
 (
   Default = "Turn ON smartphone Bluetooth.";
+  Japanese = "\u30b9\u30de\u30fc\u30c8\u30d5\u30a9\u30f3\u306eBluetooth\u3092ON\u306b\n\u3057\u3066\u304f\u3060\u3055\u3044\u3002";
+  French = "Activez le Bluetooth sur le smartphone.";
+  Spanish = "Active el Bluetooth del tel\u00e9fono.";
+  Italian = "Attiva il Bluetooth dello\nsmartphone.";
+  German = "Schalten Sie das Bluetooth des\nSmartphones ein.";
+  TraditionalChinese = "\u958b\u555f\u667a\u6167\u578b\u624b\u6a5f\u7684 Bluetooth\u3002";
+  SimplifiedChinese = "\u5f00\u542f\u667a\u80fd\u624b\u673a\u84dd\u7259\u3002";
+  Greek = "\u0395\u03bd\u03b5\u03c1\u03b3\u03bf\u03c0\u03bf\u03b9\u03ae\u03c3\u03c4\u03b5 \u03c4\u03bf Bluetooth \u03c3\u03c4\u03bf\nsmartphone.";
+  Finnish = "Laita \u00e4lypuhelimen Bluetooth P\u00c4\u00c4LLE.";
+  Hindi = "\u0938\u094d\u092e\u093e\u0930\u094d\u091f\u095e\u094b\u0928 \u092c\u094d\u0932\u0942\u091f\u0942\u0925 \u0915\u094b \u091a\u093e\u0932\u0942 \u0915\u0930\u0947\u0902\u0964";
+  Indonesian = "NYALAKAN Bluetooth ponsel \npintar.";
+  Polish = "W\u0142\u0105cz Bluetooth na smartfonie.";
+  PortugueseBrazil = "ATIVE o Bluetooth do smartphone.";
+  Thai = "\u0e40\u0e1b\u0e34\u0e14\u0e1a\u0e25\u0e39\u0e17\u0e39\u0e18\u0e2a\u0e21\u0e32\u0e23\u0e4c\u0e17\u0e42\u0e1f\u0e19";
+  Vietnamese = "B\u1eacT Bluetooth c\u1ee7a \u0111i\u1ec7n tho\u1ea1i\nth\u00f4ng minh.";
+  Korean = "\uc2a4\ub9c8\ud2b8\ud3f0\uc5d0\uc11c Bluetooth\ub97c \ud65c\uc131\ud654\ud558\uc138\uc694.";
+  Malay = "HIDUPKAN Bluetooth telefon pintar.";
 );
 
 $output false
 const string POP07_LAUNCH_APP =
 (
   Default = "Launch the application.";
+  Japanese = "App\u3092\u8d77\u52d5\u3057\u3066\u304f\u3060\u3055\u3044\u3002";
+  French = "Lancez l'appli.";
+  Spanish = "Abra la aplicaci\u00f3n.";
+  Italian = "Avviare l'applicazione.";
+  German = "App starten.";
+  TraditionalChinese = "\u555f\u52d5\u61c9\u7528\u7a0b\u5f0f\u3002";
+  SimplifiedChinese = "\u542f\u52a8\u5e94\u7528\u7a0b\u5e8f\u3002";
+  Greek = "\u0395\u03ba\u03ba\u03b9\u03bd\u03ae\u03c3\u03c4\u03b5 \u03c4\u03b7\u03bd \u03b5\u03c6\u03b1\u03c1\u03bc\u03bf\u03b3\u03ae.";
+  Finnish = "K\u00e4ynnist\u00e4 sovellus.";
+  Hindi = "\u090f\u092a\u094d\u0932\u0940\u0915\u0947\u0936\u0928 \u0936\u0941\u0930\u0942 \u0915\u0930\u0947\u0902\u0964";
+  Indonesian = "Luncurkan aplikasinya.";
+  Polish = "Uruchom aplikacj\u0119.";
+  PortugueseBrazil = "Inicie o aplicativo.";
+  Thai = "\u0e40\u0e1b\u0e34\u0e14\u0e41\u0e2d\u0e1b\u0e1e\u0e25\u0e34\u0e40\u0e04\u0e0a\u0e31\u0e19";
+  Vietnamese = "Kh\u1edfi ch\u1ea1y \u1ee9ng d\u1ee5ng.";
+  Korean = "\uc560\ud50c\ub9ac\ucf00\uc774\uc158\uc744 \uc2e4\ud589\ud558\uc138\uc694.";
+  Malay = "Lancarkan aplikasi.";
 );
 
 $output false
 const string POP09_CONNECTION_FAILED =
 (
   Default = "Connection failed.\nCheck Bluetooth connection settings.\nCheck smartphone reception.";
+  Japanese = "\u63a5\u7d9a\u306b\u5931\u6557\u3057\u307e\u3057\u305f\u3002\nBluetooth\u306e\u63a5\u7d9a\u3092\u78ba\u8a8d\u3057\u3066\u304f\u3060\u3055\u3044\u3002\n\u30b9\u30de\u30fc\u30c8\u30d5\u30a9\u30f3\u306e\u96fb\u6ce2\u72b6\u6cc1\u3092\u78ba\u8a8d\u3057\u3066\u304f\u3060\u3055\u3044\u3002";
+  French = "\u00c9chec de connexion.\nV\u00e9rifiez les param\u00e8tres de connexion\nBluetooth.\nV\u00e9rifiez l'\u00e9tat du r\u00e9seau du smartphone.";
+  Spanish = "Conexi\u00f3n fallida.\nVerifique los ajustes de la conexi\u00f3n\nBluetooth.\nVerifique la recepci\u00f3n del tel\u00e9fono.";
+  Italian = "Connessione fallita.\nControlla le impostazioni di connessione\nBluetooth.\nControlla la ricezione dello smartphone.";
+  German = "Verbindung fehlgeschlagen.\n\u00dcberpr\u00fcfen Sie die Bluetooth\n-Verbindungseinstellungen.\n\u00dcberpr\u00fcfen Sie den Smartphone\n-Empfang.";
+  TraditionalChinese = "\u9023\u7dda\u5931\u6557\u3002\n\u8acb\u6aa2\u67e5 Bluetooth \u9023\u7dda\u8a2d\u5b9a\u3002\n\u8acb\u78ba\u8a8d\u667a\u6167\u578b\u624b\u6a5f\u7684\u6536\u8a0a\u72c0\u614b\u3002";
+  SimplifiedChinese = "\u8fde\u63a5\u5931\u8d25\u3002\n\u68c0\u67e5\u84dd\u7259\u8fde\u63a5\u8bbe\u7f6e\u3002\n\u68c0\u67e5\u667a\u80fd\u624b\u673a\u4fe1\u53f7\u63a5\u6536\u6548\u679c\u3002";
+  Greek = "\u0397 \u03c3\u03cd\u03bd\u03b4\u03b5\u03c3\u03b7 \u03b1\u03c0\u03ad\u03c4\u03c5\u03c7\u03b5.\n\u0395\u03bb\u03ad\u03b3\u03be\u03c4\u03b5 \u03c4\u03b9\u03c2 \u03c1\u03c5\u03b8\u03bc\u03af\u03c3\u03b5\u03b9\u03c2 \u03c3\u03c5\u03bd\u03b4\u03b5\u03c3\u03b9\u03bc\u03cc\u03c4\u03b7\u03c4\u03b1\u03c2\nBluetooth.\n\u0395\u03bb\u03ad\u03b3\u03be\u03c4\u03b5 \u03c4\u03bf \u03c3\u03ae\u03bc\u03b1 \u03c4\u03bf\u03c5 smartphone.";
+  Finnish = "Yhteys ep\u00e4onnistui.\nTarkista Bluetooth-yhteysasetukset.\nTarkista \u00e4lypuhelimen kuuluvuus.";
+  Hindi = "\u0915\u0928\u0947\u0915\u094d\u0936\u0928 \u0905\u0938\u092b\u0932\u0964\n\u092c\u094d\u0932\u0942\u091f\u0942\u0925 \u0915\u0928\u0947\u0915\u094d\u0936\u0928 \u0938\u0947\u091f\u093f\u0902\u0917\u0964\n\u0938\u094d\u092e\u093e\u0930\u094d\u091f\u095e\u094b\u0928 \u0915\u093e \u0930\u093f\u0938\u0947\u092a\u094d\u0936\u0928 \u091a\u0947\u0915 \u0915\u0930\u0947\u0902.";
+  Indonesian = "Koneksi gagal.\nPeriksa pengaturan koneksi Bluetooth.\nPeriksa penerimaan ponsel pintar.";
+  Polish = "Po\u0142\u0105czenie nieudane.\nSprawd\u017a ustawienia po\u0142\u0105czenia\nBluetooth.\nSprawd\u017a odbieranie na smartfonie.";
+  PortugueseBrazil = "Conex\u00e3o com falha.\nVerifique as configura\u00e7\u00f5es de conex\u00e3o\nBluetooth.\nVerifique a recep\u00e7\u00e3o do smartphone.";
+  Thai = "\u0e01\u0e32\u0e23\u0e40\u0e0a\u0e37\u0e48\u0e2d\u0e21\u0e15\u0e48\u0e2d\u0e44\u0e21\u0e48\u0e2a\u0e33\u0e40\u0e23\u0e47\u0e08\n\u0e15\u0e23\u0e27\u0e08\u0e2a\u0e2d\u0e1a\u0e01\u0e32\u0e23\u0e15\u0e31\u0e49\u0e07\u0e04\u0e48\u0e32\u0e01\u0e32\u0e23\u0e40\u0e0a\u0e37\u0e48\u0e2d\u0e21\u0e15\u0e48\u0e2d\u0e1a\u0e25\u0e39\u0e17\u0e39\u0e18\n\u0e15\u0e23\u0e27\u0e08\u0e2a\u0e2d\u0e1a\u0e01\u0e32\u0e23\u0e23\u0e31\u0e1a\u0e2a\u0e21\u0e32\u0e23\u0e4c\u0e17\u0e42\u0e1f\u0e19";
+  Vietnamese = "K\u1ebft n\u1ed1i th\u1ea5t b\u1ea1i.\nKi\u1ec3m tra c\u00e0i \u0111\u1eb7t k\u1ebft n\u1ed1i Bluetooth.\nKi\u1ec3m tra ti\u1ebfp nh\u1eadn \u0111i\u1ec7n tho\u1ea1i th\u00f4ng minh.";
+  Korean = "\uc5f0\uacb0\uc744 \uc2e4\ud328\ud588\uc2b5\ub2c8\ub2e4.\nBluetooth \uc5f0\uacb0 \uc124\uc815\uc744 \uc810\uac80\ud558\uc138\uc694.\n\uc2a4\ub9c8\ud2b8\ud3f0\uc5d0\uc11c \uba54\uc2dc\uc9c0\ub97c \ud655\uc778\ud558\uc138\uc694.";
+  Malay = "Sambungan gagal.\nPeriksa tetapan sambungan Bluetooth.\nPeriksa penerimaan telefon pintar.";
+);
+
+$output false
+const string POP13_NO_OFFICE_LOCATION =
+(
+  Default = "Work location is not set.";
+  Japanese = "\u8077\u5834\u304c\u8a2d\u5b9a\u3055\u308c\u3066\u3044\u307e\u305b\u3093\u3002";
+  French = "La position de votre lieu de travail n'a pas\n\u00e9t\u00e9 param\u00e9tr\u00e9e.";
+  Spanish = "Ubicaci\u00f3n de trabajo no configurada.";
+  Italian = "La posizione del luogo di lavoro non \u00e8\nimpostata.";
+  German = "Der Arbeitsort ist nicht festgelegt.";
+  TraditionalChinese = "\u672a\u8a2d\u5b9a\u516c\u53f8\u5730\u9ede\u3002";
+  SimplifiedChinese = "\u672a\u8bbe\u7f6e\u516c\u53f8\u7684\u4f4d\u7f6e\u3002";
+  Greek = "\u0397 \u03c4\u03bf\u03c0\u03bf\u03b8\u03b5\u03c3\u03af\u03b1 \u03c4\u03b7\u03c2 \u03b4\u03bf\u03c5\u03bb\u03b5\u03b9\u03ac\u03c2 \u03b4\u03b5\u03bd \u03ad\u03c7\u03b5\u03b9 \u03bf\u03c1\u03b9\u03c3\u03c4\u03b5\u03af.";
+  Finnish = "Ty\u00f6paikan sijaintia ei ole asetettu.";
+  Hindi = "\u0915\u093e\u092e \u0915\u093e \u0932\u094b\u0915\u0947\u0936\u0928 \u0938\u0947\u091f \u0928\u0939\u0940\u0902 \u0939\u0948\u0964";
+  Indonesian = "Lokasi kerja belum ditetapkan.";
+  Polish = "Nie ustawiono miejsca pracy.";
+  PortugueseBrazil = "A localiza\u00e7\u00e3o do trabalho n\u00e3o est\u00e1 definida.";
+  Thai = "\u0e44\u0e21\u0e48\u0e44\u0e14\u0e49\u0e15\u0e31\u0e49\u0e07\u0e2a\u0e16\u0e32\u0e19\u0e17\u0e35\u0e48\u0e17\u0e33\u0e07\u0e32\u0e19";
+  Vietnamese = "Ch\u01b0a \u0111\u1eb7t v\u1ecb tr\u00ed l\u00e0m vi\u1ec7c.";
+  Korean = "\uc9c1\uc7a5 \uc704\uce58\uac00 \uc124\uc815\ub418\uc9c0 \uc54a\uc558\uc2b5\ub2c8\ub2e4.";
+  Malay = "Lokasi tempat kerja tidak ditetapkan.";
 );
 
 $output false
 const string POP17_APP_INIT_SETTING_FAILED =
 (
-  Default = "Initial settings incomplete.\nFollow the instructions of LC Navi on your phone to complete the initial settings.";
+  Default = "Initial settings incomplete.\nFollow the instructions of [Navigation app name] on your phone to complete the initial settings.";
+  Japanese = "\u521d\u671f\u8a2d\u5b9a\u304c\u5b8c\u4e86\u3057\u3066\u3044\u307e\u305b\u3093\u3002\n[Navigation app name]\u306e\u8aac\u660e\u306b\u5f93\u3044\u3001\n\u521d\u671f\u8a2d\u5b9a\u3092\u5b8c\u4e86\u3057\u3066\u304f\u3060\u3055\u3044\u3002";
+  French = "Param\u00e8tres de base incomplets.\nSuivez les instructions de\n[Navigation app name] sur votre\nt\u00e9l\u00e9phone pour terminer les param\u00e8tres\nde base.";
+  Spanish = "Configuraci\u00f3n inicial incompleta.\nSiga las instrucciones de [Navigation app\nname] en su tel\u00e9fono para completar la\nconfiguraci\u00f3n inicial.";
+  Italian = "Impostazioni iniziali non completate.\nSegui le istruzioni di [Navigation app \nname] sul tuo telefono per completare \nle impostazioni iniziali.";
+  German = "Initial settings incomplete.\nFolgen Sie den Anweisungen von\n[Navigation app name] auf Ihrem Telefon,\num die Grundeinstellungen abzuschlie\u00dfen.";
+  TraditionalChinese = "\u672a\u5b8c\u6210\u521d\u59cb\u5316\u8a2d\u5b9a\u3002\n\u8acb\u9075\u7167\u624b\u6a5f\u4e0a\u7684 [Navigation app name]\n\u6307\u793a\uff0c\u4ee5\u5b8c\u6210\u521d\u59cb\u5316\u8a2d\u5b9a\u3002";
+  SimplifiedChinese = "\u521d\u59cb\u8bbe\u7f6e\u4e0d\u5b8c\u6574\u3002\n\u8bf7\u6309\u7167\u624b\u673a\u4e0a [Navigation app name] \n\u7684\u8bf4\u660e\u5b8c\u6210\u521d\u59cb\u8bbe\u7f6e\u3002";
+  Greek = "\u039f\u03b9 \u03b1\u03c1\u03c7\u03b9\u03ba\u03ad\u03c2 \u03c1\u03c5\u03b8\u03bc\u03af\u03c3\u03b5\u03b9\u03c2 \u03b5\u03af\u03bd\u03b1\u03b9 \u03b5\u03bb\u03bb\u03b9\u03c0\u03b5\u03af\u03c2.\n\u0391\u03ba\u03bf\u03bb\u03bf\u03c5\u03b8\u03ae\u03c3\u03c4\u03b5 \u03c4\u03b7\u03c2 \u03bf\u03b4\u03b7\u03b3\u03af\u03b5\u03c2 \u03c4\u03b7\u03c2 \u03b5\u03c6\u03b1\u03c1\u03bc\u03bf\u03b3\u03ae\u03c2\n[Navigation app name] \u03c3\u03c4\u03bf \u03c4\u03b7\u03bb\u03ad\u03c6\u03c9\u03bd\u03cc\n\u03c3\u03b1\u03c2 \u03b3\u03b9\u03b1 \u03bd\u03b1 \u03bf\u03bb\u03bf\u03ba\u03bb\u03b7\u03c1\u03ce\u03c3\u03b5\u03c4\u03b5 \u03c4\u03b9\u03c2 \u03b1\u03c1\u03c7\u03b9\u03ba\u03ad\u03c2\n\u03c1\u03c5\u03b8\u03bc\u03af\u03c3\u03b5\u03b9\u03c2.";
+  Finnish = "Alkuasetukset ovat puutteelliset.\nSuorita alkuasetukset puhelimen\n[Navigation app name] -sovelluksen\nohjeiden mukaisesti.";
+  Hindi = "\u0906\u0930\u0902\u092d\u093f\u0915 \u0938\u0947\u091f\u093f\u0902\u0917 \u0905\u092a\u0942\u0930\u094d\u0923\u0964\n\u0906\u0930\u0902\u092d\u093f\u0915 \u0938\u0947\u091f\u093f\u0902\u0917 \u0915\u094b \u092a\u0942\u0930\u093e \u0915\u0930\u0928\u0947 \u0915\u0947 \u0932\u093f\u090f \u0905\u092a\u0928\u0947 \u095e\u094b\u0928\n\u092a\u0930\n[Navigation app name] \u0915\u0947 \u0928\u093f\u0930\u094d\u0926\u0947\u0936\u094b\u0902 \u0915\u093e\n\u0905\u0928\u0941\u0938\u0930\u0923 \u0915\u0930\u0947\u0902\u0964";
+  Indonesian = "Pengaturan awal belum selesai.\nIkuti petunjuk\u00a0[Navigation app name]\u00a0di\nponsel Anda untuk menyelesaikan\npengaturan awal.";
+  Polish = "Niekompletne ustawienia pocz\u0105tkowe.\nAby zako\u0144czy\u0107 ustawianie pocz\u0105tkowe,\npost\u0119puj zgodnie z instrukcjami\naplikacji [Navigation app name] na\ntelefonie.";
+  PortugueseBrazil = "Configura\u00e7\u00f5es iniciais incompletas.\nSiga as instru\u00e7\u00f5es de [Navigation app\nname] em seu telefone para concluir as\nconfigura\u00e7\u00f5es iniciais.";
+  Thai = "\u0e01\u0e32\u0e23\u0e15\u0e31\u0e49\u0e07\u0e04\u0e48\u0e32\u0e40\u0e23\u0e34\u0e48\u0e21\u0e15\u0e49\u0e19\u0e44\u0e21\u0e48\u0e40\u0e2a\u0e23\u0e47\u0e08\u0e2a\u0e21\u0e1a\u0e39\u0e23\u0e13\u0e4c\n\u0e17\u0e33\u0e15\u0e32\u0e21\u0e04\u0e33\u0e41\u0e19\u0e30\u0e19\u0e33\u0e02\u0e2d\u0e07\u00a0\n[Navigation app name]\n\u0e43\u0e19\u0e42\u0e17\u0e23\u0e28\u0e31\u0e1e\u0e17\u0e4c\u0e02\u0e2d\u0e07\u0e04\u0e38\u0e13\u0e40\u0e1e\u0e37\u0e48\u0e2d\u0e17\u0e33\u0e01\u0e32\u0e23\n\u0e15\u0e31\u0e49\u0e07\u0e04\u0e48\u0e32\u0e40\u0e23\u0e34\u0e48\u0e21\u0e15\u0e49\u0e19\u0e43\u0e2b\u0e49\u0e40\u0e2a\u0e23\u0e47\u0e08\u0e2a\u0e21\u0e1a\u0e39\u0e23\u0e13\u0e4c";
+  Vietnamese = "C\u00e0i \u0111\u1eb7t ban \u0111\u1ea7u ch\u01b0a ho\u00e0n t\u1ea5t.\nL\u00e0m theo h\u01b0\u1edbng d\u1eabn \u1edf\u00a0\n[Navigation app name]\u00a0tr\u00ean \u0111i\u1ec7n tho\u1ea1i \nc\u1ee7a b\u1ea1n \u0111\u1ec3 ho\u00e0n t\u1ea5t c\u00e1c c\u00e0i \u0111\u1eb7t ban\n\u0111\u1ea7u.";
+  Korean = "\ucd08\uae30 \uc124\uc815\uc774 \uc644\ub8cc\ub418\uc9c0 \uc54a\uc558\uc2b5\ub2c8\ub2e4.\n\uc2a4\ub9c8\ud2b8\ud3f0\uc758 [Navigation app name]\n\uc5d0 \ud45c\uc2dc\ub41c \uc9c0\uc2dc\uc5d0 \ub530\ub77c \ucd08\uae30 \uc124\uc815\uc744\n\uc644\ub8cc\ud558\uc138\uc694.";
+  Malay = "Tetapan awal tidak lengkap. Ikuti\narahan [Navigation app name] di\ntelefon anda untuk menyelesaikan\ntetapan awal.";
 );
 
 $output false
@@ -774,60 +1640,230 @@ $output false
 const string SET01_TRACTION_CONTROL =
 (
   Default = "Traction Control";
+  Japanese = "\u30c8\u30e9\u30af\u30b7\u30e7\u30f3\u30b3\u30f3\u30c8\u30ed\u30fc\u30eb";
+  French = "Antipatinage";
+  Spanish = "Control de tracci\u00f3n";
+  Italian = "Controllo trazione";
+  German = "Traktionskontrolle";
+  TraditionalChinese = "\u5faa\u8de1\u63a7\u5236";
+  SimplifiedChinese = "\u7275\u5f15\u529b\u63a7\u5236";
+  Greek = "\u0388\u03bb\u03b5\u03b3\u03c7\u03bf\u03c2 \u03c0\u03c1\u03cc\u03c3\u03c6\u03c5\u03c3\u03b7\u03c2";
+  Finnish = "Luistonesto";
+  Hindi = "\u091f\u094d\u0930\u0948\u0915\u094d\u0936\u0928 \u0915\u0902\u091f\u094d\u0930\u094b\u0932";
+  Indonesian = "Kontrol Traksi";
+  Polish = "Kontrola trakcji";
+  PortugueseBrazil = "Controle de tra\u00e7\u00e3o";
+  Thai = "\u0e01\u0e32\u0e23\u0e04\u0e27\u0e1a\u0e04\u0e38\u0e21\u0e41\u0e23\u0e07\u0e09\u0e38\u0e14";
+  Vietnamese = "Ki\u1ec3m so\u00e1t l\u1ef1c k\u00e9o";
+  Korean = "\uc815\uc9c0 \ub9c8\ucc30\ub825 \uc81c\uc5b4";
+  Malay = "Kawalan Cengkaman";
 );
 
 $output false
 const string SET01_CONNECTION =
 (
   Default = "Connection";
+  Japanese = "\u30b3\u30cd\u30af\u30b7\u30e7\u30f3";
+  French = "Connexion";
+  Spanish = "Conexi\u00f3n";
+  Italian = "Connessione";
+  German = "Verbindung";
+  TraditionalChinese = "\u9023\u7dda";
+  SimplifiedChinese = "\u8fde\u63a5";
+  Greek = "\u03a3\u03cd\u03bd\u03b4\u03b5\u03c3\u03b7";
+  Finnish = "Yhteys";
+  Hindi = "\u0915\u0928\u0947\u0915\u094d\u0936\u0928";
+  Indonesian = "Sambungan";
+  Polish = "Po\u0142\u0105czenie";
+  PortugueseBrazil = "Conex\u00e3o";
+  Thai = "\u0e01\u0e32\u0e23\u0e40\u0e0a\u0e37\u0e48\u0e2d\u0e21\u0e15\u0e48\u0e2d";
+  Vietnamese = "K\u1ebft n\u1ed1i";
+  Korean = "\uc5f0\uacb0";
+  Malay = "Sambungan";
 );
 
 $output false
 const string SET01_CLOCK =
 (
   Default = "Clock";
+  Japanese = "\u6642\u8a08";
+  French = "Horloge";
+  Spanish = "Reloj";
+  Italian = "Orologio";
+  German = "Uhr";
+  TraditionalChinese = "\u6642\u9418";
+  SimplifiedChinese = "\u65f6\u949f";
+  Greek = "\u03a1\u03bf\u03bb\u03cc\u03b9";
+  Finnish = "Kello";
+  Hindi = "\u0918\u095c\u0940";
+  Indonesian = "Jam";
+  Polish = "Zegar";
+  PortugueseBrazil = "Rel\u00f3gio";
+  Thai = "\u0e19\u0e32\u0e2c\u0e34\u0e01\u0e32";
+  Vietnamese = "\u0110\u1ed3ng h\u1ed3";
+  Korean = "\uc2dc\uacc4";
+  Malay = "Jam";
 );
 
 $output false
 const string SET01_BRIGHTNESS =
 (
   Default = "Brightness";
+  Japanese = "\u660e\u308b\u3055";
+  French = "Luminosit\u00e9";
+  Spanish = "Brillo";
+  Italian = "Luminosit\u00e0";
+  German = "Helligkeit";
+  TraditionalChinese = "\u4eae\u5ea6";
+  SimplifiedChinese = "\u4eae\u5ea6";
+  Greek = "\u03a6\u03c9\u03c4\u03b5\u03b9\u03bd\u03cc\u03c4\u03b7\u03c4\u03b1";
+  Finnish = "Kirkkaus";
+  Hindi = "\u091a\u092e\u0915";
+  Indonesian = "Kecerahan";
+  Polish = "Jasno\u015b\u0107";
+  PortugueseBrazil = "Brilho";
+  Thai = "\u0e04\u0e27\u0e32\u0e21\u0e2a\u0e27\u0e48\u0e32\u0e07";
+  Vietnamese = "\u0110\u1ed9 s\u00e1ng";
+  Korean = "\ubc1d\uae30";
+  Malay = "Kecerahan";
 );
 
 $output false
 const string SET01_UNIT =
 (
   Default = "Unit";
+  Japanese = "\u5358\u4f4d";
+  French = "Unit\u00e9";
+  Spanish = "Unidad";
+  Italian = "Unit\u00e0";
+  German = "Einheit";
+  TraditionalChinese = "\u55ae\u4f4d";
+  SimplifiedChinese = "\u5355\u4f4d";
+  Greek = "\u039c\u03bf\u03bd\u03ac\u03b4\u03b1";
+  Finnish = "Yksikk\u00f6";
+  Hindi = "\u0907\u0915\u093e\u0908";
+  Indonesian = "Unit";
+  Polish = "Jedn.";
+  PortugueseBrazil = "Unidade";
+  Thai = "\u0e2b\u0e19\u0e48\u0e27\u0e22";
+  Vietnamese = "\u0110\u01a1n v\u1ecb";
+  Korean = "\ub2e8\uc704";
+  Malay = "Unit";
 );
 
 $output false
 const string SET01_GRIP_WARMER_SETTINGS =
 (
   Default = "Grip warmer settings";
+  Japanese = "\u30b0\u30ea\u30c3\u30d7\u30a6\u30a9\u30fc\u30de\u30fc";
+  French = "Param. poign\u00e9es chauffantes";
+  Spanish = "Ajustes calentador agarre";
+  Italian = "Impostaz. scalda manopole";
+  German = "Einstellung beheizb. Griffe";
+  TraditionalChinese = "\u628a\u624b\u96fb\u71b1\u5668\u8a2d\u5b9a";
+  SimplifiedChinese = "\u628a\u624b\u52a0\u70ed\u5668\u8bbe\u7f6e";
+  Greek = "\u03a1\u03c5\u03b8\u03bc\u03af\u03c3. \u03b8\u03b5\u03c1\u03bc\u03b1\u03bd\u03c4\u03ae\u03c1\u03b1 \u03c7\u03b5\u03b9\u03c1\u03bf\u03bb\u03b1\u03b2\u03ae\u03c2";
+  Finnish = "Kahvanl\u00e4mmitinasetukset";
+  Hindi = "\u0917\u094d\u0930\u093f\u092a \u0935\u093e\u0930\u094d\u092e\u0930 \u0938\u0947\u091f\u093f\u0902\u0917\u094d\u0938";
+  Indonesian = "Pengaturan grip warmer";
+  Polish = "Ustaw. ocieplacza chwyt\u00f3w";
+  PortugueseBrazil = "Config. aquecedor manopla";
+  Thai = "\u0e01\u0e32\u0e23\u0e15\u0e31\u0e49\u0e07\u0e04\u0e48\u0e32\u0e40\u0e04\u0e23\u0e37\u0e48\u0e2d\u0e07\u0e2d\u0e38\u0e48\u0e19\u0e01\u0e23\u0e34\u0e1b";
+  Vietnamese = "C\u00e0i \u0111\u1eb7t b\u1ed9 l\u00e0m \u1ea5m tay c\u1ea7m";
+  Korean = "\uc190\uc7a1\uc774 \uc628\uc5f4 \uc124\uc815";
+  Malay = "Tetapan cengkaman panas";
 );
 
 $output false
 const string SET01_SEAT_HEATER_SETTINGS =
 (
   Default = "Seat heater settings";
+  Japanese = "\u30b7\u30fc\u30c8\u30d2\u30fc\u30bf";
+  French = "Param. selle chauffante";
+  Spanish = "Ajustes calentador asiento";
+  Italian = "Impostazioni scalda sedile";
+  German = "Einstellungen Sitzheizung";
+  TraditionalChinese = "\u5ea7\u6905\u96fb\u71b1\u5668\u8a2d\u5b9a";
+  SimplifiedChinese = "\u5ea7\u6905\u52a0\u70ed\u5668\u8bbe\u7f6e";
+  Greek = "\u03a1\u03c5\u03b8\u03bc\u03af\u03c3\u03b5\u03b9\u03c2 \u03b8\u03b5\u03c1\u03bc\u03b1\u03bd\u03c4\u03ae\u03c1\u03b1 \u03c3\u03ad\u03bb\u03b1\u03c2";
+  Finnish = "Istuinl\u00e4mmitinasetukset";
+  Hindi = "\u0938\u0940\u091f \u0939\u0940\u091f\u0930 \u0938\u0947\u091f\u093f\u0902\u0917\u094d\u0938";
+  Indonesian = "Pengaturan pemanas kursi";
+  Polish = "Ustaw. podgrzewacza siode\u0142ka";
+  PortugueseBrazil = "Config. aquecedor assento";
+  Thai = "\u0e01\u0e32\u0e23\u0e15\u0e31\u0e49\u0e07\u0e04\u0e48\u0e32\u0e40\u0e04\u0e23\u0e37\u0e48\u0e2d\u0e07\u0e17\u0e33\u0e04\u0e27\u0e32\u0e21\u0e23\u0e49\u0e2d\u0e19\u0e17\u0e35\u0e48\u0e19\u0e31\u0e48\u0e07";
+  Vietnamese = "C\u00e0i \u0111\u1eb7t b\u1ed9 s\u01b0\u1edfi gh\u1ebf";
+  Korean = "\uc2dc\ud2b8 \uc628\uc5f4 \uc124\uc815";
+  Malay = "Tetapan pemanas tempat duduk";
 );
 
 $output false
 const string SET01_SYSTEM_INFO =
 (
   Default = "System information";
+  Japanese = "\u30b7\u30b9\u30c6\u30e0\u60c5\u5831";
+  French = "Informations sur le syst\u00e8me";
+  Spanish = "Informaci\u00f3n del sistema";
+  Italian = "Informazioni sistema";
+  German = "Systeminformationen";
+  TraditionalChinese = "\u7cfb\u7d71\u8cc7\u8a0a";
+  SimplifiedChinese = "\u7cfb\u7edf\u4fe1\u606f";
+  Greek = "\u03a0\u03bb\u03b7\u03c1\u03bf\u03c6\u03bf\u03c1\u03af\u03b5\u03c2 \u03c3\u03c5\u03c3\u03c4\u03ae\u03bc\u03b1\u03c4\u03bf\u03c2";
+  Finnish = "J\u00e4rjestelm\u00e4tiedot";
+  Hindi = "\u0938\u093f\u0938\u094d\u091f\u092e \u091c\u093e\u0928\u0915\u093e\u0930\u0940";
+  Indonesian = "Informasi Sistem";
+  Polish = "Informacje o systemie";
+  PortugueseBrazil = "Informa\u00e7\u00f5es do sistema";
+  Thai = "\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e23\u0e30\u0e1a\u0e1a";
+  Vietnamese = "Th\u00f4ng tin h\u1ec7 th\u1ed1ng";
+  Korean = "\uc2dc\uc2a4\ud15c \uc815\ubcf4";
+  Malay = "Maklumat sistem";
 );
 
 $output false
 const string SET01_LEGAL_INFO =
 (
   Default = "Legal information";
+  Japanese = "\u6cd5\u7684\u60c5\u5831";
+  French = "Informations l\u00e9gales";
+  Spanish = "Informaci\u00f3n legal";
+  Italian = "Informazioni legali";
+  German = "Rechtliche Informationen";
+  TraditionalChinese = "\u6cd5\u5f8b\u8cc7\u8a0a";
+  SimplifiedChinese = "\u6cd5\u5f8b\u4fe1\u606f";
+  Greek = "\u039d\u03bf\u03bc\u03b9\u03ba\u03ad\u03c2 \u03c0\u03bb\u03b7\u03c1\u03bf\u03c6\u03bf\u03c1\u03af\u03b5\u03c2";
+  Finnish = "Oikeudelliset tiedot";
+  Hindi = "\u0958\u093e\u0928\u0942\u0928\u0940 \u091c\u093e\u0928\u0915\u093e\u0930\u0940";
+  Indonesian = "Informasi hukum";
+  Polish = "Informacje prawne";
+  PortugueseBrazil = "Informa\u00e7\u00f5es legais";
+  Thai = "\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e17\u0e32\u0e07\u0e01\u0e0e\u0e2b\u0e21\u0e32\u0e22";
+  Vietnamese = "Th\u00f4ng tin ph\u00e1p l\u00fd";
+  Korean = "\ubc95\uc801 \uc815\ubcf4";
+  Malay = "Maklumat undang-undang";
 );
 
 $output false
 const string SET01_INFO_RESET =
 (
   Default = "Information / Reset";
+  Japanese = "\u30a4\u30f3\u30d5\u30a9\u30e1\u30fc\u30b7\u30e7\u30f3 / \u30ea\u30bb\u30c3\u30c8";
+  French = "Information / R\u00e9initialiser";
+  Spanish = "Informaci\u00f3n/Reiniciar";
+  Italian = "Informazioni/Reimposta";
+  German = "Informationen/Zur\u00fccksetzen";
+  TraditionalChinese = "\u8cc7\u8a0a\uff0f\u91cd\u8a2d";
+  SimplifiedChinese = "\u4fe1\u606f/\u91cd\u7f6e";
+  Greek = "\u03a0\u03bb\u03b7\u03c1\u03bf\u03c6\u03bf\u03c1\u03af\u03b5\u03c2/\u039c\u03b7\u03b4\u03b5\u03bd\u03b9\u03c3\u03bc\u03cc\u03c2";
+  Finnish = "Tiedot / Nollaa";
+  Hindi = "\u091c\u093e\u0928\u0915\u093e\u0930\u0940/\u0926\u094b\u092c\u093e\u0930\u093e \u0938\u0947\u091f \u0915\u0930\u0947\u0902";
+  Indonesian = "Informasi/Setel Ulang";
+  Polish = "Informacje / Reset";
+  PortugueseBrazil = "Informa\u00e7\u00f5es / Redefinir";
+  Thai = "\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25 / \u0e23\u0e35\u0e40\u0e0b\u0e47\u0e15";
+  Vietnamese = "Th\u00f4ng tin/\u0110\u1eb7t l\u1ea1i";
+  Korean = "\uc815\ubcf4 / \ucd08\uae30\ud654";
+  Malay = "Maklumat/Tetapkan Semula";
 );
 
 $output false
@@ -840,60 +1876,230 @@ $output false
 const string SET04_DISCOVERY_MODE =
 (
   Default = "Discovery mode";
+  Japanese = "\u30c7\u30d0\u30a4\u30b9\u691c\u51fa\u30e2\u30fc\u30c9";
+  French = "Mode d\u00e9couverte";
+  Spanish = "Modo descubrimiento";
+  Italian = "Modalit\u00e0 scoperta";
+  German = "Entdeckungsmodus";
+  TraditionalChinese = "\u63a2\u7d22\u6a21\u5f0f";
+  SimplifiedChinese = "\u53d1\u73b0\u6a21\u5f0f";
+  Greek = "\u039b\u03b5\u03b9\u03c4\u03bf\u03c5\u03c1\u03b3\u03af\u03b1 \u03b5\u03bd\u03c4\u03bf\u03c0\u03b9\u03c3\u03bc\u03bf\u03cd";
+  Finnish = "L\u00f6yt\u00e4mistila";
+  Hindi = "\u0921\u093f\u0938\u094d\u0915\u0935\u0930\u0940 \u092e\u094b\u0921";
+  Indonesian = "Mode penemuan";
+  Polish = "Tryb wykrywania";
+  PortugueseBrazil = "Modo de descoberta";
+  Thai = "\u0e42\u0e2b\u0e21\u0e14\u0e01\u0e32\u0e23\u0e04\u0e49\u0e19\u0e1e\u0e1a";
+  Vietnamese = "Ch\u1ebf \u0111\u1ed9 kh\u00e1m ph\u00e1";
+  Korean = "\ud0d0\uc0c9 \ubaa8\ub4dc";
+  Malay = "Mod penemuan";
 );
 
 $output false
 const string SET04_PAIRED_DEVICES =
 (
   Default = "Paired devices";
+  Japanese = "\u767b\u9332\u6e08\u307f\u30c7\u30d0\u30a4\u30b9";
+  French = "Appareils appair\u00e9s";
+  Spanish = "Dispositivos emparejados";
+  Italian = "Dispositivi accoppiati";
+  German = "Gekoppelte Ger\u00e4te";
+  TraditionalChinese = "\u5df2\u914d\u5c0d\u88dd\u7f6e";
+  SimplifiedChinese = "\u914d\u5bf9\u8bbe\u5907";
+  Greek = "\u03a3\u03c5\u03c3\u03ba\u03b5\u03c5\u03ad\u03c2 \u03c3\u03b5 \u03b6\u03b5\u03cd\u03be\u03b7";
+  Finnish = "Laiteparit";
+  Hindi = "\u091c\u094b\u095c\u0947 \u092e\u0947\u0902 \u0921\u093f\u0935\u093e\u0907\u0938";
+  Indonesian = "Perangkat yang dipasangkan";
+  Polish = "Sparowane urz\u0105dzenia";
+  PortugueseBrazil = "Dispositivos pareados";
+  Thai = "\u0e2d\u0e38\u0e1b\u0e01\u0e23\u0e13\u0e4c\u0e17\u0e35\u0e48\u0e08\u0e31\u0e1a\u0e04\u0e39\u0e48";
+  Vietnamese = "C\u00e1c thi\u1ebft b\u1ecb \u0111\u01b0\u1ee3c gh\u00e9p n\u1ed1i";
+  Korean = "\ud398\uc5b4\ub9c1\ub41c \uc7a5\uce58";
+  Malay = "Peranti pasangan";
 );
 
 $output false
 const string SET04_BT_AUTO_CONNECT =
 (
   Default = "Bluetooth auto connect";
+  Japanese = "Bluetooth\u81ea\u52d5\u63a5\u7d9a";
+  French = "Conn. Bluetooth auto";
+  Spanish = "Autoconexi\u00f3n Bluetooth";
+  Italian = "Auto conn. Bluetooth";
+  German = "Bluetooth-Autoverbind.";
+  TraditionalChinese = "Bluetooth \u81ea\u52d5\u9023\u7dda";
+  SimplifiedChinese = "\u84dd\u7259\u81ea\u52a8\u8fde\u63a5";
+  Greek = "\u0391\u03c5\u03c4\u03cc\u03bc\u03b1\u03c4\u03b7 \u03c3\u03cd\u03bd\u03b4\u03b5\u03c3\u03b7 Bluetooth";
+  Finnish = "Autom. Bluetooth-yhteys";
+  Hindi = "\u092c\u094d\u0932\u0942\u091f\u0942\u0925 \u0911\u091f\u094b \u0915\u0928\u0947\u0915\u094d\u091f";
+  Indonesian = "Koneksi oto. Bluetooth";
+  Polish = "Auto \u0142\u0105czenie Bluetooth";
+  PortugueseBrazil = "Con. Bluetooth aut.";
+  Thai = "\u0e40\u0e0a\u0e37\u0e48\u0e2d\u0e21\u0e15\u0e48\u0e2d\u0e1a\u0e25\u0e39\u0e17\u0e39\u0e18\u0e2d\u0e31\u0e15\u0e42\u0e19\u0e21\u0e31\u0e15\u0e34";
+  Vietnamese = "T\u1ef1 \u0111\u1ed9ng k\u1ebft n\u1ed1i Bluetooth";
+  Korean = "Bluetooth \uc790\ub3d9 \uc5f0\uacb0";
+  Malay = "Sambungan auto Bluetooth";
 );
 
 $output false
 const string SET05_MAX_DEVICES =
 (
   Default = "Max number of devices reached.\nDo you want to edit paired device list?";
+  Japanese = "\u767b\u9332\u4e0a\u9650\u306b\u9054\u3057\u307e\u3057\u305f\u3002\n\u30c7\u30d0\u30a4\u30b9\u30ea\u30b9\u30c8\u3092\u7de8\u96c6\u3057\u307e\u3059\u304b\uff1f";
+  French = "Limite d'appareils atteinte.\nSouhaitez-vous modifier la liste des\nappareils appair\u00e9s\u00a0?";
+  Spanish = "N\u00famero m\u00e1x. de dispositivos alcanzado.\n\u00bfQuiere editar la lista de dispositivos?";
+  Italian = "Numero massimo di dispositivi raggiunto.\nVuoi modificare la lista dei dispositivi\naccoppiati?";
+  German = "Maximale Anzahl von Ger\u00e4ten erreicht.\nM\u00f6chten Sie die Liste der gekoppelten\nGer\u00e4te bearbeiten?";
+  TraditionalChinese = "\u5df2\u9054\u88dd\u7f6e\u6578\u91cf\u4e0a\u9650\u3002\n\u662f\u5426\u8981\u7de8\u8f2f\u5df2\u914d\u5c0d\u88dd\u7f6e\u6e05\u55ae\uff1f";
+  SimplifiedChinese = "\u5df2\u8fbe\u5230\u6700\u5927\u8bbe\u5907\u6570\u3002\n\u662f\u5426\u8981\u4fee\u6539\u914d\u5bf9\u8bbe\u5907\u5217\u8868?";
+  Greek = "\u03a3\u03c5\u03bc\u03c0\u03bb\u03b7\u03c1\u03ce\u03b8\u03b7\u03ba\u03b5 \u03bf \u03bc\u03ad\u03b3\u03b9\u03c3\u03c4\u03bf\u03c2 \u03b1\u03c1\u03b9\u03b8\u03bc\u03cc\u03c2\n\u03c3\u03c5\u03c3\u03ba\u03b5\u03c5\u03ce\u03bd.\n\u0398\u03ad\u03bb\u03b5\u03c4\u03b5 \u03bd\u03b1 \u03b5\u03c0\u03b5\u03be\u03b5\u03c1\u03b3\u03b1\u03c3\u03c4\u03b5\u03af\u03c4\u03b5 \u03c4\u03b7 \u03bb\u03af\u03c3\u03c4\u03b1 \u03c3\u03c5\u03c3\u03ba\u03b5\u03c5\u03ce\u03bd\n\u03c3\u03b5 \u03b6\u03b5\u03cd\u03be\u03b7;";
+  Finnish = "Laitteiden enimm\u00e4ism\u00e4\u00e4r\u00e4 saavutettu.\nHaluatko muokata laiteparien luetteloa?";
+  Hindi = "\u0921\u093f\u0935\u093e\u0907\u0938 \u0915\u0940 \u0905\u0927\u093f\u0915\u094d\u0915\u0924\u092e \u0938\u0902\u0916\u094d\u092f\u093e \u092a\u0939\u0941\u0902\u091a\u0940\u0964\n\u0915\u094d\u092f\u093e \u0906\u092a \u091c\u094b\u095c\u093e \u0932\u0917\u093e \u0921\u093f\u0935\u093e\u0907\u0938 \u0915\u0940 \u0938\u0942\u091a\u0940 \u0938\u0902\u092a\u093e\u0926\u093f\u0924\n\u0915\u0930\u0928\u093e \u091a\u093e\u0939\u0924\u0947 \u0939\u0948\u0902?";
+  Indonesian = "Jumlah perangkat maksimum tercapai.\nApakah Anda ingin mengedit daftar\nperangkat yang dipasangkan?";
+  Polish = "Maks. liczba osi\u0105galnych urz\u0105dze\u0144.\nEdytowa\u0107 list\u0119 sparowanych urz\u0105dze\u0144?";
+  PortugueseBrazil = "N\u00famero m\u00e1ximo de dispositivos\nalcan\u00e7ados.\nDeseja editar a lista de dispositivos\npareados?";
+  Thai = "\u0e16\u0e36\u0e07\u0e08\u0e33\u0e19\u0e27\u0e19\u0e2a\u0e39\u0e07\u0e2a\u0e38\u0e14\u0e02\u0e2d\u0e07\u0e2d\u0e38\u0e1b\u0e01\u0e23\u0e13\u0e4c\u0e41\u0e25\u0e49\u0e27\n\u0e04\u0e38\u0e13\u0e15\u0e49\u0e2d\u0e07\u0e01\u0e32\u0e23\u0e41\u0e01\u0e49\u0e44\u0e02\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23\u0e2d\u0e38\u0e1b\u0e01\u0e23\u0e13\u0e4c\n\u0e17\u0e35\u0e48\u0e08\u0e31\u0e1a\u0e04\u0e39\u0e48\u0e2b\u0e23\u0e37\u0e2d\u0e44\u0e21\u0e48";
+  Vietnamese = "\u0110\u00e3 \u0111\u1ea1t \u0111\u1ebfn s\u1ed1 l\u01b0\u1ee3ng thi\u1ebft b\u1ecb t\u1ed1i \u0111a.\nB\u1ea1n c\u00f3 mu\u1ed1n ch\u1ec9nh s\u1eeda danh s\u00e1ch thi\u1ebft b\u1ecb\n\u0111\u01b0\u1ee3c gh\u00e9p n\u1ed1i kh\u00f4ng?";
+  Korean = "\uc5f0\uacb0 \uc7a5\uce58 \ucd5c\ub300 \uac1c\uc218\uc5d0 \ub3c4\ub2ec\ud588\uc2b5\ub2c8\ub2e4.\n\ud398\uc5b4\ub9c1\ub41c \uc7a5\uce58 \ubaa9\ub85d\uc744 \ud3b8\uc9d1\ud560\uae4c\uc694?";
+  Malay = "Jumlah maksimum peranti dicapai.\nAdakah anda mahu mengedit senarai\nperanti berpasangan?";
 );
 
 $output false
 const string SET06_DISCOVERABLE =
 (
   Default = "Now discoverable by other\nBluetooth devices.";
+  Japanese = "\u5468\u8fba\u306e\u30c7\u30d0\u30a4\u30b9\u306b\u8868\u793a\u3055\u308c\u307e\u3059\u3002";
+  French = "Vous \u00eates \u00e0 pr\u00e9sent d\u00e9tectable par les \nautres appareils Bluetooth.";
+  Spanish = "Ahora el sistema puede ser detectado \npor otros dispositivos Bluetooth.";
+  Italian = "Ora individuabile da altri \ndispositivi Bluetooth.";
+  German = "Jetzt f\u00fcr andere Bluetooth-Ger\u00e4te\nsichtbar.";
+  TraditionalChinese = "\u73fe\u5728\u53ef\u900f\u904e\u5176\u4ed6\nBluetooth \u88dd\u7f6e\u63a2\u7d22\u3002";
+  SimplifiedChinese = "\u73b0\u53ef\u88ab\u5176\u4ed6\u84dd\u7259\u8bbe\u5907\u6240\u53d1\u73b0\u3002";
+  Greek = "\u03a4\u03ce\u03c1\u03b1 \u03bc\u03c0\u03bf\u03c1\u03b5\u03af \u03bd\u03b1 \u03b1\u03bd\u03b9\u03c7\u03bd\u03b5\u03c5\u03c4\u03b5\u03af \u03b1\u03c0\u03cc \u03ac\u03bb\u03bb\u03b5\u03c2\n\u03c3\u03c5\u03c3\u03ba\u03b5\u03c5\u03ad\u03c2 Bluetooth.";
+  Finnish = "Nyt muiden Bluetooth-laitteiden\nl\u00f6ydett\u00e4viss\u00e4.";
+  Hindi = "\u0905\u0928\u094d\u092f \u092c\u094d\u0932\u0942\u091f\u0942\u0925 \u0921\u093f\u0935\u093e\u0907\u0938 \n\u0926\u094d\u0935\u093e\u0930\u093e \u0905\u092c \u0916\u094b\u091c\u0947 \u091c\u093e\u0928\u0947 \u092f\u094b\u0917\u094d\u092f\u0964";
+  Indonesian = "Sekarang dapat ditemukan oleh\nperangkat Bluetooth lain.";
+  Polish = "Wykrywalny przez inne\nurz\u0105dzenia Bluetooth.";
+  PortugueseBrazil = "Agora pode ser descoberto por outros\ndispositivos Bluetooth.";
+  Thai = "\u0e02\u0e13\u0e30\u0e19\u0e35\u0e49\u0e2d\u0e38\u0e1b\u0e01\u0e23\u0e13\u0e4c\u0e1a\u0e25\u0e39\u0e17\u0e39\u0e18\n\u0e2d\u0e37\u0e48\u0e19 \u0e46 \u0e2a\u0e32\u0e21\u0e32\u0e23\u0e16\u0e04\u0e49\u0e19\u0e1e\u0e1a\u0e44\u0e14\u0e49\u0e41\u0e25\u0e49\u0e27";
+  Vietnamese = "Hi\u1ec7n c\u00f3 th\u1ec3 \u0111\u01b0\u1ee3c ng\u01b0\u1eddi kh\u00e1c t\u00ecm th\u1ea5y\nc\u00e1c thi\u1ebft b\u1ecb Bluetooth.";
+  Korean = "\uc774\uc81c \ub2e4\ub978 Bluetooth \uc7a5\uce58\uc5d0\uc11c\ub3c4\n\ud0d0\uc0c9 \uac00\ub2a5\ud569\ub2c8\ub2e4.";
+  Malay = "Kini dapat ditemui oleh\nperanti Bluetooth lain.";
 );
 
 $output false
 const string SET06_NAME =
 (
   Default = "Name : %s";
+  Japanese = "\u540d\u79f0\uff1a%s";
+  French = "Nom :%s";
+  Spanish = "Nombre:%s";
+  Italian = "Nome:%s";
+  German = "Name:%s";
+  TraditionalChinese = "\u540d\u7a31\uff1a%s";
+  SimplifiedChinese = "\u540d\u79f0:%s";
+  Greek = "\u038c\u03bd\u03bf\u03bc\u03b1: %s";
+  Finnish = "Nimi: %s";
+  Hindi = "\u0928\u093e\u092e: %s";
+  Indonesian = "Nama: %s";
+  Polish = "Nazwa: %s";
+  PortugueseBrazil = "Nome : %s";
+  Thai = "\u0e0a\u0e37\u0e48\u0e2d: %s";
+  Vietnamese = "T\u00ean: %s";
+  Korean = "\uc774\ub984 : %s";
+  Malay = "Nama: %s";
 );
 
 $output false
 const string SET06_TIME_LEFT =
 (
   Default = "Time left : ";
+  Japanese = "\u6b8b\u308a\u6642\u9593\uff1a";
+  French = "Temps restant : ";
+  Spanish = "Tiempo restante: ";
+  Italian = "Tempo rimasto: ";
+  German = "Verbleibende Zeit: ";
+  TraditionalChinese = "\u5269\u9918\u6642\u9593\uff1a";
+  SimplifiedChinese = "\u5269\u4f59\u65f6\u95f4: ";
+  Greek = "\u03a7\u03c1\u03cc\u03bd\u03bf\u03c2 \u03c0\u03bf\u03c5 \u03b1\u03c0\u03bf\u03bc\u03ad\u03bd\u03b5\u03b9: ";
+  Finnish = "Aikaa j\u00e4ljell\u00e4: ";
+  Hindi = "\u0936\u0947\u0937 \u0938\u092e\u092f: ";
+  Indonesian = "Waktu tersisa: ";
+  Polish = "Pozosta\u0142y czas: ";
+  PortugueseBrazil = "Tempo restante : ";
+  Thai = "\u0e40\u0e27\u0e25\u0e32\u0e17\u0e35\u0e48\u0e40\u0e2b\u0e25\u0e37\u0e2d: 3:00 \u0e19";
+  Vietnamese = "Th\u1eddi gian c\u00f2n l\u1ea1i: 3:00";
+  Korean = "\ub0a8\uc740 \uc2dc\uac04 : 3:00";
+  Malay = "Masa tinggal: 3:00";
 );
 
 $output false
 const string SET07_PAIRING_FAILED =
 (
   Default = "Bluetooth pairing failed.";
+  Japanese = "\u30da\u30a2\u30ea\u30f3\u30b0\u306b\u5931\u6557\u3057\u307e\u3057\u305f\u3002";
+  French = "\u00c9chec de l'appairage Bluetooth.";
+  Spanish = "Emparejamiento de Bluetooth fallido.";
+  Italian = "Accoppiamento Bluetooth fallito.";
+  German = "Die Bluetooth-Kopplung ist\nfehlgeschlagen.";
+  TraditionalChinese = "Bluetooth \u914d\u5c0d\u5931\u6557\u3002";
+  SimplifiedChinese = "\u84dd\u7259\u914d\u5bf9\u5931\u8d25\u3002";
+  Greek = "\u0397 \u03b6\u03b5\u03cd\u03be\u03b7 Bluetooth \u03b1\u03c0\u03ad\u03c4\u03c5\u03c7\u03b5.";
+  Finnish = "Bluetooth-parinmuodostus ep\u00e4onnistui.";
+  Hindi = "\u092c\u094d\u0932\u0942\u091f\u0942\u0925 \u092a\u0947\u092f\u0930\u093f\u0902\u0917 \u0905\u0938\u092b\u0932:";
+  Indonesian = "Pemasangan Bluetooth\u00a0gagal.";
+  Polish = "Parowanie przez Bluetooth nieudane.";
+  PortugueseBrazil = "Pareamento de Bluetooth com falha.";
+  Thai = "\u0e01\u0e32\u0e23\u0e08\u0e31\u0e1a\u0e04\u0e39\u0e48\u0e1a\u0e25\u0e39\u0e17\u0e39\u0e18\u0e25\u0e49\u0e21\u0e40\u0e2b\u0e25\u0e27";
+  Vietnamese = "Gh\u00e9p n\u1ed1i Bluetooth kh\u00f4ng th\u00e0nh c\u00f4ng.";
+  Korean = "Bluetooth \ud398\uc5b4\ub9c1\uc744 \uc2e4\ud328\ud588\uc2b5\ub2c8\ub2e4.";
+  Malay = "Pasangan Bluetooth gagal.";
 );
 
 $output false
 const string SET08_PAIR_WITH =
 (
   Default = "Pair with\n\"%s\"?";
+  Japanese = "\"%s\"\u3068\u30da\u30a2\u30ea\u30f3\u30b0\u3057\u307e\u3059\u304b\uff1f";
+  French = "Appairer\n\u00e0 \u00ab\u00a0%s\u00a0\u00bb\u00a0?";
+  Spanish = "\u00bfEmparejar con\n\"%s\"?";
+  Italian = "Accoppia con\n\"%s\"?";
+  German = "Mit \u201e%s\u201c koppeln?";
+  TraditionalChinese = "\u662f\u5426\u8207\n\u300c%s\u300d\u914d\u5c0d\uff1f";
+  SimplifiedChinese = "\u4e0e\n\u201c%s\u201d\u914d\u5bf9?";
+  Greek = "\u0396\u03b5\u03cd\u03be\u03b7 \u03bc\u03b5\n\"%s\";";
+  Finnish = "Muodostetaanko pari laitteen\n %s kanssa?";
+  Hindi = "\n\"%s\" \u0915\u0947 \u0938\u093e\u0925 \u091c\u094b\u095c\u093e \u0932\u0917\u093e\u090f\u0902?";
+  Indonesian = "Pasangkan dengan\n\"%s\"?";
+  Polish = "Sparowa\u0107 z\n\u201e%s\u201d?";
+  PortugueseBrazil = "Parear com\n\"%s\"?";
+  Thai = "\u0e08\u0e31\u0e1a\u0e04\u0e39\u0e48\u0e01\u0e31\u0e1a\n\"%s\" \u0e2b\u0e23\u0e37\u0e2d\u0e44\u0e21\u0e48";
+  Vietnamese = "Gh\u00e9p n\u1ed1i v\u1edbi\n\"%s\"?";
+  Korean = "\"%s\"\uc5d0\n\ud398\uc5b4\ub9c1\ud560\uae4c\uc694?";
+  Malay = "Pasangkan dengan\n\"%s\"?";
 );
 
 $output false
 const string SET08_PASSKEY =
 (
   Default = "Passkey:";
+  Japanese = "\u30d1\u30b9\u30ad\u30fc\uff1a";
+  French = "Cl\u00e9 de v\u00e9rification\u00a0:";
+  Spanish = "Clave de acceso:";
+  Italian = "Chiave d\u2019accesso:";
+  German = "Passkey:";
+  TraditionalChinese = "\u8a8d\u8b49\u78bc\uff1a";
+  SimplifiedChinese = "\u5bc6\u7801: ";
+  Greek = "\u039a\u03bb\u03b5\u03b9\u03b4\u03af \u03c0\u03c1\u03cc\u03c3\u03b2\u03b1\u03c3\u03b7\u03c2:";
+  Finnish = "Salasana:";
+  Hindi = "\u092a\u093e\u0938\u0915\u0941\u0902\u091c\u0940:";
+  Indonesian = "Kode sandi:";
+  Polish = "Kod:";
+  PortugueseBrazil = "Senha:";
+  Thai = "\u0e23\u0e2b\u0e31\u0e2a\u0e1b\u0e23\u0e30\u0e08\u0e33\u0e15\u0e31\u0e27:";
+  Vietnamese = "M\u1eadt kh\u1ea9u:";
+  Korean = "\uc554\ud638\ud0a4:";
+  Malay = "Kata kunci:";
 );
 
 $output false
@@ -930,12 +2136,46 @@ $output false
 const string SET19_CONNECT =
 (
   Default = "Connect";
+  Japanese = "\u63a5\u7d9a";
+  French = "Connecter";
+  Spanish = "Conectar";
+  Italian = "Connetti";
+  German = "Verbinden";
+  TraditionalChinese = "\u9023\u7dda";
+  SimplifiedChinese = "\u8fde\u63a5";
+  Greek = "\u03a3\u03cd\u03bd\u03b4\u03b5\u03c3\u03b7";
+  Finnish = "Yhdist\u00e4";
+  Hindi = "\u0915\u0928\u0947\u0915\u094d\u091f \u0915\u0930\u0947\u0902";
+  Indonesian = "Hubungkan";
+  Polish = "Po\u0142\u0105cz";
+  PortugueseBrazil = "Conectar";
+  Thai = "\u0e40\u0e0a\u0e37\u0e48\u0e2d\u0e21\u0e15\u0e48\u0e2d";
+  Vietnamese = "K\u1ebft n\u1ed1i";
+  Korean = "\uc5f0\uacb0";
+  Malay = "Sambung";
 );
 
 $output false
 const string SET19_DISCONNECT =
 (
   Default = "Disconnect";
+  Japanese = "\u5207\u65ad";
+  French = "D\u00e9connecter";
+  Spanish = "Desconectar";
+  Italian = "Disconnetti";
+  German = "Trennen";
+  TraditionalChinese = "\u4e2d\u65b7\u9023\u7dda";
+  SimplifiedChinese = "\u65ad\u5f00\u8fde\u63a5";
+  Greek = "\u0391\u03c0\u03bf\u03c3\u03cd\u03bd\u03b4\u03b5\u03c3\u03b7";
+  Finnish = "Katkaise";
+  Hindi = "\u0921\u093f\u0938\u0915\u0928\u0947\u0915\u094d\u091f \u0915\u0930\u0947\u0902";
+  Indonesian = "Putuskan sambungan";
+  Polish = "Roz\u0142\u0105cz";
+  PortugueseBrazil = "Desconectar";
+  Thai = "\u0e15\u0e31\u0e14\u0e40\u0e0a\u0e37\u0e48\u0e2d\u0e21\u0e15\u0e48\u0e2d";
+  Vietnamese = "Ng\u1eaft k\u1ebft n\u1ed1i";
+  Korean = "\uc5f0\uacb0 \ud574\uc81c";
+  Malay = "Putuskan sambungan";
 );
 
 $output false
@@ -951,21 +2191,33 @@ const string SET21_BLE_ALREADY_CONNECTED =
 );
 
 $output false
-const string SET22_DEVICE_NAME =
-(
-  Default = "Device name:\n";
-);
-
-$output false
 const string SET22_WAIT_APP_CONNECTION =
 (
-  Default = "Waiting for app connection.\nCheck the app for instructions.";
+  Default = "%s is connecting.\nCheck the Yamaha Motorcycle connect app for instructions.";
+  Japanese = "%s\u3092\u63a5\u7d9a\u3057\u3066\u3044\u307e\u3059\u3002\nYamaha Motorccycle connect app\u3092\n\u78ba\u8a8d\u3057\u3066\u304f\u3060\u3055\u3044";
 );
 
 $output false
 const string SET23_PAIRING_FAILED =
 (
   Default = "Pairing failed.";
+  Japanese = "\u30da\u30a2\u30ea\u30f3\u30b0\u306b\u5931\u6557\u3057\u307e\u3057\u305f\u3002";
+  French = "\u00c9chec de l'appairage.";
+  Spanish = "Emparejamiento fallido.";
+  Italian = "Accoppiamento fallito.";
+  German = "Kopplung fehlgeschlagen.";
+  TraditionalChinese = "\u914d\u5c0d\u5931\u6557\u3002";
+  SimplifiedChinese = "\u914d\u5bf9\u5931\u8d25\u3002";
+  Greek = "\u0397 \u03b6\u03b5\u03cd\u03be\u03b7 \u03b1\u03c0\u03ad\u03c4\u03c5\u03c7\u03b5.";
+  Finnish = "Parinmuodostus ep\u00e4onnistui.";
+  Hindi = "\u092a\u0947\u092f\u0930\u093f\u0902\u0917 \u0905\u0938\u092b\u0932\u0964";
+  Indonesian = "Pemasangan gagal.";
+  Polish = "Parowanie nieudane.";
+  PortugueseBrazil = "Falha no pareamento.";
+  Thai = "\u0e01\u0e32\u0e23\u0e08\u0e31\u0e1a\u0e04\u0e39\u0e48\u0e25\u0e49\u0e21\u0e40\u0e2b\u0e25\u0e27";
+  Vietnamese = "Gh\u00e9p n\u1ed1i kh\u00f4ng th\u00e0nh c\u00f4ng.";
+  Korean = "\ud398\uc5b4\ub9c1\uc744 \uc2e4\ud328\ud588\uc2b5\ub2c8\ub2e4.";
+  Malay = "Pasangan gagal.";
 );
 
 $output false
@@ -984,126 +2236,504 @@ $output false
 const string SET26_PAIRING_SUCCESSFUL =
 (
   Default = "Pairing successful.";
+  Japanese = "\u30da\u30a2\u30ea\u30f3\u30b0\u5b8c\u4e86";
+  French = "Association r\u00e9ussie.";
+  Spanish = "Vinculaci\u00f3n completada.";
+  Italian = "Accoppiamento riuscito.";
+  German = "Kopplung erfolgreich.";
+  TraditionalChinese = "\u914d\u5c0d\u6210\u529f\u3002";
+  SimplifiedChinese = "\u914d\u5bf9\u6210\u529f\u3002";
+  Greek = "\u0397 \u03b6\u03b5\u03cd\u03be\u03b7 \u03ae\u03c4\u03b1\u03bd \u03b5\u03c0\u03b9\u03c4\u03c5\u03c7\u03ae\u03c2.";
+  Finnish = "Parinmuodostus onnistui.";
+  Hindi = "\u092a\u0947\u092f\u0930\u093f\u0902\u0917 \u0938\u092b\u0932\u0964";
+  Indonesian = "Pemasangan berhasil.";
+  Polish = "Parowanie udane.";
+  PortugueseBrazil = "Pareamento bem-sucedido.";
+  Thai = "\u0e08\u0e31\u0e1a\u0e04\u0e39\u0e48\u0e2a\u0e33\u0e40\u0e23\u0e47\u0e08";
+  Vietnamese = "Gh\u00e9p n\u1ed1i th\u00e0nh c\u00f4ng.";
+  Korean = "\ud398\uc5b4\ub9c1\uc744 \uc131\uacf5\ud588\uc2b5\ub2c8\ub2e4.";
+  Malay = "Pasangan berjaya.";
 );
 
 $output false
 const string SET27_UPDATE_SYSTEM =
 (
   Default = "Update system ?";
+  Japanese = "\u30bd\u30d5\u30c8\u30a6\u30a7\u30a2\u3092\u66f4\u65b0\u3057\u307e\u3059\u304b\uff1f";
+  French = "Mettre le syst\u00e8me \u00e0 jour ?";
+  Spanish = "\u00bfActualizar sistema?";
+  Italian = "Aggiornare sistema?";
+  German = "System updaten?";
+  TraditionalChinese = "\u662f\u5426\u8981\u66f4\u65b0\u7cfb\u7d71\uff1f";
+  SimplifiedChinese = "\u8981\u66f4\u65b0\u7cfb\u7edf\u5417?";
+  Greek = "\u0395\u03bd\u03b7\u03bc\u03ad\u03c1\u03c9\u03c3\u03b7 \u03c3\u03c5\u03c3\u03c4\u03ae\u03bc\u03b1\u03c4\u03bf\u03c2;";
+  Finnish = "P\u00e4ivitet\u00e4\u00e4nk\u00f6 j\u00e4rjestelm\u00e4?";
+  Hindi = "\u0938\u093f\u0938\u094d\u091f\u092e \u0905\u092a\u0921\u0947\u091f \u0915\u0930\u0947\u0902?";
+  Indonesian = "Perbarui sistem?";
+  Polish = "Zaktualizowa\u0107 system?";
+  PortugueseBrazil = "Atualizar sistema?";
+  Thai = "\u0e2d\u0e31\u0e1b\u0e40\u0e14\u0e15\u0e23\u0e30\u0e1a\u0e1a\u0e2b\u0e23\u0e37\u0e2d\u0e44\u0e21\u0e48";
+  Vietnamese = "C\u1eadp nh\u1eadt h\u1ec7 th\u1ed1ng?";
+  Korean = "\uc2dc\uc2a4\ud15c\uc744 \uc5c5\ub370\uc774\ud2b8\ud560\uae4c\uc694?";
+  Malay = "Kemaskini sistem?";
 );
 
 $output false
 const string SET28_ESN =
 (
   Default = "Electronic Serial Number";
+  Japanese = "Electronic Serial Number";
+  French = "Num\u00e9ro de s\u00e9rie \u00e9lectronique";
+  Spanish = "N\u00famero de serie electr\u00f3nico";
+  Italian = "Numero di serie elettronico";
+  German = "Elektronische Seriennummer";
+  TraditionalChinese = "\u96fb\u5b50\u5e8f\u865f";
+  SimplifiedChinese = "\u7535\u5b50\u5e8f\u5217\u53f7";
+  Greek = "\u0397\u03bb\u03b5\u03ba\u03c4\u03c1\u03bf\u03bd\u03b9\u03ba\u03cc\u03c2 \u03c3\u03b5\u03b9\u03c1\u03b9\u03b1\u03ba\u03cc\u03c2 \u03b1\u03c1\u03b9\u03b8\u03bc\u03cc\u03c2";
+  Finnish = "Elektroninen sarjanumero";
+  Hindi = "\u0907\u0932\u0947\u0915\u094d\u091f\u094d\u0930\u0949\u0928\u093f\u0915 \u0915\u094d\u0930\u092e \u0938\u0902\u0916\u094d\u092f\u093e";
+  Indonesian = "Nomor Seri Elektronik";
+  Polish = "Elektroniczny numer seryjny";
+  PortugueseBrazil = "N\u00famero de s\u00e9rie eletr\u00f4nico";
+  Thai = "\u0e2b\u0e21\u0e32\u0e22\u0e40\u0e25\u0e02\u0e0b\u0e35\u0e40\u0e23\u0e35\u0e22\u0e25\u0e2d\u0e34\u0e40\u0e25\u0e47\u0e01\u0e17\u0e23\u0e2d\u0e19\u0e34\u0e01\u0e2a\u0e4c";
+  Vietnamese = "S\u1ed1 s\u00ea-ri \u0111i\u1ec7n t\u1eed";
+  Korean = "\uc804\uc790 \uc77c\ub828 \ubc88\ud638";
+  Malay = "Nombor Siri Elektronik";
 );
 
 $output false
 const string SET28_SW_VERSION =
 (
   Default = "Software version";
+  Japanese = "\u30bd\u30d5\u30c8\u30a6\u30a7\u30a2\u30d0\u30fc\u30b8\u30e7\u30f3";
+  French = "Version du logiciel ";
+  Spanish = "Versi\u00f3n del software";
+  Italian = "Versione software";
+  German = "Software-Version";
+  TraditionalChinese = "\u8edf\u9ad4\u7248\u672c";
+  SimplifiedChinese = "\u8f6f\u4ef6\u7248\u672c";
+  Greek = "\u0388\u03ba\u03b4\u03bf\u03c3\u03b7 \u03bb\u03bf\u03b3\u03b9\u03c3\u03bc\u03b9\u03ba\u03bf\u03cd";
+  Finnish = "Ohjelmistoversio";
+  Hindi = "\u0938\u0949\u092b\u094d\u091f\u0935\u0947\u092f\u0930";
+  Indonesian = "Versi perangkat lunak";
+  Polish = "Wersja oprogramowania";
+  PortugueseBrazil = "Vers\u00e3o do software";
+  Thai = "\u0e40\u0e27\u0e2d\u0e23\u0e4c\u0e0a\u0e31\u0e19\u0e0b\u0e2d\u0e1f\u0e15\u0e4c\u0e41\u0e27\u0e23\u0e4c";
+  Vietnamese = "Phi\u00ean b\u1ea3n ph\u1ea7n m\u1ec1m";
+  Korean = "\uc18c\ud504\ud2b8\uc6e8\uc5b4 \ubc84\uc804";
+  Malay = "Versi perisian";
 );
 
 $output false
 const string SET28_UNIT_ID =
 (
   Default = "Unit ID";
+  Japanese = "\u30e6\u30cb\u30c3\u30c8ID";
+  French = "ID de l'unit\u00e9";
+  Spanish = "ID de unidad";
+  Italian = "ID unit\u00e0";
+  German = "Ger\u00e4te-ID";
+  TraditionalChinese = "\u88dd\u7f6e ID";
+  SimplifiedChinese = "\u5355\u4f4d ID";
+  Greek = "\u0391\u03bd\u03b1\u03b3\u03bd. \u03bc\u03bf\u03bd\u03ac\u03b4\u03b1\u03c2";
+  Finnish = "Laitetunnus";
+  Hindi = "\u0907\u0915\u093e\u0908 ID";
+  Indonesian = "ID Unit";
+  Polish = "ID urz\u0105dzenia";
+  PortugueseBrazil = "ID da unidade";
+  Thai = "ID \u0e0a\u0e38\u0e14\u0e2d\u0e38\u0e1b\u0e01\u0e23\u0e13\u0e4c";
+  Vietnamese = "ID \u0111\u01a1n v\u1ecb";
+  Korean = "\uc7a5\uce58 ID";
+  Malay = "ID Unit";
 );
 
 $output false
 const string SET28_SW_UPDATE =
 (
   Default = "Software update";
+  Japanese = "\u30bd\u30d5\u30c8\u30a6\u30a7\u30a2\u66f4\u65b0";
+  French = "Mise \u00e0 jour du logiciel";
+  Spanish = "Actualizaci\u00f3n de software";
+  Italian = "Aggiorn. Software";
+  German = "Software-Update";
+  TraditionalChinese = "\u8edf\u9ad4\u66f4\u65b0";
+  SimplifiedChinese = "\u8f6f\u4ef6\u66f4\u65b0";
+  Greek = "\u0395\u03bd\u03b7\u03bc\u03ad\u03c1\u03c9\u03c3\u03b7 \u03bb\u03bf\u03b3\u03b9\u03c3\u03bc\u03b9\u03ba\u03bf\u03cd";
+  Finnish = "Ohjelmistop\u00e4ivitys";
+  Hindi = "\u0938\u0949\u092b\u094d\u091f\u0935\u0947\u092f\u0930 \u0905\u092a\u0921\u0947\u091f";
+  Indonesian = "Pembaruan PL";
+  Polish = "Aktualizacja oprogramowania";
+  PortugueseBrazil = "Atualiza\u00e7\u00e3o do software";
+  Thai = "\u0e2d\u0e31\u0e1b\u0e40\u0e14\u0e15\u0e0b\u0e2d\u0e1f\u0e15\u0e4c\u0e41\u0e27\u0e23\u0e4c";
+  Vietnamese = "C\u1eadp nh\u1eadt ph\u1ea7n m\u1ec1m";
+  Korean = "\uc18c\ud504\ud2b8\uc6e8\uc5b4 \uc5c5\ub370\uc774\ud2b8";
+  Malay = "Kemas kini perisian.";
 );
 
 $output false
 const string SET29_DRIVING_NO_SW_UPDATE =
 (
   Default = "Software update cannot be executed while driving.";
+  Japanese = "\u904b\u8ee2\u4e2d\u3001\u30bd\u30d5\u30c8\u30a6\u30a7\u30a2\u306e\u66f4\u65b0\u306f\u3067\u304d\u307e\u305b\u3093\u3002";
+  French = "Les mises \u00e0 jour de logiciel ne peuvent\npas \u00eatre faites en conduisant.";
+  Spanish = "La actualizaci\u00f3n de software no se puede\nejecutar mientras se conduce.";
+  Italian = "L\u2019aggiornamento del software non pu\u00f2\nessere eseguito durante la guida.";
+  German = "Das Software-Update kann nicht w\u00e4hrend\nder Fahrt durchgef\u00fchrt werden.";
+  TraditionalChinese = "\u7121\u6cd5\u5728\u9a0e\u8eca\u6642\u57f7\u884c\u8edf\u9ad4\u66f4\u65b0\u3002";
+  SimplifiedChinese = "\u884c\u9a76\u65f6\u65e0\u6cd5\u6267\u884c\u8f6f\u4ef6\u66f4\u65b0\u3002";
+  Greek = "\u0397 \u03b5\u03bd\u03b7\u03bc\u03ad\u03c1\u03c9\u03c3\u03b7 \u03bb\u03bf\u03b3\u03b9\u03c3\u03bc\u03b9\u03ba\u03bf\u03cd \u03b4\u03b5\u03bd \u03bc\u03c0\u03bf\u03c1\u03b5\u03af \u03bd\u03b1\n\u03b5\u03ba\u03c4\u03b5\u03bb\u03b5\u03c3\u03c4\u03b5\u03af \u03ba\u03b1\u03c4\u03ac \u03c4\u03b7\u03bd \u03bf\u03b4\u03ae\u03b3\u03b7\u03c3\u03b7.";
+  Finnish = "Ohjelmistop\u00e4ivityst\u00e4 ei voida suorittaa\najon aikana.";
+  Hindi = "\u0938\u0949\u092b\u094d\u091f\u0935\u0947\u092f\u0930 \u0905\u092a\u0921\u0947\u091f \u0921\u094d\u0930\u093e\u0907\u0935\u093f\u0902\u0917 \u0915\u0947 \u0926\u094c\u0930\u093e\u0928 \u0928\u093f\u0937\u094d\u092a\u093e\u0926\u093f\u0924\n\u0928\u0939\u0940\u0902 \u0915\u093f\u092f\u093e \u091c\u093e \u0938\u0915\u0924\u093e\u0964";
+  Indonesian = "Pembaruan perangkat lunak tidak dapat\ndijalankan saat mengemudi.";
+  Polish = "Podczas jazdy nie mo\u017cna aktualizowa\u0107\noprogramowania.";
+  PortugueseBrazil = "A atualiza\u00e7\u00e3o do software n\u00e3o pode ser\nexecutada durante a condu\u00e7\u00e3o.";
+  Thai = "\u0e44\u0e21\u0e48\u0e2a\u0e32\u0e21\u0e32\u0e23\u0e16\u0e14\u0e33\u0e40\u0e19\u0e34\u0e19\u0e01\u0e32\u0e23\u0e2d\u0e31\u0e1b\u0e40\u0e14\u0e15\n\u0e0b\u0e2d\u0e1f\u0e15\u0e4c\u0e41\u0e27\u0e23\u0e4c\u0e43\u0e19\u0e02\u0e13\u0e30\u0e02\u0e31\u0e1a\u0e23\u0e16\u0e44\u0e14\u0e49";
+  Vietnamese = "Kh\u00f4ng th\u1ec3 th\u1ef1c hi\u1ec7n c\u1eadp nh\u1eadt ph\u1ea7n\nm\u1ec1m khi \u0111ang l\u00e1i xe.";
+  Korean = "\uc8fc\ud589 \uc911\uc5d0 \uc18c\ud504\ud2b8\uc6e8\uc5b4 \uc5c5\ub370\uc774\ud2b8\ub97c \uc2e4\ud589\ud560 \uc218\n\uc5c6\uc2b5\ub2c8\ub2e4.";
+  Malay = "Kemas kini perisian tidak dapat\ndilaksanakan semasa memandu.";
 );
 
 $output false
 const string SET35_LICENSE =
 (
   Default = "3rd party licenses";
+  Japanese = "\u30b5\u30fc\u30c9\u30d1\u30fc\u30c6\u30a3\u30e9\u30a4\u30bb\u30f3\u30b9";
+  French = "Licence d'un tiers";
+  Spanish = "Licencias de terceros";
+  Italian = "Licenze di terze parti";
+  German = "Lizenzen von Drittanbietern";
+  TraditionalChinese = "\u7b2c\u4e09\u65b9\u6388\u6b0a";
+  SimplifiedChinese = "\u7b2c\u4e09\u65b9\u8bb8\u53ef\u8bc1";
+  Greek = "\u0386\u03b4\u03b5\u03b9\u03b5\u03c2 \u03c7\u03c1\u03ae\u03c3\u03b7\u03c2 \u03c4\u03c1\u03af\u03c4\u03c9\u03bd \u03bc\u03b5\u03c1\u03ce\u03bd";
+  Finnish = "Kolmannen osapuolen lisenssit";
+  Hindi = "\u0925\u0930\u094d\u0921 \u092a\u093e\u0930\u094d\u091f\u0940 \u0932\u093e\u0907\u0938\u0947\u0902\u0938";
+  Indonesian = "Lisensi pihak ketiga";
+  Polish = "Licencje innych firm";
+  PortugueseBrazil = "Licen\u00e7as de terceiros";
+  Thai = "\u0e43\u0e1a\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15\u0e02\u0e2d\u0e07\u0e1a\u0e38\u0e04\u0e04\u0e25\u0e17\u0e35\u0e48\u0e2a\u0e32\u0e21";
+  Vietnamese = "Gi\u1ea5y ph\u00e9p c\u1ee7a b\u00ean th\u1ee9 3";
+  Korean = "\uc81c3\uc790 \ub77c\uc774\uc120\uc2a4";
+  Malay = "Lesen pihak ketiga";
 );
 
 $output false
 const string SET38_RESET_TO_FACTORY =
 (
   Default = "Reset LinkCard to factory settings?";
+  Japanese = "LinkCard\u3092\u5de5\u5834\u51fa\u8377\u72b6\u614b\u306b\u30ea\u30bb\u30c3\u30c8\u3057\u307e\u3059\u304b\uff1f";
+  French = "Restaurer LinkCard \u00e0 l'\u00e9tat d'usine\u00a0?";
+  Spanish = "\u00bfReiniciar LinkCard a la configuraci\u00f3n de\nf\u00e1brica?";
+  Italian = "Reimposta LinkCard alle impostazioni di\nfabbrica?";
+  German = "LinkCard auf Werkseinstellungen\nzur\u00fccksetzen?";
+  TraditionalChinese = "\u5c07 LinkCard \u91cd\u8a2d\u70ba\u539f\u5ee0\u8a2d\u5b9a\uff1f";
+  SimplifiedChinese = "\u5c06 LinkCard \u91cd\u7f6e\u4e3a\u51fa\u5382\u8bbe\u7f6e?";
+  Greek = "\u0395\u03c0\u03b1\u03bd\u03b1\u03c6\u03bf\u03c1\u03ac LinkCard \u03c3\u03c4\u03b9\u03c2 \u03b5\u03c1\u03b3\u03bf\u03c3\u03c4\u03b1\u03c3\u03b9\u03b1\u03ba\u03ad\u03c2\n\u03c1\u03c5\u03b8\u03bc\u03af\u03c3\u03b5\u03b9\u03c2;";
+  Finnish = "Palauta LinkCard tehdasasetuksiin?";
+  Hindi = "\u092b\u0948\u0915\u094d\u091f\u094d\u0930\u0940 \u0938\u0947\u091f\u093f\u0902\u0917 \u092e\u0947\u0902 LinkCard \u0926\u094b\u092c\u093e\u0930\u093e \u0938\u0947\u091f \u0915\u0930\u0947\u0902?";
+  Indonesian = "Setel ulang\u00a0LinkCard\u00a0ke pengaturan\npabrik?";
+  Polish = "Zresetowa\u0107 LinkCard do ustawie\u0144\nfabrycznych?";
+  PortugueseBrazil = "Redefinir LinkCard para as configura\u00e7\u00f5es\nde f\u00e1brica?";
+  Thai = "\u0e23\u0e35\u0e40\u0e0b\u0e47\u0e15\u00a0LinkCard\u00a0\u0e40\u0e1b\u0e47\u0e19\u0e01\u0e32\u0e23\u0e15\u0e31\u0e49\u0e07\u0e04\u0e48\u0e32\u0e08\u0e32\u0e01\n\u0e42\u0e23\u0e07\u0e07\u0e32\u0e19\u0e2b\u0e23\u0e37\u0e2d\u0e44\u0e21\u0e48";
+  Vietnamese = "\u0110\u1eb7t\u00a0l\u1ea1i LinkCard\u00a0v\u1ec1 c\u00e0i \u0111\u1eb7t g\u1ed1c?";
+  Korean = "LinkCard\ub97c \ucd08\uae30 \uc124\uc815\uc73c\ub85c \ucd08\uae30\ud654\ud560\uae4c\uc694?";
+  Malay = "Tetapkan semula LinkCard kepada\ntetapan kilang?";
 );
 
 $output false
 const string SET39_DELETE_PAIRING =
 (
   Default = "Please delete the pairing record on the smartphones.\nOtherwise, you may not be able to reconnect with LinkCard in the future.";
+  Japanese = "\u30b9\u30de\u30fc\u30c8\u30d5\u30a9\u30f3\u304b\u3089\u30da\u30a2\u30ea\u30f3\u30b0\u60c5\u5831\u3092\u524a\u9664\n\u3057\u3066\u304f\u3060\u3055\u3044\u3002";
+  French = "Veuillez supprimer l'historique\nd'appairage des smartphones.\nCela pourrait causer l'impossibilit\u00e9 de\nvous reconnecter \u00e0 LinkCard \u00e0 l\u2019avenir.";
+  Spanish = "Elimine el registro de emparejamiento en\nlos tel\u00e9fonos.\nO de lo contrario, es posible que no\npueda volver a conectarse con LinkCard\nen el futuro.";
+  Italian = "Elimina i dati di accoppiamento sullo\nsmartphone.\nIn caso contrario, potresti non essere in\ngrado di riconnetterti con LinkCard in\nfuturo.";
+  German = "Bitte l\u00f6schen Sie den Kopplungsdatensatz\nauf den Smartphones.\nAnsonsten k\u00f6nnen Sie sich in Zukunft\nm\u00f6glicherweise nicht mehr mit LinkCard\nverbinden.";
+  TraditionalChinese = "\u8acb\u522a\u9664\u667a\u6167\u578b\u624b\u6a5f\u7684\u914d\u5c0d\u7d00\u9304\uff0c\n\u5426\u5247\u4e4b\u5f8c\u5c07\u7121\u6cd5\u91cd\u65b0\u9023\u7dda\u81f3\nLinkCard\u3002";
+  SimplifiedChinese = "\u8bf7\u5220\u9664\u667a\u80fd\u624b\u673a\u4e0a\u7684\u914d\u5bf9\u8bb0\u5f55\u3002\n\u5426\u5219\uff0c\u4ee5\u540e\u53ef\u80fd\u65e0\u6cd5\u91cd\u65b0\u8fde\u63a5\nLinkCard\u3002";
+  Greek = "\u0394\u03b9\u03b1\u03b3\u03c1\u03ac\u03c8\u03c4\u03b5 \u03c4\u03b7\u03bd \u03b5\u03b3\u03b3\u03c1\u03b1\u03c6\u03ae \u03b6\u03b5\u03cd\u03be\u03b7\u03c2 \u03c3\u03c4\u03b1\nsmartphone.\n\u0394\u03b9\u03b1\u03c6\u03bf\u03c1\u03b5\u03c4\u03b9\u03ba\u03ac, \u03bc\u03c0\u03bf\u03c1\u03b5\u03af \u03bd\u03b1 \u03bc\u03b7\u03bd \u03bc\u03c0\u03bf\u03c1\u03b5\u03af\u03c4\u03b5 \u03bd\u03b1\n\u03b5\u03c0\u03b1\u03bd\u03b1\u03c3\u03c5\u03bd\u03b4\u03b5\u03b8\u03b5\u03af\u03c4\u03b5 \u03bc\u03b5 \u03c4\u03b7 LinkCard \u03c3\u03c4\u03bf\n\u03bc\u03ad\u03bb\u03bb\u03bf\u03bd.";
+  Finnish = "Poista parinmuodostustietue\n\u00e4lypuhelimista. Muuten yhteyden\nmuodostaminen LinkCardiin ei ehk\u00e4\nmy\u00f6hemmin onnistu uudelleen.";
+  Hindi = "\u0915\u0943\u092a\u092f\u093e \u0938\u094d\u092e\u093e\u0930\u094d\u091f\u092b\u094b\u0928 \u092a\u0930 \u092a\u0947\u092f\u0930\u093f\u0902\u0917 \u0930\u093f\u0915\u0949\u0930\u094d\u0921 \u092e\u093f\u091f\u093e\u090f\u0902\u0964\n\u0905\u0928\u094d\u092f\u0925\u093e, \u0906\u092a \u092d\u0935\u093f\u0937\u094d\u092f \u092e\u0947\u0902 LinkCard \u0915\u0947 \u0938\u093e\u0925 \u0926\u094b\u092c\u093e\u0930\u093e\n\u0915\u0928\u0947\u0915\u094d\u091f \u0928\u0939\u0940\u0902 \u0915\u0930 \u092a\u093e\u090f\u0902\u0917\u0947\u0964";
+  Indonesian = "Silakan hapus catatan pemasangan\npada ponsel pintar.\nJika tidak, Anda mungkin tidak dapat\nterhubung kembali dengan\u00a0LinkCard\ndi kemudian hari.";
+  Polish = "Usu\u0144 zapisane parowanie na smartfonach.\nW przeciwnym razie nie po\u0142\u0105czysz si\u0119\nponownie z LinkCard.";
+  PortugueseBrazil = "Exclua o registro de pareamento dos\nsmartphones.\nCaso contr\u00e1rio, voc\u00ea n\u00e3o poder\u00e1 se\nreconectar com o  LinkCard no futuro.";
+  Thai = "\u0e42\u0e1b\u0e23\u0e14\u0e25\u0e1a\u0e1a\u0e31\u0e19\u0e17\u0e36\u0e01\u0e01\u0e32\u0e23\u0e08\u0e31\u0e1a\u0e04\u0e39\u0e48\u0e43\u0e19\u0e2a\u0e21\u0e32\u0e23\u0e4c\u0e17\u0e42\u0e1f\u0e19\n\u0e21\u0e34\u0e09\u0e30\u0e19\u0e31\u0e49\u0e19\u0e04\u0e38\u0e13\u0e2d\u0e32\u0e08\u0e44\u0e21\u0e48\u0e2a\u0e32\u0e21\u0e32\u0e23\u0e16\u0e40\u0e0a\u0e37\u0e48\u0e2d\u0e21\u0e15\u0e48\u0e2d\u0e01\u0e31\u0e1a\nLinkCard \u0e44\u0e14\u0e49\u0e43\u0e19\u0e2d\u0e19\u0e32\u0e04\u0e15";
+  Vietnamese = "Vui l\u00f2ng x\u00f3a b\u1ea3n ghi gh\u00e9p n\u1ed1i tr\u00ean \u0111i\u1ec7n\ntho\u1ea1i th\u00f4ng minh. N\u1ebfu kh\u00f4ng, sau n\u00e0y\nb\u1ea1n c\u00f3 th\u1ec3 kh\u00f4ng k\u1ebft n\u1ed1i l\u1ea1i \u0111\u01b0\u1ee3c v\u1edbi\nLinkCard.";
+  Korean = "\uc2a4\ub9c8\ud2b8\ud3f0\uc5d0\uc11c \ud398\uc5b4\ub9c1 \uae30\ub85d\uc744 \uc0ad\uc81c\ud574\uc8fc\uc138\uc694.\n\uadf8\ub807\uc9c0 \uc54a\uc744 \uacbd\uc6b0, \uc55e\uc73c\ub85c LinkCard\n\uc7ac\uc5f0\uacb0\uc774 \uc5b4\ub824\uc6b8 \uc218 \uc788\uc2b5\ub2c8\ub2e4.";
+  Malay = "Sila padamkan rekod pasangan pada\ntelefon pintar. Jika tidak, anda mungkin\ntidak dapat menyambung semula\ndengan LinkCard pada masa hadapan.";
 );
 
 $output false
 const string SET40_CANNOT_EXECUTE =
 (
   Default = "Cannot execute while driving.";
+  Japanese = "\u904b\u8ee2\u4e2d\u306f\u5b9f\u884c\u3067\u304d\u307e\u305b\u3093\u3002";
+  French = "Ne peut pas \u00eatre lanc\u00e9 en conduisant.";
+  Spanish = "No se puede ejecutar mientras se\nconduce.";
+  Italian = "Esecuzione non possibile durante la guida.";
+  German = "Kann nicht w\u00e4hrend der Fahrt ausgef\u00fchrt\nwerden.";
+  TraditionalChinese = "\u7121\u6cd5\u5728\u9a0e\u8eca\u6642\u57f7\u884c\u3002";
+  SimplifiedChinese = "\u884c\u9a76\u65f6\u65e0\u6cd5\u6267\u884c\u3002";
+  Greek = "\u0391\u03b4\u03cd\u03bd\u03b1\u03c4\u03b7 \u03b7 \u03b5\u03ba\u03c4\u03ad\u03bb\u03b5\u03c3\u03b7 \u03ba\u03b1\u03c4\u03ac \u03c4\u03b7\u03bd \u03bf\u03b4\u03ae\u03b3\u03b7\u03c3\u03b7.";
+  Finnish = "Ei voida suorittaa ajon aikana.";
+  Hindi = "\u0921\u094d\u0930\u093e\u0907\u0935\u093f\u0902\u0917 \u0915\u0947 \u0926\u094c\u0930\u093e\u0928 \u0928\u093f\u0937\u094d\u092a\u093e\u0926\u093f\u0924 \u0928\u0939\u0940\u0902 \u0915\u093f\u092f\u093e \u091c\u093e \u0938\u0915\u0924\u093e\u0964";
+  Indonesian = "Tidak dapat mengeksekusi saat\nmengemudi.";
+  Polish = "Nie mo\u017cna wykona\u0107 podczas jazdy.";
+  PortugueseBrazil = "N\u00e3o \u00e9 poss\u00edvel executar durante a\ncondu\u00e7\u00e3o.";
+  Thai = "\u0e44\u0e21\u0e48\u0e2a\u0e32\u0e21\u0e32\u0e23\u0e16\u0e14\u0e33\u0e40\u0e19\u0e34\u0e19\u0e01\u0e32\u0e23\u0e44\u0e14\u0e49\u0e43\u0e19\u0e02\u0e13\u0e30\u0e02\u0e31\u0e1a\u0e23\u0e16";
+  Vietnamese = "Kh\u00f4ng th\u1ec3 th\u1ef1c thi khi \u0111ang l\u00e1i xe.";
+  Korean = "\uc8fc\ud589 \uc911\uc5d0\ub294 \uc2e4\ud589\ud560 \uc218 \uc5c6\uc2b5\ub2c8\ub2e4.";
+  Malay = "Tidak dapat dilaksanakan semasa\nmemandu.";
 );
 
 $output false
 const string SET42_RESET_COMPLETE =
 (
   Default = "Reset complete.";
+  Japanese = "\u30ea\u30bb\u30c3\u30c8\u3057\u307e\u3057\u305f\u3002";
+  French = "R\u00e9initialisation termin\u00e9e.";
+  Spanish = "Reinicio completo.";
+  Italian = "Reimpostazione completata.";
+  German = "Zur\u00fccksetzen abgeschlossen.";
+  TraditionalChinese = "\u91cd\u8a2d\u5b8c\u6210\u3002";
+  SimplifiedChinese = "\u91cd\u7f6e\u5b8c\u6210\u3002";
+  Greek = "\u039f \u03bc\u03b7\u03b4\u03b5\u03bd\u03b9\u03c3\u03bc\u03cc\u03c2 \u03bf\u03bb\u03bf\u03ba\u03bb\u03b7\u03c1\u03ce\u03b8\u03b7\u03ba\u03b5.";
+  Finnish = "Nollaus suoritettu.";
+  Hindi = "\u0926\u094b\u092c\u093e\u0930\u093e \u0938\u0947\u091f \u0915\u0930\u0928\u093e \u092a\u0942\u0930\u093e \u0939\u0941\u0906\u0964";
+  Indonesian = "Setel ulang selesai.";
+  Polish = "Reset zako\u0144czony.";
+  PortugueseBrazil = "Redefini\u00e7\u00e3o conclu\u00edda.";
+  Thai = "\u0e23\u0e35\u0e40\u0e0b\u0e47\u0e15\u0e40\u0e2a\u0e23\u0e47\u0e08\u0e2a\u0e21\u0e1a\u0e39\u0e23\u0e13\u0e4c";
+  Vietnamese = "\u0110\u1eb7t l\u1ea1i ho\u00e0n t\u1ea5t.";
+  Korean = "\ucd08\uae30\ud654 \uc644\ub8cc.";
+  Malay = "Tetapan semula selesai.";
 );
 
 $output false
 const string SET43_TRIP_MILEAGE_RESET =
 (
   Default = "Trip mileage reset";
+  Japanese = "\u30c8\u30ea\u30c3\u30d7\u30ea\u30bb\u30c3\u30c8";
+  French = "R\u00e9initialiser le kilom\u00e9trage";
+  Spanish = "Reinicio del kilometraje";
+  Italian = "Reimposta km viaggio";
+  German = "Zur\u00fccksetzen Trip-KM-Stand";
+  TraditionalChinese = "\u91cd\u8a2d\u884c\u99db\u91cc\u7a0b\u6578";
+  SimplifiedChinese = "\u884c\u7a0b\u91cc\u7a0b\u91cd\u7f6e";
+  Greek = "\u039c\u03b7\u03b4\u03b5\u03bd\u03b9\u03c3\u03bc\u03cc\u03c2 \u03c7\u03b9\u03bb\u03b9\u03bf\u03bc\u03ad\u03c4\u03c1\u03c9\u03bd \u03b4\u03b9\u03b1\u03b4\u03c1\u03bf\u03bc\u03ae\u03c2";
+  Finnish = "Ajokilometrit nollattu";
+  Hindi = "\u091f\u094d\u0930\u093f\u092a \u092e\u093e\u0907\u0932\u0947\u091c \u0926\u094b\u092c\u093e\u0930\u093e \u0938\u0947\u091f \u0915\u093f\u092f\u093e \u0917\u092f\u093e";
+  Indonesian = "Atur ulang jarak perjalanan";
+  Polish = "Reset dystansu jazdy";
+  PortugueseBrazil = "Redef. Km de viagem";
+  Thai = "\u0e23\u0e35\u0e40\u0e0b\u0e47\u0e15\u0e23\u0e30\u0e22\u0e30\u0e01\u0e32\u0e23\u0e40\u0e14\u0e34\u0e19\u0e17\u0e32\u0e07";
+  Vietnamese = "\u0110\u00e3 \u0111\u1eb7t l\u1ea1i s\u1ed1 d\u1eb7m chuy\u1ebfn \u0111i";
+  Korean = "\uc8fc\ud589 \uac70\ub9ac \ucd08\uae30\ud654";
+  Malay = "Set Semula Perbatuan";
 );
 
 $output false
 const string SET43_MAINTENANCE_RESET =
 (
   Default = "Maintenance reset";
+  Japanese = "\u30e1\u30f3\u30c6\u30ca\u30f3\u30b9\u30ea\u30bb\u30c3\u30c8";
+  French = "R\u00e9initialisation de maintenance";
+  Spanish = "Reinicio del mantenimiento";
+  Italian = "Reimposta manutenzione";
+  German = "Zur\u00fccksetzen der Wartung";
+  TraditionalChinese = "\u91cd\u8a2d\u4fdd\u990a";
+  SimplifiedChinese = "\u4fdd\u517b\u4fe1\u606f\u91cd\u7f6e";
+  Greek = "\u039c\u03b7\u03b4\u03b5\u03bd\u03b9\u03c3\u03bc\u03cc\u03c2 \u03c3\u03c5\u03bd\u03c4\u03ae\u03c1\u03b7\u03c3\u03b7\u03c2";
+  Finnish = "Huolto nollattu";
+  Hindi = "\u092e\u0947\u0902\u091f\u0947\u0928\u0947\u0902\u0938 \u0926\u094b\u092c\u093e\u0930\u093e \u0938\u0947\u091f \u0915\u093f\u092f\u093e \u0917\u092f\u093e";
+  Indonesian = "Atur ulang pemeliharaan";
+  Polish = "Reset konserwacji";
+  PortugueseBrazil = "Rein. Manuten\u00e7\u00e3o";
+  Thai = "\u0e23\u0e35\u0e40\u0e0b\u0e47\u0e15\u0e01\u0e32\u0e23\u0e1a\u0e33\u0e23\u0e38\u0e07\u0e23\u0e31\u0e01\u0e29\u0e32";
+  Vietnamese = "\u0110\u1eb7t l\u1ea1i b\u1ea3o tr\u00ec";
+  Korean = "\uc720\uc9c0 \uad00\ub9ac \ucd08\uae30\ud654";
+  Malay = "Set Semula Penyenggaraan";
 );
 
 $output false
 const string SET43_VEHICLE_INFO =
 (
   Default = "Vehicle info.";
+  Japanese = "\u8eca\u4e21\u60c5\u5831";
+  French = "Info. du v\u00e9hicule";
+  Spanish = "Informaci\u00f3n del veh\u00edculo";
+  Italian = "Info. veicolo";
+  German = "Fahrzeuginformationen";
+  TraditionalChinese = "\u8eca\u8f1b\u8cc7\u8a0a";
+  SimplifiedChinese = "\u8f66\u8f86\u4fe1\u606f";
+  Greek = "\u03a0\u03bb\u03b7\u03c1\u03bf\u03c6. \u03bf\u03c7\u03ae\u03bc\u03b1\u03c4\u03bf\u03c2";
+  Finnish = "Ajoneuvon tiedot";
+  Hindi = "\u0917\u093e\u095c\u0940 \u0915\u0940 \u091c\u093e\u0928\u0915\u093e\u0930\u0940";
+  Indonesian = "Info kendaraan.";
+  Polish = "Informacje o poje\u017adzie.";
+  PortugueseBrazil = "Informa\u00e7\u00f5es do ve\u00edculo.";
+  Thai = "\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e22\u0e32\u0e19\u0e1e\u0e32\u0e2b\u0e19\u0e30";
+  Vietnamese = "Th\u00f4ng tin xe";
+  Korean = "\ubc14\uc774\ud06c \uc815\ubcf4";
+  Malay = "Maklumat Kenderaan";
 );
 
 $output false
 const string SET43_ALL_RESET =
 (
   Default = "All reset";
+  Japanese = "\u30ea\u30bb\u30c3\u30c8";
+  French = "Tout r\u00e9initialiser";
+  Spanish = "Reinicio global";
+  Italian = "Reimposta tutto";
+  German = "Alles zur\u00fccksetzen";
+  TraditionalChinese = "\u5168\u90e8\u91cd\u8a2d";
+  SimplifiedChinese = "\u5168\u90e8\u91cd\u7f6e";
+  Greek = "\u039c\u03b7\u03b4\u03b5\u03bd\u03b9\u03c3\u03bc\u03cc\u03c2 \u03cc\u03bb\u03c9\u03bd";
+  Finnish = "Kaikki nollattu";
+  Hindi = "\u0938\u092d\u0940 \u0915\u094b \u0926\u094b\u092c\u093e\u0930\u093e \u0938\u0947\u091f \u0915\u093f\u092f\u093e \u0917\u092f\u093e";
+  Indonesian = "Setel ulang semua";
+  Polish = "Reset ca\u0142kowity";
+  PortugueseBrazil = "Tudo redefinido";
+  Thai = "\u0e17\u0e31\u0e49\u0e07\u0e2b\u0e21\u0e14\u0e23\u0e35\u0e40\u0e0b\u0e47\u0e15";
+  Vietnamese = "T\u1ea5t c\u1ea3 \u0111\u1eb7t l\u1ea1i";
+  Korean = "\ubaa8\ub450 \ucd08\uae30\ud654";
+  Malay = "Tetapkan Semula Semua";
+);
+
+$output false
+const string SET47_WAIT_APPROVAL =
+(
+  Default = "Waiting for request approval from \"%s\".";
+  Japanese = "\u30b9\u30de\u30fc\u30c8\u30d5\u30a9\u30f3 \u5074\u306e\u64cd\u4f5c\u3092\u5f85\u3063\u3066\u3044\u307e\u3059\u3002";
+);
+
+$output false
+const string SET49_LAUNCH_YAMAHA_APP =
+(
+  Default = "(Navi app name) connected. Launch YAMAHA MOTORCYCLE CONNECT on \u201c%s\u201d to complete the connection.";
+  Japanese = "(Navi app name)\u3092\u63a5\u7d9a\u3057\u307e\u3057\u305f\u3002\n\u63a5\u7d9a\u3092\u5b8c\u4e86\u3055\u305b\u308b\u305f\u3081\u3001YAMAHA\u3000\nMOTORCYCLE CONNECT\u30a2\u30d7\u30ea\u3092\u8d77\u52d5\n\u3057\u3066\u304f\u3060\u3055\u3044\u3002";
+);
+
+$output false
+const string SET50_LAUNCH_NAVI_APP =
+(
+  Default = "YAMAHA MOTORCYCLE CONNECT connected. Launch (Navi app name) on \u201c%s\u201d to complete the connection.";
+  Japanese = "YAMAHA MOTORCYCLE CONNECT\u30a2\u30d7\u30ea\u3092\n\u63a5\u7d9a\u3057\u307e\u3057\u305f\u3002\n\u63a5\u7d9a\u3092\u5b8c\u4e86\u3055\u305b\u308b\u305f\u3081\u3001(Navi app name)\n\u30a2\u30d7\u30ea\u3092\u8d77\u52d5\u3057\u3066\u304f\u3060\u3055\u3044\u3002";
 );
 
 $output false
 const string TCS01_TCS =
 (
-  Default = "TCS";
+  Default = "Traction Control";
+  Japanese = "\u30c8\u30e9\u30af\u30b7\u30e7\u30f3\u30b3\u30f3\u30c8\u30ed\u30fc\u30eb";
+  French = "Antipatinage";
+  Spanish = "Control de tracci\u00f3n";
+  Italian = "Controllo trazione";
+  German = "Traktionskontrolle";
+  TraditionalChinese = "\u5faa\u8de1\u63a7\u5236";
+  SimplifiedChinese = "\u7275\u5f15\u529b\u63a7\u5236";
+  Greek = "\u0388\u03bb\u03b5\u03b3\u03c7\u03bf\u03c2 \u03c0\u03c1\u03cc\u03c3\u03c6\u03c5\u03c3\u03b7\u03c2";
+  Finnish = "Luistonesto";
+  Hindi = "\u091f\u094d\u0930\u0948\u0915\u094d\u0936\u0928 \u0915\u0902\u091f\u094d\u0930\u094b\u0932";
+  Indonesian = "Kontrol Traksi";
+  Polish = "Kontrola trakcji";
+  PortugueseBrazil = "Controle de tra\u00e7\u00e3o";
+  Thai = "\u0e01\u0e32\u0e23\u0e04\u0e27\u0e1a\u0e04\u0e38\u0e21\u0e41\u0e23\u0e07\u0e09\u0e38\u0e14";
+  Vietnamese = "Ki\u1ec3m so\u00e1t l\u1ef1c k\u00e9o";
+  Korean = "\uc815\uc9c0 \ub9c8\ucc30\ub825 \uc81c\uc5b4";
+  Malay = "Kawalan Cengkaman";
 );
 
 $output false
 const string UNT01_UNIT_MILEAGE =
 (
   Default = "Mileage";
+  Japanese = "\u8ddd\u96e2";
+  French = "Kilom\u00e9trage";
+  Spanish = "Kilometraje";
+  Italian = "Chilometraggio";
+  German = "Kilometerstand";
+  TraditionalChinese = "\u91cc\u7a0b\u6578";
+  SimplifiedChinese = "\u91cc\u7a0b";
+  Greek = "\u03a7\u03b9\u03bb\u03b9\u03cc\u03bc\u03b5\u03c4\u03c1\u03b1";
+  Finnish = "Ajokilometrit";
+  Hindi = "\u092e\u093e\u0907\u0932\u0947\u091c";
+  Indonesian = "Jarak tempuh";
+  Polish = "Dystans";
+  PortugueseBrazil = "Quilometragem";
+  Thai = "\u0e44\u0e21\u0e25\u0e4c\u0e2a\u0e30\u0e2a\u0e21";
+  Vietnamese = "D\u1eb7m \u0111i";
+  Korean = "\uac70\ub9ac";
+  Malay = "Perbatuan";
 );
 
 $output false
 const string UNT01_UNIT_FUEL =
 (
   Default = "Fuel";
+  Japanese = "\u71c3\u6599";
+  French = "Essence";
+  Spanish = "Combustible";
+  Italian = "Carburante";
+  German = "Treibstoff";
+  TraditionalChinese = "\u71c3\u6cb9";
+  SimplifiedChinese = "\u71c3\u6cb9";
+  Greek = "\u039a\u03b1\u03cd\u03c3\u03b9\u03bc\u03bf";
+  Finnish = "Polttoaine";
+  Hindi = "\u0908\u0902\u0927\u0928";
+  Indonesian = "Bahan bakar";
+  Polish = "Paliwo";
+  PortugueseBrazil = "Combust\u00edvel";
+  Thai = "\u0e40\u0e0a\u0e37\u0e49\u0e2d\u0e40\u0e1e\u0e25\u0e34\u0e07";
+  Vietnamese = "Nhi\u00ean li\u1ec7u";
+  Korean = "\uc5f0\ub8cc";
+  Malay = "Minyak";
 );
 
 $output false
 const string UNT01_UNIT_PRESSURE =
 (
   Default = "Pressure";
+  Japanese = "\u5727\u529b";
+  French = "Pression";
+  Spanish = "Presi\u00f3n";
+  Italian = "Pressione";
+  German = "Druck";
+  TraditionalChinese = "\u58d3\u529b";
+  SimplifiedChinese = "\u80ce\u538b";
+  Greek = "\u03a0\u03af\u03b5\u03c3\u03b7";
+  Finnish = "Paine";
+  Hindi = "\u0926\u092c\u093e\u0935";
+  Indonesian = "Tekanan";
+  Polish = "Ci\u015bnienie";
+  PortugueseBrazil = "Press\u00e3o";
+  Thai = "\u0e41\u0e23\u0e07\u0e14\u0e31\u0e19";
+  Vietnamese = "\u00c1p su\u1ea5t";
+  Korean = "\uc555\ub825";
+  Malay = "Tekanan";
 );
 
 $output false
 const string UNT01_UNIT_TEMPERATURE =
 (
   Default = "Temperature";
+  Japanese = "\u6e29\u5ea6";
+  French = "Temp\u00e9rature";
+  Spanish = "Temperatura";
+  Italian = "Temperatura";
+  German = "Temperatur";
+  TraditionalChinese = "\u6eab\u5ea6";
+  SimplifiedChinese = "\u6e29\u5ea6";
+  Greek = "\u0398\u03b5\u03c1\u03bc\u03bf\u03ba\u03c1\u03b1\u03c3\u03af\u03b1";
+  Finnish = "L\u00e4mp\u00f6tila";
+  Hindi = "\u0924\u093e\u092a\u092e\u093e\u0928";
+  Indonesian = "Suhu";
+  Polish = "Temperatura";
+  PortugueseBrazil = "Temperatura";
+  Thai = "\u0e2d\u0e38\u0e13\u0e2b\u0e20\u0e39\u0e21\u0e34";
+  Vietnamese = "Nhi\u1ec7t \u0111\u1ed9";
+  Korean = "\uc628\ub3c4";
+  Malay = "Suhu";
 );
 
 $output false
@@ -1167,15 +2797,233 @@ const string UNT05_UNIT_TEMPERATURE_F =
 );
 
 $output false
+const string WEA01_MONDAY =
+(
+  Default = "Mon";
+  Japanese = "\u6708";
+  French = "Lun.";
+  Spanish = "Lun.";
+  Italian = "Lun.";
+  German = "Mo";
+  TraditionalChinese = "\u9031\u4e00";
+  SimplifiedChinese = "\u5468\u4e00";
+  Greek = "\u0394\u03b5\u03c5\u03c4";
+  Finnish = "Ma";
+  Hindi = "\u0938\u094b\u092e";
+  Indonesian = "Sen";
+  Polish = "pon.";
+  PortugueseBrazil = "Seg";
+  Thai = "\u0e08.";
+  Vietnamese = "T2";
+  Korean = "\uc6d4";
+  Malay = "ISN";
+);
+
+$output false
+const string WEA01_TUESDAY =
+(
+  Default = "Tue";
+  Japanese = "\u706b";
+  French = "Mar.";
+  Spanish = "Mar.";
+  Italian = "Mar.";
+  German = "Di";
+  TraditionalChinese = "\u9031\u4e8c";
+  SimplifiedChinese = "\u5468\u4e8c";
+  Greek = "\u03a4\u03c1";
+  Finnish = "Ti";
+  Hindi = "\u092e\u0902\u0917\u0932";
+  Indonesian = "Sel";
+  Polish = "wt.";
+  PortugueseBrazil = "Ter";
+  Thai = "\u0e2d.";
+  Vietnamese = "T3";
+  Korean = "\ud654";
+  Malay = "SEL";
+);
+
+$output false
+const string WEA01_WEDNESDAY =
+(
+  Default = "Wed";
+  Japanese = "\u6c34";
+  French = "Mer.";
+  Spanish = "Mi\u00e9.";
+  Italian = "Mer.";
+  German = "Mi";
+  TraditionalChinese = "\u9031\u4e09";
+  SimplifiedChinese = "\u5468\u4e09";
+  Greek = "\u03a4\u03b5\u03c4";
+  Finnish = "Ke";
+  Hindi = "\u092c\u0941\u0927";
+  Indonesian = "Rab";
+  Polish = "\u015br.";
+  PortugueseBrazil = "Qua";
+  Thai = "\u0e1e.";
+  Vietnamese = "T4";
+  Korean = "\uc218";
+  Malay = "RAB";
+);
+
+$output false
+const string WEA01_THURSDAY =
+(
+  Default = "Thu";
+  Japanese = "\u6728";
+  French = "Jeu.";
+  Spanish = "Jue.";
+  Italian = "Gio.";
+  German = "Do";
+  TraditionalChinese = "\u9031\u56db";
+  SimplifiedChinese = "\u5468\u56db";
+  Greek = "\u03a0\u03ad\u03bc";
+  Finnish = "To";
+  Hindi = "\u0917\u0941\u0930\u0941";
+  Indonesian = "Kam";
+  Polish = "czw.";
+  PortugueseBrazil = "Qui";
+  Thai = "\u0e1e\u0e24.";
+  Vietnamese = "T5";
+  Korean = "\ubaa9";
+  Malay = "KHA";
+);
+
+$output false
+const string WEA01_FRIDAY =
+(
+  Default = "Fri";
+  Japanese = "\u91d1";
+  French = "Ven.";
+  Spanish = "Vie.";
+  Italian = "Ven.";
+  German = "Fr";
+  TraditionalChinese = "\u9031\u4e94";
+  SimplifiedChinese = "\u5468\u4e94";
+  Greek = "\u03a0\u03b1\u03c1";
+  Finnish = "Pe";
+  Hindi = "\u0936\u0941\u0915\u094d\u0930";
+  Indonesian = "Jum";
+  Polish = "pt.";
+  PortugueseBrazil = "Sex";
+  Thai = "\u0e28.";
+  Vietnamese = "T6";
+  Korean = "\uae08";
+  Malay = "JUM";
+);
+
+$output false
+const string WEA01_SATURDAY =
+(
+  Default = "Sat";
+  Japanese = "\u571f";
+  French = "Sam.";
+  Spanish = "S\u00e1b.";
+  Italian = "Sab.";
+  German = "Sa";
+  TraditionalChinese = "\u9031\u516d";
+  SimplifiedChinese = "\u5468\u516d";
+  Greek = "\u03a3\u03ac\u03b2";
+  Finnish = "La";
+  Hindi = "\u0936\u0928\u093f";
+  Indonesian = "Sab";
+  Polish = "sob.";
+  PortugueseBrazil = "S\u00e1b";
+  Thai = "\u0e2a.";
+  Vietnamese = "T7";
+  Korean = "\ud1a0";
+  Malay = "SAB";
+);
+
+$output false
+const string WEA01_SUNDAY =
+(
+  Default = "Sun";
+  Japanese = "\u65e5";
+  French = "Dim.";
+  Spanish = "Dom.";
+  Italian = "Dom.";
+  German = "So";
+  TraditionalChinese = "\u9031\u65e5";
+  SimplifiedChinese = "\u5468\u65e5";
+  Greek = "\u039a\u03c5\u03c1";
+  Finnish = "Su";
+  Hindi = "\u0930\u0935\u093f";
+  Indonesian = "Min";
+  Polish = "niedz.";
+  PortugueseBrazil = "Dom";
+  Thai = "\u0e2d\u0e32.";
+  Vietnamese = "CN";
+  Korean = "\uc77c";
+  Malay = "AHD";
+);
+
+$output false
 const string WSC01_WIND_SCREEN =
 (
   Default = "Wind Screen";
+  Japanese = "\u30a6\u30a4\u30f3\u30c9\u30b9\u30af\u30ea\u30fc\u30f3";
+  French = "Pare-brise";
+  Spanish = "Pantalla de viento";
+  Italian = "Parabrezza";
+  German = "Windschutzscheibe";
+  TraditionalChinese = "\u64cb\u98a8\u73bb\u7483";
+  SimplifiedChinese = "\u6321\u98ce\u5c4f";
+  Greek = "\u03a0\u03b1\u03c1\u03bc\u03c0\u03c1\u03af\u03b6";
+  Finnish = "Tuulilasi";
+  Hindi = "\u0935\u093f\u0902\u0921 \u0938\u094d\u0915\u094d\u0930\u0940\u0928";
+  Indonesian = "Kaca Depan Mobil";
+  Polish = "Owiewka";
+  PortugueseBrazil = "Prote\u00e7\u00e3o contra vento";
+  Thai = "\u0e01\u0e23\u0e30\u0e08\u0e01\u0e1a\u0e31\u0e07\u0e25\u0e21";
+  Vietnamese = "K\u00ednh ch\u1eafn gi\u00f3";
+  Korean = "\uc55e \uc720\ub9ac";
+  Malay = "Cermin Hadapan";
 );
 
 $output false
 const string YDT01_MESSAGE =
 (
   Default = "YDT / GST device connection has been detected.\nSome functions are limited.";
+  Japanese = "Yamaha Diagnostic Tool / GST\u306e\u63a5\u7d9a\u304c\n\u691c\u51fa\u3055\u308c\u307e\u3057\u305f\u3002\n\u3044\u304f\u3064\u304b\u306e\u6a5f\u80fd\u304c\u3054\u5229\u7528\u3067\u304d\u306a\u304f\u306a\u308a\u307e\u3059\u3002";
+  French = "Connexion d'un appareil Yamaha\nDiagnostic Tool / GST d\u00e9tect\u00e9e.\nCertaines fonctionnalit\u00e9s sont limit\u00e9es.";
+  Spanish = "Se ha detectado la conexi\u00f3n del\ndispositivo Yamaha Diagnostic Tool/GST.\nAlgunas funciones est\u00e1n limitadas.";
+  Italian = "Connessione al dispositivo Yamaha\nDiagnostic Tool / GST individuata.\nAlcune funzioni sono state limitate.";
+  German = "Die Ger\u00e4teverbindung von Yamaha\nDiagnostic Tool / GST wurde erkannt.\nEinige Funktionen sind eingeschr\u00e4nkt.";
+  TraditionalChinese = "\u5df2\u522a\u9664 Yamaha Diagnostic Tool /\n GST \u88dd\u7f6e\u9023\u7dda\u3002\n\u90e8\u5206\u7684\u529f\u80fd\u53d7\u9650\u3002";
+  SimplifiedChinese = "\u68c0\u6d4b\u5230 Yamaha Diagnostic Tool / \nGST \u8bbe\u5907\u8fde\u63a5\u3002\n\u67d0\u4e9b\u529f\u80fd\u53d7\u9650\u3002";
+  Greek = "\u0397 \u03c3\u03cd\u03bd\u03b4\u03b5\u03c3\u03b7 \u03c3\u03c5\u03c3\u03ba\u03b5\u03c5\u03ae\u03c2 Yamaha Diagnostic\nTool / GST \u03b5\u03bd\u03c4\u03bf\u03c0\u03af\u03c3\u03c4\u03b7\u03ba\u03b5.\n\u039f\u03c1\u03b9\u03c3\u03bc\u03ad\u03bd\u03b5\u03c2 \u03bb\u03b5\u03b9\u03c4\u03bf\u03c5\u03c1\u03b3\u03af\u03b5\u03c2 \u03b5\u03af\u03bd\u03b1\u03b9 \u03c0\u03b5\u03c1\u03b9\u03bf\u03c1\u03b9\u03c3\u03bc\u03ad\u03bd\u03b5\u03c2.";
+  Finnish = "Yamaha Diagnostic Tool / GST \n-laiteyhteys on havaittu.\nJoitakin toimintoja on rajoitettu.";
+  Hindi = "Yamaha Diagnostic Tool / GST \u0921\u093f\u0935\u093e\u0907\u0938\n\u0915\u0928\u0947\u0915\u094d\u0936\u0928 \u0915\u093e \u092a\u0924\u093e \u0932\u0917\u093e\u092f\u093e \u0917\u092f\u093e \u0939\u0948.\n\u0915\u0941\u091b \u092b\u0902\u0915\u094d\u0936\u0928 \u0938\u0940\u092e\u093f\u0924 \u0939\u0948\u0902\u0964";
+  Indonesian = "Alat Yamaha Diagnostic Tool / GST\nkoneksi perangkat telah\u00a0terdeteksi.\nBeberapa fungsi terbatas.";
+  Polish = "Wykryto po\u0142\u0105czenie z urz\u0105dzeniem\nYamaha Diagnostic Tool / GST.\nNiekt\u00f3re funkcje s\u0105 ograniczone.";
+  PortugueseBrazil = "Yamaha Diagnostic Tool / GST a conex\u00e3o\ncom o dispositivo foi detectada.\nAlgumas fun\u00e7\u00f5es s\u00e3o limitadas.";
+  Thai = "\u0e15\u0e23\u0e27\u0e08\u0e1e\u0e1a\u0e01\u0e32\u0e23\u0e40\u0e0a\u0e37\u0e48\u0e2d\u0e21\u0e15\u0e48\u0e2d\u0e2d\u0e38\u0e1b\u0e01\u0e23\u0e13\u0e4c\nYamaha Diagnostic Tool / GST\n\u0e1f\u0e31\u0e07\u0e01\u0e4c\u0e0a\u0e31\u0e19\u0e1a\u0e32\u0e07\u0e2d\u0e22\u0e48\u0e32\u0e07\u0e21\u0e35\u0e08\u0e33\u0e01\u0e31\u0e14";
+  Vietnamese = "\u0110\u00e3 ph\u00e1t hi\u1ec7n k\u1ebft n\u1ed1i\nYamaha Diagnostic Tool/thi\u1ebft b\u1ecb GST.\nM\u1ed9t s\u1ed1 ch\u1ee9c n\u0103ng b\u1ecb h\u1ea1n ch\u1ebf.";
+  Korean = "Yamaha Diagnostic Tool / GST \uc7a5\uce58 \uc5f0\uacb0\uc774\n\ud0d0\uc9c0\ub418\uc5c8\uc2b5\ub2c8\ub2e4.\n\uc77c\ubd80 \uae30\ub2a5\uc740 \uc81c\ud55c\ub429\ub2c8\ub2e4.";
+  Malay = "Yamaha Diagnostic Tool / GST\nsambungan peranti telah dikesan.\nBeberapa fungsi adalah terhad.";
+);
+
+$output false
+const string DD_WARNING =
+(
+  Default = "NOT AVAILABLE WHILE MOVING.";
+  Japanese = "\u904b\u8ee2\u4e2d\u306f\u4f7f\u7528\u3067\u304d\u307e\u305b\u3093\u3002";
+  French = "INDISPONIBLE EN PLEIN MOUVEMENT.";
+  Spanish = "NO DISPONIBLE EN MOVIMIENTO.";
+  Italian = "NON DISPONIBILE DURANTE IL\nMOVIMENTO.";
+  German = "W\u00c4HREND DER FAHRT NICHT\nVERF\u00dcGBAR.";
+  TraditionalChinese = "\u8acb\u52ff\u5728\u9a0e\u8eca\u6642\u4f7f\u7528\u3002";
+  SimplifiedChinese = "\u884c\u9a76\u65f6\u4e0d\u53ef\u7528\u3002";
+  Greek = "\u039c\u0397 \u0394\u0399\u0391\u0398\u0395\u03a3\u0399\u039c\u039f \u0395\u039d\u03a9 \u039a\u0399\u039d\u0395\u0399\u03a3\u03a4\u0395.";
+  Finnish = "EI K\u00c4YTETT\u00c4VISS\u00c4 AJON AIKANA.";
+  Hindi = "\u091a\u0932\u0924\u0947 \u0938\u092e\u092f \u0909\u092a\u0932\u092c\u094d\u0927 \u0928\u0939\u0940\u0902";
+  Indonesian = "TIDAK TERSEDIA SAAT BERGERAK.";
+  Polish = "NIEDOST\u0118PNE PODCZAS RUCHU.";
+  PortugueseBrazil = "N\u00c3O DISPON\u00cdVEL DURANTE O\nMOVIMENTO.";
+  Thai = "\u0e44\u0e21\u0e48\u0e2a\u0e32\u0e21\u0e32\u0e23\u0e16\u0e43\u0e0a\u0e49\u0e44\u0e14\u0e49\u0e43\u0e19\u0e02\u0e13\u0e30\u0e01\u0e33\u0e25\u0e31\u0e07\u0e40\u0e04\u0e25\u0e37\u0e48\u0e2d\u0e19\u0e17\u0e35\u0e48";
+  Vietnamese = "KH\u00d4NG KH\u1ea2 D\u1ee4NG KHI \u0110ANG DI CHUY\u1ec2N.";
+  Korean = "\uc774\ub3d9 \uc911 \uc774\uc6a9 \ubd88\uac00.";
+  Malay = "TIDAK TERSEDIA KETIKA BERGERAK.";
 );
 
 $output false

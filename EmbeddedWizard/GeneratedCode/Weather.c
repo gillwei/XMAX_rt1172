@@ -49,18 +49,17 @@
 #include "Enum.h"
 #include "Fonts.h"
 #include "Resource.h"
+#include "Strings.h"
 #include "Views.h"
 #include "Weather.h"
 
 /* Compressed strings for the language 'Default'. */
 EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
-  0x000000B0, /* ratio 65.91 % */
-  0xB8000B00, 0x00066452, 0x0A120034, 0x60E32824, 0x8B0B0042, 0xD09870C4, 0x5322C0C0,
-  0xE001D400, 0x8245A1E6, 0xE1BC004D, 0x1522F1E8, 0x94CA008D, 0x25257824, 0x8B2B3200,
-  0xB1B8449C, 0x002345E2, 0x134800E4, 0x00186333, 0xB8121E74, 0x8661E2F8, 0xFE5C778B,
-  0xA5508A0C, 0x9200104E, 0x06B954AA, 0x3B3B5400, 0xCA85265D, 0xA0CF23B3, 0x04061F0F,
-  0x00000000
+  0x0000005C, /* ratio 78.26 % */
+  0xB8000B00, 0x00066452, 0x0A120034, 0x60E32824, 0x8B0B0042, 0x909870C4, 0x2F22C0C0,
+  0x78B8661E, 0x00194007, 0x71D00061, 0x000E51F8, 0x7E3A0010, 0x24E6B8FC, 0xD2003B00,
+  0x52E94C78, 0x22989BA6, 0x080CEA1F, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -99,75 +98,68 @@ static const XRect _Const001F = {{ 372, 190 }, { 414, 221 }};
 static const XRect _Const0020 = {{ 127, 195 }, { 149, 216 }};
 static const XRect _Const0021 = {{ 271, 195 }, { 293, 216 }};
 static const XRect _Const0022 = {{ 415, 195 }, { 437, 216 }};
-static const XStringRes _Const0023 = { _StringsDefault0, 0x0011 };
-static const XStringRes _Const0024 = { _StringsDefault0, 0x0017 };
-static const XStringRes _Const0025 = { _StringsDefault0, 0x001D };
-static const XStringRes _Const0026 = { _StringsDefault0, 0x0023 };
-static const XStringRes _Const0027 = { _StringsDefault0, 0x0029 };
-static const XStringRes _Const0028 = { _StringsDefault0, 0x002F };
-static const XStringRes _Const0029 = { _StringsDefault0, 0x0035 };
-static const XRect _Const002A = {{ 280, 59 }, { 336, 93 }};
-static const XColor _Const002B = { 0x28, 0xAA, 0xFF, 0xFF };
-static const XRect _Const002C = {{ 336, 59 }, { 347, 93 }};
-static const XStringRes _Const002D = { _StringsDefault0, 0x003B };
-static const XRect _Const002E = {{ 347, 59 }, { 392, 93 }};
-static const XColor _Const002F = { 0xFF, 0x28, 0x28, 0xFF };
-static const XRect _Const0030 = {{ 0, 0 }, { 480, 272 }};
-static const XRect _Const0031 = {{ 0, 36 }, { 480, 272 }};
-static const XRect _Const0032 = {{ 20, 7 }, { 84, 71 }};
-static const XRect _Const0033 = {{ 85, 7 }, { 146, 38 }};
-static const XRect _Const0034 = {{ 85, 49 }, { 127, 80 }};
-static const XRect _Const0035 = {{ 30, 76 }, { 75, 107 }};
-static const XPoint _Const0036 = { 155, 111 };
-static const XPoint _Const0037 = { 155, 5 };
-static const XPoint _Const0038 = { 299, 111 };
-static const XPoint _Const0039 = { 299, 5 };
-static const XRect _Const003A = {{ 164, 7 }, { 228, 71 }};
-static const XRect _Const003B = {{ 127, 54 }, { 149, 75 }};
-static const XRect _Const003C = {{ 229, 7 }, { 290, 38 }};
-static const XRect _Const003D = {{ 229, 49 }, { 271, 80 }};
-static const XRect _Const003E = {{ 271, 54 }, { 293, 75 }};
-static const XRect _Const003F = {{ 174, 76 }, { 219, 107 }};
-static const XRect _Const0040 = {{ 308, 7 }, { 372, 71 }};
-static const XRect _Const0041 = {{ 373, 7 }, { 434, 38 }};
-static const XRect _Const0042 = {{ 373, 49 }, { 415, 80 }};
-static const XRect _Const0043 = {{ 415, 54 }, { 437, 75 }};
-static const XRect _Const0044 = {{ 318, 76 }, { 363, 107 }};
-static const XRect _Const0045 = {{ 0, 109 }, { 480, 111 }};
-static const XRect _Const0046 = {{ 20, 127 }, { 84, 181 }};
-static const XRect _Const0047 = {{ 164, 127 }, { 228, 181 }};
-static const XRect _Const0048 = {{ 308, 127 }, { 372, 181 }};
-static const XRect _Const0049 = {{ 85, 122 }, { 146, 153 }};
-static const XRect _Const004A = {{ 229, 122 }, { 290, 153 }};
-static const XRect _Const004B = {{ 373, 122 }, { 434, 153 }};
-static const XRect _Const004C = {{ 85, 164 }, { 127, 195 }};
-static const XRect _Const004D = {{ 229, 164 }, { 271, 195 }};
-static const XRect _Const004E = {{ 373, 164 }, { 415, 195 }};
-static const XRect _Const004F = {{ 30, 191 }, { 75, 222 }};
-static const XRect _Const0050 = {{ 174, 191 }, { 219, 222 }};
-static const XRect _Const0051 = {{ 318, 191 }, { 363, 222 }};
-static const XRect _Const0052 = {{ 127, 80 }, { 149, 101 }};
-static const XRect _Const0053 = {{ 271, 80 }, { 293, 101 }};
-static const XRect _Const0054 = {{ 415, 80 }, { 437, 101 }};
-static const XRect _Const0055 = {{ 74, 76 }, { 84, 107 }};
-static const XRect _Const0056 = {{ 85, 76 }, { 127, 107 }};
-static const XRect _Const0057 = {{ 219, 76 }, { 229, 107 }};
-static const XRect _Const0058 = {{ 229, 76 }, { 271, 107 }};
-static const XRect _Const0059 = {{ 362, 76 }, { 372, 107 }};
-static const XRect _Const005A = {{ 373, 76 }, { 415, 107 }};
-static const XRect _Const005B = {{ 75, 191 }, { 85, 222 }};
-static const XRect _Const005C = {{ 85, 191 }, { 127, 222 }};
-static const XRect _Const005D = {{ 219, 191 }, { 229, 222 }};
-static const XRect _Const005E = {{ 229, 191 }, { 271, 222 }};
-static const XRect _Const005F = {{ 363, 191 }, { 373, 222 }};
-static const XRect _Const0060 = {{ 373, 191 }, { 415, 222 }};
-static const XRect _Const0061 = {{ 75, 76 }, { 85, 107 }};
-static const XRect _Const0062 = {{ 363, 76 }, { 373, 107 }};
-static const XStringRes _Const0063 = { _StringsDefault0, 0x003F };
-static const XRect _Const0064 = {{ 0, 0 }, { 480, 236 }};
-static const XRect _Const0065 = {{ 0, 0 }, { 435, 224 }};
-static const XRect _Const0066 = {{ 441, 5 }, { 473, 221 }};
-static const XRect _Const0067 = {{ 0, 0 }, { 441, 224 }};
+static const XRect _Const0023 = {{ 280, 59 }, { 336, 93 }};
+static const XColor _Const0024 = { 0x28, 0xAA, 0xFF, 0xFF };
+static const XRect _Const0025 = {{ 336, 59 }, { 347, 93 }};
+static const XStringRes _Const0026 = { _StringsDefault0, 0x0011 };
+static const XRect _Const0027 = {{ 347, 59 }, { 392, 93 }};
+static const XColor _Const0028 = { 0xFF, 0x28, 0x28, 0xFF };
+static const XRect _Const0029 = {{ 0, 0 }, { 480, 272 }};
+static const XRect _Const002A = {{ 0, 36 }, { 480, 272 }};
+static const XRect _Const002B = {{ 20, 7 }, { 84, 71 }};
+static const XRect _Const002C = {{ 85, 7 }, { 146, 38 }};
+static const XRect _Const002D = {{ 85, 49 }, { 127, 80 }};
+static const XRect _Const002E = {{ 30, 76 }, { 75, 107 }};
+static const XPoint _Const002F = { 155, 111 };
+static const XPoint _Const0030 = { 155, 5 };
+static const XPoint _Const0031 = { 299, 111 };
+static const XPoint _Const0032 = { 299, 5 };
+static const XRect _Const0033 = {{ 164, 7 }, { 228, 71 }};
+static const XRect _Const0034 = {{ 127, 54 }, { 149, 75 }};
+static const XRect _Const0035 = {{ 229, 7 }, { 290, 38 }};
+static const XRect _Const0036 = {{ 229, 49 }, { 271, 80 }};
+static const XRect _Const0037 = {{ 271, 54 }, { 293, 75 }};
+static const XRect _Const0038 = {{ 174, 76 }, { 219, 107 }};
+static const XRect _Const0039 = {{ 308, 7 }, { 372, 71 }};
+static const XRect _Const003A = {{ 373, 7 }, { 434, 38 }};
+static const XRect _Const003B = {{ 373, 49 }, { 415, 80 }};
+static const XRect _Const003C = {{ 415, 54 }, { 437, 75 }};
+static const XRect _Const003D = {{ 318, 76 }, { 363, 107 }};
+static const XRect _Const003E = {{ 0, 109 }, { 480, 111 }};
+static const XRect _Const003F = {{ 20, 127 }, { 84, 181 }};
+static const XRect _Const0040 = {{ 164, 127 }, { 228, 181 }};
+static const XRect _Const0041 = {{ 308, 127 }, { 372, 181 }};
+static const XRect _Const0042 = {{ 85, 122 }, { 146, 153 }};
+static const XRect _Const0043 = {{ 229, 122 }, { 290, 153 }};
+static const XRect _Const0044 = {{ 373, 122 }, { 434, 153 }};
+static const XRect _Const0045 = {{ 85, 164 }, { 127, 195 }};
+static const XRect _Const0046 = {{ 229, 164 }, { 271, 195 }};
+static const XRect _Const0047 = {{ 373, 164 }, { 415, 195 }};
+static const XRect _Const0048 = {{ 30, 191 }, { 75, 222 }};
+static const XRect _Const0049 = {{ 174, 191 }, { 219, 222 }};
+static const XRect _Const004A = {{ 318, 191 }, { 363, 222 }};
+static const XRect _Const004B = {{ 127, 80 }, { 149, 101 }};
+static const XRect _Const004C = {{ 271, 80 }, { 293, 101 }};
+static const XRect _Const004D = {{ 415, 80 }, { 437, 101 }};
+static const XRect _Const004E = {{ 74, 76 }, { 84, 107 }};
+static const XRect _Const004F = {{ 85, 76 }, { 127, 107 }};
+static const XRect _Const0050 = {{ 219, 76 }, { 229, 107 }};
+static const XRect _Const0051 = {{ 229, 76 }, { 271, 107 }};
+static const XRect _Const0052 = {{ 362, 76 }, { 372, 107 }};
+static const XRect _Const0053 = {{ 373, 76 }, { 415, 107 }};
+static const XRect _Const0054 = {{ 75, 191 }, { 85, 222 }};
+static const XRect _Const0055 = {{ 85, 191 }, { 127, 222 }};
+static const XRect _Const0056 = {{ 219, 191 }, { 229, 222 }};
+static const XRect _Const0057 = {{ 229, 191 }, { 271, 222 }};
+static const XRect _Const0058 = {{ 363, 191 }, { 373, 222 }};
+static const XRect _Const0059 = {{ 373, 191 }, { 415, 222 }};
+static const XRect _Const005A = {{ 75, 76 }, { 85, 107 }};
+static const XRect _Const005B = {{ 363, 76 }, { 373, 107 }};
+static const XStringRes _Const005C = { _StringsDefault0, 0x0015 };
+static const XRect _Const005D = {{ 0, 0 }, { 480, 236 }};
+static const XRect _Const005E = {{ 0, 0 }, { 435, 224 }};
+static const XRect _Const005F = {{ 441, 5 }, { 473, 221 }};
+static const XRect _Const0060 = {{ 0, 0 }, { 441, 224 }};
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.
@@ -301,32 +293,32 @@ void WeatherWeatherDayViewUI__Init( WeatherWeatherDayViewUI _this, XObject aLink
   CoreRectView__OnSetBounds( &_this->TempUnit1h, _Const0020 );
   CoreRectView__OnSetBounds( &_this->TempUnit2h, _Const0021 );
   CoreRectView__OnSetBounds( &_this->TempUnit3h, _Const0022 );
-  _this->WeekDayTextArray[ 0 ] = EwShareString( EwLoadString( &_Const0023 ));
-  _this->WeekDayTextArray[ 1 ] = EwShareString( EwLoadString( &_Const0024 ));
-  _this->WeekDayTextArray[ 2 ] = EwShareString( EwLoadString( &_Const0025 ));
-  _this->WeekDayTextArray[ 3 ] = EwShareString( EwLoadString( &_Const0026 ));
-  _this->WeekDayTextArray[ 4 ] = EwShareString( EwLoadString( &_Const0027 ));
-  _this->WeekDayTextArray[ 5 ] = EwShareString( EwLoadString( &_Const0028 ));
-  _this->WeekDayTextArray[ 6 ] = EwShareString( EwLoadString( &_Const0029 ));
+  _this->WeekDayTextArray[ 0 ] = EwShareString( EwGetVariantOfString( &StringsWEA01_SUNDAY ));
+  _this->WeekDayTextArray[ 1 ] = EwShareString( EwGetVariantOfString( &StringsWEA01_MONDAY ));
+  _this->WeekDayTextArray[ 2 ] = EwShareString( EwGetVariantOfString( &StringsWEA01_TUESDAY ));
+  _this->WeekDayTextArray[ 3 ] = EwShareString( EwGetVariantOfString( &StringsWEA01_WEDNESDAY ));
+  _this->WeekDayTextArray[ 4 ] = EwShareString( EwGetVariantOfString( &StringsWEA01_THURSDAY ));
+  _this->WeekDayTextArray[ 5 ] = EwShareString( EwGetVariantOfString( &StringsWEA01_FRIDAY ));
+  _this->WeekDayTextArray[ 6 ] = EwShareString( EwGetVariantOfString( &StringsWEA01_SATURDAY ));
   _this->WeaItemIdxArray[ 0 ] = EnumWeatherTimeTypeWEATHER_CURRENT;
   _this->WeaItemIdxArray[ 1 ] = EnumWeatherTimeTypeWEATHER_AFTER_1HOUR;
   _this->WeaItemIdxArray[ 2 ] = EnumWeatherTimeTypeWEATHER_AFTER_2HOUR;
   _this->WeaItemIdxArray[ 3 ] = EnumWeatherTimeTypeWEATHER_AFTER_3HOUR;
-  CoreRectView__OnSetBounds( &_this->MinTempText, _Const002A );
+  CoreRectView__OnSetBounds( &_this->MinTempText, _Const0023 );
   ViewsText_OnSetAlignment( &_this->MinTempText, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->MinTempText, 0 );
-  ViewsText_OnSetColor( &_this->MinTempText, _Const002B );
-  CoreRectView__OnSetBounds( &_this->TempTextSlash, _Const002C );
+  ViewsText_OnSetColor( &_this->MinTempText, _Const0024 );
+  CoreRectView__OnSetBounds( &_this->TempTextSlash, _Const0025 );
   ViewsText_OnSetAlignment( &_this->TempTextSlash, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->TempTextSlash, EwLoadString( &_Const002D ));
+  ViewsText_OnSetString( &_this->TempTextSlash, EwLoadString( &_Const0026 ));
   ViewsText_OnSetColor( &_this->TempTextSlash, _Const0006 );
-  CoreRectView__OnSetBounds( &_this->MaxTempText, _Const002E );
+  CoreRectView__OnSetBounds( &_this->MaxTempText, _Const0027 );
   ViewsText_OnSetAlignment( &_this->MaxTempText, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->MaxTempText, 0 );
-  ViewsText_OnSetColor( &_this->MaxTempText, _Const002F );
+  ViewsText_OnSetColor( &_this->MaxTempText, _Const0028 );
   CoreGroup__Add( _this, ((CoreView)&_this->CurrentLocationText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ChanceOfRainText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->PerOfRainIcon ), 0 );
@@ -559,8 +551,8 @@ void WeatherWeatherDayViewUI_OnWeatherInfoUpdateSlot( WeatherWeatherDayViewUI _t
         XInt32 TempShiftPixel;
         XRect NewSlashBounds;
         XRect NewMinBounds;
-        CoreRectView__OnSetBounds( &_this->MinTempText, _Const002A );
-        CoreRectView__OnSetBounds( &_this->TempTextSlash, _Const002C );
+        CoreRectView__OnSetBounds( &_this->MinTempText, _Const0023 );
+        CoreRectView__OnSetBounds( &_this->TempTextSlash, _Const0025 );
         ViewsImage_OnSetFrameNumber( &_this->WeatherIcon, EwGetAutoObject( &DeviceInterfaceWeatherDevice, 
         DeviceInterfaceWeatherDeviceClass )->WeatherType );
         ViewsText_OnSetString( &_this->ChanceOfRainText, EwNewStringInt( EwGetAutoObject( 
@@ -712,8 +704,8 @@ void WeatherWEA01_Main__Init( WeatherWEA01_Main _this, XObject aLink, XHandle aA
   _this->_.VMT = EW_CLASS( WeatherWEA01_Main );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const0030 );
-  CoreRectView__OnSetBounds( &_this->WeatherListView, _Const0031 );
+  CoreRectView__OnSetBounds( _this, _Const0029 );
+  CoreRectView__OnSetBounds( &_this->WeatherListView, _Const002A );
   _this->WeatherListView.Super1.PassHomeKey = 1;
   CoreGroup__Add( _this, ((CoreView)&_this->WeatherListView ), 0 );
 }
@@ -872,73 +864,73 @@ void WeatherWeatherWeekViewUI__Init( WeatherWeatherWeekViewUI _this, XObject aLi
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0000 );
-  CoreRectView__OnSetBounds( &_this->DayOneWeather, _Const0032 );
-  CoreRectView__OnSetBounds( &_this->DayOneText, _Const0033 );
+  CoreRectView__OnSetBounds( &_this->DayOneWeather, _Const002B );
+  CoreRectView__OnSetBounds( &_this->DayOneText, _Const002C );
   ViewsText_OnSetAlignment( &_this->DayOneText, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->DayOneText, 0 );
-  CoreRectView__OnSetBounds( &_this->DayOneChanceOfRain, _Const0034 );
+  CoreRectView__OnSetBounds( &_this->DayOneChanceOfRain, _Const002D );
   ViewsText_OnSetAlignment( &_this->DayOneChanceOfRain, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->DayOneChanceOfRain, 0 );
-  CoreRectView__OnSetBounds( &_this->DayOneMinTemp, _Const0035 );
+  CoreRectView__OnSetBounds( &_this->DayOneMinTemp, _Const002E );
   ViewsText_OnSetAlignment( &_this->DayOneMinTemp, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->DayOneMinTemp, 0 );
-  ViewsText_OnSetColor( &_this->DayOneMinTemp, _Const002B );
-  CoreLineView_OnSetPoint2((CoreLineView)&_this->DivideLineUpLeft, _Const0036 );
-  CoreLineView_OnSetPoint1((CoreLineView)&_this->DivideLineUpLeft, _Const0037 );
+  ViewsText_OnSetColor( &_this->DayOneMinTemp, _Const0024 );
+  CoreLineView_OnSetPoint2((CoreLineView)&_this->DivideLineUpLeft, _Const002F );
+  CoreLineView_OnSetPoint1((CoreLineView)&_this->DivideLineUpLeft, _Const0030 );
   ViewsLine_OnSetWidth( &_this->DivideLineUpLeft, 2 );
   ViewsLine_OnSetColor( &_this->DivideLineUpLeft, _Const000B );
-  CoreLineView_OnSetPoint2((CoreLineView)&_this->DivideLineUpRight, _Const0038 );
-  CoreLineView_OnSetPoint1((CoreLineView)&_this->DivideLineUpRight, _Const0039 );
+  CoreLineView_OnSetPoint2((CoreLineView)&_this->DivideLineUpRight, _Const0031 );
+  CoreLineView_OnSetPoint1((CoreLineView)&_this->DivideLineUpRight, _Const0032 );
   ViewsLine_OnSetWidth( &_this->DivideLineUpRight, 2 );
   ViewsLine_OnSetColor( &_this->DivideLineUpRight, _Const000B );
-  CoreRectView__OnSetBounds( &_this->DayTwoWeather, _Const003A );
-  CoreRectView__OnSetBounds( &_this->DayOneRainPerIcon, _Const003B );
-  CoreRectView__OnSetBounds( &_this->DayTwoText, _Const003C );
+  CoreRectView__OnSetBounds( &_this->DayTwoWeather, _Const0033 );
+  CoreRectView__OnSetBounds( &_this->DayOneRainPerIcon, _Const0034 );
+  CoreRectView__OnSetBounds( &_this->DayTwoText, _Const0035 );
   ViewsText_OnSetAlignment( &_this->DayTwoText, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->DayTwoText, 0 );
-  CoreRectView__OnSetBounds( &_this->DayTwoChanceOfRain, _Const003D );
+  CoreRectView__OnSetBounds( &_this->DayTwoChanceOfRain, _Const0036 );
   ViewsText_OnSetAlignment( &_this->DayTwoChanceOfRain, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->DayTwoChanceOfRain, 0 );
-  CoreRectView__OnSetBounds( &_this->DayTwoRainPerIcon, _Const003E );
-  CoreRectView__OnSetBounds( &_this->DayTwoMinTemp, _Const003F );
+  CoreRectView__OnSetBounds( &_this->DayTwoRainPerIcon, _Const0037 );
+  CoreRectView__OnSetBounds( &_this->DayTwoMinTemp, _Const0038 );
   ViewsText_OnSetAlignment( &_this->DayTwoMinTemp, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->DayTwoMinTemp, 0 );
-  ViewsText_OnSetColor( &_this->DayTwoMinTemp, _Const002B );
-  CoreRectView__OnSetBounds( &_this->DayThreeWeather, _Const0040 );
-  CoreRectView__OnSetBounds( &_this->DayThreeText, _Const0041 );
+  ViewsText_OnSetColor( &_this->DayTwoMinTemp, _Const0024 );
+  CoreRectView__OnSetBounds( &_this->DayThreeWeather, _Const0039 );
+  CoreRectView__OnSetBounds( &_this->DayThreeText, _Const003A );
   ViewsText_OnSetAlignment( &_this->DayThreeText, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->DayThreeText, 0 );
-  CoreRectView__OnSetBounds( &_this->DayThreeChanceOfRain, _Const0042 );
+  CoreRectView__OnSetBounds( &_this->DayThreeChanceOfRain, _Const003B );
   ViewsText_OnSetAlignment( &_this->DayThreeChanceOfRain, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->DayThreeChanceOfRain, 0 );
-  CoreRectView__OnSetBounds( &_this->DayThreeRainPerIcon, _Const0043 );
-  CoreRectView__OnSetBounds( &_this->DayThreeMinTemp, _Const0044 );
+  CoreRectView__OnSetBounds( &_this->DayThreeRainPerIcon, _Const003C );
+  CoreRectView__OnSetBounds( &_this->DayThreeMinTemp, _Const003D );
   ViewsText_OnSetAlignment( &_this->DayThreeMinTemp, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->DayThreeMinTemp, 0 );
-  ViewsText_OnSetColor( &_this->DayThreeMinTemp, _Const002B );
-  CoreRectView__OnSetBounds( &_this->WeatherLineUp, _Const0045 );
+  ViewsText_OnSetColor( &_this->DayThreeMinTemp, _Const0024 );
+  CoreRectView__OnSetBounds( &_this->WeatherLineUp, _Const003E );
   CoreRectView__OnSetBounds( &_this->WeatherLineDown, _Const0008 );
-  CoreRectView__OnSetBounds( &_this->DayFourWeather, _Const0046 );
-  CoreRectView__OnSetBounds( &_this->DayFiveWeather, _Const0047 );
-  CoreRectView__OnSetBounds( &_this->DaySixWeather, _Const0048 );
-  CoreRectView__OnSetBounds( &_this->DayFourText, _Const0049 );
+  CoreRectView__OnSetBounds( &_this->DayFourWeather, _Const003F );
+  CoreRectView__OnSetBounds( &_this->DayFiveWeather, _Const0040 );
+  CoreRectView__OnSetBounds( &_this->DaySixWeather, _Const0041 );
+  CoreRectView__OnSetBounds( &_this->DayFourText, _Const0042 );
   ViewsText_OnSetAlignment( &_this->DayFourText, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->DayFourText, 0 );
-  CoreRectView__OnSetBounds( &_this->DayFiveText, _Const004A );
+  CoreRectView__OnSetBounds( &_this->DayFiveText, _Const0043 );
   ViewsText_OnSetAlignment( &_this->DayFiveText, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->DayFiveText, 0 );
-  CoreRectView__OnSetBounds( &_this->DaySixText, _Const004B );
+  CoreRectView__OnSetBounds( &_this->DaySixText, _Const0044 );
   ViewsText_OnSetAlignment( &_this->DaySixText, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->DaySixText, 0 );
@@ -950,39 +942,39 @@ void WeatherWeatherWeekViewUI__Init( WeatherWeatherWeekViewUI _this, XObject aLi
   CoreLineView_OnSetPoint1((CoreLineView)&_this->DivideLineDownRight, _Const000D );
   ViewsLine_OnSetWidth( &_this->DivideLineDownRight, 2 );
   ViewsLine_OnSetColor( &_this->DivideLineDownRight, _Const000B );
-  CoreRectView__OnSetBounds( &_this->DayFourChanceOfRain, _Const004C );
+  CoreRectView__OnSetBounds( &_this->DayFourChanceOfRain, _Const0045 );
   ViewsText_OnSetAlignment( &_this->DayFourChanceOfRain, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->DayFourChanceOfRain, 0 );
-  CoreRectView__OnSetBounds( &_this->DayFiveChanceOfRain, _Const004D );
+  CoreRectView__OnSetBounds( &_this->DayFiveChanceOfRain, _Const0046 );
   ViewsText_OnSetAlignment( &_this->DayFiveChanceOfRain, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->DayFiveChanceOfRain, 0 );
-  CoreRectView__OnSetBounds( &_this->DaySixChanceOfRain, _Const004E );
+  CoreRectView__OnSetBounds( &_this->DaySixChanceOfRain, _Const0047 );
   ViewsText_OnSetAlignment( &_this->DaySixChanceOfRain, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->DaySixChanceOfRain, 0 );
   CoreRectView__OnSetBounds( &_this->DayFourRainPerIcon, _Const001A );
   CoreRectView__OnSetBounds( &_this->DayFiveRainPerIcon, _Const001B );
   CoreRectView__OnSetBounds( &_this->DaySixRainPerIcon, _Const001C );
-  CoreRectView__OnSetBounds( &_this->DayFourMinTemp, _Const004F );
+  CoreRectView__OnSetBounds( &_this->DayFourMinTemp, _Const0048 );
   ViewsText_OnSetAlignment( &_this->DayFourMinTemp, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->DayFourMinTemp, 0 );
-  ViewsText_OnSetColor( &_this->DayFourMinTemp, _Const002B );
-  CoreRectView__OnSetBounds( &_this->DayFiveMinTemp, _Const0050 );
+  ViewsText_OnSetColor( &_this->DayFourMinTemp, _Const0024 );
+  CoreRectView__OnSetBounds( &_this->DayFiveMinTemp, _Const0049 );
   ViewsText_OnSetAlignment( &_this->DayFiveMinTemp, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->DayFiveMinTemp, 0 );
-  ViewsText_OnSetColor( &_this->DayFiveMinTemp, _Const002B );
-  CoreRectView__OnSetBounds( &_this->DaySixMinTemp, _Const0051 );
+  ViewsText_OnSetColor( &_this->DayFiveMinTemp, _Const0024 );
+  CoreRectView__OnSetBounds( &_this->DaySixMinTemp, _Const004A );
   ViewsText_OnSetAlignment( &_this->DaySixMinTemp, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->DaySixMinTemp, 0 );
-  ViewsText_OnSetColor( &_this->DaySixMinTemp, _Const002B );
-  CoreRectView__OnSetBounds( &_this->DayOneTempUnit, _Const0052 );
-  CoreRectView__OnSetBounds( &_this->DayTwoTempUnit, _Const0053 );
-  CoreRectView__OnSetBounds( &_this->DayThreeTempUnit, _Const0054 );
+  ViewsText_OnSetColor( &_this->DaySixMinTemp, _Const0024 );
+  CoreRectView__OnSetBounds( &_this->DayOneTempUnit, _Const004B );
+  CoreRectView__OnSetBounds( &_this->DayTwoTempUnit, _Const004C );
+  CoreRectView__OnSetBounds( &_this->DayThreeTempUnit, _Const004D );
   CoreRectView__OnSetBounds( &_this->DayFourTempUnit, _Const0020 );
   CoreRectView__OnSetBounds( &_this->DayFiveTempUnit, _Const0021 );
   CoreRectView__OnSetBounds( &_this->DaySixTempUnit, _Const0022 );
@@ -992,85 +984,85 @@ void WeatherWeatherWeekViewUI__Init( WeatherWeatherWeekViewUI _this, XObject aLi
   _this->WeaItemIdxArray[ 3 ] = EnumWeatherTimeTypeWEATHER_AFTER_4DAY;
   _this->WeaItemIdxArray[ 4 ] = EnumWeatherTimeTypeWEATHER_AFTER_5DAY;
   _this->WeaItemIdxArray[ 5 ] = EnumWeatherTimeTypeWEATHER_AFTER_6DAY;
-  CoreRectView__OnSetBounds( &_this->DayOneTempSlash, _Const0055 );
+  CoreRectView__OnSetBounds( &_this->DayOneTempSlash, _Const004E );
   ViewsText_OnSetAlignment( &_this->DayOneTempSlash, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->DayOneTempSlash, EwLoadString( &_Const002D ));
+  ViewsText_OnSetString( &_this->DayOneTempSlash, EwLoadString( &_Const0026 ));
   ViewsText_OnSetColor( &_this->DayOneTempSlash, _Const0006 );
-  CoreRectView__OnSetBounds( &_this->DayOneMaxTemp, _Const0056 );
+  CoreRectView__OnSetBounds( &_this->DayOneMaxTemp, _Const004F );
   ViewsText_OnSetAlignment( &_this->DayOneMaxTemp, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->DayOneMaxTemp, 0 );
-  ViewsText_OnSetColor( &_this->DayOneMaxTemp, _Const002F );
-  CoreRectView__OnSetBounds( &_this->DayTwoTempSlash, _Const0057 );
+  ViewsText_OnSetColor( &_this->DayOneMaxTemp, _Const0028 );
+  CoreRectView__OnSetBounds( &_this->DayTwoTempSlash, _Const0050 );
   ViewsText_OnSetAlignment( &_this->DayTwoTempSlash, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->DayTwoTempSlash, EwLoadString( &_Const002D ));
+  ViewsText_OnSetString( &_this->DayTwoTempSlash, EwLoadString( &_Const0026 ));
   ViewsText_OnSetColor( &_this->DayTwoTempSlash, _Const0006 );
-  CoreRectView__OnSetBounds( &_this->DayTwoMaxTemp, _Const0058 );
+  CoreRectView__OnSetBounds( &_this->DayTwoMaxTemp, _Const0051 );
   ViewsText_OnSetAlignment( &_this->DayTwoMaxTemp, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->DayTwoMaxTemp, 0 );
-  ViewsText_OnSetColor( &_this->DayTwoMaxTemp, _Const002F );
-  CoreRectView__OnSetBounds( &_this->DayThreeTempSlash, _Const0059 );
+  ViewsText_OnSetColor( &_this->DayTwoMaxTemp, _Const0028 );
+  CoreRectView__OnSetBounds( &_this->DayThreeTempSlash, _Const0052 );
   ViewsText_OnSetAlignment( &_this->DayThreeTempSlash, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->DayThreeTempSlash, EwLoadString( &_Const002D ));
+  ViewsText_OnSetString( &_this->DayThreeTempSlash, EwLoadString( &_Const0026 ));
   ViewsText_OnSetColor( &_this->DayThreeTempSlash, _Const0006 );
-  CoreRectView__OnSetBounds( &_this->DayThreeMaxTemp, _Const005A );
+  CoreRectView__OnSetBounds( &_this->DayThreeMaxTemp, _Const0053 );
   ViewsText_OnSetAlignment( &_this->DayThreeMaxTemp, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->DayThreeMaxTemp, 0 );
-  ViewsText_OnSetColor( &_this->DayThreeMaxTemp, _Const002F );
-  CoreRectView__OnSetBounds( &_this->DayFourTempSlash, _Const005B );
+  ViewsText_OnSetColor( &_this->DayThreeMaxTemp, _Const0028 );
+  CoreRectView__OnSetBounds( &_this->DayFourTempSlash, _Const0054 );
   ViewsText_OnSetAlignment( &_this->DayFourTempSlash, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->DayFourTempSlash, EwLoadString( &_Const002D ));
+  ViewsText_OnSetString( &_this->DayFourTempSlash, EwLoadString( &_Const0026 ));
   ViewsText_OnSetColor( &_this->DayFourTempSlash, _Const0006 );
-  CoreRectView__OnSetBounds( &_this->DayFourMaxTemp, _Const005C );
+  CoreRectView__OnSetBounds( &_this->DayFourMaxTemp, _Const0055 );
   ViewsText_OnSetAlignment( &_this->DayFourMaxTemp, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->DayFourMaxTemp, 0 );
-  ViewsText_OnSetColor( &_this->DayFourMaxTemp, _Const002F );
-  CoreRectView__OnSetBounds( &_this->DayFiveTempSlash, _Const005D );
+  ViewsText_OnSetColor( &_this->DayFourMaxTemp, _Const0028 );
+  CoreRectView__OnSetBounds( &_this->DayFiveTempSlash, _Const0056 );
   ViewsText_OnSetAlignment( &_this->DayFiveTempSlash, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->DayFiveTempSlash, EwLoadString( &_Const002D ));
+  ViewsText_OnSetString( &_this->DayFiveTempSlash, EwLoadString( &_Const0026 ));
   ViewsText_OnSetColor( &_this->DayFiveTempSlash, _Const0006 );
-  CoreRectView__OnSetBounds( &_this->DayFiveMaxTemp, _Const005E );
+  CoreRectView__OnSetBounds( &_this->DayFiveMaxTemp, _Const0057 );
   ViewsText_OnSetAlignment( &_this->DayFiveMaxTemp, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->DayFiveMaxTemp, 0 );
-  ViewsText_OnSetColor( &_this->DayFiveMaxTemp, _Const002F );
-  CoreRectView__OnSetBounds( &_this->DaySixTempSlash, _Const005F );
+  ViewsText_OnSetColor( &_this->DayFiveMaxTemp, _Const0028 );
+  CoreRectView__OnSetBounds( &_this->DaySixTempSlash, _Const0058 );
   ViewsText_OnSetAlignment( &_this->DaySixTempSlash, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->DaySixTempSlash, EwLoadString( &_Const002D ));
+  ViewsText_OnSetString( &_this->DaySixTempSlash, EwLoadString( &_Const0026 ));
   ViewsText_OnSetColor( &_this->DaySixTempSlash, _Const0006 );
-  CoreRectView__OnSetBounds( &_this->DaySixMaxTemp, _Const0060 );
+  CoreRectView__OnSetBounds( &_this->DaySixMaxTemp, _Const0059 );
   ViewsText_OnSetAlignment( &_this->DaySixMaxTemp, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->DaySixMaxTemp, 0 );
-  ViewsText_OnSetColor( &_this->DaySixMaxTemp, _Const002F );
-  _this->TempSlashBounds[ 0 ] = _Const0061;
-  _this->TempSlashBounds[ 1 ] = _Const0057;
-  _this->TempSlashBounds[ 2 ] = _Const0062;
-  _this->TempSlashBounds[ 3 ] = _Const005B;
-  _this->TempSlashBounds[ 4 ] = _Const005D;
-  _this->TempSlashBounds[ 5 ] = _Const005F;
-  _this->MinTempBounds[ 0 ] = _Const0035;
-  _this->MinTempBounds[ 1 ] = _Const003F;
-  _this->MinTempBounds[ 2 ] = _Const0044;
-  _this->MinTempBounds[ 3 ] = _Const004F;
-  _this->MinTempBounds[ 4 ] = _Const0050;
-  _this->MinTempBounds[ 5 ] = _Const0051;
-  _this->WeekDayTextArray[ 0 ] = EwShareString( EwLoadString( &_Const0023 ));
-  _this->WeekDayTextArray[ 1 ] = EwShareString( EwLoadString( &_Const0024 ));
-  _this->WeekDayTextArray[ 2 ] = EwShareString( EwLoadString( &_Const0025 ));
-  _this->WeekDayTextArray[ 3 ] = EwShareString( EwLoadString( &_Const0026 ));
-  _this->WeekDayTextArray[ 4 ] = EwShareString( EwLoadString( &_Const0027 ));
-  _this->WeekDayTextArray[ 5 ] = EwShareString( EwLoadString( &_Const0028 ));
-  _this->WeekDayTextArray[ 6 ] = EwShareString( EwLoadString( &_Const0029 ));
+  ViewsText_OnSetColor( &_this->DaySixMaxTemp, _Const0028 );
+  _this->TempSlashBounds[ 0 ] = _Const005A;
+  _this->TempSlashBounds[ 1 ] = _Const0050;
+  _this->TempSlashBounds[ 2 ] = _Const005B;
+  _this->TempSlashBounds[ 3 ] = _Const0054;
+  _this->TempSlashBounds[ 4 ] = _Const0056;
+  _this->TempSlashBounds[ 5 ] = _Const0058;
+  _this->MinTempBounds[ 0 ] = _Const002E;
+  _this->MinTempBounds[ 1 ] = _Const0038;
+  _this->MinTempBounds[ 2 ] = _Const003D;
+  _this->MinTempBounds[ 3 ] = _Const0048;
+  _this->MinTempBounds[ 4 ] = _Const0049;
+  _this->MinTempBounds[ 5 ] = _Const004A;
+  _this->WeekDayTextArray[ 0 ] = EwShareString( EwGetVariantOfString( &StringsWEA01_SUNDAY ));
+  _this->WeekDayTextArray[ 1 ] = EwShareString( EwGetVariantOfString( &StringsWEA01_MONDAY ));
+  _this->WeekDayTextArray[ 2 ] = EwShareString( EwGetVariantOfString( &StringsWEA01_TUESDAY ));
+  _this->WeekDayTextArray[ 3 ] = EwShareString( EwGetVariantOfString( &StringsWEA01_WEDNESDAY ));
+  _this->WeekDayTextArray[ 4 ] = EwShareString( EwGetVariantOfString( &StringsWEA01_THURSDAY ));
+  _this->WeekDayTextArray[ 5 ] = EwShareString( EwGetVariantOfString( &StringsWEA01_FRIDAY ));
+  _this->WeekDayTextArray[ 6 ] = EwShareString( EwGetVariantOfString( &StringsWEA01_SATURDAY ));
   CoreGroup__Add( _this, ((CoreView)&_this->DayOneWeather ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->DayOneText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->DayOneChanceOfRain ), 0 );
@@ -1375,7 +1367,7 @@ void WeatherWeatherWeekViewUI_Init( WeatherWeatherWeekViewUI _this, XHandle aArg
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const0063 ));
+  EwTrace( "%s", EwLoadString( &_Const005C ));
 
   for ( i = 0; i < 6; i++ )
   {
@@ -1725,13 +1717,13 @@ void WeatherWeatherList__Init( WeatherWeatherList _this, XObject aLink, XHandle 
   _this->_.VMT = EW_CLASS( WeatherWeatherList );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const0064 );
-  CoreRectView__OnSetBounds( &_this->VerticalList, _Const0065 );
+  CoreRectView__OnSetBounds( _this, _Const005D );
+  CoreRectView__OnSetBounds( &_this->VerticalList, _Const005E );
   CoreVerticalList_OnSetSelectedItem( &_this->VerticalList, 0 );
   CoreVerticalList_OnSetItemHeight( &_this->VerticalList, 224 );
   CoreVerticalList_OnSetNoOfItems( &_this->VerticalList, 2 );
   CoreVerticalList_OnSetItemClass( &_this->VerticalList, EW_CLASS( WeatherWeatherItemWrapper ));
-  CoreRectView__OnSetBounds( &_this->ArrowScrollBar, _Const0066 );
+  CoreRectView__OnSetBounds( &_this->ArrowScrollBar, _Const005F );
   CoreGroup__OnSetVisible( &_this->ArrowScrollBar, 1 );
   MenuArrowScrollBar_OnSetNoOfPages( &_this->ArrowScrollBar, 2 );
   EffectsEffect_OnSetExponent((EffectsEffect)&_this->PageScrollEffect, 4.190000f );
@@ -1911,7 +1903,7 @@ void WeatherWeatherItemWrapper__Init( WeatherWeatherItemWrapper _this, XObject a
   _this->_.VMT = EW_CLASS( WeatherWeatherItemWrapper );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const0067 );
+  CoreRectView__OnSetBounds( _this, _Const0060 );
 }
 
 /* Re-Initializer for the class 'Weather::WeatherItemWrapper' */

@@ -106,7 +106,7 @@ EW_DEFINE_FIELDS( PopPOP07_TROUBLE_SHOOTING, ComponentsBaseMainBG )
   EW_OBJECT  ( ErrorPhoneLockIcon, ViewsImage )
   EW_OBJECT  ( ErrorBTIcon,     ViewsImage )
   EW_OBJECT  ( ErrorNavigationIcon, ViewsImage )
-  EW_OBJECT  ( TroubleShootingText, ViewsText )
+  EW_OBJECT  ( TroubleShootingTitle, ViewsText )
   EW_OBJECT  ( TroubleShootingText1, ViewsText )
   EW_OBJECT  ( TroubleShootingText2, ViewsText )
   EW_OBJECT  ( TroubleShootingText3, ViewsText )
@@ -171,6 +171,9 @@ EW_DEFINE_METHODS( PopPOP07_TROUBLE_SHOOTING, ComponentsBaseMainBG )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( PopPOP07_TROUBLE_SHOOTING )
+
+/* 'C' function for method : 'Pop::POP07_TROUBLE_SHOOTING.ReInit()' */
+void PopPOP07_TROUBLE_SHOOTING_ReInit( PopPOP07_TROUBLE_SHOOTING _this );
 
 /* 'C' function for method : 'Pop::POP07_TROUBLE_SHOOTING.OnShortEnterKeyActivated()' */
 void PopPOP07_TROUBLE_SHOOTING_OnShortEnterKeyActivated( PopPOP07_TROUBLE_SHOOTING _this );

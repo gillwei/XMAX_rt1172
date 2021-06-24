@@ -34,7 +34,8 @@ extern "C" {
 #define IGN_OFF_TASK_DISPLAY_OFF        ( 1 << 0 )
 #define IGN_OFF_TASK_WRITE_LAST_PAGE    ( 1 << 1 )
 #define IGN_OFF_TASK_WRITE_TRIP_TIME    ( 1 << 2 )
-#define IGN_OFF_TASK_ALL                ( IGN_OFF_TASK_DISPLAY_OFF | IGN_OFF_TASK_WRITE_LAST_PAGE | IGN_OFF_TASK_WRITE_TRIP_TIME )
+#define IGN_OFF_TASK_WRITE_LANGUAGE     ( 1 << 3 )
+#define IGN_OFF_TASK_ALL                ( 0x0F )
 
 typedef enum
     {

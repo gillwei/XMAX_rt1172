@@ -835,6 +835,35 @@ class SystemDeviceClass : Templates::DeviceClass
     $endif
     return Status;
   }
+
+  $rect <450,1330,650,1370>
+  method void ChangeLanguage( arg Enum::Language aLanguage )
+  {
+    trace "ChangeLang: ", aLanguage;
+
+    switch( aLanguage )
+    {
+      case Enum::Language.ENGLISH: language = Default;
+      case Enum::Language.FRENCH: language = French;
+      case Enum::Language.GERMAN: language = German;
+      case Enum::Language.ITALIAN: language = Italian;
+      case Enum::Language.JAPANESE: language = Japanese;
+      case Enum::Language.SPANISH: language = Spanish;
+      case Enum::Language.TRADITIONAL_CHINESE: language = TraditionalChinese;
+      case Enum::Language.SIMPLIFIED_CHINESE: language = SimplifiedChinese;
+      case Enum::Language.GREEK: language = Greek;
+      case Enum::Language.FINNISH: language = Finnish;
+      case Enum::Language.HINDI: language = Hindi;
+      case Enum::Language.INDONESIAN: language = Indonesian;
+      case Enum::Language.POLISH: language = Polish;
+      case Enum::Language.PORTUGUESE_BRAZIL: language = PortugueseBrazil;
+      case Enum::Language.THAI: language = Thai;
+      case Enum::Language.VIETNAMESE: language = Vietnamese;
+      case Enum::Language.KOREAN: language = Korean;
+      case Enum::Language.MALAY: language = Malay;
+      default: language = Default;
+    }
+  }
 }
 
 $rect <20,110,220,150>

@@ -1714,6 +1714,9 @@ void MenuBaseMenuView__ReInit( MenuBaseMenuView _this )
 
   /* ... then re-construct all embedded objects */
   MenuVerticalMenu__ReInit( &_this->Menu );
+
+  /* Call the user defined re-constructor of the class */
+  MenuBaseMenuView_ReInit( _this );
 }
 
 /* Finalizer method for the class 'Menu::BaseMenuView' */
@@ -1727,6 +1730,12 @@ void MenuBaseMenuView__Done( MenuBaseMenuView _this )
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseMainBG__Done( &_this->_.Super );
+}
+
+/* 'C' function for method : 'Menu::BaseMenuView.ReInit()' */
+void MenuBaseMenuView_ReInit( MenuBaseMenuView _this )
+{
+  MenuVerticalMenu_InvalidateItems( &_this->Menu, 0, _this->Menu.NoOfItems - 1 );
 }
 
 /* super( value ); */

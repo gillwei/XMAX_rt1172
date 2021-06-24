@@ -10,7 +10,7 @@ from datetime import datetime
 
 INTPUT_FILENAME = "Strings.csv"
 OUTPUT_FILENAME = "Strings.ewu"
-OUTPUT_FILE_HEAD = "$version 10.00\n\n// This file is generated automatically.\n// Generated: "
+OUTPUT_FILE_HEAD = "$version 11.00\n\n// This file is generated automatically.\n// Generated: "
 
 STRING_BLOCK_HEADER = "$output false\nconst string "
 STRING_BLOCK_TAIL = "\n);\n\n"
@@ -52,6 +52,8 @@ try:
                     unicode_str = unicode_str[2:-1]
                     string_block = string_block + "\n  " + language_list[language_idx] + " = \"" + unicode_str + "\";"
                 language_idx = language_idx + 1
+                if (len(language_list) <= language_idx):
+                    break
             string_block += STRING_BLOCK_TAIL
             output_file.write(string_block)
 

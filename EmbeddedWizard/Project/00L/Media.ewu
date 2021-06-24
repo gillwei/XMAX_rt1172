@@ -1,9 +1,15 @@
-﻿$version 10.00
+﻿$version 11.00
 
 $rect <30,20,270,60>
 $output false
 class MED01_MediaUI : Components::BaseMainBG
 {
+  $rect <750,220,950,260>
+  inherited method ReInit()
+  {
+    ErrorMessage.String = Strings::MED02_DEV_UNAVAILABLE;
+  }
+
   $rect <540,220,740,260>
   inherited method Init()
   {
@@ -23,7 +29,7 @@ class MED01_MediaUI : Components::BaseMainBG
   $rect <540,40,740,80>
   inherited property Bounds = <0,0,480,272>;
 
-  $rect <1210,340,1410,380>
+  $rect <1210,370,1410,410>
   inherited method OnShortDownKeyActivated()
   {
     if( Volume > Media::MIN_VOLUME_LEVEL )
@@ -33,7 +39,7 @@ class MED01_MediaUI : Components::BaseMainBG
     }
   }
 
-  $rect <1230,280,1430,320>
+  $rect <1230,320,1430,360>
   inherited method OnShortUpKeyActivated()
   {
     if( Volume < Media::MAX_VOLUME_LEVEL )
@@ -43,7 +49,7 @@ class MED01_MediaUI : Components::BaseMainBG
     }
   }
 
-  $rect <980,280,1210,320>
+  $rect <980,320,1210,360>
   inherited method OnShortEnterKeyActivated()
   {
     StartHighlight( PlayPauseBG );
@@ -56,14 +62,14 @@ class MED01_MediaUI : Components::BaseMainBG
   $rect <1170,40,1370,80>
   inherited property DownKeyTriggerMode = Enum::KeyTriggerMode.OFF;
 
-  $rect <750,280,980,320>
+  $rect <750,320,980,360>
   inherited method OnLongDownKeyActivated()
   {
     StartHighlight( ControlDownBG );
     postsignal OnPrevTrackSlot;
   }
 
-  $rect <540,280,750,320>
+  $rect <540,320,750,360>
   inherited method OnLongUpKeyActivated()
   {
     StartHighlight( ControlUpBG );
@@ -103,7 +109,7 @@ class MED01_MediaUI : Components::BaseMainBG
     preset Visible = false;
   }
 
-  $rect <540,340,740,380>
+  $rect <540,370,740,410>
   slot OnPlayPauseSlot
   {
     if( 0 == DeviceInterface::MediaManagerDevice.GetPlayBackStateInfo() )
@@ -116,14 +122,14 @@ class MED01_MediaUI : Components::BaseMainBG
     }
   }
 
-  $rect <750,340,950,380>
+  $rect <750,370,950,410>
   slot OnPrevTrackSlot
   {
     ChangeTrack();
     DeviceInterface::MediaManagerDevice.SendRemoteCommand( Enum::MusicControlType.PrevTrack );
   }
 
-  $rect <960,340,1160,380>
+  $rect <960,370,1160,410>
   slot OnNextTrackSlot
   {
     ChangeTrack();
@@ -150,7 +156,7 @@ class MED01_MediaUI : Components::BaseMainBG
     preset Visible = false;
   }
 
-  $rect <750,220,950,260>
+  $rect <540,270,740,310>
   method void ChangeTrack()
   {
     // Reset if next/previous track command is issued.
@@ -159,7 +165,7 @@ class MED01_MediaUI : Components::BaseMainBG
     DeviceInterface::MediaManagerDevice.IsAlbumReceived = false;
   }
 
-  $rect <540,460,780,500>
+  $rect <539,500,779,540>
   object Core::SystemEventHandler PlaybackTimeEventHandler
   {
     preset OnEvent = OnPlaybackTimeUpdateSlot;
@@ -168,7 +174,7 @@ class MED01_MediaUI : Components::BaseMainBG
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <790,460,1060,500>
+  $rect <789,500,1059,540>
   slot OnPlaybackTimeUpdateSlot
   {
     if( !ElapsedTimeSec.Visible )
@@ -193,7 +199,7 @@ class MED01_MediaUI : Components::BaseMainBG
     }
   }
 
-  $rect <960,220,1160,260>
+  $rect <750,270,950,310>
   method string FormatTimeText( arg int32 TimeSec )
   {
     var int32 Hour = TimeSec / 3600;
@@ -275,7 +281,7 @@ class MED01_MediaUI : Components::BaseMainBG
     preset Bitmap = Resource::IconVolumeUp;
   }
 
-  $rect <540,510,730,550>
+  $rect <539,550,729,590>
   object Core::Timer HighlightTimer
   {
     preset OnTrigger = OnHighlightEndSlot;
@@ -283,14 +289,14 @@ class MED01_MediaUI : Components::BaseMainBG
     preset Enabled = false;
   }
 
-  $rect <780,510,1040,550>
+  $rect <779,550,1039,590>
   slot OnHighlightEndSlot
   {
     HighlightTimer.Enabled = false;
     HighlightBG.FrameNumber = 0;
   }
 
-  $rect <1170,220,1370,260>
+  $rect <960,270,1160,310>
   method void StartHighlight( arg Views::Image aBackground )
   {
     aBackground.FrameNumber = 1;
@@ -310,23 +316,16 @@ class MED01_MediaUI : Components::BaseMainBG
   // Methods/Slots
   note group Note10
   {
-    attr Bounds = <520,180,1460,410>;
+    attr Bounds = <520,180,1460,440>;
   }
 
   // SystemEvents/Others
   note group Note11
   {
-    attr Bounds = <520,420,1460,1000>;
+    attr Bounds = <519,460,1459,1040>;
   }
 
-  // TODO:
-  // 1. Volume control.
-  note group Note12
-  {
-    attr Bounds = <20,290,480,370>;
-  }
-
-  $rect <540,560,740,600>
+  $rect <539,600,739,640>
   object Core::PropertyObserver TitleObserver
   {
     preset OnEvent = OnTrackInfoUpdateSlot;
@@ -335,7 +334,7 @@ class MED01_MediaUI : Components::BaseMainBG
 
   // This slot method is executed when the associated property observer 'PropertyObserver' \
   // is notified.
-  $rect <770,560,1020,600>
+  $rect <769,600,1019,640>
   slot OnTrackInfoUpdateSlot
   {
     // Music info could be varied, some songs only have title, but have no album & artist name.
@@ -394,14 +393,14 @@ class MED01_MediaUI : Components::BaseMainBG
     }
   }
 
-  $rect <540,600,740,640>
+  $rect <539,640,739,680>
   object Core::PropertyObserver AlbumObserver
   {
     preset OnEvent = OnTrackInfoUpdateSlot;
     preset Outlet = ^DeviceInterface::MediaManagerDevice.Album;
   }
 
-  $rect <540,640,740,680>
+  $rect <539,680,739,720>
   object Core::PropertyObserver ArtistObserver
   {
     preset OnEvent = OnTrackInfoUpdateSlot;
@@ -417,7 +416,7 @@ class MED01_MediaUI : Components::BaseMainBG
     preset Appearance = UIConfig::HorizontalSliderConfig;
   }
 
-  $rect <540,690,740,730>
+  $rect <539,730,739,770>
   object Core::SystemEventHandler MotoConMusicInfoEventHandler
   {
     preset OnEvent = OnMotoConMusicInfoUpdateSlot;
@@ -426,7 +425,7 @@ class MED01_MediaUI : Components::BaseMainBG
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <750,690,990,730>
+  $rect <749,730,989,770>
   slot OnMotoConMusicInfoUpdateSlot
   {
     DeviceInterface::MediaManagerDevice.GetPlaybackInfo();
@@ -450,7 +449,7 @@ class MED01_MediaUI : Components::BaseMainBG
     preset Visible = false;
   }
 
-  $rect <540,740,730,780>
+  $rect <539,780,729,820>
   object Core::SystemEventHandler MotoConEventHandler
   {
     preset OnEvent = OnMotoConEventReceived;
@@ -459,7 +458,7 @@ class MED01_MediaUI : Components::BaseMainBG
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <750,740,990,780>
+  $rect <749,780,989,820>
   slot OnMotoConEventReceived
   {
     var DeviceInterface::MotoConContext MotoConContext = ( DeviceInterface::MotoConContext )MotoConEventHandler.Context;
@@ -476,21 +475,21 @@ class MED01_MediaUI : Components::BaseMainBG
     }
   }
 
-  $rect <540,860,730,900>
+  $rect <539,900,729,940>
   object Core::Timer BleConnectionRecoveryTimer
   {
     preset OnTrigger = OnBleConnectionRecoverSlot;
     preset Period = 5000;
   }
 
-  $rect <750,860,950,900>
+  $rect <749,900,949,940>
   slot OnBleConnectionRecoverSlot
   {
     BleConnectionRecoveryTimer.Enabled = false;
     UpdateMediaInfoItem( Enum::ReceptionStatus.SUCCESS );
   }
 
-  $rect <540,800,740,840>
+  $rect <539,840,739,880>
   object Core::SystemEventHandler AmsBleConnectionEventHandler
   {
     preset OnEvent = OnAmsBleConnectedStatusUpdateSlot;
@@ -499,7 +498,7 @@ class MED01_MediaUI : Components::BaseMainBG
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <750,800,980,840>
+  $rect <749,840,979,880>
   slot OnAmsBleConnectedStatusUpdateSlot
   {
     if( !DeviceInterface::MediaManagerDevice.IsAmsConnected() )
@@ -513,7 +512,7 @@ class MED01_MediaUI : Components::BaseMainBG
     }
   }
 
-  $rect <1010,740,1210,780>
+  $rect <1009,780,1209,820>
   method void UpdateMediaInfoItem( arg Enum::ReceptionStatus aNewStatus )
   {
     switch( aNewStatus )
@@ -568,7 +567,7 @@ class MED01_MediaUI : Components::BaseMainBG
 
   }
 
-  $rect <540,910,740,950>
+  $rect <539,950,739,990>
   object Core::SystemEventHandler MediaVolumeUpdateEventHandler
   {
     preset OnEvent = OnVolumeUpdateSlot;
@@ -577,7 +576,7 @@ class MED01_MediaUI : Components::BaseMainBG
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <740,910,940,950>
+  $rect <739,950,939,990>
   slot OnVolumeUpdateSlot
   {
     Volume = DeviceInterface::MediaManagerDevice.GetVolume();

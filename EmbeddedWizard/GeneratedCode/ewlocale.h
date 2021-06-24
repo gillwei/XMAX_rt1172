@@ -57,6 +57,36 @@ enum { Spanish          = 6 };
 /* Traditional Chinese */
 enum { TraditionalChinese = 7 };
 
+/* German */
+enum { Greek            = 8 };
+
+/* German */
+enum { Finnish          = 9 };
+
+/* German */
+enum { Hindi            = 10 };
+
+/* German */
+enum { Indonesian       = 11 };
+
+/* German */
+enum { Polish           = 12 };
+
+/* German */
+enum { PortugueseBrazil = 13 };
+
+/* German */
+enum { Thai             = 14 };
+
+/* German */
+enum { Vietnamese       = 15 };
+
+/* German */
+enum { Korean           = 16 };
+
+/* German */
+enum { Malay            = 17 };
+
 #ifdef __cplusplus
   }
 #endif

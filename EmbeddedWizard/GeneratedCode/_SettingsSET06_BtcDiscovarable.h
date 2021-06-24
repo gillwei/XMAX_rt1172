@@ -169,6 +169,9 @@ EW_DEFINE_METHODS( SettingsSET06_BtcDiscovarable, ComponentsBaseMainBG )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( SettingsSET06_BtcDiscovarable )
 
+/* 'C' function for method : 'Settings::SET06_BtcDiscovarable.ReInit()' */
+void SettingsSET06_BtcDiscovarable_ReInit( SettingsSET06_BtcDiscovarable _this );
+
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 
    statements. */
@@ -193,6 +196,9 @@ void SettingsSET06_BtcDiscovarable_UpdateCountDownTimeSlot( SettingsSET06_BtcDis
    receives an event. */
 void SettingsSET06_BtcDiscovarable_OnBtcPairingStateChangeSlot( SettingsSET06_BtcDiscovarable _this, 
   XObject sender );
+
+/* 'C' function for method : 'Settings::SET06_BtcDiscovarable.DisplayLocalDeviceName()' */
+void SettingsSET06_BtcDiscovarable_DisplayLocalDeviceName( SettingsSET06_BtcDiscovarable _this );
 
 #ifdef __cplusplus
   }

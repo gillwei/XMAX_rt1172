@@ -167,6 +167,9 @@ EW_DEFINE_METHODS( PopPOP08_WeatherLoadingUI, ComponentsBaseMainBG )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( PopPOP08_WeatherLoadingUI )
 
+/* 'C' function for method : 'Pop::POP08_WeatherLoadingUI.ReInit()' */
+void PopPOP08_WeatherLoadingUI_ReInit( PopPOP08_WeatherLoadingUI _this );
+
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 
    statements. */

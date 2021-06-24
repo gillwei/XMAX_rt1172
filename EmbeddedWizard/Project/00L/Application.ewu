@@ -618,4 +618,37 @@ class Application : Core::Root
   {
     attr Bounds = <950,560,1240,690>;
   }
+
+  $rect <840,50,1100,90>
+  object Core::SystemEventHandler ReceivedSystemEventHandler
+  {
+    preset OnEvent = OnSystemEventReceived;
+    preset Event = DeviceInterface::SystemDevice.SystemDataReceivedSystemEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <840,100,1100,140>
+  slot OnSystemEventReceived
+  {
+    var DeviceInterface::SystemData SystemData = (DeviceInterface::SystemData)ReceivedSystemEventHandler.Context;
+    if( null != SystemData )
+    {
+      switch( SystemData.RxEvent )
+      {
+        case Enum::SystemRxEvent.LANGUAGE_CHANGED:
+        {
+          var Enum::Language NewLanguage = DeviceInterface::SystemDevice.GetSystemStatus( Enum::SystemStatus.LANGUAGE );
+          DeviceInterface::SystemDevice.ChangeLanguage( NewLanguage );
+        }
+        default:;
+      }
+    }
+  }
+
+  // Multi-language
+  note group Note9
+  {
+    attr Bounds = <820,0,1120,350>;
+  }
 }

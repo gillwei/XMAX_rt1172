@@ -15,6 +15,9 @@ resource Resources::Font NotoSansCjkJpMedium24pt
     Japanese = Noto Sans CJK JP Medium;
     Spanish = Noto Sans Med;
     TraditionalChinese = Noto Sans CJK JP Medium;
+    Hindi = Noto Sans Devanagari Md;
+    Thai = Noto Sans Thai Med;
+    Korean = Noto Sans CJK JP Medium;
   );
 
   attr fontheight Height = 24;
@@ -29,6 +32,11 @@ resource Resources::Font NotoSansCjkJpMedium24pt
     Japanese = 0x3040-0x309F,0x30A0-0x30FF,'←','→','⇒','⇐';
     Spanish = 0xF0-0xFF;
     TraditionalChinese = 0x4E00-0x9FFF,0xFF01-0xFF9F;
+    Greek = 0x0370-0x03FF,0x1F00-0x1FFF;
+    Finnish = 0x2010-0x205E;
+    Hindi = 0x0900-0x097F;
+    Thai = 0x0E01-0x0E5B;
+    Korean = 0xA960-0xA97F,0xAC00-0xD7AF,0xD7B0-0xD7FF;
   );
 
   attr fontaspectratio AspectRatio = 1.0;
@@ -54,13 +62,21 @@ resource Resources::Font NotoSansCjkJpMedium28pt
     Japanese = Noto Sans CJK JP Medium;
     Spanish = Noto Sans Med;
     TraditionalChinese = Noto Sans CJK JP Medium;
+    Hindi = Noto Sans Devanagari Md;
+    Thai = Noto Sans Thai Med;
+    Korean = Noto Sans CJK JP Medium;
   );
 
-  attr fontheight Height = 28;
+  attr fontheight Height =
+  (
+    Default = 28;
+    Thai = 24;
+  );
+
   attr fontquality Quality = Medium;
   attr fontranges Ranges =
   (
-    Default = 0x20-0x7E,0x2103,0x2109,0x2019;
+    Default = 0x20-0x7E,0x2103,0x2109;
     SimplifiedChinese = 0x3000-0x303F;
     French = 0x0100-0x017F,0x0180-0x024F,0x1E00-0x1EFF;
     Italian = 0xE0-0xEF;
@@ -68,6 +84,11 @@ resource Resources::Font NotoSansCjkJpMedium28pt
     Japanese = 0x3040-0x309F,0x30A0-0x30FF;
     Spanish = 0xF0-0xFF;
     TraditionalChinese = 0x4E00-0x9FFF,0xFF01-0xFF9F;
+    Greek = 0x0370-0x03FF,0x1F00-0x1FFF;
+    Finnish = 0x2010-0x205E;
+    Hindi = 0x0900-0x097F;
+    Thai = 0x0E01-0x0E5B;
+    Korean = 0xA960-0xA97F,0xAC00-0xD7AF,0xD7B0-0xD7FF;
   );
 
   attr fontaspectratio AspectRatio = 1.0;
@@ -157,7 +178,7 @@ resource Resources::Font NotoSansMedium16pt
   attr fontrowdistance RowDistance;
 }
 
-$rect <300,90,580,130>
+$rect <300,80,560,120>
 $output false
 resource Resources::Font NotoSansBold24pt
 {
@@ -181,7 +202,7 @@ $rect <610,80,810,120>
 $output false
 const int32 ROW_DISTANCE_28PT = 36;
 
-$rect <300,140,570,180>
+$rect <300,130,560,170>
 $output false
 resource Resources::Font NotoSansBold38pt
 {
@@ -214,7 +235,7 @@ resource Resources::Font NotoSansMedium40pt
   attr fontrowdistance RowDistance;
 }
 
-$rect <300,40,560,80>
+$rect <300,30,560,70>
 $output false
 resource Resources::Font NotoSansBold20pt
 {

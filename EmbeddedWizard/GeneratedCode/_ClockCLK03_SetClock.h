@@ -175,6 +175,9 @@ EW_DEFINE_METHODS( ClockCLK03_SetClock, ComponentsBaseMainBG )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( ClockCLK03_SetClock )
 
+/* 'C' function for method : 'Clock::CLK03_SetClock.ReInit()' */
+void ClockCLK03_SetClock_ReInit( ClockCLK03_SetClock _this );
+
 /* 'C' function for method : 'Clock::CLK03_SetClock.OnShortHomeKeyActivated()' */
 void ClockCLK03_SetClock_OnShortHomeKeyActivated( ClockCLK03_SetClock _this );
 

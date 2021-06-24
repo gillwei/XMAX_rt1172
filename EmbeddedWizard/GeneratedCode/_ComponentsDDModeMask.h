@@ -45,6 +45,7 @@
 #include "_CoreGroup.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
+#include "_ViewsText.h"
 
 /* Forward declaration of the class Components::DDModeMask */
 #ifndef _ComponentsDDModeMask_
@@ -99,6 +100,7 @@
 EW_DEFINE_FIELDS( ComponentsDDModeMask, CoreGroup )
   EW_OBJECT  ( DDModeBG,        ViewsRectangle )
   EW_OBJECT  ( DDModeIcon,      ViewsImage )
+  EW_OBJECT  ( WarningText,     ViewsText )
 EW_END_OF_FIELDS( ComponentsDDModeMask )
 
 /* Virtual Method Table (VMT) for the class : 'Components::DDModeMask' */

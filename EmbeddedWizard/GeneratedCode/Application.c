@@ -35,6 +35,7 @@
 #include "_DeviceInterfaceBluetoothDeviceClass.h"
 #include "_DeviceInterfaceNavigationDeviceClass.h"
 #include "_DeviceInterfaceNotificationDeviceClass.h"
+#include "_DeviceInterfaceSystemData.h"
 #include "_DeviceInterfaceSystemDeviceClass.h"
 #include "_DeviceInterfaceVehicleDataClass.h"
 #include "_DeviceInterfaceVehicleDeviceClass.h"
@@ -107,6 +108,7 @@ void ApplicationApplication__Init( ApplicationApplication _this, XObject aLink, 
   CoreSystemEventHandler__Init( &_this->PhoneCallStateChangedEventHandler, &_this->_.XObject, 0 );
   CoreSystemEventHandler__Init( &_this->InspectionModeEventHandler, &_this->_.XObject, 0 );
   CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->ReceivedSystemEventHandler, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_.VMT = EW_CLASS( ApplicationApplication );
@@ -143,6 +145,9 @@ void ApplicationApplication__Init( ApplicationApplication _this, XObject aLink, 
   _this->VehicleDataReceivedEventHandler.OnEvent = EwNewSlot( _this, ApplicationApplication_OnVehicleDataReceivedSlot );
   CoreSystemEventHandler_OnSetEvent( &_this->VehicleDataReceivedEventHandler, &EwGetAutoObject( 
   &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->VehicleDataReceivedSystemEvent );
+  _this->ReceivedSystemEventHandler.OnEvent = EwNewSlot( _this, ApplicationApplication_OnSystemEventReceived );
+  CoreSystemEventHandler_OnSetEvent( &_this->ReceivedSystemEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->SystemDataReceivedSystemEvent );
 
   /* Call the user defined constructor */
   ApplicationApplication_Init( _this, aArg );
@@ -164,6 +169,7 @@ void ApplicationApplication__ReInit( ApplicationApplication _this )
   CoreSystemEventHandler__ReInit( &_this->PhoneCallStateChangedEventHandler );
   CoreSystemEventHandler__ReInit( &_this->InspectionModeEventHandler );
   CoreSystemEventHandler__ReInit( &_this->VehicleDataReceivedEventHandler );
+  CoreSystemEventHandler__ReInit( &_this->ReceivedSystemEventHandler );
 }
 
 /* Finalizer method for the class 'Application::Application' */
@@ -182,6 +188,7 @@ void ApplicationApplication__Done( ApplicationApplication _this )
   CoreSystemEventHandler__Done( &_this->PhoneCallStateChangedEventHandler );
   CoreSystemEventHandler__Done( &_this->InspectionModeEventHandler );
   CoreSystemEventHandler__Done( &_this->VehicleDataReceivedEventHandler );
+  CoreSystemEventHandler__Done( &_this->ReceivedSystemEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
   CoreRoot__Done( &_this->_.Super );
@@ -827,6 +834,35 @@ void ApplicationApplication_ShowNaviHome( ApplicationApplication _this, XObject
       ApplicationApplication_SwitchToHome( App, EnumHomeTypeNAVI_DEFAULT_VIEW );
     }
   }
+}
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void ApplicationApplication_OnSystemEventReceived( ApplicationApplication _this, 
+  XObject sender )
+{
+  DeviceInterfaceSystemData SystemData;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  SystemData = EwCastObject( _this->ReceivedSystemEventHandler.Context, DeviceInterfaceSystemData );
+
+  if ( SystemData != 0 )
+    switch ( SystemData->RxEvent )
+    {
+      case EnumSystemRxEventLANGUAGE_CHANGED :
+      {
+        XEnum NewLanguage = (XEnum)DeviceInterfaceSystemDeviceClass_GetSystemStatus( 
+          EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass ), 
+          EnumSystemStatusLANGUAGE );
+        DeviceInterfaceSystemDeviceClass_ChangeLanguage( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+        DeviceInterfaceSystemDeviceClass ), NewLanguage );
+      }
+      break;
+
+      default :; 
+    }
 }
 
 /* Variants derived from the class : 'Application::Application' */

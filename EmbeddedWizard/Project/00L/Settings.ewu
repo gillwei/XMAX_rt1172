@@ -189,12 +189,14 @@ class SET03_ConnectionSettingMenu : Menu::BaseMenuView
   $rect <510,70,710,110>
   inherited method LoadItemTitle()
   {
-    var string title = "";
-    if( aItemNo < ItemTitleArray.size )
-      {
-      title = ItemTitleArray[aItemNo];
-      }
-    return title;
+    var string Title = "";
+    switch( aItemNo )
+    {
+      case 0: Title = Strings::GEN_BLUETOOTH;
+      case 1: Title = Strings::SET03_Y_CONNECT_APP_PAIRING;
+      default:;
+    }
+    return Title;
   }
 
   $rect <510,120,710,160>
@@ -219,13 +221,6 @@ class SET03_ConnectionSettingMenu : Menu::BaseMenuView
     preset DDModeEnabled = true;
     preset NoOfItems = 2;
   }
-
-  $rect <730,70,930,110>
-  array string ItemTitleArray[ 2 ] =
-  (
-    Default[0] = Strings::GEN_BLUETOOTH;
-    Default[1] = Strings::SET03_Y_CONNECT_APP_PAIRING;
-  );
 
   $rect <230,290,470,330>
   method void HandleYConnectAppPairing()
@@ -293,12 +288,16 @@ class SET04_BtSettingMenu : Menu::BaseMenuView
   $rect <490,80,690,120>
   inherited method LoadItemTitle()
   {
-    var string title = "";
-    if( aItemNo < ItemTitleArray.size )
-      {
-      title = ItemTitleArray[aItemNo];
-      }
-    return title;
+    var string Title = "";
+    switch( aItemNo )
+    {
+      case 0: Title = Strings::GEN_BLUETOOTH;
+      case 1: Title = Strings::SET04_DISCOVERY_MODE;
+      case 2: Title = Strings::SET04_PAIRED_DEVICES;
+      case 3: Title = Strings::SET04_BT_AUTO_CONNECT;
+      default:;
+    }
+    return Title;
   }
 
   $rect <490,230,690,270>
@@ -375,15 +374,6 @@ class SET04_BtSettingMenu : Menu::BaseMenuView
     Default[1] = Menu::ItemBase;
     Default[2] = Menu::ItemBase;
     Default[3] = Menu::ItemCheckbox;
-  );
-
-  $rect <710,80,910,120>
-  array string ItemTitleArray[ 4 ] =
-  (
-    Default[0] = Strings::GEN_BLUETOOTH;
-    Default[1] = Strings::SET04_DISCOVERY_MODE;
-    Default[2] = Strings::SET04_PAIRED_DEVICES;
-    Default[3] = Strings::SET04_BT_AUTO_CONNECT;
   );
 
   $rect <710,130,910,170>
@@ -513,13 +503,20 @@ $rect <600,530,830,570>
 $output false
 class SET39_DeletePairedDevice : Components::BaseMainBG
 {
+  $rect <10,340,210,380>
+  inherited method ReInit()
+  {
+    Text.String = Strings::SET39_DELETE_PAIRING;
+    PushButton.Title = Strings::GEN_OK;
+  }
+
   $rect <10,290,210,330>
   inherited method Init()
   {
     trace "Init SET39";
   }
 
-  $rect <10,340,210,380>
+  $rect <10,390,210,430>
   inherited property DDModeEnabled = true;
 
   $rect <230,290,430,330>
@@ -551,6 +548,12 @@ $rect <600,580,810,620>
 $output false
 class SET41_ResetInProgress : Components::BaseMainBG
 {
+  $rect <10,350,190,390>
+  inherited method ReInit()
+  {
+    LoadingText.String = Strings::GEN_PLEASE_WAIT;
+  }
+
   $rect <10,300,190,340>
   inherited method Init()
   {
@@ -580,7 +583,7 @@ class SET41_ResetInProgress : Components::BaseMainBG
     // neglect home key event
   }
 
-  $rect <10,350,190,390>
+  $rect <10,400,190,440>
   inherited property DDModeEnabled = true;
 
   $rect <20,20,160,60>
@@ -608,7 +611,7 @@ class SET41_ResetInProgress : Components::BaseMainBG
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <470,340,730,380>
+  $rect <470,350,730,390>
   slot OnSystemEventReceived
   {
     var DeviceInterface::SystemData SystemData = ( DeviceInterface::SystemData )ReceivedSystemEventHandler.Context;
@@ -714,33 +717,37 @@ $rect <20,210,260,250>
 $output false
 class SET06_BtcDiscovarable : Components::BaseMainBG
 {
+  $rect <0,340,180,380>
+  inherited method ReInit()
+  {
+    DiscoverableText.String = Strings::SET06_DISCOVERABLE;
+    DisplayLocalDeviceName();
+    PushButton.Title = Strings::GEN_CANCEL;
+  }
+
   $rect <0,290,180,330>
   inherited method Init()
   {
-    trace "init SET06";
+    trace "SET06";
     DeviceInterface::BluetoothDevice.Discoverable = true;
-
-    var string ProcessString = Strings::SET06_NAME;
-    var int32 LeftIdx = ProcessString.find( Strings::ARGUMENT_STR, 0 );
-    var int32 RightIdx = ProcessString.length - LeftIdx - Strings::ARGUMENT_STR.length;
-    NameText.String = ProcessString.left( LeftIdx ) + DeviceInterface::BluetoothDevice.LocalDeviceName + ProcessString.right( RightIdx );
+    DisplayLocalDeviceName();
   }
 
-  $rect <200,340,430,380>
+  $rect <250,340,480,380>
   inherited method OnShortHomeKeyActivated()
   {
     DeviceInterface::BluetoothDevice.Discoverable = false;
     super();
   }
 
-  $rect <200,390,430,430>
+  $rect <250,390,480,430>
   inherited method OnLongHomeKeyActivated()
   {
     DeviceInterface::BluetoothDevice.Discoverable = false;
     super();
   }
 
-  $rect <0,340,180,380>
+  $rect <0,390,180,430>
   inherited property DDModeEnabled = true;
 
   $rect <20,20,160,60>
@@ -753,7 +760,7 @@ class SET06_BtcDiscovarable : Components::BaseMainBG
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
-  $rect <200,290,400,330>
+  $rect <250,290,450,330>
   slot OnCancelSlot
   {
     CountDownTimer.Enabled = false;
@@ -861,6 +868,15 @@ class SET06_BtcDiscovarable : Components::BaseMainBG
         default:;
       }
     }
+  }
+
+  $rect <0,440,220,480>
+  method void DisplayLocalDeviceName()
+  {
+    var string ProcessString = Strings::SET06_NAME;
+    var int32 LeftIdx = ProcessString.find( Strings::ARGUMENT_STR, 0 );
+    var int32 RightIdx = ProcessString.length - LeftIdx - Strings::ARGUMENT_STR.length;
+    NameText.String = ProcessString.left( LeftIdx ) + DeviceInterface::BluetoothDevice.LocalDeviceName + ProcessString.right( RightIdx );
   }
 }
 
@@ -1005,13 +1021,21 @@ $rect <20,160,260,200>
 $output false
 class SET05_BtcMaxPairedDevice : Components::BaseMainBG
 {
+  $rect <0,330,170,370>
+  inherited method ReInit()
+  {
+    Text.String = Strings::SET05_MAX_DEVICES;
+    UpDownPushButtonSet.UpButtonTitle = Strings::GEN_YES;
+    UpDownPushButtonSet.DownButtonTitle = Strings::GEN_NO;
+  }
+
   $rect <0,290,170,330>
   inherited method Init()
   {
     trace "Init SET05";
   }
 
-  $rect <0,330,170,370>
+  $rect <0,380,170,420>
   inherited property DDModeEnabled = true;
 
   $rect <20,20,160,60>
@@ -1031,8 +1055,8 @@ class SET05_BtcMaxPairedDevice : Components::BaseMainBG
     preset PassHomeKey = true;
     preset OnUpButtonActivated = OnYesActivatedSlot;
     preset OnDownButtonActivated = OnNoActivatedSlot;
-    preset UpButtonTitle = "Yes";
-    preset DownButtonTitle = "No";
+    preset UpButtonTitle = Strings::GEN_YES;
+    preset DownButtonTitle = Strings::GEN_NO;
   }
 
   $rect <210,290,410,330>
@@ -1058,22 +1082,25 @@ $rect <20,260,260,300>
 $output false
 class SET08_BtcPairDevice : Components::BaseMainBG
 {
-  $rect <0,290,180,330>
-  inherited method Init()
+  $rect <0,340,200,380>
+  inherited method ReInit()
   {
-    trace "Init SET08";
-    var string ProcessString = Strings::SET08_PAIR_WITH;
-    var int32 LeftIdx = ProcessString.find( Strings::ARGUMENT_STR, 0 );
-    var int32 RightIdx = ProcessString.length - LeftIdx - Strings::ARGUMENT_STR.length;
-    PairText.String = ProcessString.left( LeftIdx ) + DeviceInterface::BluetoothDevice.GetBtcPairingDeviceName() + ProcessString.right( RightIdx );
-
-    PasskeyText.String = Strings::SET08_PASSKEY + "\n" + string( DeviceInterface::BluetoothDevice.GetBtcPasskey(), Settings::BT_PASSKEY_LEN );
+    DisplayString();
+    UpDownPushButtonSet.UpButtonTitle = Strings::GEN_YES;
+    UpDownPushButtonSet.DownButtonTitle = Strings::GEN_NO;
   }
 
-  $rect <0,340,170,380>
+  $rect <0,290,200,330>
+  inherited method Init()
+  {
+    trace "SET08";
+    DisplayString();
+  }
+
+  $rect <0,440,200,480>
   inherited property DDModeEnabled = true;
 
-  $rect <190,340,390,380>
+  $rect <220,340,420,380>
   slot OnNoActivatedSlot
   {
     trace "SET08 no";
@@ -1124,7 +1151,7 @@ class SET08_BtcPairDevice : Components::BaseMainBG
     preset DownButtonTitle = Strings::GEN_NO;
   }
 
-  $rect <190,290,390,330>
+  $rect <220,290,420,330>
   slot OnYesActivatedSlot
   {
     trace "SET08 yes";
@@ -1136,7 +1163,7 @@ class SET08_BtcPairDevice : Components::BaseMainBG
     $endif
   }
 
-  $rect <400,290,690,330>
+  $rect <430,290,720,330>
   object Core::SystemEventHandler BtcPairingStateChangeEventHandler
   {
     preset OnEvent = OnBtcPairingStateChangeSlot;
@@ -1145,7 +1172,7 @@ class SET08_BtcPairDevice : Components::BaseMainBG
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <400,340,660,380>
+  $rect <430,340,690,380>
   slot OnBtcPairingStateChangeSlot
   {
     if( null != Owner )
@@ -1167,6 +1194,17 @@ class SET08_BtcPairDevice : Components::BaseMainBG
         default:;
       }
     }
+  }
+
+  $rect <0,390,200,430>
+  method void DisplayString()
+  {
+    var string ProcessString = Strings::SET08_PAIR_WITH;
+    var int32 LeftIdx = ProcessString.find( Strings::ARGUMENT_STR, 0 );
+    var int32 RightIdx = ProcessString.length - LeftIdx - Strings::ARGUMENT_STR.length;
+    PairText.String = ProcessString.left( LeftIdx ) + DeviceInterface::BluetoothDevice.GetBtcPairingDeviceName() + ProcessString.right( RightIdx );
+
+    PasskeyText.String = Strings::SET08_PASSKEY + "\n" + string( DeviceInterface::BluetoothDevice.GetBtcPasskey(), Settings::BT_PASSKEY_LEN );
   }
 }
 
@@ -1629,6 +1667,12 @@ $rect <600,110,800,150>
 $output false
 class SET30_QRCode : Components::BaseMainBG
 {
+  $rect <10,340,210,380>
+  inherited method ReInit()
+  {
+    PushButton.Title = Strings::GEN_OK;
+  }
+
   $rect <10,290,210,330>
   inherited method Init()
   {
@@ -1676,7 +1720,7 @@ class SET30_QRCode : Components::BaseMainBG
     super();
   }
 
-  $rect <10,340,210,380>
+  $rect <10,390,210,430>
   inherited property DDModeEnabled = true;
 
   $rect <20,20,160,60>
@@ -1756,53 +1800,43 @@ $rect <310,60,550,100>
 $output false
 class SET22_BleAdvertising : Components::BaseMainBG
 {
-  $rect <0,280,180,320>
+  $rect <0,340,200,380>
+  inherited method ReInit()
+  {
+    DisplayString();
+  }
+
+  $rect <0,290,180,330>
   inherited method Init()
   {
     trace "Init SET22";
+    DisplayString();
     DeviceInterface::BluetoothDevice.SetBleAdvertisement( true );
   }
 
-  $rect <0,380,230,420>
+  $rect <530,290,760,330>
   inherited method OnShortHomeKeyActivated()
   {
     DeviceInterface::BluetoothDevice.SetBleAdvertisement( false );
     super();
   }
 
-  $rect <0,430,230,470>
+  $rect <530,340,760,380>
   inherited method OnLongHomeKeyActivated()
   {
     DeviceInterface::BluetoothDevice.SetBleAdvertisement( false );
     super();
   }
 
-  $rect <0,330,180,370>
+  $rect <0,440,180,480>
   inherited property DDModeEnabled = true;
-
-  $rect <20,20,160,60>
-  object Views::Text DeviceNameText
-  {
-    preset Bounds = <10,131,470,162>;
-    preset String = Strings::SET22_DEVICE_NAME;
-    preset Font = Fonts::NotoSansCjkJpMedium24pt;
-  }
 
   $rect <20,20,160,60>
   object Views::Text WaitText
   {
-    preset Bounds = <10,193,470,255>;
+    preset Bounds = <10,131,470,255>;
     preset WrapText = true;
     preset String = Strings::SET22_WAIT_APP_CONNECTION;
-    preset Font = Fonts::NotoSansCjkJpMedium24pt;
-  }
-
-  $rect <20,20,160,60>
-  object Views::Text LocalDeviceNameText
-  {
-    preset Bounds = <10,162,470,193>;
-    preset Ellipsis = true;
-    preset String = DeviceInterface::BluetoothDevice.LocalDeviceName;
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
@@ -1815,7 +1849,7 @@ class SET22_BleAdvertising : Components::BaseMainBG
     preset Bitmap = Resource::LoadingAnimation;
   }
 
-  $rect <250,280,510,320>
+  $rect <230,290,490,330>
   object Core::SystemEventHandler BlePairingStateChangedEventHandler
   {
     preset OnEvent = OnBlePairingStateChangedSlot;
@@ -1824,7 +1858,7 @@ class SET22_BleAdvertising : Components::BaseMainBG
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <250,330,510,370>
+  $rect <230,340,490,380>
   slot OnBlePairingStateChangedSlot
   {
     if( null != Owner )
@@ -1857,6 +1891,15 @@ class SET22_BleAdvertising : Components::BaseMainBG
         default:;
       }
     }
+  }
+
+  $rect <0,390,200,430>
+  method void DisplayString()
+  {
+    var string ProcessString = Strings::SET22_WAIT_APP_CONNECTION;
+    var int32 LeftIdx = ProcessString.find( Strings::ARGUMENT_STR, 0 );
+    var int32 RightIdx = ProcessString.length - LeftIdx - Strings::ARGUMENT_STR.length;
+    WaitText.String = ProcessString.left( LeftIdx ) + DeviceInterface::BluetoothDevice.GetBtcPairingDeviceName() + ProcessString.right( RightIdx );
   }
 }
 
@@ -2005,6 +2048,15 @@ $rect <600,60,800,100>
 $output false
 class SET28_SystemInfo : Components::BaseMainBG
 {
+  $rect <520,60,720,100>
+  inherited method ReInit()
+  {
+    ESN.String = Strings::SET28_ESN;
+    SoftwareVersionTitle.String = Strings::SET28_SW_VERSION;
+    UpDownPushButtonSet.UpButtonTitle = Strings::SET28_UNIT_ID;
+    UpDownPushButtonSet.DownButtonTitle = Strings::SET28_SW_UPDATE;
+  }
+
   $rect <520,10,720,50>
   inherited method Init()
   {
@@ -2148,6 +2200,12 @@ $rect <600,260,800,300>
 $output false
 class LicenseDetail : Core::Group
 {
+  $rect <430,60,630,100>
+  inherited method ReInit()
+  {
+    TitleText.String = Strings::SET35_LICENSE;
+  }
+
   $rect <430,10,630,50>
   inherited property Bounds = <0,0,388,211>;
 
@@ -2293,7 +2351,7 @@ class SET43_ResetMenu : Menu::BaseMenuView
   $rect <10,290,190,330>
   inherited method Init()
   {
-    trace "Init SET43";
+    trace "SET43";
   }
 
   $rect <10,340,210,380>
@@ -2312,12 +2370,16 @@ class SET43_ResetMenu : Menu::BaseMenuView
   $rect <510,70,710,110>
   inherited method LoadItemTitle()
   {
-    var string title = "";
-    if( aItemNo < ItemTitleArray.size )
-      {
-      title = ItemTitleArray[aItemNo];
-      }
-    return title;
+    var string Title = "";
+    switch( aItemNo )
+    {
+      case 0: Title = Strings::SET43_TRIP_MILEAGE_RESET;
+      case 1: Title = Strings::SET43_MAINTENANCE_RESET;
+      case 2: Title = Strings::SET43_VEHICLE_INFO;
+      case 3: Title = Strings::SET43_ALL_RESET;
+      default:;
+    }
+    return Title;
   }
 
   $rect <510,120,710,160>
@@ -2352,15 +2414,6 @@ class SET43_ResetMenu : Menu::BaseMenuView
     preset NoOfItems = 4;
     preset ArrowScrollBarVisible = true;
   }
-
-  $rect <730,70,930,110>
-  array string ItemTitleArray[ 4 ] =
-  (
-    Default[0] = Strings::SET43_TRIP_MILEAGE_RESET;
-    Default[1] = Strings::SET43_MAINTENANCE_RESET;
-    Default[2] = Strings::SET43_VEHICLE_INFO;
-    Default[3] = Strings::SET43_ALL_RESET;
-  );
 }
 
 $rect <600,630,810,670>
@@ -3102,6 +3155,14 @@ $rect <820,60,1030,100>
 $output false
 class SET27_ConfirmUpdate : Components::BaseMainBG
 {
+  $rect <10,350,210,390>
+  inherited method ReInit()
+  {
+    Text.String = Strings::SET27_UPDATE_SYSTEM;
+    UpDownPushButtonSet.UpButtonTitle = Strings::GEN_CANCEL;
+    UpDownPushButtonSet.DownButtonTitle = Strings::GEN_OK;
+  }
+
   $rect <10,300,190,340>
   inherited method Init()
   {
@@ -3109,7 +3170,7 @@ class SET27_ConfirmUpdate : Components::BaseMainBG
     DeviceInterface::SystemDevice.SaveLastStatus();
   }
 
-  $rect <10,340,190,380>
+  $rect <10,400,190,440>
   inherited property DDModeEnabled = true;
 
   $rect <20,20,160,60>

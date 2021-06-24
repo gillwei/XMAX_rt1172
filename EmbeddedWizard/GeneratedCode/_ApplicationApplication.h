@@ -120,6 +120,7 @@ EW_DEFINE_FIELDS( ApplicationApplication, CoreRoot )
   EW_OBJECT  ( PhoneCallStateChangedEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( InspectionModeEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( VehicleDataReceivedEventHandler, CoreSystemEventHandler )
+  EW_OBJECT  ( ReceivedSystemEventHandler, CoreSystemEventHandler )
   EW_VARIABLE( IsFactoryModeDialogDisplayed, XBool )
   EW_VARIABLE( IsDisclaimerDismissed, XBool )
   EW_PROPERTY( StatusBarVisible, XBool )
@@ -266,6 +267,11 @@ void ApplicationApplication_OnVehicleDataReceivedSlot( ApplicationApplication _t
 /* 'C' function for method : 'Application::Application.ShowNaviHome()' */
 void ApplicationApplication_ShowNaviHome( ApplicationApplication _this, XObject 
   sender );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void ApplicationApplication_OnSystemEventReceived( ApplicationApplication _this, 
+  XObject sender );
 
 #ifdef __cplusplus
   }

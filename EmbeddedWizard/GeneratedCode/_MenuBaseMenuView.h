@@ -188,6 +188,9 @@ EW_DEFINE_METHODS( MenuBaseMenuView, ComponentsBaseMainBG )
   EW_METHOD( LoadPoiListItemUnit, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( MenuBaseMenuView )
 
+/* 'C' function for method : 'Menu::BaseMenuView.ReInit()' */
+void MenuBaseMenuView_ReInit( MenuBaseMenuView _this );
+
 /* super( value ); */
 void MenuBaseMenuView_OnSetDDModeEnabled( MenuBaseMenuView _this, XBool value );
 

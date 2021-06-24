@@ -321,13 +321,13 @@ class WeatherDayViewUI : Core::Group
   $rect <510,80,710,120>
   array string WeekDayTextArray[ 7 ] =
   (
-    Default[0] = "Sun";
-    Default[1] = "Mon";
-    Default[2] = "Tue";
-    Default[3] = "Wed";
-    Default[4] = "Thu";
-    Default[5] = "Fri";
-    Default[6] = "Sat";
+    Default[0] = Strings::WEA01_SUNDAY;
+    Default[1] = Strings::WEA01_MONDAY;
+    Default[2] = Strings::WEA01_TUESDAY;
+    Default[3] = Strings::WEA01_WEDNESDAY;
+    Default[4] = Strings::WEA01_THURSDAY;
+    Default[5] = Strings::WEA01_FRIDAY;
+    Default[6] = Strings::WEA01_SATURDAY;
   );
 
   $rect <720,80,920,120>
@@ -1088,13 +1088,13 @@ class WeatherWeekViewUI : Core::Group
   $rect <940,10,1140,50>
   array string WeekDayTextArray[ 7 ] =
   (
-    Default[0] = "Sun";
-    Default[1] = "Mon";
-    Default[2] = "Tue";
-    Default[3] = "Wed";
-    Default[4] = "Thu";
-    Default[5] = "Fri";
-    Default[6] = "Sat";
+    Default[0] = Strings::WEA01_SUNDAY;
+    Default[1] = Strings::WEA01_MONDAY;
+    Default[2] = Strings::WEA01_TUESDAY;
+    Default[3] = Strings::WEA01_WEDNESDAY;
+    Default[4] = Strings::WEA01_THURSDAY;
+    Default[5] = Strings::WEA01_FRIDAY;
+    Default[6] = Strings::WEA01_SATURDAY;
   );
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \

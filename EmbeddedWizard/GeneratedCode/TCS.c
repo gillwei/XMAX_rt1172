@@ -121,7 +121,7 @@ XString TCSTCS01_Main_LoadItemTitle( TCSTCS01_Main _this, XInt32 aItemNo )
   XString title = 0;
 
   if ( aItemNo < _this->Super1.Menu.NoOfItems )
-    title = EwLoadString( &StringsTCS01_TCS );
+    title = EwGetVariantOfString( &StringsTCS01_TCS );
 
   return title;
 }

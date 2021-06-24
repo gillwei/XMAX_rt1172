@@ -109,23 +109,22 @@
 /* Compressed strings for the language 'Default'. */
 EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
-  0x00000376, /* ratio 48.76 % */
+  0x00000342, /* ratio 49.40 % */
   0xB8001B00, 0x00092452, 0x00D20037, 0x040003A0, 0x8A002980, 0x0002A000, 0x00198006,
   0x68240A32, 0x8642A110, 0xA44A210E, 0x46473188, 0x1E0B1B00, 0xE1B0B84C, 0x011388C3,
-  0xE31000D0, 0x45818124, 0x803C9C14, 0x8A8EA313, 0x54E23540, 0x4865B1E8, 0xDA2D1498,
-  0x62D389B0, 0x7F049BC6, 0x33803466, 0x0032800B, 0x802C9CE6, 0x378009D3, 0x64765327,
-  0x48E5F209, 0xE2C235A0, 0xA5D1FB1C, 0x711698C8, 0xF3805C9C, 0x7200526D, 0x9B04221D,
-  0xA45D4191, 0xC802F340, 0x49EB3573, 0x82BD049D, 0x40064875, 0x858F9698, 0xF6D95C72,
-  0x379AD9E8, 0x7BF8264E, 0x87664019, 0x7CE02919, 0x614A52B2, 0x14E40033, 0x00068AD6,
-  0x195A9613, 0xB5F36442, 0x459564A5, 0x09A5DACB, 0xB66DE4C0, 0xACC6CD46, 0x09E33729,
-  0xC000559C, 0x31F8D001, 0xCE00A243, 0xD31214B8, 0xAA856A21, 0xE3B800DB, 0x16617538,
-  0xC6D3972E, 0x562B58FA, 0xB71FDC87, 0x3D800175, 0x901E8CFB, 0x9DDE672B, 0xD40079E1,
-  0x99675A29, 0xD5777B7D, 0x9B518DF7, 0x6615E276, 0xC81A49DF, 0x2D735CB7, 0x4B9F97DD,
-  0x5DA779D7, 0x87DDDE7A, 0xD0007A9A, 0xA3041196, 0x778514AD, 0x18D6D443, 0x4791A656,
-  0x51BF611F, 0x326EDC16, 0x8A62D000, 0x5805B9B9, 0xE465338B, 0xEA2A5AC0, 0x69002336,
-  0x87000681, 0x1D06BD04, 0x05811456, 0x81AA8091, 0x3E6D1B45, 0x8CA3958A, 0x1184CD67,
-  0x1941648C, 0xA22F4CD3, 0x968C6384, 0x5AA3C95D, 0x1C297193, 0x452D3345, 0xBA636565,
-  0x6C49D9E8, 0x00000406, 0x00000000
+  0xE31000D0, 0x45818124, 0x803C9C14, 0x8A8EA313, 0xC0223340, 0x45A63229, 0x5A71361B,
+  0xE09378CC, 0x3B388D4F, 0x72F904B2, 0x271AD024, 0x4A2C1287, 0x938E22D1, 0xECC2880B,
+  0x43ABE00A, 0x324E6F84, 0xABD56B10, 0xCA003CCB, 0x52739800, 0x00274127, 0x03243AD2,
+  0xBF4B4C20, 0xFCAE3950, 0x4D2B92E8, 0x264E3700, 0x66B31B60, 0x29198762, 0x52B27CE0,
+  0x66005C4A, 0x4CB9C800, 0x26000D17, 0x8432E92C, 0xCB6F26C8, 0xB63D2AC0, 0xB0F6390C,
+  0x0952D449, 0xF35AB6B3, 0x3813C66B, 0x038000AB, 0x865FAF80, 0x719E110A, 0xC3A62429,
+  0xB7370ACC, 0xAFA77001, 0x5C2CCBE6, 0xD72D2EF2, 0x0EB95D2F, 0xEC25FB9B, 0xEEF74002,
+  0xDEE43D19, 0x4339DBDD, 0x538A00EC, 0x3952CE3C, 0xD19BE773, 0x7CBD318F, 0x27F3E5FA,
+  0xEDE78C35, 0xF57A25BB, 0xDCF7212E, 0x873DDA72, 0x01DB665E, 0x10465A50, 0x1452B64C,
+  0x1A610DCF, 0x5659725F, 0xC170795D, 0x556AD836, 0x000324C5, 0x1AA86A1F, 0x387D8655,
+  0x440E4653, 0xAD8921B5, 0x6415887D, 0x10483400, 0x465DC168, 0xCD105A51, 0xA55A59B7,
+  0x56A30695, 0x13361845, 0x554E2246, 0x85336B58, 0x238A9288, 0x4CD5691E, 0x5B291558,
+  0x84CD1487, 0x961C9494, 0x5C49D888, 0x00000406, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -147,59 +146,55 @@ static const XRect _Const000E = {{ 10, 169 }, { 470, 200 }};
 static const XStringRes _Const000F = { _StringsDefault0, 0x002D };
 static const XRect _Const0010 = {{ 10, 104 }, { 470, 166 }};
 static const XStringRes _Const0011 = { _StringsDefault0, 0x0034 };
-static const XStringRes _Const0012 = { _StringsDefault0, 0x0041 };
-static const XStringRes _Const0013 = { _StringsDefault0, 0x0045 };
+static const XStringRes _Const0012 = { _StringsDefault0, 0x003C };
+static const XStringRes _Const0013 = { _StringsDefault0, 0x0040 };
 static const XRect _Const0014 = {{ 10, 50 }, { 470, 236 }};
 static const XRect _Const0015 = {{ 0, 36 }, { 480, 38 }};
 static const XRect _Const0016 = {{ 10, 44 }, { 470, 168 }};
-static const XStringRes _Const0017 = { _StringsDefault0, 0x0049 };
-static const XStringRes _Const0018 = { _StringsDefault0, 0x004F };
-static const XStringRes _Const0019 = { _StringsDefault0, 0x0054 };
-static const XRect _Const001A = {{ 10, 45 }, { 470, 107 }};
-static const XRect _Const001B = {{ 10, 107 }, { 470, 169 }};
-static const XStringRes _Const001C = { _StringsDefault0, 0x0061 };
-static const XStringRes _Const001D = { _StringsDefault0, 0x006E };
-static const XStringRes _Const001E = { _StringsDefault0, 0x0079 };
-static const XStringRes _Const001F = { _StringsDefault0, 0x0085 };
-static const XStringRes _Const0020 = { _StringsDefault0, 0x008F };
-static const XStringRes _Const0021 = { _StringsDefault0, 0x009C };
-static const XStringRes _Const0022 = { _StringsDefault0, 0x00A5 };
-static const XStringRes _Const0023 = { _StringsDefault0, 0x00B9 };
-static const XRect _Const0024 = {{ 25, 48 }, { 455, 234 }};
-static const XStringRes _Const0025 = { _StringsDefault0, 0x00C6 };
-static const XColor _Const0026 = { 0x00, 0x00, 0x00, 0xFF };
-static const XRect _Const0027 = {{ 80, 60 }, { 380, 210 }};
-static const XStringRes _Const0028 = { _StringsDefault0, 0x00D3 };
-static const XColor _Const0029 = { 0xFF, 0xFF, 0xFF, 0xFF };
-static const XStringRes _Const002A = { _StringsDefault0, 0x00FA };
-static const XStringRes _Const002B = { _StringsDefault0, 0x0118 };
-static const XRect _Const002C = {{ 174, 63 }, { 306, 195 }};
-static const XRect _Const002D = {{ 0, 39 }, { 94, 114 }};
-static const XRect _Const002E = {{ 0, 189 }, { 94, 264 }};
-static const XRect _Const002F = {{ 0, 114 }, { 95, 189 }};
-static const XStringRes _Const0030 = { _StringsDefault0, 0x0132 };
-static const XRect _Const0031 = {{ 10, 131 }, { 470, 162 }};
-static const XRect _Const0032 = {{ 10, 193 }, { 470, 255 }};
-static const XRect _Const0033 = {{ 10, 162 }, { 470, 193 }};
-static const XRect _Const0034 = {{ 193, 36 }, { 287, 130 }};
-static const XStringRes _Const0035 = { _StringsDefault0, 0x0142 };
-static const XStringRes _Const0036 = { _StringsDefault0, 0x014F };
-static const XStringRes _Const0037 = { _StringsDefault0, 0x015C };
-static const XRect _Const0038 = {{ 10, 45 }, { 470, 76 }};
-static const XRect _Const0039 = {{ 10, 107 }, { 470, 138 }};
-static const XRect _Const003A = {{ 10, 76 }, { 470, 107 }};
-static const XRect _Const003B = {{ 10, 138 }, { 470, 169 }};
-static const XRect _Const003C = {{ 95, 176 }, { 385, 259 }};
-static const XRect _Const003D = {{ 0, 0 }, { 388, 211 }};
-static const XRect _Const003E = {{ 0, 0 }, { 388, 31 }};
-static const XRect _Const003F = {{ 0, 61 }, { 388, 1301 }};
-static const XStringRes _Const0040 = { _StringsDefault0, 0x016A };
-static const XStringRes _Const0041 = { _StringsDefault0, 0x017A };
-static const XStringRes _Const0042 = { _StringsDefault0, 0x0187 };
-static const XStringRes _Const0043 = { _StringsDefault0, 0x0194 };
-static const XStringRes _Const0044 = { _StringsDefault0, 0x01A1 };
-static const XRect _Const0045 = {{ 10, 40 }, { 470, 168 }};
-static const XStringRes _Const0046 = { _StringsDefault0, 0x01AE };
+static const XStringRes _Const0017 = { _StringsDefault0, 0x0044 };
+static const XRect _Const0018 = {{ 10, 45 }, { 470, 107 }};
+static const XRect _Const0019 = {{ 10, 107 }, { 470, 169 }};
+static const XStringRes _Const001A = { _StringsDefault0, 0x0051 };
+static const XStringRes _Const001B = { _StringsDefault0, 0x0059 };
+static const XStringRes _Const001C = { _StringsDefault0, 0x0064 };
+static const XStringRes _Const001D = { _StringsDefault0, 0x0070 };
+static const XStringRes _Const001E = { _StringsDefault0, 0x007A };
+static const XStringRes _Const001F = { _StringsDefault0, 0x0087 };
+static const XStringRes _Const0020 = { _StringsDefault0, 0x0090 };
+static const XStringRes _Const0021 = { _StringsDefault0, 0x00A4 };
+static const XRect _Const0022 = {{ 25, 48 }, { 455, 234 }};
+static const XStringRes _Const0023 = { _StringsDefault0, 0x00B1 };
+static const XColor _Const0024 = { 0x00, 0x00, 0x00, 0xFF };
+static const XRect _Const0025 = {{ 80, 60 }, { 380, 210 }};
+static const XStringRes _Const0026 = { _StringsDefault0, 0x00BE };
+static const XColor _Const0027 = { 0xFF, 0xFF, 0xFF, 0xFF };
+static const XStringRes _Const0028 = { _StringsDefault0, 0x00E5 };
+static const XStringRes _Const0029 = { _StringsDefault0, 0x0103 };
+static const XRect _Const002A = {{ 174, 63 }, { 306, 195 }};
+static const XRect _Const002B = {{ 0, 39 }, { 94, 114 }};
+static const XRect _Const002C = {{ 0, 189 }, { 94, 264 }};
+static const XRect _Const002D = {{ 0, 114 }, { 95, 189 }};
+static const XStringRes _Const002E = { _StringsDefault0, 0x011D };
+static const XRect _Const002F = {{ 10, 131 }, { 470, 255 }};
+static const XRect _Const0030 = {{ 193, 36 }, { 287, 130 }};
+static const XStringRes _Const0031 = { _StringsDefault0, 0x012D };
+static const XStringRes _Const0032 = { _StringsDefault0, 0x013A };
+static const XStringRes _Const0033 = { _StringsDefault0, 0x0147 };
+static const XRect _Const0034 = {{ 10, 45 }, { 470, 76 }};
+static const XRect _Const0035 = {{ 10, 107 }, { 470, 138 }};
+static const XRect _Const0036 = {{ 10, 76 }, { 470, 107 }};
+static const XRect _Const0037 = {{ 10, 138 }, { 470, 169 }};
+static const XRect _Const0038 = {{ 95, 176 }, { 385, 259 }};
+static const XRect _Const0039 = {{ 0, 0 }, { 388, 211 }};
+static const XRect _Const003A = {{ 0, 0 }, { 388, 31 }};
+static const XRect _Const003B = {{ 0, 61 }, { 388, 1301 }};
+static const XStringRes _Const003C = { _StringsDefault0, 0x0155 };
+static const XStringRes _Const003D = { _StringsDefault0, 0x0165 };
+static const XStringRes _Const003E = { _StringsDefault0, 0x016D };
+static const XStringRes _Const003F = { _StringsDefault0, 0x017A };
+static const XStringRes _Const0040 = { _StringsDefault0, 0x0187 };
+static const XRect _Const0041 = {{ 10, 40 }, { 470, 168 }};
+static const XStringRes _Const0042 = { _StringsDefault0, 0x0194 };
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.
@@ -353,43 +348,43 @@ XString SettingsSET01_MainSettingMenu_LoadItemTitle( SettingsSET01_MainSettingMe
   switch ( _this->Settings[ EwCheckIndex( aItemNo, 10 )])
   {
     case EnumMainSettingItemTRACTION_CONTROL :
-      Title = EwLoadString( &StringsSET01_TRACTION_CONTROL );
+      Title = EwGetVariantOfString( &StringsSET01_TRACTION_CONTROL );
     break;
 
     case EnumMainSettingItemCONNECTION :
-      Title = EwLoadString( &StringsSET01_CONNECTION );
+      Title = EwGetVariantOfString( &StringsSET01_CONNECTION );
     break;
 
     case EnumMainSettingItemCLOCK :
-      Title = EwLoadString( &StringsSET01_CLOCK );
+      Title = EwGetVariantOfString( &StringsSET01_CLOCK );
     break;
 
     case EnumMainSettingItemBRIGHTNESS :
-      Title = EwLoadString( &StringsSET01_BRIGHTNESS );
+      Title = EwGetVariantOfString( &StringsSET01_BRIGHTNESS );
     break;
 
     case EnumMainSettingItemUNIT :
-      Title = EwLoadString( &StringsSET01_UNIT );
+      Title = EwGetVariantOfString( &StringsSET01_UNIT );
     break;
 
     case EnumMainSettingItemGRIP_WARMER :
-      Title = EwLoadString( &StringsSET01_GRIP_WARMER_SETTINGS );
+      Title = EwGetVariantOfString( &StringsSET01_GRIP_WARMER_SETTINGS );
     break;
 
     case EnumMainSettingItemSEAT_HEATER :
-      Title = EwLoadString( &StringsSET01_SEAT_HEATER_SETTINGS );
+      Title = EwGetVariantOfString( &StringsSET01_SEAT_HEATER_SETTINGS );
     break;
 
     case EnumMainSettingItemSYSTEM_INFO :
-      Title = EwLoadString( &StringsSET01_SYSTEM_INFO );
+      Title = EwGetVariantOfString( &StringsSET01_SYSTEM_INFO );
     break;
 
     case EnumMainSettingItemLEGAL_INFO :
-      Title = EwLoadString( &StringsSET01_LEGAL_INFO );
+      Title = EwGetVariantOfString( &StringsSET01_LEGAL_INFO );
     break;
 
     case EnumMainSettingItemINFORMATION_RESET :
-      Title = EwLoadString( &StringsSET01_INFO_RESET );
+      Title = EwGetVariantOfString( &StringsSET01_INFO_RESET );
     break;
 
     default :; 
@@ -573,8 +568,6 @@ void SettingsSET03_ConnectionSettingMenu__Init( SettingsSET03_ConnectionSettingM
   _this->Super2.SlideOutEffectEnabled = 1;
   ComponentsBaseComponent__OnSetDDModeEnabled( &_this->Super1.Menu, 1 );
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 2 );
-  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &StringsGEN_BLUETOOTH ));
-  _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &StringsSET03_Y_CONNECT_APP_PAIRING ));
 
   /* Call the user defined constructor */
   SettingsSET03_ConnectionSettingMenu_Init( _this, aArg );
@@ -625,12 +618,27 @@ XClass SettingsSET03_ConnectionSettingMenu_LoadItemClass( SettingsSET03_Connecti
 XString SettingsSET03_ConnectionSettingMenu_LoadItemTitle( SettingsSET03_ConnectionSettingMenu _this, 
   XInt32 aItemNo )
 {
-  XString title = 0;
+  XString Title;
 
-  if ( aItemNo < 2 )
-    title = _this->ItemTitleArray[ EwCheckIndex( aItemNo, 2 )];
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
 
-  return title;
+  Title = 0;
+
+  switch ( aItemNo )
+  {
+    case 0 :
+      Title = EwGetVariantOfString( &StringsGEN_BLUETOOTH );
+    break;
+
+    case 1 :
+      Title = EwLoadString( &StringsSET03_Y_CONNECT_APP_PAIRING );
+    break;
+
+    default :; 
+  }
+
+  return Title;
 }
 
 /* 'C' function for method : 'Settings::SET03_ConnectionSettingMenu.OnItemActivate()' */
@@ -701,9 +709,8 @@ EW_DEFINE_CLASS_VARIANTS( SettingsSET03_ConnectionSettingMenu )
 EW_END_OF_CLASS_VARIANTS( SettingsSET03_ConnectionSettingMenu )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET03_ConnectionSettingMenu' */
-EW_DEFINE_CLASS( SettingsSET03_ConnectionSettingMenu, MenuBaseMenuView, ItemTitleArray, 
-                 ItemTitleArray, ItemTitleArray, ItemTitleArray, ItemTitleArray, 
-                 _.VMT, "Settings::SET03_ConnectionSettingMenu" )
+EW_DEFINE_CLASS( SettingsSET03_ConnectionSettingMenu, MenuBaseMenuView, _.VMT, _.VMT, 
+                 _.VMT, _.VMT, _.VMT, _.VMT, "Settings::SET03_ConnectionSettingMenu" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -790,10 +797,6 @@ void SettingsSET04_BtSettingMenu__Init( SettingsSET04_BtSettingMenu _this, XObje
   _this->ItemClassArray[ 1 ] = EW_CLASS( MenuItemBase );
   _this->ItemClassArray[ 2 ] = EW_CLASS( MenuItemBase );
   _this->ItemClassArray[ 3 ] = EW_CLASS( MenuItemCheckbox );
-  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &StringsGEN_BLUETOOTH ));
-  _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &StringsSET04_DISCOVERY_MODE ));
-  _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &StringsSET04_PAIRED_DEVICES ));
-  _this->ItemTitleArray[ 3 ] = EwShareString( EwLoadString( &StringsSET04_BT_AUTO_CONNECT ));
 
   /* Call the user defined constructor */
   SettingsSET04_BtSettingMenu_Init( _this, aArg );
@@ -846,12 +849,35 @@ XClass SettingsSET04_BtSettingMenu_LoadItemClass( SettingsSET04_BtSettingMenu _t
 XString SettingsSET04_BtSettingMenu_LoadItemTitle( SettingsSET04_BtSettingMenu _this, 
   XInt32 aItemNo )
 {
-  XString title = 0;
+  XString Title;
 
-  if ( aItemNo < 4 )
-    title = _this->ItemTitleArray[ EwCheckIndex( aItemNo, 4 )];
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
 
-  return title;
+  Title = 0;
+
+  switch ( aItemNo )
+  {
+    case 0 :
+      Title = EwGetVariantOfString( &StringsGEN_BLUETOOTH );
+    break;
+
+    case 1 :
+      Title = EwGetVariantOfString( &StringsSET04_DISCOVERY_MODE );
+    break;
+
+    case 2 :
+      Title = EwGetVariantOfString( &StringsSET04_PAIRED_DEVICES );
+    break;
+
+    case 3 :
+      Title = EwGetVariantOfString( &StringsSET04_BT_AUTO_CONNECT );
+    break;
+
+    default :; 
+  }
+
+  return Title;
 }
 
 /* 'C' function for method : 'Settings::SET04_BtSettingMenu.OnItemActivate()' */
@@ -948,9 +974,8 @@ EW_DEFINE_CLASS_VARIANTS( SettingsSET04_BtSettingMenu )
 EW_END_OF_CLASS_VARIANTS( SettingsSET04_BtSettingMenu )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET04_BtSettingMenu' */
-EW_DEFINE_CLASS( SettingsSET04_BtSettingMenu, MenuBaseMenuView, ItemTitleArray, 
-                 ItemTitleArray, ItemTitleArray, ItemTitleArray, ItemTitleArray, 
-                 ItemClassArray, "Settings::SET04_BtSettingMenu" )
+EW_DEFINE_CLASS( SettingsSET04_BtSettingMenu, MenuBaseMenuView, _.VMT, _.VMT, _.VMT, 
+                 _.VMT, _.VMT, _.VMT, "Settings::SET04_BtSettingMenu" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -1079,7 +1104,7 @@ XString SettingsSET35_LegalMenu_LoadItemTitle( SettingsSET35_LegalMenu _this, XI
   Title = 0;
 
   if ( aItemNo >= 0 )
-    Title = EwLoadString( &StringsSET35_LICENSE );
+    Title = EwGetVariantOfString( &StringsSET35_LICENSE );
 
   return Title;
 }
@@ -1186,7 +1211,7 @@ void SettingsSET38_ConfirmAllReset__Init( SettingsSET38_ConfirmAllReset _this, X
   CoreRectView__OnSetBounds( _this, _Const0001 );
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
   CoreRectView__OnSetBounds( &_this->Text, _Const0002 );
-  ViewsText_OnSetString( &_this->Text, EwLoadString( &StringsSET38_RESET_TO_FACTORY ));
+  ViewsText_OnSetString( &_this->Text, EwGetVariantOfString( &StringsSET38_RESET_TO_FACTORY ));
   CoreRectView__OnSetBounds( &_this->UpDownPushButtonSet, _Const0003 );
   _this->UpDownPushButtonSet.Super1.PassHomeKey = 1;
   _this->UpDownPushButtonSet.Super1.PassMagicKey = 1;
@@ -1330,7 +1355,7 @@ void SettingsSET39_DeletePairedDevice__Init( SettingsSET39_DeletePairedDevice _t
   MenuPushButton_OnSetTitle( &_this->PushButton, EwGetVariantOfString( &StringsGEN_OK ));
   CoreRectView__OnSetBounds( &_this->Text, _Const0005 );
   ViewsText_OnSetWrapText( &_this->Text, 1 );
-  ViewsText_OnSetString( &_this->Text, EwLoadString( &StringsSET39_DELETE_PAIRING ));
+  ViewsText_OnSetString( &_this->Text, EwGetVariantOfString( &StringsSET39_DELETE_PAIRING ));
   CoreGroup__Add( _this, ((CoreView)&_this->PushButton ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Text ), 0 );
   _this->PushButton.OnActivate = EwNewSlot( _this, SettingsSET39_DeletePairedDevice_OnOkSelectedSlot );
@@ -1350,6 +1375,9 @@ void SettingsSET39_DeletePairedDevice__ReInit( SettingsSET39_DeletePairedDevice 
   /* ... then re-construct all embedded objects */
   MenuPushButton__ReInit( &_this->PushButton );
   ViewsText__ReInit( &_this->Text );
+
+  /* Call the user defined re-constructor of the class */
+  SettingsSET39_DeletePairedDevice_ReInit( _this );
 }
 
 /* Finalizer method for the class 'Settings::SET39_DeletePairedDevice' */
@@ -1364,6 +1392,13 @@ void SettingsSET39_DeletePairedDevice__Done( SettingsSET39_DeletePairedDevice _t
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseMainBG__Done( &_this->_.Super );
+}
+
+/* 'C' function for method : 'Settings::SET39_DeletePairedDevice.ReInit()' */
+void SettingsSET39_DeletePairedDevice_ReInit( SettingsSET39_DeletePairedDevice _this )
+{
+  ViewsText_OnSetString( &_this->Text, EwGetVariantOfString( &StringsSET39_DELETE_PAIRING ));
+  MenuPushButton_OnSetTitle( &_this->PushButton, EwGetVariantOfString( &StringsGEN_OK ));
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -1464,7 +1499,7 @@ void SettingsSET41_ResetInProgress__Init( SettingsSET41_ResetInProgress _this, X
   CoreRectView__OnSetBounds( &_this->LoadingAnimation, _Const0007 );
   ViewsImage_OnSetAnimated( &_this->LoadingAnimation, 1 );
   CoreRectView__OnSetBounds( &_this->LoadingText, _Const0008 );
-  ViewsText_OnSetString( &_this->LoadingText, EwLoadString( &StringsGEN_PLEASE_WAIT ));
+  ViewsText_OnSetString( &_this->LoadingText, EwGetVariantOfString( &StringsGEN_PLEASE_WAIT ));
   CoreGroup__Add( _this, ((CoreView)&_this->LoadingAnimation ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->LoadingText ), 0 );
   ViewsImage_OnSetBitmap( &_this->LoadingAnimation, EwLoadResource( &ResourceLoadingAnimation, 
@@ -1489,6 +1524,9 @@ void SettingsSET41_ResetInProgress__ReInit( SettingsSET41_ResetInProgress _this 
   ViewsImage__ReInit( &_this->LoadingAnimation );
   ViewsText__ReInit( &_this->LoadingText );
   CoreSystemEventHandler__ReInit( &_this->ReceivedSystemEventHandler );
+
+  /* Call the user defined re-constructor of the class */
+  SettingsSET41_ResetInProgress_ReInit( _this );
 }
 
 /* Finalizer method for the class 'Settings::SET41_ResetInProgress' */
@@ -1506,6 +1544,12 @@ void SettingsSET41_ResetInProgress__Done( SettingsSET41_ResetInProgress _this )
   ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
+/* 'C' function for method : 'Settings::SET41_ResetInProgress.ReInit()' */
+void SettingsSET41_ResetInProgress_ReInit( SettingsSET41_ResetInProgress _this )
+{
+  ViewsText_OnSetString( &_this->LoadingText, EwGetVariantOfString( &StringsGEN_PLEASE_WAIT ));
+}
+
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 
    statements. */
@@ -1521,7 +1565,7 @@ void SettingsSET41_ResetInProgress_Init( SettingsSET41_ResetInProgress _this, XH
       &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )))
   {
     SettingsTimeoutDialog Dialog = EwNewObject( SettingsTimeoutDialog, 0 );
-    SettingsTimeoutDialog_OnSetMessage( Dialog, EwLoadString( &StringsSET40_CANNOT_EXECUTE ));
+    SettingsTimeoutDialog_OnSetMessage( Dialog, EwGetVariantOfString( &StringsSET40_CANNOT_EXECUTE ));
     Dialog->DismissAfterTimeout = 1;
     CoreGroup_SwitchToDialog( _this->Super5.Owner, ((CoreGroup)Dialog ), 0, 0, 0, 
     0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
@@ -1827,19 +1871,19 @@ void SettingsSET06_BtcDiscovarable__Init( SettingsSET06_BtcDiscovarable _this, X
   ViewsText_OnSetWrapText( &_this->DiscoverableText, 1 );
   ViewsText_OnSetAlignment( &_this->DiscoverableText, ViewsTextAlignmentAlignHorzCenter 
   | ViewsTextAlignmentAlignVertTop );
-  ViewsText_OnSetString( &_this->DiscoverableText, EwLoadString( &StringsSET06_DISCOVERABLE ));
+  ViewsText_OnSetString( &_this->DiscoverableText, EwGetVariantOfString( &StringsSET06_DISCOVERABLE ));
   CoreRectView__OnSetBounds( &_this->TimeLeftText, _Const000E );
   ViewsText_OnSetWrapText( &_this->TimeLeftText, 1 );
   ViewsText_OnSetAlignment( &_this->TimeLeftText, ViewsTextAlignmentAlignHorzCenter 
   | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->TimeLeftText, EwConcatString( EwLoadString( &StringsSET06_TIME_LEFT ), 
-  EwLoadString( &_Const000F )));
+  ViewsText_OnSetString( &_this->TimeLeftText, EwConcatString( EwGetVariantOfString( 
+  &StringsSET06_TIME_LEFT ), EwLoadString( &_Const000F )));
   CoreRectView__OnSetBounds( &_this->NameText, _Const0010 );
   ViewsText_OnSetEllipsis( &_this->NameText, 1 );
   ViewsText_OnSetWrapText( &_this->NameText, 1 );
   ViewsText_OnSetAlignment( &_this->NameText, ViewsTextAlignmentAlignHorzCenter 
   | ViewsTextAlignmentAlignVertTop );
-  ViewsText_OnSetString( &_this->NameText, EwLoadString( &StringsSET06_NAME ));
+  ViewsText_OnSetString( &_this->NameText, EwGetVariantOfString( &StringsSET06_NAME ));
   CoreTimer_OnSetPeriod( &_this->CountDownTimer, 1000 );
   CoreTimer_OnSetEnabled( &_this->CountDownTimer, 1 );
   _this->CountDownTimeSec = 180;
@@ -1879,6 +1923,9 @@ void SettingsSET06_BtcDiscovarable__ReInit( SettingsSET06_BtcDiscovarable _this 
   CoreTimer__ReInit( &_this->CountDownTimer );
   MenuPushButton__ReInit( &_this->PushButton );
   CoreSystemEventHandler__ReInit( &_this->BtcPairingStateChangeEventHandler );
+
+  /* Call the user defined re-constructor of the class */
+  SettingsSET06_BtcDiscovarable_ReInit( _this );
 }
 
 /* Finalizer method for the class 'Settings::SET06_BtcDiscovarable' */
@@ -1899,30 +1946,27 @@ void SettingsSET06_BtcDiscovarable__Done( SettingsSET06_BtcDiscovarable _this )
   ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
+/* 'C' function for method : 'Settings::SET06_BtcDiscovarable.ReInit()' */
+void SettingsSET06_BtcDiscovarable_ReInit( SettingsSET06_BtcDiscovarable _this )
+{
+  ViewsText_OnSetString( &_this->DiscoverableText, EwGetVariantOfString( &StringsSET06_DISCOVERABLE ));
+  SettingsSET06_BtcDiscovarable_DisplayLocalDeviceName( _this );
+  MenuPushButton_OnSetTitle( &_this->PushButton, EwGetVariantOfString( &StringsGEN_CANCEL ));
+}
+
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 
    statements. */
 void SettingsSET06_BtcDiscovarable_Init( SettingsSET06_BtcDiscovarable _this, XHandle 
   aArg )
 {
-  XString ProcessString;
-  XInt32 LeftIdx;
-  XInt32 RightIdx;
-
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aArg );
 
   EwTrace( "%s", EwLoadString( &_Const0011 ));
   DeviceInterfaceBluetoothDeviceClass_OnSetDiscoverable( EwGetAutoObject( &DeviceInterfaceBluetoothDevice, 
   DeviceInterfaceBluetoothDeviceClass ), 1 );
-  ProcessString = EwLoadString( &StringsSET06_NAME );
-  LeftIdx = EwStringFind( ProcessString, EwLoadString( &StringsARGUMENT_STR ), 0 );
-  RightIdx = ( EwGetStringLength( ProcessString ) - LeftIdx ) - EwGetStringLength( 
-  EwLoadString( &StringsARGUMENT_STR ));
-  ViewsText_OnSetString( &_this->NameText, EwConcatString( EwConcatString( EwStringLeft( 
-  ProcessString, LeftIdx ), DeviceInterfaceBluetoothDeviceClass_OnGetLocalDeviceName( 
-  EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ))), 
-  EwStringRight( ProcessString, RightIdx )));
+  SettingsSET06_BtcDiscovarable_DisplayLocalDeviceName( _this );
 }
 
 /* 'C' function for method : 'Settings::SET06_BtcDiscovarable.OnShortHomeKeyActivated()' */
@@ -1976,14 +2020,15 @@ void SettingsSET06_BtcDiscovarable_UpdateCountDownTimeSlot( SettingsSET06_BtcDis
       SecondStr = EwNewStringInt( Second, 0, 10 );
 
     ViewsText_OnSetString( &_this->TimeLeftText, EwConcatString( EwConcatString( 
-    EwConcatString( EwLoadString( &StringsSET06_TIME_LEFT ), EwNewStringInt( _this->CountDownTimeSec 
-    / 60, 0, 10 )), EwLoadString( &_Const0013 )), SecondStr ));
+    EwConcatString( EwGetVariantOfString( &StringsSET06_TIME_LEFT ), EwNewStringInt( 
+    _this->CountDownTimeSec / 60, 0, 10 )), EwLoadString( &_Const0013 )), SecondStr ));
   }
   else
   {
     SettingsTimeoutDialog PairingFailDialog = EwNewObject( SettingsTimeoutDialog, 
       0 );
-    SettingsTimeoutDialog_OnSetMessage( PairingFailDialog, EwLoadString( &StringsSET07_PAIRING_FAILED ));
+    SettingsTimeoutDialog_OnSetMessage( PairingFailDialog, EwGetVariantOfString( 
+    &StringsSET07_PAIRING_FAILED ));
     PairingFailDialog->DismissAfterTimeout = 1;
     CoreGroup_SwitchToDialog( _this->Super5.Owner, ((CoreGroup)PairingFailDialog ), 
     0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
@@ -2005,7 +2050,8 @@ void SettingsSET06_BtcDiscovarable_OnBtcPairingStateChangeSlot( SettingsSET06_Bt
       {
         SettingsTimeoutDialog PairingFailDialog = EwNewObject( SettingsTimeoutDialog, 
           0 );
-        SettingsTimeoutDialog_OnSetMessage( PairingFailDialog, EwLoadString( &StringsSET07_PAIRING_FAILED ));
+        SettingsTimeoutDialog_OnSetMessage( PairingFailDialog, EwGetVariantOfString( 
+        &StringsSET07_PAIRING_FAILED ));
         PairingFailDialog->DismissAfterTimeout = 1;
         DeviceInterfaceBluetoothDeviceClass_OnSetDiscoverable( EwGetAutoObject( 
         &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ), 
@@ -2028,6 +2074,21 @@ void SettingsSET06_BtcDiscovarable_OnBtcPairingStateChangeSlot( SettingsSET06_Bt
 
       default :; 
     }
+}
+
+/* 'C' function for method : 'Settings::SET06_BtcDiscovarable.DisplayLocalDeviceName()' */
+void SettingsSET06_BtcDiscovarable_DisplayLocalDeviceName( SettingsSET06_BtcDiscovarable _this )
+{
+  XString ProcessString = EwGetVariantOfString( &StringsSET06_NAME );
+  XInt32 LeftIdx = EwStringFind( ProcessString, EwLoadString( &StringsARGUMENT_STR ), 
+    0 );
+  XInt32 RightIdx = ( EwGetStringLength( ProcessString ) - LeftIdx ) - EwGetStringLength( 
+    EwLoadString( &StringsARGUMENT_STR ));
+
+  ViewsText_OnSetString( &_this->NameText, EwConcatString( EwConcatString( EwStringLeft( 
+  ProcessString, LeftIdx ), DeviceInterfaceBluetoothDeviceClass_OnGetLocalDeviceName( 
+  EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ))), 
+  EwStringRight( ProcessString, RightIdx )));
 }
 
 /* Variants derived from the class : 'Settings::SET06_BtcDiscovarable' */
@@ -2119,7 +2180,7 @@ void SettingsSET9_10_11_BtConnectionResult__Init( SettingsSET9_10_11_BtConnectio
   CoreRectView__OnSetBounds( &_this->LoadingAnimation, _Const0007 );
   ViewsImage_OnSetAnimated( &_this->LoadingAnimation, 1 );
   CoreRectView__OnSetBounds( &_this->LoadingText, _Const0008 );
-  ViewsText_OnSetString( &_this->LoadingText, EwLoadString( &StringsGEN_PLEASE_WAIT ));
+  ViewsText_OnSetString( &_this->LoadingText, EwGetVariantOfString( &StringsGEN_PLEASE_WAIT ));
   CoreGroup__Add( _this, ((CoreView)&_this->Message ), -1 );
   CoreGroup__Add( _this, ((CoreView)&_this->Divider ), -1 );
   CoreGroup__Add( _this, ((CoreView)&_this->LoadingAnimation ), 0 );
@@ -2327,13 +2388,13 @@ void SettingsSET05_BtcMaxPairedDevice__Init( SettingsSET05_BtcMaxPairedDevice _t
   CoreRectView__OnSetBounds( &_this->Text, _Const0016 );
   ViewsText_OnSetWrapText( &_this->Text, 1 );
   ViewsText_OnSetAlignment( &_this->Text, ViewsTextAlignmentAlignHorzCenter | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->Text, EwLoadString( &StringsSET05_MAX_DEVICES ));
+  ViewsText_OnSetString( &_this->Text, EwGetVariantOfString( &StringsSET05_MAX_DEVICES ));
   CoreRectView__OnSetBounds( &_this->UpDownPushButtonSet, _Const0003 );
   _this->UpDownPushButtonSet.Super1.PassHomeKey = 1;
-  MenuUpDownPushButtonSet_OnSetUpButtonTitle( &_this->UpDownPushButtonSet, EwLoadString( 
-  &_Const0017 ));
-  MenuUpDownPushButtonSet_OnSetDownButtonTitle( &_this->UpDownPushButtonSet, EwLoadString( 
-  &_Const0018 ));
+  MenuUpDownPushButtonSet_OnSetUpButtonTitle( &_this->UpDownPushButtonSet, EwGetVariantOfString( 
+  &StringsGEN_YES ));
+  MenuUpDownPushButtonSet_OnSetDownButtonTitle( &_this->UpDownPushButtonSet, EwGetVariantOfString( 
+  &StringsGEN_NO ));
   CoreGroup__Add( _this, ((CoreView)&_this->Text ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->UpDownPushButtonSet ), 0 );
   ViewsText_OnSetFont( &_this->Text, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
@@ -2354,6 +2415,9 @@ void SettingsSET05_BtcMaxPairedDevice__ReInit( SettingsSET05_BtcMaxPairedDevice 
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->Text );
   MenuUpDownPushButtonSet__ReInit( &_this->UpDownPushButtonSet );
+
+  /* Call the user defined re-constructor of the class */
+  SettingsSET05_BtcMaxPairedDevice_ReInit( _this );
 }
 
 /* Finalizer method for the class 'Settings::SET05_BtcMaxPairedDevice' */
@@ -2370,6 +2434,16 @@ void SettingsSET05_BtcMaxPairedDevice__Done( SettingsSET05_BtcMaxPairedDevice _t
   ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
+/* 'C' function for method : 'Settings::SET05_BtcMaxPairedDevice.ReInit()' */
+void SettingsSET05_BtcMaxPairedDevice_ReInit( SettingsSET05_BtcMaxPairedDevice _this )
+{
+  ViewsText_OnSetString( &_this->Text, EwGetVariantOfString( &StringsSET05_MAX_DEVICES ));
+  MenuUpDownPushButtonSet_OnSetUpButtonTitle( &_this->UpDownPushButtonSet, EwGetVariantOfString( 
+  &StringsGEN_YES ));
+  MenuUpDownPushButtonSet_OnSetDownButtonTitle( &_this->UpDownPushButtonSet, EwGetVariantOfString( 
+  &StringsGEN_NO ));
+}
+
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 
    statements. */
@@ -2380,7 +2454,7 @@ void SettingsSET05_BtcMaxPairedDevice_Init( SettingsSET05_BtcMaxPairedDevice _th
   EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const0019 ));
+  EwTrace( "%s", EwLoadString( &_Const0017 ));
 }
 
 /* 'C' function for method : 'Settings::SET05_BtcMaxPairedDevice.OnYesActivatedSlot()' */
@@ -2479,21 +2553,21 @@ void SettingsSET08_BtcPairDevice__Init( SettingsSET08_BtcPairDevice _this, XObje
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
-  CoreRectView__OnSetBounds( &_this->PairText, _Const001A );
+  CoreRectView__OnSetBounds( &_this->PairText, _Const0018 );
   ViewsText_OnSetWrapText( &_this->PairText, 1 );
   ViewsText_OnSetAlignment( &_this->PairText, ViewsTextAlignmentAlignHorzCenter 
   | ViewsTextAlignmentAlignVertTop );
-  ViewsText_OnSetString( &_this->PairText, EwLoadString( &StringsSET08_PAIR_WITH ));
-  CoreRectView__OnSetBounds( &_this->PasskeyText, _Const001B );
+  ViewsText_OnSetString( &_this->PairText, EwGetVariantOfString( &StringsSET08_PAIR_WITH ));
+  CoreRectView__OnSetBounds( &_this->PasskeyText, _Const0019 );
   ViewsText_OnSetWrapText( &_this->PasskeyText, 1 );
   ViewsText_OnSetAlignment( &_this->PasskeyText, ViewsTextAlignmentAlignHorzCenter 
   | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->PasskeyText, EwLoadString( &StringsSET08_PASSKEY ));
+  ViewsText_OnSetString( &_this->PasskeyText, EwGetVariantOfString( &StringsSET08_PASSKEY ));
   CoreRectView__OnSetBounds( &_this->UpDownPushButtonSet, _Const0003 );
   _this->UpDownPushButtonSet.Super1.PassHomeKey = 1;
-  MenuUpDownPushButtonSet_OnSetUpButtonTitle( &_this->UpDownPushButtonSet, EwLoadString( 
+  MenuUpDownPushButtonSet_OnSetUpButtonTitle( &_this->UpDownPushButtonSet, EwGetVariantOfString( 
   &StringsGEN_YES ));
-  MenuUpDownPushButtonSet_OnSetDownButtonTitle( &_this->UpDownPushButtonSet, EwLoadString( 
+  MenuUpDownPushButtonSet_OnSetDownButtonTitle( &_this->UpDownPushButtonSet, EwGetVariantOfString( 
   &StringsGEN_NO ));
   CoreGroup__Add( _this, ((CoreView)&_this->PairText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->PasskeyText ), 0 );
@@ -2523,6 +2597,9 @@ void SettingsSET08_BtcPairDevice__ReInit( SettingsSET08_BtcPairDevice _this )
   ViewsText__ReInit( &_this->PasskeyText );
   MenuUpDownPushButtonSet__ReInit( &_this->UpDownPushButtonSet );
   CoreSystemEventHandler__ReInit( &_this->BtcPairingStateChangeEventHandler );
+
+  /* Call the user defined re-constructor of the class */
+  SettingsSET08_BtcPairDevice_ReInit( _this );
 }
 
 /* Finalizer method for the class 'Settings::SET08_BtcPairDevice' */
@@ -2541,32 +2618,27 @@ void SettingsSET08_BtcPairDevice__Done( SettingsSET08_BtcPairDevice _this )
   ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
+/* 'C' function for method : 'Settings::SET08_BtcPairDevice.ReInit()' */
+void SettingsSET08_BtcPairDevice_ReInit( SettingsSET08_BtcPairDevice _this )
+{
+  SettingsSET08_BtcPairDevice_DisplayString( _this );
+  MenuUpDownPushButtonSet_OnSetUpButtonTitle( &_this->UpDownPushButtonSet, EwGetVariantOfString( 
+  &StringsGEN_YES ));
+  MenuUpDownPushButtonSet_OnSetDownButtonTitle( &_this->UpDownPushButtonSet, EwGetVariantOfString( 
+  &StringsGEN_NO ));
+}
+
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 
    statements. */
 void SettingsSET08_BtcPairDevice_Init( SettingsSET08_BtcPairDevice _this, XHandle 
   aArg )
 {
-  XString ProcessString;
-  XInt32 LeftIdx;
-  XInt32 RightIdx;
-
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const001C ));
-  ProcessString = EwLoadString( &StringsSET08_PAIR_WITH );
-  LeftIdx = EwStringFind( ProcessString, EwLoadString( &StringsARGUMENT_STR ), 0 );
-  RightIdx = ( EwGetStringLength( ProcessString ) - LeftIdx ) - EwGetStringLength( 
-  EwLoadString( &StringsARGUMENT_STR ));
-  ViewsText_OnSetString( &_this->PairText, EwConcatString( EwConcatString( EwStringLeft( 
-  ProcessString, LeftIdx ), DeviceInterfaceBluetoothDeviceClass_GetBtcPairingDeviceName( 
-  EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ))), 
-  EwStringRight( ProcessString, RightIdx )));
-  ViewsText_OnSetString( &_this->PasskeyText, EwConcatString( EwConcatString( EwLoadString( 
-  &StringsSET08_PASSKEY ), EwLoadString( &_Const000C )), EwNewStringUInt( DeviceInterfaceBluetoothDeviceClass_GetBtcPasskey( 
-  EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )), 
-  6, 10 )));
+  EwTrace( "%s", EwLoadString( &_Const001A ));
+  SettingsSET08_BtcPairDevice_DisplayString( _this );
 }
 
 /* 'C' function for method : 'Settings::SET08_BtcPairDevice.OnNoActivatedSlot()' */
@@ -2578,7 +2650,7 @@ void SettingsSET08_BtcPairDevice_OnNoActivatedSlot( SettingsSET08_BtcPairDevice 
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  EwTrace( "%s", EwLoadString( &_Const001D ));
+  EwTrace( "%s", EwLoadString( &_Const001B ));
   BTM_btc_confirm_passkey( false );
   BtSettingMenu = EwCastObject( _this->Super5.Owner, SettingsSET04_BtSettingMenu );
 
@@ -2597,7 +2669,7 @@ void SettingsSET08_BtcPairDevice_OnYesActivatedSlot( SettingsSET08_BtcPairDevice
   EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( sender );
 
-  EwTrace( "%s", EwLoadString( &_Const001E ));
+  EwTrace( "%s", EwLoadString( &_Const001C ));
   BTM_btc_confirm_passkey( true );
 }
 
@@ -2616,7 +2688,8 @@ void SettingsSET08_BtcPairDevice_OnBtcPairingStateChangeSlot( SettingsSET08_BtcP
       {
         SettingsTimeoutDialog PairingFailDialog = EwNewObject( SettingsTimeoutDialog, 
           0 );
-        SettingsTimeoutDialog_OnSetMessage( PairingFailDialog, EwLoadString( &StringsSET07_PAIRING_FAILED ));
+        SettingsTimeoutDialog_OnSetMessage( PairingFailDialog, EwGetVariantOfString( 
+        &StringsSET07_PAIRING_FAILED ));
         PairingFailDialog->DismissAfterTimeout = 1;
         CoreGroup_SwitchToDialog( _this->Super5.Owner, ((CoreGroup)PairingFailDialog ), 
         0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
@@ -2636,6 +2709,25 @@ void SettingsSET08_BtcPairDevice_OnBtcPairingStateChangeSlot( SettingsSET08_BtcP
 
       default :; 
     }
+}
+
+/* 'C' function for method : 'Settings::SET08_BtcPairDevice.DisplayString()' */
+void SettingsSET08_BtcPairDevice_DisplayString( SettingsSET08_BtcPairDevice _this )
+{
+  XString ProcessString = EwGetVariantOfString( &StringsSET08_PAIR_WITH );
+  XInt32 LeftIdx = EwStringFind( ProcessString, EwLoadString( &StringsARGUMENT_STR ), 
+    0 );
+  XInt32 RightIdx = ( EwGetStringLength( ProcessString ) - LeftIdx ) - EwGetStringLength( 
+    EwLoadString( &StringsARGUMENT_STR ));
+
+  ViewsText_OnSetString( &_this->PairText, EwConcatString( EwConcatString( EwStringLeft( 
+  ProcessString, LeftIdx ), DeviceInterfaceBluetoothDeviceClass_GetBtcPairingDeviceName( 
+  EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ))), 
+  EwStringRight( ProcessString, RightIdx )));
+  ViewsText_OnSetString( &_this->PasskeyText, EwConcatString( EwConcatString( EwGetVariantOfString( 
+  &StringsSET08_PASSKEY ), EwLoadString( &_Const000C )), EwNewStringUInt( DeviceInterfaceBluetoothDeviceClass_GetBtcPasskey( 
+  EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )), 
+  6, 10 )));
 }
 
 /* Variants derived from the class : 'Settings::SET08_BtcPairDevice' */
@@ -2716,7 +2808,7 @@ void SettingsSET17_BtcPairedDeviceList__Init( SettingsSET17_BtcPairedDeviceList 
   MenuVerticalMenu_OnSetItemNumPerPage( &_this->Super1.Menu, 4 );
   MenuVerticalMenu_OnSetArrowScrollBarVisible( &_this->Super1.Menu, 1 );
   CoreRectView__OnSetBounds( &_this->NoDataText, _Const0014 );
-  ViewsText_OnSetString( &_this->NoDataText, EwLoadString( &_Const001F ));
+  ViewsText_OnSetString( &_this->NoDataText, EwLoadString( &_Const001D ));
   CoreTimer_OnSetBegin( &_this->NoDataTimeoutTimer, 2000 );
   CoreGroup__Add( _this, ((CoreView)&_this->NoDataText ), 0 );
   _this->RefreshListObserver.OnEvent = EwNewSlot( _this, SettingsSET17_BtcPairedDeviceList_OnRefreshListSlot );
@@ -2767,7 +2859,7 @@ void SettingsSET17_BtcPairedDeviceList_Init( SettingsSET17_BtcPairedDeviceList _
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const0020 ));
+  EwTrace( "%s", EwLoadString( &_Const001E ));
   SettingsSET17_BtcPairedDeviceList_UpdatePairedDeviceNum( _this );
 }
 
@@ -2838,7 +2930,7 @@ void SettingsSET17_BtcPairedDeviceList_UpdatePairedDeviceNum( SettingsSET17_BtcP
   _this->PairedDeviceNum = DeviceInterfaceBluetoothDeviceClass_OnGetPairedDeviceNum( 
   EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ));
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, _this->PairedDeviceNum );
-  EwTrace( "%s%i", EwLoadString( &_Const0021 ), _this->PairedDeviceNum );
+  EwTrace( "%s%i", EwLoadString( &_Const001F ), _this->PairedDeviceNum );
 
   if ( _this->PairedDeviceNum > 0 )
   {
@@ -2865,7 +2957,7 @@ void SettingsSET17_BtcPairedDeviceList_OnRefreshListSlot( SettingsSET17_BtcPaire
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  EwTrace( "%s", EwLoadString( &_Const0022 ));
+  EwTrace( "%s", EwLoadString( &_Const0020 ));
   SettingsSET17_BtcPairedDeviceList_UpdatePairedDeviceNum( _this );
 }
 
@@ -3000,7 +3092,7 @@ void SettingsSET19_BtcPairedDeviceOperation_Init( SettingsSET19_BtcPairedDeviceO
   EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const0023 ));
+  EwTrace( "%s", EwLoadString( &_Const0021 ));
 }
 
 /* 'C' function for method : 'Settings::SET19_BtcPairedDeviceOperation.LoadItemClass()' */
@@ -3032,11 +3124,11 @@ XString SettingsSET19_BtcPairedDeviceOperation_LoadItemTitle( SettingsSET19_BtcP
     break;
 
     case 1 :
-      title = EwLoadString( &StringsSET19_CONNECT );
+      title = EwGetVariantOfString( &StringsSET19_CONNECT );
     break;
 
     case 2 :
-      title = EwLoadString( &StringsSET19_DISCONNECT );
+      title = EwGetVariantOfString( &StringsSET19_DISCONNECT );
     break;
 
     default :; 
@@ -3229,7 +3321,7 @@ void SettingsSET18_DeleteBleDevice__Init( SettingsSET18_DeleteBleDevice _this, X
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
-  CoreRectView__OnSetBounds( &_this->Text, _Const0024 );
+  CoreRectView__OnSetBounds( &_this->Text, _Const0022 );
   ViewsText_OnSetWrapText( &_this->Text, 1 );
   ViewsText_OnSetAlignment( &_this->Text, ViewsTextAlignmentAlignHorzCenter | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->Text, EwLoadString( &StringsSET18_DELETE_PAIRING_RECORD ));
@@ -3277,7 +3369,7 @@ void SettingsSET18_DeleteBleDevice_Init( SettingsSET18_DeleteBleDevice _this, XH
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const0025 ));
+  EwTrace( "%s", EwLoadString( &_Const0023 ));
   ProcessString = EwLoadString( &StringsSET18_DELETE_PAIRING_RECORD );
   LeftIdx = EwStringFind( ProcessString, EwLoadString( &StringsARGUMENT_STR ), 0 );
   RightIdx = ( EwGetStringLength( ProcessString ) - LeftIdx ) - EwGetStringLength( 
@@ -3359,11 +3451,11 @@ void SettingsBtFwUpdateDialog__Init( SettingsBtFwUpdateDialog _this, XObject aLi
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0001 );
   CoreRectView__OnSetBounds( &_this->Rectangle, _Const0001 );
-  ViewsRectangle_OnSetColor( &_this->Rectangle, _Const0026 );
-  CoreRectView__OnSetBounds( &_this->StatusText, _Const0027 );
+  ViewsRectangle_OnSetColor( &_this->Rectangle, _Const0024 );
+  CoreRectView__OnSetBounds( &_this->StatusText, _Const0025 );
   ViewsText_OnSetWrapText( &_this->StatusText, 1 );
-  ViewsText_OnSetString( &_this->StatusText, EwLoadString( &_Const0028 ));
-  ViewsText_OnSetColor( &_this->StatusText, _Const0029 );
+  ViewsText_OnSetString( &_this->StatusText, EwLoadString( &_Const0026 ));
+  ViewsText_OnSetColor( &_this->StatusText, _Const0027 );
   CoreTimer_OnSetPeriod( &_this->RemoveDialogTimer, 2000 );
   CoreGroup__Add( _this, ((CoreView)&_this->Rectangle ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->StatusText ), 0 );
@@ -3417,14 +3509,14 @@ void SettingsBtFwUpdateDialog_OnBtFwStatusUpdateSlot( SettingsBtFwUpdateDialog _
   {
     case EnumBtFwStatusUPDATE_FINISH :
     {
-      ViewsText_OnSetString( &_this->StatusText, EwLoadString( &_Const002A ));
+      ViewsText_OnSetString( &_this->StatusText, EwLoadString( &_Const0028 ));
       CoreTimer_OnSetEnabled( &_this->RemoveDialogTimer, 1 );
     }
     break;
 
     case EnumBtFwStatusUPDATE_ABORT :
     {
-      ViewsText_OnSetString( &_this->StatusText, EwLoadString( &_Const002B ));
+      ViewsText_OnSetString( &_this->StatusText, EwLoadString( &_Const0029 ));
       CoreTimer_OnSetEnabled( &_this->RemoveDialogTimer, 1 );
     }
     break;
@@ -3643,16 +3735,16 @@ void SettingsSET30_QRCode__Init( SettingsSET30_QRCode _this, XObject aLink, XHan
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
-  CoreRectView__OnSetBounds( &_this->WhiteMargin, _Const002C );
-  CoreRectView__OnSetBounds( &_this->QrCodeImage, _Const002C );
+  CoreRectView__OnSetBounds( &_this->WhiteMargin, _Const002A );
+  CoreRectView__OnSetBounds( &_this->QrCodeImage, _Const002A );
   ViewsImage_OnSetAlignment( &_this->QrCodeImage, ViewsImageAlignmentAlignHorzCenter 
   | ViewsImageAlignmentAlignVertCenter );
   CoreRectView__OnSetBounds( &_this->PushButton, _Const0004 );
   ComponentsBaseComponent__OnSetDDModeEnabled( &_this->PushButton, 1 );
   MenuPushButton_OnSetTitle( &_this->PushButton, EwGetVariantOfString( &StringsGEN_OK ));
-  CoreRectView__OnSetBounds( &_this->BrightnessUpButton, _Const002D );
-  CoreRectView__OnSetBounds( &_this->BrightnessDownButton, _Const002E );
-  CoreRectView__OnSetBounds( &_this->BrightnessIcon, _Const002F );
+  CoreRectView__OnSetBounds( &_this->BrightnessUpButton, _Const002B );
+  CoreRectView__OnSetBounds( &_this->BrightnessDownButton, _Const002C );
+  CoreRectView__OnSetBounds( &_this->BrightnessIcon, _Const002D );
   CoreGroup__Add( _this, ((CoreView)&_this->WhiteMargin ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->QrCodeImage ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->PushButton ), 0 );
@@ -3684,6 +3776,9 @@ void SettingsSET30_QRCode__ReInit( SettingsSET30_QRCode _this )
   TelephoneImageButton__ReInit( &_this->BrightnessUpButton );
   TelephoneImageButton__ReInit( &_this->BrightnessDownButton );
   ViewsImage__ReInit( &_this->BrightnessIcon );
+
+  /* Call the user defined re-constructor of the class */
+  SettingsSET30_QRCode_ReInit( _this );
 }
 
 /* Finalizer method for the class 'Settings::SET30_QRCode' */
@@ -3704,6 +3799,12 @@ void SettingsSET30_QRCode__Done( SettingsSET30_QRCode _this )
   ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
+/* 'C' function for method : 'Settings::SET30_QRCode.ReInit()' */
+void SettingsSET30_QRCode_ReInit( SettingsSET30_QRCode _this )
+{
+  MenuPushButton_OnSetTitle( &_this->PushButton, EwGetVariantOfString( &StringsGEN_OK ));
+}
+
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 
    statements. */
@@ -3715,7 +3816,7 @@ void SettingsSET30_QRCode_Init( SettingsSET30_QRCode _this, XHandle aArg )
   if ( !!DeviceInterfaceSystemDeviceClass_GetSystemStatus( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
       DeviceInterfaceSystemDeviceClass ), EnumSystemStatusIS_QRCODE_READY ))
   {
-    EwTrace( "%s", EwLoadString( &_Const0030 ));
+    EwTrace( "%s", EwLoadString( &_Const002E ));
     ViewsImage_OnSetBitmap( &_this->QrCodeImage, ((ResourcesBitmap)EwGetAutoObject( 
     &ResourceQrCodeExternBitmap, ResourcesExternBitmap )));
     ResourcesExternBitmap_OnSetName( EwGetAutoObject( &ResourceQrCodeExternBitmap, 
@@ -3860,9 +3961,7 @@ void SettingsSET22_BleAdvertising__Init( SettingsSET22_BleAdvertising _this, XOb
   _this->_.XObject._.GCT = EW_CLASS_GCT( SettingsSET22_BleAdvertising );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->DeviceNameText, &_this->_.XObject, 0 );
   ViewsText__Init( &_this->WaitText, &_this->_.XObject, 0 );
-  ViewsText__Init( &_this->LocalDeviceNameText, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->Image, &_this->_.XObject, 0 );
   CoreSystemEventHandler__Init( &_this->BlePairingStateChangedEventHandler, &_this->_.XObject, 0 );
 
@@ -3871,27 +3970,15 @@ void SettingsSET22_BleAdvertising__Init( SettingsSET22_BleAdvertising _this, XOb
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
-  CoreRectView__OnSetBounds( &_this->DeviceNameText, _Const0031 );
-  ViewsText_OnSetString( &_this->DeviceNameText, EwLoadString( &StringsSET22_DEVICE_NAME ));
-  CoreRectView__OnSetBounds( &_this->WaitText, _Const0032 );
+  CoreRectView__OnSetBounds( &_this->WaitText, _Const002F );
   ViewsText_OnSetWrapText( &_this->WaitText, 1 );
-  ViewsText_OnSetString( &_this->WaitText, EwLoadString( &StringsSET22_WAIT_APP_CONNECTION ));
-  CoreRectView__OnSetBounds( &_this->LocalDeviceNameText, _Const0033 );
-  ViewsText_OnSetEllipsis( &_this->LocalDeviceNameText, 1 );
-  ViewsText_OnSetString( &_this->LocalDeviceNameText, DeviceInterfaceBluetoothDeviceClass_OnGetLocalDeviceName( 
-  EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )));
-  CoreRectView__OnSetBounds( &_this->Image, _Const0034 );
+  ViewsText_OnSetString( &_this->WaitText, EwGetVariantOfString( &StringsSET22_WAIT_APP_CONNECTION ));
+  CoreRectView__OnSetBounds( &_this->Image, _Const0030 );
   ViewsImage_OnSetAnimated( &_this->Image, 1 );
   ViewsImage_OnSetFrameNumber( &_this->Image, 0 );
-  CoreGroup__Add( _this, ((CoreView)&_this->DeviceNameText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->WaitText ), 0 );
-  CoreGroup__Add( _this, ((CoreView)&_this->LocalDeviceNameText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Image ), 0 );
-  ViewsText_OnSetFont( &_this->DeviceNameText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
-  ResourcesFont ));
   ViewsText_OnSetFont( &_this->WaitText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
-  ResourcesFont ));
-  ViewsText_OnSetFont( &_this->LocalDeviceNameText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
   ViewsImage_OnSetBitmap( &_this->Image, EwLoadResource( &ResourceLoadingAnimation, 
   ResourcesBitmap ));
@@ -3910,11 +3997,12 @@ void SettingsSET22_BleAdvertising__ReInit( SettingsSET22_BleAdvertising _this )
   ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
-  ViewsText__ReInit( &_this->DeviceNameText );
   ViewsText__ReInit( &_this->WaitText );
-  ViewsText__ReInit( &_this->LocalDeviceNameText );
   ViewsImage__ReInit( &_this->Image );
   CoreSystemEventHandler__ReInit( &_this->BlePairingStateChangedEventHandler );
+
+  /* Call the user defined re-constructor of the class */
+  SettingsSET22_BleAdvertising_ReInit( _this );
 }
 
 /* Finalizer method for the class 'Settings::SET22_BleAdvertising' */
@@ -3924,14 +4012,18 @@ void SettingsSET22_BleAdvertising__Done( SettingsSET22_BleAdvertising _this )
   _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
-  ViewsText__Done( &_this->DeviceNameText );
   ViewsText__Done( &_this->WaitText );
-  ViewsText__Done( &_this->LocalDeviceNameText );
   ViewsImage__Done( &_this->Image );
   CoreSystemEventHandler__Done( &_this->BlePairingStateChangedEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseMainBG__Done( &_this->_.Super );
+}
+
+/* 'C' function for method : 'Settings::SET22_BleAdvertising.ReInit()' */
+void SettingsSET22_BleAdvertising_ReInit( SettingsSET22_BleAdvertising _this )
+{
+  SettingsSET22_BleAdvertising_DisplayString( _this );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -3941,10 +4033,10 @@ void SettingsSET22_BleAdvertising_Init( SettingsSET22_BleAdvertising _this, XHan
   aArg )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const0035 ));
+  EwTrace( "%s", EwLoadString( &_Const0031 ));
+  SettingsSET22_BleAdvertising_DisplayString( _this );
   DeviceInterfaceBluetoothDeviceClass_SetBleAdvertisement( EwGetAutoObject( &DeviceInterfaceBluetoothDevice, 
   DeviceInterfaceBluetoothDeviceClass ), 1 );
 }
@@ -3998,7 +4090,8 @@ void SettingsSET22_BleAdvertising_OnBlePairingStateChangedSlot( SettingsSET22_Bl
 
         if ( ConnectionSettingDialog != 0 )
         {
-          SettingsTimeoutDialog_OnSetMessage( MessageDialog, EwLoadString( &StringsSET26_PAIRING_SUCCESSFUL ));
+          SettingsTimeoutDialog_OnSetMessage( MessageDialog, EwGetVariantOfString( 
+          &StringsSET26_PAIRING_SUCCESSFUL ));
           MessageDialog->DismissAfterTimeout = 1;
           DeviceInterfaceBluetoothDeviceClass_SetBleAdvertisement( EwGetAutoObject( 
           &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ), 
@@ -4024,13 +4117,28 @@ void SettingsSET22_BleAdvertising_OnBlePairingStateChangedSlot( SettingsSET22_Bl
     }
 }
 
+/* 'C' function for method : 'Settings::SET22_BleAdvertising.DisplayString()' */
+void SettingsSET22_BleAdvertising_DisplayString( SettingsSET22_BleAdvertising _this )
+{
+  XString ProcessString = EwGetVariantOfString( &StringsSET22_WAIT_APP_CONNECTION );
+  XInt32 LeftIdx = EwStringFind( ProcessString, EwLoadString( &StringsARGUMENT_STR ), 
+    0 );
+  XInt32 RightIdx = ( EwGetStringLength( ProcessString ) - LeftIdx ) - EwGetStringLength( 
+    EwLoadString( &StringsARGUMENT_STR ));
+
+  ViewsText_OnSetString( &_this->WaitText, EwConcatString( EwConcatString( EwStringLeft( 
+  ProcessString, LeftIdx ), DeviceInterfaceBluetoothDeviceClass_GetBtcPairingDeviceName( 
+  EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ))), 
+  EwStringRight( ProcessString, RightIdx )));
+}
+
 /* Variants derived from the class : 'Settings::SET22_BleAdvertising' */
 EW_DEFINE_CLASS_VARIANTS( SettingsSET22_BleAdvertising )
 EW_END_OF_CLASS_VARIANTS( SettingsSET22_BleAdvertising )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET22_BleAdvertising' */
-EW_DEFINE_CLASS( SettingsSET22_BleAdvertising, ComponentsBaseMainBG, DeviceNameText, 
-                 DeviceNameText, DeviceNameText, DeviceNameText, _.VMT, _.VMT, "Settings::SET22_BleAdvertising" )
+EW_DEFINE_CLASS( SettingsSET22_BleAdvertising, ComponentsBaseMainBG, WaitText, WaitText, 
+                 WaitText, WaitText, _.VMT, _.VMT, "Settings::SET22_BleAdvertising" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -4089,7 +4197,7 @@ void SettingsSET23_BlePairingFail__Init( SettingsSET23_BlePairingFail _this, XOb
   _this->_.VMT = EW_CLASS( SettingsSET23_BlePairingFail );
 
   /* ... and initialize objects, variables, properties, etc. */
-  ViewsText_OnSetString( &_this->Super1.MessageText, EwLoadString( &StringsSET23_PAIRING_FAILED ));
+  ViewsText_OnSetString( &_this->Super1.MessageText, EwGetVariantOfString( &StringsSET23_PAIRING_FAILED ));
 }
 
 /* Re-Initializer for the class 'Settings::SET23_BlePairingFail' */
@@ -4247,7 +4355,7 @@ void SettingsSET24_CheckPairingRecord_Init( SettingsSET24_CheckPairingRecord _th
   EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const0036 ));
+  EwTrace( "%s", EwLoadString( &_Const0032 ));
 }
 
 /* 'C' function for method : 'Settings::SET24_CheckPairingRecord.OnOkActivatedSlot()' */
@@ -4384,7 +4492,7 @@ void SettingsSET25_BlePincode_Init( SettingsSET25_BlePincode _this, XHandle aArg
   6, 10 );
   ViewsText_OnSetString( &_this->PincodeText, EwConcatString( EwConcatString( EwLoadString( 
   &StringsSET25_PIN ), EwLoadString( &_Const000C )), PincodeString ));
-  EwTrace( "%s%s", EwLoadString( &_Const0037 ), PincodeString );
+  EwTrace( "%s%s", EwLoadString( &_Const0033 ), PincodeString );
 }
 
 /* The method UpdateViewState() is invoked automatically after the state of the 
@@ -4443,7 +4551,8 @@ void SettingsSET25_BlePincode_OnBlePairingStateChangedSlot( SettingsSET25_BlePin
       {
         SettingsTimeoutDialog MessageDialog = EwNewObject( SettingsTimeoutDialog, 
           0 );
-        SettingsTimeoutDialog_OnSetMessage( MessageDialog, EwLoadString( &StringsSET26_PAIRING_SUCCESSFUL ));
+        SettingsTimeoutDialog_OnSetMessage( MessageDialog, EwGetVariantOfString( 
+        &StringsSET26_PAIRING_SUCCESSFUL ));
         MessageDialog->DismissAfterTimeout = 1;
         CoreGroup_SwitchToDialog( _this->Super5.Owner, ((CoreGroup)MessageDialog ), 
         0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
@@ -4533,22 +4642,22 @@ void SettingsSET28_SystemInfo__Init( SettingsSET28_SystemInfo _this, XObject aLi
   CoreRectView__OnSetBounds( _this, _Const0001 );
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
   ComponentsBaseComponent_OnSetMagicKeyEnabled((ComponentsBaseComponent)_this, 1 );
-  CoreRectView__OnSetBounds( &_this->ESN, _Const0038 );
-  ViewsText_OnSetString( &_this->ESN, EwLoadString( &StringsSET28_ESN ));
-  CoreRectView__OnSetBounds( &_this->SoftwareVersionTitle, _Const0039 );
-  ViewsText_OnSetString( &_this->SoftwareVersionTitle, EwLoadString( &StringsSET28_SW_VERSION ));
-  CoreRectView__OnSetBounds( &_this->EsnText, _Const003A );
+  CoreRectView__OnSetBounds( &_this->ESN, _Const0034 );
+  ViewsText_OnSetString( &_this->ESN, EwGetVariantOfString( &StringsSET28_ESN ));
+  CoreRectView__OnSetBounds( &_this->SoftwareVersionTitle, _Const0035 );
+  ViewsText_OnSetString( &_this->SoftwareVersionTitle, EwGetVariantOfString( &StringsSET28_SW_VERSION ));
+  CoreRectView__OnSetBounds( &_this->EsnText, _Const0036 );
   ViewsText_OnSetString( &_this->EsnText, 0 );
-  CoreRectView__OnSetBounds( &_this->SoftwareVersionText, _Const003B );
+  CoreRectView__OnSetBounds( &_this->SoftwareVersionText, _Const0037 );
   ViewsText_OnSetString( &_this->SoftwareVersionText, DeviceInterfaceSystemDeviceClass_OnGetSoftwareVersion( 
   EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )));
-  CoreRectView__OnSetBounds( &_this->UpDownPushButtonSet, _Const003C );
+  CoreRectView__OnSetBounds( &_this->UpDownPushButtonSet, _Const0038 );
   _this->UpDownPushButtonSet.Super1.PassHomeKey = 1;
   _this->UpDownPushButtonSet.Super1.PassMagicKey = 1;
   ComponentsBaseComponent__OnSetDDModeEnabled( &_this->UpDownPushButtonSet, 1 );
-  MenuUpDownPushButtonSet_OnSetUpButtonTitle( &_this->UpDownPushButtonSet, EwLoadString( 
+  MenuUpDownPushButtonSet_OnSetUpButtonTitle( &_this->UpDownPushButtonSet, EwGetVariantOfString( 
   &StringsSET28_UNIT_ID ));
-  MenuUpDownPushButtonSet_OnSetDownButtonTitle( &_this->UpDownPushButtonSet, EwLoadString( 
+  MenuUpDownPushButtonSet_OnSetDownButtonTitle( &_this->UpDownPushButtonSet, EwGetVariantOfString( 
   &StringsSET28_SW_UPDATE ));
   MenuUpDownPushButtonSet_OnSetDownButtonEnabled( &_this->UpDownPushButtonSet, 0 );
   CoreRectView__OnSetBounds( &_this->Divider, _Const0015 );
@@ -4599,6 +4708,9 @@ void SettingsSET28_SystemInfo__ReInit( SettingsSET28_SystemInfo _this )
   MenuUpDownPushButtonSet__ReInit( &_this->UpDownPushButtonSet );
   ViewsImage__ReInit( &_this->Divider );
   CoreSystemEventHandler__ReInit( &_this->ReceivedSystemEventHandler );
+
+  /* Call the user defined re-constructor of the class */
+  SettingsSET28_SystemInfo_ReInit( _this );
 }
 
 /* Finalizer method for the class 'Settings::SET28_SystemInfo' */
@@ -4619,6 +4731,17 @@ void SettingsSET28_SystemInfo__Done( SettingsSET28_SystemInfo _this )
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseMainBG__Done( &_this->_.Super );
+}
+
+/* 'C' function for method : 'Settings::SET28_SystemInfo.ReInit()' */
+void SettingsSET28_SystemInfo_ReInit( SettingsSET28_SystemInfo _this )
+{
+  ViewsText_OnSetString( &_this->ESN, EwGetVariantOfString( &StringsSET28_ESN ));
+  ViewsText_OnSetString( &_this->SoftwareVersionTitle, EwGetVariantOfString( &StringsSET28_SW_VERSION ));
+  MenuUpDownPushButtonSet_OnSetUpButtonTitle( &_this->UpDownPushButtonSet, EwGetVariantOfString( 
+  &StringsSET28_UNIT_ID ));
+  MenuUpDownPushButtonSet_OnSetDownButtonTitle( &_this->UpDownPushButtonSet, EwGetVariantOfString( 
+  &StringsSET28_SW_UPDATE ));
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -4777,12 +4900,12 @@ void SettingsLicenseDetail__Init( SettingsLicenseDetail _this, XObject aLink, XH
   _this->_.VMT = EW_CLASS( SettingsLicenseDetail );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const003D );
-  CoreRectView__OnSetBounds( &_this->TitleText, _Const003E );
+  CoreRectView__OnSetBounds( _this, _Const0039 );
+  CoreRectView__OnSetBounds( &_this->TitleText, _Const003A );
   ViewsText_OnSetAlignment( &_this->TitleText, ViewsTextAlignmentAlignHorzLeft | 
   ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->TitleText, EwLoadString( &StringsSET35_LICENSE ));
-  CoreRectView__OnSetBounds( &_this->LicenseText, _Const003F );
+  ViewsText_OnSetString( &_this->TitleText, EwGetVariantOfString( &StringsSET35_LICENSE ));
+  CoreRectView__OnSetBounds( &_this->LicenseText, _Const003B );
   ViewsText_OnSetRowDistance( &_this->LicenseText, 30 );
   ViewsText_OnSetAutoSize( &_this->LicenseText, 1 );
   ViewsText_OnSetWrapText( &_this->LicenseText, 1 );
@@ -4793,7 +4916,7 @@ void SettingsLicenseDetail__Init( SettingsLicenseDetail _this, XObject aLink, XH
   EffectsEffect_OnSetNoOfCycles((EffectsEffect)&_this->ScrollEffect, 1 );
   EffectsEffect_OnSetCycleDuration((EffectsEffect)&_this->ScrollEffect, 200 );
   EffectsEffect_OnSetInitialDelay((EffectsEffect)&_this->ScrollEffect, 0 );
-  _this->LicenseInitBounds = _Const003F;
+  _this->LicenseInitBounds = _Const003B;
   CoreGroup__Add( _this, ((CoreView)&_this->TitleText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->LicenseText ), 0 );
   ViewsText_OnSetFont( &_this->TitleText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
@@ -4816,6 +4939,9 @@ void SettingsLicenseDetail__ReInit( SettingsLicenseDetail _this )
   ViewsText__ReInit( &_this->TitleText );
   ViewsText__ReInit( &_this->LicenseText );
   EffectsInt32Effect__ReInit( &_this->ScrollEffect );
+
+  /* Call the user defined re-constructor of the class */
+  SettingsLicenseDetail_ReInit( _this );
 }
 
 /* Finalizer method for the class 'Settings::LicenseDetail' */
@@ -4833,6 +4959,12 @@ void SettingsLicenseDetail__Done( SettingsLicenseDetail _this )
   CoreGroup__Done( &_this->_.Super );
 }
 
+/* 'C' function for method : 'Settings::LicenseDetail.ReInit()' */
+void SettingsLicenseDetail_ReInit( SettingsLicenseDetail _this )
+{
+  ViewsText_OnSetString( &_this->TitleText, EwGetVariantOfString( &StringsSET35_LICENSE ));
+}
+
 /* 'C' function for method : 'Settings::LicenseDetail.ScrollUpPage()' */
 XInt32 SettingsLicenseDetail_ScrollUpPage( SettingsLicenseDetail _this )
 {
@@ -4848,7 +4980,7 @@ XInt32 SettingsLicenseDetail_ScrollUpPage( SettingsLicenseDetail _this )
     EffectsEffect_OnSetEnabled((EffectsEffect)&_this->ScrollEffect, 1 );
     _this->LineToScroll = (( EwGetInt32Abs( NextScrollOffsetY ) / _this->LicenseText.RowDistance ) 
     + 7 ) - 1;
-    EwTrace( "%s%i", EwLoadString( &_Const0040 ), _this->LineToScroll );
+    EwTrace( "%s%i", EwLoadString( &_Const003C ), _this->LineToScroll );
   }
 
   return _this->LineToScroll;
@@ -4874,7 +5006,7 @@ XInt32 SettingsLicenseDetail_ScrollDownPage( SettingsLicenseDetail _this )
     EffectsEffect_OnSetEnabled((EffectsEffect)&_this->ScrollEffect, 1 );
     _this->LineToScroll = (( EwGetInt32Abs( NextScrollOffsetY ) / _this->LicenseText.RowDistance ) 
     + 7 ) - 1;
-    EwTrace( "%s%i", EwLoadString( &_Const0040 ), _this->LineToScroll );
+    EwTrace( "%s%i", EwLoadString( &_Const003C ), _this->LineToScroll );
   }
 
   return _this->LineToScroll;
@@ -4888,7 +5020,7 @@ void SettingsLicenseDetail_OnSetScrollOffsetY( SettingsLicenseDetail _this, XInt
   {
     XRect NewBounds;
     _this->ScrollOffsetY = value;
-    NewBounds = _Const003E;
+    NewBounds = _Const003A;
     NewBounds.Point1.Y = value;
     NewBounds.Point2.Y = ( NewBounds.Point1.Y + 31 );
     CoreRectView__OnSetBounds( &_this->TitleText, NewBounds );
@@ -4970,10 +5102,6 @@ void SettingsSET43_ResetMenu__Init( SettingsSET43_ResetMenu _this, XObject aLink
   ComponentsBaseComponent__OnSetDDModeEnabled( &_this->Super1.Menu, 1 );
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 4 );
   MenuVerticalMenu_OnSetArrowScrollBarVisible( &_this->Super1.Menu, 1 );
-  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &StringsSET43_TRIP_MILEAGE_RESET ));
-  _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &StringsSET43_MAINTENANCE_RESET ));
-  _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &StringsSET43_VEHICLE_INFO ));
-  _this->ItemTitleArray[ 3 ] = EwShareString( EwLoadString( &StringsSET43_ALL_RESET ));
 
   /* Call the user defined constructor */
   SettingsSET43_ResetMenu_Init( _this, aArg );
@@ -5005,7 +5133,7 @@ void SettingsSET43_ResetMenu_Init( SettingsSET43_ResetMenu _this, XHandle aArg )
   EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const0041 ));
+  EwTrace( "%s", EwLoadString( &_Const003D ));
 }
 
 /* 'C' function for method : 'Settings::SET43_ResetMenu.LoadItemClass()' */
@@ -5023,12 +5151,35 @@ XClass SettingsSET43_ResetMenu_LoadItemClass( SettingsSET43_ResetMenu _this, XIn
 XString SettingsSET43_ResetMenu_LoadItemTitle( SettingsSET43_ResetMenu _this, XInt32 
   aItemNo )
 {
-  XString title = 0;
+  XString Title;
 
-  if ( aItemNo < 4 )
-    title = _this->ItemTitleArray[ EwCheckIndex( aItemNo, 4 )];
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
 
-  return title;
+  Title = 0;
+
+  switch ( aItemNo )
+  {
+    case 0 :
+      Title = EwGetVariantOfString( &StringsSET43_TRIP_MILEAGE_RESET );
+    break;
+
+    case 1 :
+      Title = EwGetVariantOfString( &StringsSET43_MAINTENANCE_RESET );
+    break;
+
+    case 2 :
+      Title = EwGetVariantOfString( &StringsSET43_VEHICLE_INFO );
+    break;
+
+    case 3 :
+      Title = EwGetVariantOfString( &StringsSET43_ALL_RESET );
+    break;
+
+    default :; 
+  }
+
+  return Title;
 }
 
 /* 'C' function for method : 'Settings::SET43_ResetMenu.OnItemActivate()' */
@@ -5070,8 +5221,8 @@ EW_DEFINE_CLASS_VARIANTS( SettingsSET43_ResetMenu )
 EW_END_OF_CLASS_VARIANTS( SettingsSET43_ResetMenu )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET43_ResetMenu' */
-EW_DEFINE_CLASS( SettingsSET43_ResetMenu, MenuBaseMenuView, ItemTitleArray, ItemTitleArray, 
-                 ItemTitleArray, ItemTitleArray, ItemTitleArray, _.VMT, "Settings::SET43_ResetMenu" )
+EW_DEFINE_CLASS( SettingsSET43_ResetMenu, MenuBaseMenuView, _.VMT, _.VMT, _.VMT, 
+                 _.VMT, _.VMT, _.VMT, "Settings::SET43_ResetMenu" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -5157,7 +5308,7 @@ void SettingsSET42_ResetCompleted__Init( SettingsSET42_ResetCompleted _this, XOb
   CoreRectView__OnSetBounds( &_this->MessageText, _Const0014 );
   ViewsText_OnSetEllipsis( &_this->MessageText, 1 );
   ViewsText_OnSetWrapText( &_this->MessageText, 1 );
-  ViewsText_OnSetString( &_this->MessageText, EwLoadString( &StringsSET42_RESET_COMPLETE ));
+  ViewsText_OnSetString( &_this->MessageText, EwGetVariantOfString( &StringsSET42_RESET_COMPLETE ));
   CoreTimer_OnSetPeriod( &_this->HoldTimer, 0 );
   CoreTimer_OnSetBegin( &_this->HoldTimer, 2000 );
   CoreTimer_OnSetEnabled( &_this->HoldTimer, 1 );
@@ -5210,7 +5361,7 @@ void SettingsSET42_ResetCompleted_Init( SettingsSET42_ResetCompleted _this, XHan
   EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const0042 ));
+  EwTrace( "%s", EwLoadString( &_Const003E ));
   DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
   DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeREBOOT_REQUEST, 0 );
 }
@@ -5386,7 +5537,7 @@ void SettingsSET45_TripMileageReset_Init( SettingsSET45_TripMileageReset _this,
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const0043 ));
+  EwTrace( "%s", EwLoadString( &_Const003F ));
   SettingsSET45_TripMileageReset_SetNoOfMenuItems( _this );
   SettingsSET45_TripMileageReset_GetMileageSetting( _this );
 }
@@ -5790,7 +5941,7 @@ void SettingsSET46_VehicleInfoReset_Init( SettingsSET46_VehicleInfoReset _this,
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const0044 ));
+  EwTrace( "%s", EwLoadString( &_Const0040 ));
   SettingsSET46_VehicleInfoReset_SetNoOfMenuItems( _this );
   SettingsSET46_VehicleInfoReset_GetUnitSetting( _this );
 }
@@ -6184,8 +6335,8 @@ void SettingsSET27_ConfirmUpdate__Init( SettingsSET27_ConfirmUpdate _this, XObje
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
-  CoreRectView__OnSetBounds( &_this->Text, _Const0045 );
-  ViewsText_OnSetString( &_this->Text, EwLoadString( &StringsSET27_UPDATE_SYSTEM ));
+  CoreRectView__OnSetBounds( &_this->Text, _Const0041 );
+  ViewsText_OnSetString( &_this->Text, EwGetVariantOfString( &StringsSET27_UPDATE_SYSTEM ));
   CoreRectView__OnSetBounds( &_this->UpDownPushButtonSet, _Const0003 );
   _this->UpDownPushButtonSet.Super1.PassHomeKey = 1;
   _this->UpDownPushButtonSet.Super1.PassMagicKey = 1;
@@ -6223,6 +6374,9 @@ void SettingsSET27_ConfirmUpdate__ReInit( SettingsSET27_ConfirmUpdate _this )
   MenuUpDownPushButtonSet__ReInit( &_this->UpDownPushButtonSet );
   CoreSystemEventHandler__ReInit( &_this->ReceivedSystemEventHandler );
   CoreTimer__ReInit( &_this->HoldTimer );
+
+  /* Call the user defined re-constructor of the class */
+  SettingsSET27_ConfirmUpdate_ReInit( _this );
 }
 
 /* Finalizer method for the class 'Settings::SET27_ConfirmUpdate' */
@@ -6241,6 +6395,16 @@ void SettingsSET27_ConfirmUpdate__Done( SettingsSET27_ConfirmUpdate _this )
   ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
+/* 'C' function for method : 'Settings::SET27_ConfirmUpdate.ReInit()' */
+void SettingsSET27_ConfirmUpdate_ReInit( SettingsSET27_ConfirmUpdate _this )
+{
+  ViewsText_OnSetString( &_this->Text, EwGetVariantOfString( &StringsSET27_UPDATE_SYSTEM ));
+  MenuUpDownPushButtonSet_OnSetUpButtonTitle( &_this->UpDownPushButtonSet, EwGetVariantOfString( 
+  &StringsGEN_CANCEL ));
+  MenuUpDownPushButtonSet_OnSetDownButtonTitle( &_this->UpDownPushButtonSet, EwGetVariantOfString( 
+  &StringsGEN_OK ));
+}
+
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 
    statements. */
@@ -6251,7 +6415,7 @@ void SettingsSET27_ConfirmUpdate_Init( SettingsSET27_ConfirmUpdate _this, XHandl
   EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const0046 ));
+  EwTrace( "%s", EwLoadString( &_Const0042 ));
   DeviceInterfaceSystemDeviceClass_SaveLastStatus( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
   DeviceInterfaceSystemDeviceClass ));
 }
@@ -6305,7 +6469,7 @@ void SettingsSET27_ConfirmUpdate_OnSystemEventReceived( SettingsSET27_ConfirmUpd
       case EnumSystemRxEventREPROGRAM_REJECTED :
       {
         SettingsTimeoutDialog Dialog = EwNewObject( SettingsTimeoutDialog, 0 );
-        SettingsTimeoutDialog_OnSetMessage( Dialog, EwLoadString( &StringsSET29_DRIVING_NO_SW_UPDATE ));
+        SettingsTimeoutDialog_OnSetMessage( Dialog, EwGetVariantOfString( &StringsSET29_DRIVING_NO_SW_UPDATE ));
         Dialog->DismissAfterTimeout = 1;
         CoreGroup_SwitchToDialog( _this->Super5.Owner, ((CoreGroup)Dialog ), 0, 
         0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );

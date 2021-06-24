@@ -153,7 +153,7 @@ void MediaMED01_MediaUI__Init( MediaMED01_MediaUI _this, XObject aLink, XHandle 
   CoreGroup__OnSetVisible( &_this->SeekBar, 0 );
   WidgetSetHorizontalSlider_OnSetCurrentValue( &_this->SeekBar, 0 );
   CoreRectView__OnSetBounds( &_this->ErrorMessage, _Const000A );
-  ViewsText_OnSetString( &_this->ErrorMessage, EwLoadString( &StringsMED02_DEV_UNAVAILABLE ));
+  ViewsText_OnSetString( &_this->ErrorMessage, EwGetVariantOfString( &StringsMED02_DEV_UNAVAILABLE ));
   ViewsText_OnSetVisible( &_this->ErrorMessage, 0 );
   CoreTimer_OnSetPeriod( &_this->BleConnectionRecoveryTimer, 5000 );
   CoreGroup__Add( _this, ((CoreView)&_this->Title ), 0 );
@@ -267,6 +267,9 @@ void MediaMED01_MediaUI__ReInit( MediaMED01_MediaUI _this )
   CoreTimer__ReInit( &_this->BleConnectionRecoveryTimer );
   CoreSystemEventHandler__ReInit( &_this->AmsBleConnectionEventHandler );
   CoreSystemEventHandler__ReInit( &_this->MediaVolumeUpdateEventHandler );
+
+  /* Call the user defined re-constructor of the class */
+  MediaMED01_MediaUI_ReInit( _this );
 }
 
 /* Finalizer method for the class 'Media::MED01_MediaUI' */
@@ -304,6 +307,12 @@ void MediaMED01_MediaUI__Done( MediaMED01_MediaUI _this )
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseMainBG__Done( &_this->_.Super );
+}
+
+/* 'C' function for method : 'Media::MED01_MediaUI.ReInit()' */
+void MediaMED01_MediaUI_ReInit( MediaMED01_MediaUI _this )
+{
+  ViewsText_OnSetString( &_this->ErrorMessage, EwGetVariantOfString( &StringsMED02_DEV_UNAVAILABLE ));
 }
 
 /* The method Init() is invoked automatically after the component has been created. 

@@ -190,6 +190,9 @@ EW_DEFINE_METHODS( MediaMED01_MediaUI, ComponentsBaseMainBG )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( MediaMED01_MediaUI )
 
+/* 'C' function for method : 'Media::MED01_MediaUI.ReInit()' */
+void MediaMED01_MediaUI_ReInit( MediaMED01_MediaUI _this );
+
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 
    statements. */

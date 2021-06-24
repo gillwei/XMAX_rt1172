@@ -98,6 +98,11 @@
 #define FACTORY_TEST_EVENT_BURNIN_TIME_UPDATE   ( 1 << 3 )
 #define FACTORY_TEST_EVENT_BURNIN_RESULT        ( 1 << 4 )
 
+#define EEPROM_READ_STATUS_OP_MODE              ( 1 << 0 )
+#define EEPROM_READ_STATUS_LANGUAGE             ( 1 << 1 )
+#define EEPROM_READ_STATUS_LAST_PAGE            ( 1 << 2 )
+#define EEPROM_READ_STATUS_ESN                  ( 1 << 3 )
+
 /*--------------------------------------------------------------------
                                  TYPES
 --------------------------------------------------------------------*/
@@ -173,6 +178,9 @@ static void ew_get_info_from_eeprom( void );
     static bool     is_last_page_read;
     static bool     clk_auto_adj_status;
     static uint8_t  clk_auto_adj_status_in_eep = 0;
+    static uint32_t eeprom_read_status = 0;
+    static EnumLanguage      ew_language;
+    static language_src_prority_e ew_language_src = LANGUAGE_SRC_PRIORITY_EEPROM;
 #endif
 
 static uint32_t esn;
@@ -231,7 +239,7 @@ void ew_device_system_init
        Get access to the counterpart of this device driver: get access to the
        device class that is created as autoobject within your Embedded Wizard
        project. For this purpose you can call the function EwGetAutoObject().
-       This function contains two paramters: The pointer to the autoobject and
+       This function contains two parameters: The pointer to the autoobject and
        the class of the autoobject.
        Assuming you have implemented the class 'DeviceClass' within the unit
        'Application' and you have an autoobject with the name 'Device', make
@@ -397,6 +405,35 @@ sprintf( version, "%d.%02d", bt_sw_ver[0], bt_sw_ver[1] );
 /*********************************************************************
 *
 * @private
+* ew_system_set_language
+*
+* Set language
+*
+* @param lang_src_prority Language source priority
+* @param language Language of EnumLanguage type
+*
+*********************************************************************/
+void ew_system_set_language
+    (
+    const language_src_prority_e lang_src_prority,
+    const EnumLanguage language
+    )
+{
+/* To avoid the language setting from EEPROM overwriting the language setting from the smartphone,
+   check priority before overwriting */
+if( lang_src_prority >= ew_language_src )
+    {
+    if( ew_language != language )
+        {
+        ew_language = language;
+        EW_notify_system_event_received( EnumSystemRxEventLANGUAGE_CHANGED );
+        }
+    }
+}
+
+/*********************************************************************
+*
+* @private
 * ew_set_last_page
 *
 * Set last page
@@ -556,6 +593,7 @@ if( EEPROM_INVALID_VAL_4_BYTE != esn )
     {
     is_esn_read = 1;
     }
+eeprom_read_status |= EEPROM_READ_STATUS_ESN;
 }
 
 /*********************************************************************
@@ -688,6 +726,39 @@ else
 /*********************************************************************
 *
 * @public
+* EW_get_language_callback
+*
+* Callback of reading language setting from EEPROM
+*
+* @param result True if read success. False if read fail.
+* @param value Pointer to the last page of uint8_t* type
+*
+*********************************************************************/
+void EW_get_language_callback
+    (
+    bool  result,
+    void* value
+    )
+{
+if( result )
+    {
+    uint8_t language = *(uint8_t*)value;
+    PRINTF( "rd lang %d\r\n", language );
+    if( EnumLanguageTOTAL > language )
+        {
+        ew_system_set_language( LANGUAGE_SRC_PRIORITY_EEPROM, language );
+        }
+    eeprom_read_status |= EEPROM_READ_STATUS_LANGUAGE;
+    }
+else
+    {
+    PRINTF( "rd last page fail\r\n" );
+    }
+}
+
+/*********************************************************************
+*
+* @public
 * EW_read_operation_mode_callback
 *
 * Callback of reading operation mode from EEPROM
@@ -727,6 +798,7 @@ else
 
 ew_set_operation_mode( operation_mode_in_eep );
 is_op_mode_ready = true;
+eeprom_read_status |= EEPROM_READ_STATUS_OP_MODE;
 }
 
 /*********************************************************************
@@ -833,6 +905,10 @@ read_unit_id_from_eeprom();
 if( pdFALSE == EEPM_get_last_page( &EW_get_last_page_callback ) )
     {
     EwPrint( "get last page err\r\n" );
+    }
+if( pdFALSE == EEPM_get_language( &EW_get_language_callback ) )
+    {
+    EwPrint( "get lang err\r\n" );
     }
 if( pdFALSE == EEPM_get_clk_auto_adjustment( &EW_get_clock_auto_adj_callback ) )
     {
@@ -1004,6 +1080,86 @@ return ew_str_idx;
 /*********************************************************************
 *
 * @private
+* set_language_from_phone
+*
+* Set language from the smartphone
+*
+*********************************************************************/
+static void set_language_from_phone
+    (
+    void
+    )
+{
+uint8_t phone_language = BC_motocon_get_language_type();
+EnumLanguage language;
+
+switch( phone_language )
+    {
+    case BC_MOTOCON_LANGUAGE_ENGLISH_US:
+        language = EnumLanguageENGLISH;
+        break;
+    case BC_MOTOCON_LANGUAGE_FRENCH_FRA:
+        language = EnumLanguageFRENCH;
+        break;
+    case BC_MOTOCON_LANGUAGE_GERMAN:
+        language = EnumLanguageGERMAN;
+        break;
+    case BC_MOTOCON_LANGUAGE_ITALIAN:
+        language = EnumLanguageITALIAN;
+        break;
+    case BC_MOTOCON_LANGUAGE_JAPANESE:
+        language = EnumLanguageJAPANESE;
+        break;
+    case BC_MOTOCON_LANGUAGE_SPANISH_INTL:
+        language = EnumLanguageSPANISH;
+        break;
+    case BC_MOTOCON_LANGUAGE_TRADITIONAL_CHINESE:
+        language = EnumLanguageTRADITIONAL_CHINESE;
+        break;
+    case BC_MOTOCON_LANGUAGE_SIMPLIFIED_CHINESE:
+        language = EnumLanguageSIMPLIFIED_CHINESE;
+        break;
+    case BC_MOTOCON_LANGUAGE_GREEK:
+        language = EnumLanguageGREEK;
+        break;
+    case BC_MOTOCON_LANGUAGE_FINNISH:
+        language = EnumLanguageFINNISH;
+        break;
+    case BC_MOTOCON_LANGUAGE_HINDI:
+        language = EnumLanguageHINDI;
+        break;
+    case BC_MOTOCON_LANGUAGE_INDONESIAN:
+        language = EnumLanguageINDONESIAN;
+        break;
+    case BC_MOTOCON_LANGUAGE_POLISH:
+        language = EnumLanguagePOLISH;
+        break;
+    case BC_MOTOCON_LANGUAGE_PORTUGUESE:
+        language = EnumLanguagePORTUGUESE_BRAZIL;
+        break;
+    case BC_MOTOCON_LANGUAGE_THAI:
+        language = EnumLanguageTHAI;
+        break;
+    case BC_MOTOCON_LANGUAGE_VIETNAMESE:
+        language = EnumLanguageVIETNAMESE;
+        break;
+    case BC_MOTOCON_LANGUAGE_KOREAN:
+        language = EnumLanguageKOREAN;
+        break;
+    case BC_MOTOCON_LANGUAGE_MALAY:
+        language = EnumLanguageMALAY;
+        break;
+    default:
+        language = EnumLanguageENGLISH;
+        break;
+    }
+
+    ew_system_set_language( LANGUAGE_SRC_PRIORITY_PHONE, language );
+}
+
+/*********************************************************************
+*
+* @private
 * notify_system_event_received
 *
 * Notify EW GUI the received system event
@@ -1022,6 +1178,9 @@ while( pdPASS == xQueueReceive( system_rx_event_queue, &system_rx_event, 0 ) )
     {
     switch( system_rx_event )
         {
+        case EnumSystemRxEventPHONE_LANGUAGE_RECEIVED:
+            set_language_from_phone();
+            break;
         case EnumSystemRxEventUNIT_ID_UPDATED:
             read_unit_id_from_eeprom();
             break;
@@ -1742,6 +1901,9 @@ int32_t status;
 
 switch( status_type )
     {
+    case EnumSystemStatusLANGUAGE:
+        status = ew_language;
+        break;
     case EnumSystemStatusIS_TFT_BRIGHTNESS_LEVEL_MAX:
         status = DISP_is_current_tft_brighness_level_max();
         break;

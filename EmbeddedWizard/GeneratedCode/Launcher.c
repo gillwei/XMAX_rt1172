@@ -229,6 +229,9 @@ void LauncherLNC_Main__ReInit( LauncherLNC_Main _this )
   LauncherLNC_RotaryPlate__ReInit( &_this->LNC_RotaryPlate );
   ViewsWallpaper__ReInit( &_this->StatusBarShadowImage );
   CoreSystemEventHandler__ReInit( &_this->VehicleDataReceivedEventHandler );
+
+  /* Call the user defined re-constructor of the class */
+  LauncherLNC_Main_ReInit( _this );
 }
 
 /* Finalizer method for the class 'Launcher::LNC_Main' */
@@ -249,6 +252,13 @@ void LauncherLNC_Main__Done( LauncherLNC_Main _this )
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseComponent__Done( &_this->_.Super );
+}
+
+/* 'C' function for method : 'Launcher::LNC_Main.ReInit()' */
+void LauncherLNC_Main_ReInit( LauncherLNC_Main _this )
+{
+  LauncherLNC_Base_SetItems( &_this->LNC_Base, _this->PreviousItem, _this->CurrentItem, 
+  _this->NextItem );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -1406,11 +1416,11 @@ XString LauncherLNC_Base_GetStringOfLauncherItem( LauncherLNC_Base _this, XEnum
   switch ( aLauncherItem )
   {
     case EnumLauncherItemPHONE :
-      Title = EwLoadString( &StringsLNC_PHONE );
+      Title = EwGetVariantOfString( &StringsLNC_PHONE );
     break;
 
     case EnumLauncherItemMUSIC :
-      Title = EwLoadString( &StringsLNC_MUSIC );
+      Title = EwGetVariantOfString( &StringsLNC_MUSIC );
     break;
 
     case EnumLauncherItemODO_TRIP :
@@ -1418,35 +1428,35 @@ XString LauncherLNC_Base_GetStringOfLauncherItem( LauncherLNC_Base _this, XEnum
     break;
 
     case EnumLauncherItemMETER_DISPLAY :
-      Title = EwLoadString( &StringsLNC_METER_DISPLAY );
+      Title = EwGetVariantOfString( &StringsLNC_METER_DISPLAY );
     break;
 
     case EnumLauncherItemNAVIGATION :
-      Title = EwLoadString( &StringsLNC_NAVIGATION );
+      Title = EwGetVariantOfString( &StringsLNC_NAVIGATION );
     break;
 
     case EnumLauncherItemNOTIFICATION :
-      Title = EwLoadString( &StringsLNC_NOTIFICATION );
+      Title = EwGetVariantOfString( &StringsLNC_NOTIFICATION );
     break;
 
     case EnumLauncherItemWEATHER :
-      Title = EwLoadString( &StringsLNC_WEATHER );
+      Title = EwGetVariantOfString( &StringsLNC_WEATHER );
     break;
 
     case EnumLauncherItemSETTINGS :
-      Title = EwLoadString( &StringsLNC_SETTINGS );
+      Title = EwGetVariantOfString( &StringsLNC_SETTINGS );
     break;
 
     case EnumLauncherItemSEAT_HEATER :
-      Title = EwLoadString( &StringsLNC_SEAT_HEATER );
+      Title = EwGetVariantOfString( &StringsLNC_SEAT_HEATER );
     break;
 
     case EnumLauncherItemGRIP_WARMER :
-      Title = EwLoadString( &StringsGPW01_GRIP_WARMER );
+      Title = EwGetVariantOfString( &StringsGPW01_GRIP_WARMER );
     break;
 
     case EnumLauncherItemWIND_SCREEN :
-      Title = EwLoadString( &StringsWSC01_WIND_SCREEN );
+      Title = EwGetVariantOfString( &StringsWSC01_WIND_SCREEN );
     break;
 
     default :; 

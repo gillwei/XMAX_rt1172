@@ -171,6 +171,9 @@ EW_DEFINE_METHODS( SettingsSET28_SystemInfo, ComponentsBaseMainBG )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( SettingsSET28_SystemInfo )
 
+/* 'C' function for method : 'Settings::SET28_SystemInfo.ReInit()' */
+void SettingsSET28_SystemInfo_ReInit( SettingsSET28_SystemInfo _this );
+
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 
    statements. */

@@ -166,6 +166,9 @@ EW_DEFINE_METHODS( TopTOP01_Disclaimer, ComponentsBaseComponent )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( TopTOP01_Disclaimer )
 
+/* 'C' function for method : 'Top::TOP01_Disclaimer.ReInit()' */
+void TopTOP01_Disclaimer_ReInit( TopTOP01_Disclaimer _this );
+
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 
    statements. */
