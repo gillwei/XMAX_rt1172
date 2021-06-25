@@ -674,6 +674,24 @@ PRINTF( "%s\r\n", __FUNCTION__ );
 /*********************************************************************
 *
 * @private
+* send_system_status
+*
+* Send system status in the CAN message H'57A
+*
+*********************************************************************/
+void send_system_status
+    (
+    const uint8_t status
+    )
+{
+dll_frm_index_t l_frm_index;
+can_mid_sig_set( &l_frm_index, IL_CAN0_SYS_INFO_LC_SYS_STAT_TXSIG_HANDLE, IL_CAN0_SYS_INFO_LC_SYS_STAT_TXSIG_NBYTES, &status );
+can_mid_frm_send( l_frm_index );
+}
+
+/*********************************************************************
+*
+* @private
 * vi_get_progsts
 *
 * Return pogsts sent in H'5B3
@@ -783,6 +801,9 @@ switch( tx_type )
         break;
     case EnumVehicleTxTypeREBOOT_REQUEST:
         send_reboot_request();
+        break;
+    case EnumVehicleTxTypeSYSTEM_STATUS_READY:
+        send_system_status( IL_VT_SYS_INFO_LC_SYS_STAT_READY );
         break;
     default:
         PRINTF( "Err: %s invalid tx type %d\r\n", __FUNCTION__, tx_type );

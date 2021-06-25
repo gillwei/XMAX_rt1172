@@ -294,7 +294,8 @@ typedef enum
   EnumVehicleTxTypeRESET_METER          = 18,
   EnumVehicleTxTypeREQUEST_REPROGRAM    = 19,
   EnumVehicleTxTypeREBOOT_REQUEST       = 20,
-  EnumVehicleTxTypeTOTAL                = 21
+  EnumVehicleTxTypeSYSTEM_STATUS_READY  = 21,
+  EnumVehicleTxTypeTOTAL                = 22
 } EnumVehicleTxType;
 
 /* User defined enumeration: 'Enum::DataType' */

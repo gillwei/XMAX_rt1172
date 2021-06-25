@@ -641,6 +641,9 @@ enum VehicleTxType
   item REBOOT_REQUEST;
 
   $rect <430,10,630,50>
+  item SYSTEM_STATUS_READY;
+
+  $rect <430,60,630,100>
   item TOTAL;
 }
 

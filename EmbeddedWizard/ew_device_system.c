@@ -1791,6 +1791,7 @@ if( OPENING_EVENT_TFT_BACKLIGHT_ON == event )
 if( is_tft_backlight_on && is_op_mode_ready )
     {
     start_opening();
+    VI_set_tx_data( EnumVehicleTxTypeSYSTEM_STATUS_READY, 0 );
     }
 }
 
