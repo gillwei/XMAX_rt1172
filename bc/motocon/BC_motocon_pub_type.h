@@ -106,7 +106,9 @@ typedef uint16_t bc_motocon_command_code_t; enum
     BC_MOTOCON_COMMAND_CODE_ALIVE_CHECK_REQUEST                            = 0x0135,
     BC_MOTOCON_COMMAND_CODE_ALIVE_CHECK_RESPONSE                           = 0x0136,
     BC_MOTOCON_COMMAND_CODE_IGNITION_STATE_REQUEST                         = 0x0137,
-    BC_MOTOCON_COMMAND_CODE_IGNITION_STATE_RESPONSE                        = 0x0138
+    BC_MOTOCON_COMMAND_CODE_IGNITION_STATE_RESPONSE                        = 0x0138,
+    BC_MOTOCON_COMMAND_CODE_CONNECT_INFORMATION_REQUEST                    = 0x0139,
+    BC_MOTOCON_COMMAND_CODE_CONNECT_INFORMATION_RESPONSE                   = 0x013A
     };/* end of bc_motocon_command_code_t */
 
 typedef enum

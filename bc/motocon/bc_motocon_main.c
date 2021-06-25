@@ -83,6 +83,7 @@ void bc_motocon_init
     void
     )
 {
+bc_motocon_authentication_init();
 bc_motocon_set_connected( false );
 #if( ENABLE_MOTOCON_HCI_LINK )
     HCI_le_register_server_callback( BLE_SERVER_MOTOCONSDK, &bc_motocon_ble_callback );

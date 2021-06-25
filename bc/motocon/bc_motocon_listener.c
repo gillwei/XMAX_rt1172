@@ -205,8 +205,20 @@ void bc_motocon_listener_connection_status
 {
 motocon_connected = connected;
 EW_notify_motocon_event_received( EnumMotoConRxEventCONNECTION_STATUS );
+EW_notify_bt_paired_device_status_changed();
 if( connected )
     {
+    bool isNaviConnected;
+    BTM_get_LC_is_connecting( &isNaviConnected );
+    PRINTF("%s isNaviConnected? %d\r\n", __FUNCTION__, isNaviConnected);
+    if( isNaviConnected )
+        {
+        EW_notify_bt_connection_result( EnumBtDeviceConnectionResultBOTH_APP_CONNECTED );
+        }
+    else
+        {
+        EW_notify_bt_connection_result( EnumBtDeviceConnectionResultONLY_YAMAHA_APP_CONNECTED );
+        }
     BC_motocon_send_language_type_request();
     BC_motocon_send_vehicle_setting_request();
     send_linkcard_info();

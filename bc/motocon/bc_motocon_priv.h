@@ -138,6 +138,10 @@ void bc_motocon_parse_error_handler( const bc_motocon_command_code_t type, const
 
 void bc_motocon_listener_init( void );
 
+void bc_motocon_authentication_init( void );
+void bc_motocon_authentication_set_data( const uint8_t* ccuid, const uint8_t* passkey );
+bool bc_motocon_authentication_verify_data( const uint8_t* ccuid, const uint8_t* passkey );
+
 #ifdef __cplusplus
 }
 #endif

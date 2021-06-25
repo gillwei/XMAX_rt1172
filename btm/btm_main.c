@@ -34,6 +34,7 @@
 #include "GRM_pub_prj.h"
 #include "factory_test.h"
 #include "bt_spp_iap2.h"
+#include "BC_motocon_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -1848,7 +1849,7 @@ if( paired_device_idx <= paired_device_num )
     {
     *device_name  = paired_device_list[paired_device_idx].device_name;
     *is_navi_connected = paired_device_list[paired_device_idx].is_connected;
-    *is_y_app_connected = paired_device_list[paired_device_idx].y_app_is_connected;
+    *is_y_app_connected = paired_device_list[paired_device_idx].y_app_is_connected ? BC_motocon_is_connected() : false;
     result = 1;
     }
 PRINTF( "%s, %d, %s, %d, %d\r\n", __FUNCTION__, paired_device_idx, *device_name, *is_navi_connected, *is_y_app_connected );

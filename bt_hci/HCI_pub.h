@@ -148,6 +148,11 @@ bool HCI_spp_iap2_add_data_callback
     spp_iap2_data_callback data_callback
     );
 
+bool HCI_spp_iap2_add_data_callback_y_app
+    (
+    spp_iap2_data_callback data_callback
+    );
+
 void HCI_init
     (
     void
