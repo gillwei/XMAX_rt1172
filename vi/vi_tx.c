@@ -54,6 +54,90 @@ static uint8_t progsts;
 /*********************************************************************
 *
 * @private
+* send_language_setting
+*
+* Send language setting to meter
+*
+* @param ew_language Language setting of EnumLanguage type
+*
+*********************************************************************/
+void send_language_setting
+    (
+    const EnumLanguage ew_language
+    )
+{
+dll_frm_index_t l_frm_index;
+uint8_t         language_idx = 0;
+
+switch( ew_language )
+    {
+    case EnumLanguageENGLISH:
+        language_idx = IL_VT_SYS_INFO_LANG_ENGLISH;
+        break;
+    case EnumLanguageFRENCH:
+        language_idx = IL_VT_SYS_INFO_LANG_FRENCH;
+        break;
+    case EnumLanguageGERMAN:
+        language_idx = IL_VT_SYS_INFO_LANG_DEUTSCH;
+        break;
+    case EnumLanguageITALIAN:
+        language_idx = IL_VT_SYS_INFO_LANG_ITALIAN;
+        break;
+    case EnumLanguageJAPANESE:
+        language_idx = IL_VT_SYS_INFO_LANG_JAPANESE;
+        break;
+    case EnumLanguageSPANISH:
+        language_idx = IL_VT_SYS_INFO_LANG_SPANISH;
+        break;
+    case EnumLanguageTRADITIONAL_CHINESE:
+        language_idx = IL_VT_SYS_INFO_LANG_TRADITIONAL_CHINESE;
+        break;
+    case EnumLanguageSIMPLIFIED_CHINESE:
+        language_idx = IL_VT_SYS_INFO_LANG_SIMPLIFIED_CHINESE;
+        break;
+    case EnumLanguageGREEK:
+        language_idx = IL_VT_SYS_INFO_LANG_GREEK;
+        break;
+    case EnumLanguageFINNISH:
+        language_idx = IL_VT_SYS_INFO_LANG_FINNISH;
+        break;
+    case EnumLanguageHINDI:
+        language_idx = IL_VT_SYS_INFO_LANG_HINDI;
+        break;
+    case EnumLanguageINDONESIAN:
+        language_idx = IL_VT_SYS_INFO_LANG_INDONESIAN;
+        break;
+    case EnumLanguagePOLISH:
+        language_idx = IL_VT_SYS_INFO_LANG_POLISH;
+        break;
+    case EnumLanguagePORTUGUESE_BRAZIL:
+        language_idx = IL_VT_SYS_INFO_LANG_PORTUGUESE_BRAZIL;
+        break;
+    case EnumLanguageTHAI:
+        language_idx = IL_VT_SYS_INFO_LANG_THAI;
+        break;
+    case EnumLanguageVIETNAMESE:
+        language_idx = IL_VT_SYS_INFO_LANG_VIETNAMESE;
+        break;
+    case EnumLanguageKOREAN:
+        language_idx = IL_VT_SYS_INFO_LANG_KOREAN;
+        break;
+    case EnumLanguageMALAY:
+        language_idx = IL_VT_SYS_INFO_LANG_MALAY;
+        break;
+    default:
+        language_idx = IL_VT_SYS_INFO_LANG_NONE;
+        break;
+    }
+
+/* H'57A */
+can_mid_sig_set( &l_frm_index, IL_CAN0_SYS_INFO_LANG_TXSIG_HANDLE, IL_CAN0_SYS_INFO_LANG_TXSIG_NBYTES, &language_idx );
+can_mid_frm_send( l_frm_index );
+}
+
+/*********************************************************************
+*
+* @private
 * send_mileage_unit
 *
 * Send mileage unit setting to meter
@@ -743,6 +827,7 @@ void VI_set_tx_data
 switch( tx_type )
     {
     case EnumVehicleTxTypeLANGUAGE:
+        send_language_setting( (EnumLanguage)data );
         break;
     case EnumVehicleTxTypeMILEAGE_UNIT:
         send_mileage_unit( (uint8_t)data );

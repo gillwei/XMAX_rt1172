@@ -427,6 +427,7 @@ if( lang_src_prority >= ew_language_src )
         {
         ew_language = language;
         EW_notify_system_event_received( EnumSystemRxEventLANGUAGE_CHANGED );
+        VI_set_tx_data( EnumVehicleTxTypeLANGUAGE, ew_language );
         }
     }
 }
