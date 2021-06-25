@@ -18,6 +18,7 @@ extern "C"{
 #include "PM_pub.h"
 #include "FreeRTOS.h"
 #include "task.h"
+#include "MIMXRT1172.h"
 #include "fsl_iomuxc.h"
 #include "fsl_lpuart.h"
 #include "fsl_debug_console.h"
@@ -36,6 +37,7 @@ extern "C"{
 
 #define WAKEUP_GPIO                     BOARD_INITPINS_IGN_WAKE_GPIO
 #define WAKEUP_GPIO_PIN                 BOARD_INITPINS_IGN_WAKE_GPIO_PIN
+#define WAKEUP_GPIO_PIN_MASK            BOARD_INITPINS_IGN_WAKE_GPIO_PIN_MASK
 #define WAKEUP_IRQ                      GPIO13_Combined_0_31_IRQn
 #define WAKEUP_IRQ_HANDLER              GPIO13_Combined_0_31_IRQHandler
 
@@ -122,12 +124,12 @@ static void pm_create_task
 
 static bool go_to_snvs_timeout
     (
-    volatile bool
+    volatile bool ign_status
     );
 
 static bool force_snvs_timeout
     (
-    void
+    bool ign_status
     );
 
 static void go_to_snvs_mode
@@ -202,11 +204,9 @@ void WAKEUP_IRQ_HANDLER
     void
     )
 {
-if( ( 1U << WAKEUP_GPIO_PIN ) & GPIO_GetPinsInterruptFlags( WAKEUP_GPIO ) )
+if( GPIO_GetPinsInterruptFlags( WAKEUP_GPIO ) & WAKEUP_GPIO_PIN_MASK )
     {
-    GPIO_DisableInterrupts( WAKEUP_GPIO, 1U << WAKEUP_GPIO_PIN );
-    GPIO_ClearPinsInterruptFlags( WAKEUP_GPIO, 1U << WAKEUP_GPIO_PIN );
-    disable_wakeup_source( WAKEUP_IRQ );
+    GPIO_ClearPinsInterruptFlags( WAKEUP_GPIO, WAKEUP_GPIO_PIN_MASK );
     }
 SDK_ISR_EXIT_BARRIER;
 }
@@ -388,7 +388,7 @@ return start_snvs;
 *********************************************************************/
 static bool force_snvs_timeout
     (
-    void
+    volatile bool ign_status
     )
 {
 static int count = 0;
@@ -432,7 +432,7 @@ while( true )
             notify_pm_callback( ign_status );
             pm_notified = true;
             }
-        if( force_snvs_timeout() )
+        if( force_snvs_timeout( ign_status ) )
             {
             go_to_snvs_mode();
             }
@@ -493,6 +493,10 @@ static void go_to_snvs_mode
 {
 set_wakeup_config();
 snvs_pre_handler();
+if( GPIO_ReadPinInput( WAKEUP_GPIO, WAKEUP_GPIO_PIN ) == PM_IGN_ON )
+    {
+    NVIC_SystemReset();
+    }
 enter_snvs();
 }
 
@@ -549,7 +553,7 @@ static void snvs_pre_handler
     void
     )
 {
-PRINTF("Now shutting down the system...\r\n");
+PRINTF("Go to SNVS mode\r\n");
 display_pre_handler();
 }
 
@@ -569,7 +573,7 @@ static void enter_snvs
 /* set SNVS flag on SNVS_GPR32 bit 1 for future check */
 IOMUXC_SNVS_GPR->GPR32 |= IOMUXC_SNVS_GPR_GPR32_GPR( 1 << 1 );
 IOMUXC_SNVS_GPR->GPR37 |= IOMUXC_SNVS_GPR_GPR37_SNVS_TAMPER_PUE_MASK;
-SNVS->LPCR |= SNVS_LPCR_TOP(1);
+SNVS->LPCR |= SNVS_LPCR_TOP_MASK;
 while( true )
     {
     }
