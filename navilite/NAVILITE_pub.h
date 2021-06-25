@@ -65,6 +65,13 @@ typedef enum tagNAVILITE_NAVIEVENT_TYPE
     NAVILITE_NAVIEVENT_TYPE_OTHER
     } navilite_navievent_type;
 
+typedef enum tagNAVILITE_CONTENT_MODE_TYPE
+    {
+    NAVILITE_CONTENT_MODE_BUSY = 0, // busy mask page / busy indicator
+    NAVILITE_CONTENT_MODE_TBT = 1, // from MAP to TBT
+    NAVILITE_CONTENT_MODE_MAP = 2 // from TBT to MAP
+    } navilite_content_mode_type;
+
 typedef enum tagNAVILITE_EVENT_CAMERA_EXTRA_SUBTYPE
     {
     NAVILITE_CAM_TYPE_CHECK_FIXED = 0, // A permanent spot check - e.g. a GATSO.
@@ -169,6 +176,7 @@ typedef void ( *navilite_callback_func_esn_sent )( void ); // ESN id notify
 typedef void ( *navilite_callback_func_imageframe )( uint8_t* image, uint16_t image_size, navilite_image_type mode );
 typedef void ( *navilite_callback_func_eta )( uint32_t value );
 typedef void ( *navilite_callback_func_bt_timeout )( uint8_t value );
+typedef void ( *navilite_callback_func_content_mode_switch )( navilite_content_mode_type mode, uint8_t throughput_timeout );
 typedef void ( *navilite_callback_func_currentroadname )( uint8_t* str, uint8_t str_size );
 typedef void ( *navilite_callback_func_nextturndistance )( uint8_t icon_index, uint32_t distance, uint8_t* dist_unit_str, uint8_t dist_unit_str_size );
 typedef void ( *navilite_callback_func_nexttbtlist )( navilite_tbt_list_action_type action, navilite_tbt_list_type* list, uint16_t list_item_index, uint16_t list_total_items, uint16_t list_item_total_recevied, uint8_t has_more_items_on_next_request );
@@ -197,6 +205,7 @@ typedef struct tagNAVILITE_CONTENT_UPDATE_CALLBACKS
     navilite_callback_func_imageframe callback_func_imageframe;
     navilite_callback_func_eta callback_func_eta;
     navilite_callback_func_bt_timeout callback_func_bt_timeout;
+    navilite_callback_func_content_mode_switch callback_func_content_mode_switch;
     navilite_callback_func_currentroadname callback_func_currentroadname;
     navilite_callback_func_nextturndistance callback_func_nextturndistance;
     navilite_callback_func_nexttbtlist callback_func_nexttbtist;
@@ -229,6 +238,9 @@ typedef struct tagNAVILTE_SESSION_STATE
     uint8_t office_status; // is office setting set? 1 - set , 0 - no
     uint8_t home_status; // is home setting set? 1 - set, 0 - no
     uint8_t inited;
+    uint8_t auth_request_sent;
+    uint32_t last_received_content_tick; // tick timestamp for last received content target (image/tbt)
+    uint8_t bt_throughput_skip_request; // skip request when bt throughput is met
     } navilite_session_status_type;
 /*--------------------------------------------------------------------
                         PROJECT INCLUDES
