@@ -30,6 +30,8 @@ extern "C" {
 //       Its value is 240 bytes, we define the same value here for MCU to use.
 #define HCI_HEADER_LEN       ( 5 )
 #define HCI_PAYLOAD_MAX_SIZE ( 240 )
+#define HCI_COMMAND_MAX_SIZE ( HCI_HEADER_LEN + HCI_PAYLOAD_MAX_SIZE )
+#define HCI_EVENT_MAX_SIZE   ( HCI_HEADER_LEN + HCI_PAYLOAD_MAX_SIZE )
 
 /*--------------------------------------------------------------------
                         TYPES
