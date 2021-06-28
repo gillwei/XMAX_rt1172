@@ -317,7 +317,7 @@ typedef struct
     {
     uint16_t current_firmware_ver;
     uint8_t  linkcard_model;
-    uint8_t  serial_number[8];
+    uint8_t  serial_number[10];
     uint8_t  new_program_position;
     } bc_motocon_ota_linkcard_info_t;
 

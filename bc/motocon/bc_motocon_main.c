@@ -679,15 +679,15 @@ bc_motocon_send_result_t BC_motocon_send_ota_linkcard_info
     )
 {
 BC_MOTOCON_PRINTF( "%s\r\n", __FUNCTION__ );
-uint8_t data[14];
+uint8_t data[16];
 data[0] = BC_MOTOCON_COMMAND_CODE_OTA_LINKCARD_INFORMATION >> 8;
 data[1] = BC_MOTOCON_COMMAND_CODE_OTA_LINKCARD_INFORMATION & 0xFF;
 data[2] = info->current_firmware_ver >> 8;
 data[3] = info->current_firmware_ver & 0xFF;
 data[4] = info->linkcard_model;
-memcpy( data + 5, info->serial_number, 8 );
-data[13] = info->new_program_position;
-return bc_motocon_send_data( BC_MOTOCON_NOTIFY, data, 14 );
+memcpy( data + 5, info->serial_number, 10 );
+data[15] = info->new_program_position;
+return bc_motocon_send_data( BC_MOTOCON_NOTIFY, data, 16 );
 }
 
 /*********************************************************************
