@@ -19,9 +19,11 @@ extern "C"{
 #include "fsl_debug_console.h"
 #include "GRM_pub_prj.h"
 
+#include "bt_core.h"
 #include "bt_log.h"
 #include "bt_utils.h"
 #include "hci_control_api_ex.h"
+#include "hci_event.h"
 #include "hci_tsk.h"
 
 /*--------------------------------------------------------------------
@@ -120,19 +122,26 @@ while( 1 )
         {
         BT_LOG_VERBOSE( "HCI event received: len=%u", hci_event.data_len );
 
+        if( BT_POWER_OFF == BT_core_get_power_status() )
+            {
+            BT_LOG_DEBUG( "Ignore HCI events when Powered Off" );
+            continue;
+            }
+
         if( false == HCI_tsk_parse_event( &hci_event, &group_code, &event_code, &param_pos, &param_len ) )
             {
             continue;
             }
 
-        // TODO: Handle HCI event in event handlers
         switch( group_code )
             {
             case HCI_CONTROL_GROUP_DEVICE:
                 {
+                HCI_handle_device_event( group_code, event_code, &( hci_event.data[param_pos] ), param_len );
                 } break;
             case HCI_CONTROL_GROUP_STANDARD_GARMIN:
                 {
+                HCI_handle_standard_event( group_code, event_code, &( hci_event.data[param_pos] ), param_len );
                 } break;
             case HCI_CONTROL_GROUP_SPP:
                 {

@@ -84,6 +84,50 @@ switch( hw_mode )
     case BT_HW_MODE_INVALID:
     default:                  return "Unknown";
     }
+}
+
+/*================================================================================================
+@brief   Convert the pairing status to string
+@details Convert the pairing status to string
+@return  None
+@retval  String of the pairing status
+================================================================================================*/
+const char* BT_util_get_pairing_status_string
+    (
+    const BT_pairing_status_e pairing_status
+    )
+{
+switch( pairing_status )
+    {
+    case BT_PAIRING_NONE:              return "None";
+    case BT_PAIRING_USER_CONFIRMING:   return "User Confirming";
+    case BT_PAIRING_CONFIRMED_WAITING: return "Confirmed Waiting";
+    case BT_PAIRING_STATUS_INVALID:
+    default:                           return "Unknown";
+    }
+}
+
+/*================================================================================================
+@brief   Convert the power status to string
+@details Convert the power status to string
+@return  None
+@retval  String of the power status
+================================================================================================*/
+const char* BT_util_get_power_status_string
+    (
+    const BT_power_status_e power_status
+    )
+{
+switch( power_status )
+    {
+    case BT_POWER_OFF:            return "Off";
+    case BT_POWER_ON:             return "On";
+    case BT_POWER_ON_UPDATING:    return "On Updating";
+    case BT_POWER_ON_READY:       return "On Ready";
+    case BT_POWER_STATUS_INVALID:
+    default:                      return "Unknown";
+    }
+}
 
 #ifdef __cplusplus
 }

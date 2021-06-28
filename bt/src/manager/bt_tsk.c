@@ -19,6 +19,7 @@ extern "C"{
 
 #include "GRM_pub_prj.h"
 
+#include "bt_core.h"
 #include "bt_db.h"
 #include "bt_device.h"
 #include "bt_log.h"
@@ -92,6 +93,7 @@ void BT_tsk_init( void )
 // Init base modules
 BT_db_init();
 BT_device_init();
+BT_core_init();
 
 // Init HCI task
 HCI_tsk_init();
@@ -121,54 +123,74 @@ static void BT_tsk_main
 {
 const uint8_t* local_device_name = BT_db_get_local_device_name();
 const uint8_t* local_bd_addr = BT_db_get_local_device_address();
+const uint8_t* sw_version = BT_core_get_sw_version();
 bool enable_state = BT_db_get_enable_state();
 BT_request_t request = { BT_REQUEST_TYPE_INVALID, { { 0 } } };
 
 BT_LOG_INFO( "BT task started" );
 BT_LOG_INFO( "Local device name: %s", local_device_name );
 BT_LOG_INFO( "Local device address: %02x:%02x:%02x:%02x:%02x:%02x", BD_ADDR_PRINT( local_bd_addr ) );
+BT_LOG_INFO( "SW version: %u.%02u", sw_version[0], sw_version[1] );
 BT_LOG_INFO( "Enable state: %d", enable_state );
+
+if( enable_state )
+    {
+    BT_core_set_enable_state( true, false );
+    }
 
 while( 1 )
     {
     if( pdTRUE == xQueueReceive( s_request_queue, &request, portMAX_DELAY ) )
         {
         BT_LOG_VERBOSE( "Request received: %d", request.type );
-        // TODO: Handle request in Core functions
         switch( request.type )
             {
             case BT_REQUEST_ACCEPT_PAIRING:
                 {
+                BT_core_accept_pairing( request.param_u.accept_pairing.accept );
                 } break;
             case BT_REQUEST_DELETE_PAIRED_DEVICE:
                 {
+                BT_core_delete_paired_device( request.param_u.delete_paired_device.bd_addr );
                 } break;
             case BT_REQUEST_FACTORY_RESET:
                 {
+                BT_core_factory_reset();
                 } break;
             case BT_REQUEST_INIT_MODULE:
                 {
+                BT_core_init_module();
                 } break;
             case BT_REQUEST_SEND_STANDARD_HCI_COMMAND:
                 {
+                BT_core_send_standard_hci_command( request.param_u.send_standard_hci_command.op_code,
+                                                   request.param_u.send_standard_hci_command.payload,
+                                                   request.param_u.send_standard_hci_command.payload_len );
                 } break;
             case BT_REQUEST_SET_DISCOVERABLE_STATE:
                 {
+                BT_core_set_discoverable_state( request.param_u.set_discoverable_state.enable );
                 } break;
             case BT_REQUEST_SET_ENABLE_STATE:
                 {
+                BT_core_set_enable_state( request.param_u.set_enable_state.enable, true );
                 } break;
             case BT_REQUEST_SET_LOCAL_DEVICE_ADDRESS:
                 {
+                BT_core_set_local_device_address( request.param_u.set_local_device_address.bd_addr );
                 } break;
             case BT_REQUEST_SET_TEST_MODE:
                 {
+                BT_core_set_test_mode( request.param_u.set_test_mode.enable );
                 } break;
             case BT_REQUEST_SET_TX_CARRIER_MODE:
                 {
+                BT_core_set_tx_carrier_mode( request.param_u.set_tx_carrier_mode.enable,
+                                             request.param_u.set_tx_carrier_mode.channel_type );
                 } break;
             case BT_REQUEST_UPDATE_FIRMWARE:
                 {
+                BT_core_update_firmware();
                 } break;
             case BT_REQUEST_SPP_CONNECT:
                 {
@@ -288,7 +310,7 @@ while( 1 )
     if( ( 0 == tick_remained ) ||
         ( pdTRUE != xQueueReceive( s_sync_event_queue, &received_sync_event, tick_remained ) ) )
         {
-        BT_LOG_ERROR( "Timed out on waiting sync event: %d", sync_event->type );
+        BT_LOG_ERROR( "Timeout on waiting sync event: %d", sync_event->type );
         return false;
         }
 

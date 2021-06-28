@@ -1,12 +1,12 @@
 /*********************************************************************
-* @file  bt_device.h
-* @brief Bluetooth Manager Device management interface declaration.
+* @file  hci_event.h
+* @brief Bluetooth Manager HCI General Event handler interface declaration.
 *
 * Copyright 2021 by Garmin Ltd. or its subsidiaries.
 *********************************************************************/
 
-#ifndef _BT_DEVICE_H_
-#define _BT_DEVICE_H_
+#ifndef _HCI_EVENT_H_
+#define _HCI_EVENT_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -44,34 +44,24 @@ extern "C" {
 /*--------------------------------------------------------------------
                         PROCEDURES
 --------------------------------------------------------------------*/
-const BT_device_info_t* BT_device_get_info
+void HCI_handle_device_event
     (
-    const uint8_t idx
+    uint8_t group_code,
+    uint8_t event_code,
+    uint8_t* param,
+    uint16_t param_len
     );
 
-uint8_t BT_device_get_total_num( void );
-
-void BT_device_init( void );
-
-bool BT_device_is_auth_lost
+void HCI_handle_standard_event
     (
-    const uint8_t* bd_addr
-    );
-
-bool BT_device_is_existed
-    (
-    const uint8_t* bd_addr
-    );
-
-bool BT_device_is_max_num_reached( void );
-
-bool BT_device_update
-    (
-    const uint8_t* raw_device_list
+    uint8_t group_code,
+    uint8_t event_code,
+    uint8_t* param,
+    uint16_t param_len
     );
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // _BT_DEVICE_H_
+#endif // _HCI_EVENT_H_

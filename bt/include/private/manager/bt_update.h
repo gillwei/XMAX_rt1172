@@ -1,12 +1,12 @@
 /*********************************************************************
-* @file  bt_device.h
-* @brief Bluetooth Manager Device management interface declaration.
+* @file  bt_update.h
+* @brief Bluetooth Manager Firmware Update interface declaration.
 *
 * Copyright 2021 by Garmin Ltd. or its subsidiaries.
 *********************************************************************/
 
-#ifndef _BT_DEVICE_H_
-#define _BT_DEVICE_H_
+#ifndef _BT_UPDATE_H_
+#define _BT_UPDATE_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -15,11 +15,15 @@ extern "C" {
 /*--------------------------------------------------------------------
                         GENERAL INCLUDES
 --------------------------------------------------------------------*/
-#include "bt_types.h"
+extern uint32_t __base_BOARD_FLASH_BTFW;
 
 /*--------------------------------------------------------------------
                         LITERAL CONSTANTS
 --------------------------------------------------------------------*/
+#define MCU_FLASH_BT_FW_ADDR      ( (uint32_t)( &__base_BOARD_FLASH_BTFW ) )
+#define MCU_FLASH_BT_MD_ADDR      ( FLASH_BT_FW_ADDR + 0x00000100 )
+#define MCU_FLASH_BT_MD_END_ADDR  ( FLASH_BT_FW_ADDR + 0x00003ac0 )
+#define MCU_FLASH_BT_FW_DATA_ADDR ( FLASH_BT_FW_ADDR + 0x00010000 )
 
 /*--------------------------------------------------------------------
                         TYPES
@@ -44,34 +48,9 @@ extern "C" {
 /*--------------------------------------------------------------------
                         PROCEDURES
 --------------------------------------------------------------------*/
-const BT_device_info_t* BT_device_get_info
-    (
-    const uint8_t idx
-    );
-
-uint8_t BT_device_get_total_num( void );
-
-void BT_device_init( void );
-
-bool BT_device_is_auth_lost
-    (
-    const uint8_t* bd_addr
-    );
-
-bool BT_device_is_existed
-    (
-    const uint8_t* bd_addr
-    );
-
-bool BT_device_is_max_num_reached( void );
-
-bool BT_device_update
-    (
-    const uint8_t* raw_device_list
-    );
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // _BT_DEVICE_H_
+#endif // _BT_UPDATE_H_

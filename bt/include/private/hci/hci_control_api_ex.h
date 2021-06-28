@@ -29,6 +29,15 @@ extern "C" {
 #include "hci_control_api.h"
 
 /*--------------------------------------------------------------------
+                        HCI ERROR CODES
+--------------------------------------------------------------------*/
+/*====================================================================
+@type: REDECLARED
+====================================================================*/
+#define HCI_ERR_PEER_USER             ( 0x13 )
+#define HCI_ERR_CONN_CAUSE_LOCAL_HOST ( 0x16 )
+
+/*--------------------------------------------------------------------
                         PACKET TYPES
 --------------------------------------------------------------------*/
 /*====================================================================
@@ -50,6 +59,19 @@ extern "C" {
 --------------------------------------------------------------------*/
 
 /*--------------------------------------------------------------------
+                        STANDARD HCI COMMANDS
+--------------------------------------------------------------------*/
+/*====================================================================
+@type: REDECLARED
+====================================================================*/
+#define HCI_STANDARD_COMMAND_DUT_MODE   ( 0x1803 )
+#define HCI_STANDARD_COMMAND_TX_CARRIER ( 0xFC14 )
+#define HCI_STANDARD_COMMAND_WRITE_RAM  ( 0xFC4C )
+#define HCI_STANDARD_COMMAND_READ_RAM   ( 0xFC4D )
+#define HCI_STANDARD_COMMAND_LAUNCH_RAM ( 0xFC4E )
+#define HCI_STANDARD_COMMAND_CHIP_ERASE ( 0xFFCE )
+
+/*--------------------------------------------------------------------
                         SPP COMMANDS
 --------------------------------------------------------------------*/
 
@@ -60,6 +82,48 @@ extern "C" {
 /*--------------------------------------------------------------------
                         GENERAL EVENTS
 --------------------------------------------------------------------*/
+/*====================================================================
+@type: NEW
+@data: Byte[0]: (6-bytes) Bluetooth device address
+====================================================================*/
+#define HCI_CONTROL_EVENT_AUTH_LOST_GARMIN ( ( HCI_CONTROL_GROUP_DEVICE << 8 ) | 0xFF )
+
+/*====================================================================
+@type: NEW
+@data: Byte[0]: (6-bytes) Bluetooth device address
+       Byte[6]: (1-byte) Transport type
+       Byte[7]: (1-byte) Connected or not
+       Byte[8]: (1-byte) Reason
+====================================================================*/
+#define HCI_CONTROL_EVENT_CONNECTION_STATUS_GARMIN ( ( HCI_CONTROL_GROUP_DEVICE << 8 ) | 0xFE )
+
+/*====================================================================
+@type: NEW
+@data: Byte[0]: (1-byte) Software major version
+       Byte[1]: (1-byte) Software minor version
+====================================================================*/
+#define HCI_CONTROL_EVENT_DEVICE_STARTED_GARMIN ( ( HCI_CONTROL_GROUP_DEVICE << 8 ) | 0xFD )
+
+/*====================================================================
+@type: NEW
+@data: Byte[0]: (6-bytes) Bluetooth device address
+====================================================================*/
+#define HCI_CONTROL_EVENT_PAIRED_DEVICE_DELETED_GARMIN ( ( HCI_CONTROL_GROUP_DEVICE << 8 ) | 0xFC )
+
+/*====================================================================
+@type: NEW
+@data: Byte[0]: (1-byte) Number of paired devices in the list
+       Byte[1]: (n-bytes) Data of paired devices stored as format as BT_device_info_t, where n <= ( HCI_PAYLOAD_MAX_SIZE - 1 )
+====================================================================*/
+#define HCI_CONTROL_EVENT_PAIRED_DEVICE_LIST_GARMIN ( ( HCI_CONTROL_GROUP_DEVICE << 8 ) | 0xFB )
+
+/*--------------------------------------------------------------------
+                        STANDARD HCI EVENTS
+--------------------------------------------------------------------*/
+/*====================================================================
+@type: REDECLARED
+====================================================================*/
+#define HCI_STANDARD_EVENT_COMMAND_COMPLETE ( 0x0E )
 
 /*--------------------------------------------------------------------
                         SPP EVENTS

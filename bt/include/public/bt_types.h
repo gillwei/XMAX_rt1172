@@ -25,6 +25,7 @@ extern "C" {
 --------------------------------------------------------------------*/
 #define BT_DEVICE_ADDRESS_LEN ( 6 )
 #define BT_DEVICE_NAME_LEN    ( 20 )
+#define BT_SW_VERSION_LEN     ( 2 )
 
 // Note: MAX_TRANSPORT_DATA_SIZE is the maximum size of HCI payload defined by Cypress in wiced_app.h.
 //       Its value is 240 bytes, we define the same value here for MCU to use.
@@ -113,6 +114,7 @@ typedef struct BT_device_info
     uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN];
     uint8_t device_name[BT_DEVICE_NAME_LEN];
     BT_device_type_e device_type;
+    bool auth_lost;
     bool iap_support;
     } BT_device_info_t;
 

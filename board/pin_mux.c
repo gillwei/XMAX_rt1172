@@ -145,10 +145,10 @@ pin_labels:
 #include "pin_mux.h"
 
 /* FUNCTION ************************************************************************************************************
- * 
+ *
  * Function Name : BOARD_InitBootPins
  * Description   : Calls initialization functions.
- * 
+ *
  * END ****************************************************************************************************************/
 void BOARD_InitBootPins(void) {
     BOARD_InitPins();
@@ -299,7 +299,7 @@ void BOARD_InitPins(void) {
   /* GPIO configuration of BT_RST_N on GPIO_AD_08 (pin R15) */
   gpio_pin_config_t BT_RST_N_config = {
       .direction = kGPIO_DigitalOutput,
-      .outputLogic = 1U,
+      .outputLogic = 0U,
       .interruptMode = kGPIO_NoIntmode
   };
   /* Initialize GPIO functionality on GPIO_AD_08 (pin R15) */

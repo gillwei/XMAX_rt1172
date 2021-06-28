@@ -15,7 +15,9 @@ extern "C" {
 /*--------------------------------------------------------------------
                         GENERAL INCLUDES
 --------------------------------------------------------------------*/
+#include "bt_core.h"
 #include "bt_hw.h"
+#include "bt_log.h"
 #include "bt_types.h"
 
 /*--------------------------------------------------------------------
@@ -44,6 +46,14 @@ extern "C" {
 // This is used to expand 6-bytes BD address in printf() only, use carefully
 #define BD_ADDR_PRINT( x ) x[5],x[4],x[3],x[2],x[1],x[0]
 
+#define FUNC_ENTRY_PRINT( ... )    ( BT_LOG_VERBOSE( ">> "__VA_ARGS__ ) )
+#define FUNC_BUSY_PRINT()          ( BT_LOG_VERBOSE( ">> Error: Busy" ) )
+#define FUNC_INVALID_PARAM_PRINT() ( BT_LOG_VERBOSE( ">> Error: Invalid Parameter" ) )
+#define FUNC_NO_CONNECTION_PRINT() ( BT_LOG_VERBOSE( ">> Error: No Connection" ) )
+#define FUNC_NOT_READY_PRINT()     ( BT_LOG_VERBOSE( ">> Error: Not Ready" ) )
+#define FUNC_NOT_ALLOWED_PRINT()   ( BT_LOG_VERBOSE( ">> Error: Not Allowed" ) )
+#define FUNC_QUEUE_FULL_PRINT()    ( BT_LOG_ERROR( ">> Error: Queue Full" ) )
+
 #define INT16_TO_LITTLE_ENDIAN( int16, p_buf ) {\
     ( p_buf )[0] = ( int16 >> 0 ) & 0xff;       \
     ( p_buf )[1] = ( int16 >> 8 ) & 0xff;       \
@@ -68,6 +78,8 @@ extern "C" {
     ( ( ( p_buf )[3] & 0xff ) << 24 )    \
     )
 
+#define GROUP_EVENT_CODE( group_code, event_code ) ( ( (uint16_t)group_code << 8 ) | event_code )
+
 /*--------------------------------------------------------------------
                         PROCEDURES
 --------------------------------------------------------------------*/
@@ -79,6 +91,16 @@ const char* BT_util_get_device_type_string
 const char* BT_util_get_hw_mode_string
     (
     const BT_hw_mode_e hw_mode
+    );
+
+const char* BT_util_get_pairing_status_string
+    (
+    const BT_pairing_status_e pairing_status
+    );
+
+const char* BT_util_get_power_status_string
+    (
+    const BT_power_status_e power_status
     );
 
 #ifdef __cplusplus

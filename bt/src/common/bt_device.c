@@ -130,6 +130,45 @@ if( NULL == s_mutex )
 }
 
 /*================================================================================================
+@brief   Check whether or not the paired device has lost its authentication data
+@details Check whether or not the paired device has lost its authentication data
+@return  None
+@retval  Whether or not the paired device has lost its authentication data
+================================================================================================*/
+bool BT_device_is_auth_lost
+    (
+    const uint8_t* bd_addr
+    )
+{
+bool auth_lost = false;
+
+if( ( NULL == bd_addr ) || ( BT_DEVICE_ADDRESS_LEN != strlen( (const char*)bd_addr ) ) )
+    {
+    BT_LOG_DEBUG( "Invalid BD address" );
+    }
+else
+    {
+    if( false == xSemaphoreTake( s_mutex, pdMS_TO_TICKS( MUTEX_LOCK_MS ) ) )
+        {
+        BT_LOG_ERROR( "Mutex lock timeout" );
+        }
+    else
+        {
+        for( uint8_t i = 0; i < s_num_paired_devices; ++i )
+            {
+            if( 0 == memcmp( s_paired_devices[i].bd_addr, bd_addr, BT_DEVICE_ADDRESS_LEN ) )
+                {
+                auth_lost = s_paired_devices[i].auth_lost;
+                break;
+                }
+            }
+        xSemaphoreGive( s_mutex );
+        }
+    }
+return auth_lost;
+}
+
+/*================================================================================================
 @brief   Check whether or not the number of paired devices reached the limit
 @details Check whether or not the number of paired devices reached the limit
 @return  None
@@ -203,6 +242,7 @@ return existed;
            - bd_addr:      6 bytes (BT_DEVICE_ADDRESS_LEN)
            - device_name: 20 bytes (BT_DEVICE_NAME_LEN)
            - device type:  1 byte
+           - auth_lost:    1 byte
            - iap_support:  1 byte
          And the format of the paired device list sent by Cypress module is as below:
            - Byte[0]: Number of paired devices
@@ -239,11 +279,12 @@ else
             memcpy( &( s_paired_devices[i] ), &( raw_device_list[cur_pos] ), sizeof( BT_device_info_t ) );
             cur_pos += sizeof( BT_device_info_t );
 
-            BT_LOG_DEBUG( "Device[%u]: %02x:%02x:%02x:%02x:%02x:%02x, name=%s, type=%s, iAP_support=%d",
+            BT_LOG_DEBUG( "Device[%u]: %02x:%02x:%02x:%02x:%02x:%02x, name=%s, type=%s, auth_lost=%d, iAP_support=%d",
                           i,
                           BD_ADDR_PRINT( s_paired_devices[i].bd_addr ),
                           s_paired_devices[i].device_name,
                           BT_util_get_device_type_string( s_paired_devices[i].device_type ),
+                          s_paired_devices[i].auth_lost,
                           s_paired_devices[i].iap_support );
             }
         ret = true;

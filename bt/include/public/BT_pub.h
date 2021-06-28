@@ -44,9 +44,6 @@ extern "C" {
 /*--------------------------------------------------------------------
                         PROCEDURES
 --------------------------------------------------------------------*/
-void BT_init( void );
-
-#if 0
 BT_status_e BT_accept_pairing
     (
     const bool accept
@@ -57,13 +54,15 @@ BT_status_e BT_delete_paired_device
     const uint8_t* bd_addr
     );
 
-bool BT_get_discoverable_statea( void );
+bool BT_get_discoverable_state( void );
 
 bool BT_get_enable_state( void );
 
-uint8_t* BT_get_local_device_address( void );
+BT_status_e BT_factory_reset( void );
 
-uint8_t* BT_get_local_device_name( void );
+const uint8_t* BT_get_local_device_address( void );
+
+const uint8_t* BT_get_local_device_name( void );
 
 BT_status_e BT_get_num_paired_devices
     (
@@ -76,21 +75,22 @@ BT_status_e BT_get_paired_device_info
     BT_device_info_t* device_info
     );
 
-BT_status_e BT_get_sw_version
+const uint8_t* BT_get_sw_version( void );
+
+bool BT_get_test_mode( void );
+
+BT_status_e BT_init( void );
+
+BT_status_e BT_is_paired_device_auth_lost
     (
-    uint8_t* version
+    const uint8_t* bd_addr,
+    bool* auth_lost
     );
 
-bool BT_get_test_mode_state( void );
-
-void BT_init( void );
-
-BT_status_e BT_is_paired_device_full
+BT_status_e BT_is_paired_device_max_num_reached
     (
-    bool* full
+    bool* max_num_reached
     );
-
-BT_status_e BT_factory_reset( void );
 
 BT_status_e BT_set_discoverable_state
     (
@@ -117,12 +117,13 @@ BT_status_e BT_set_test_mode
     const bool enable
     );
 
-BT_status_e BT_set_tx_carrier
+BT_status_e BT_set_tx_carrier_mode
     (
     const bool enable,
     const BT_tx_channel_type_e channel_type
     );
 
+#if 0
 // SPP
 BT_status_e BT_spp_add_connection_status_callback
     (
