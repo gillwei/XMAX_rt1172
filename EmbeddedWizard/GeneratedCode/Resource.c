@@ -1647,4 +1647,34 @@ EW_RES_WITHOUT_VARIANTS( ResourceSVSpeedUnLimit )
 /* Table with links to derived variants of the bitmap resource : 'Resource::SVSpeedLimit' */
 EW_RES_WITHOUT_VARIANTS( ResourceSVSpeedLimit )
 
+/* Include a file containing the bitmap resource : 'Resource::ZoomToast' */
+#include "_ResourceZoomToast.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::ZoomToast' */
+EW_RES_WITHOUT_VARIANTS( ResourceZoomToast )
+
+/* Include a file containing the bitmap resource : 'Resource::ZoomOutNightDisableIcon' */
+#include "_ResourceZoomOutNightDisableIcon.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::ZoomOutNightDisableIcon' */
+EW_RES_WITHOUT_VARIANTS( ResourceZoomOutNightDisableIcon )
+
+/* Include a file containing the bitmap resource : 'Resource::ZoomInDayDisableIcon' */
+#include "_ResourceZoomInDayDisableIcon.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::ZoomInDayDisableIcon' */
+EW_RES_WITHOUT_VARIANTS( ResourceZoomInDayDisableIcon )
+
+/* Include a file containing the bitmap resource : 'Resource::ZoomInNightDisableIcon' */
+#include "_ResourceZoomInNightDisableIcon.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::ZoomInNightDisableIcon' */
+EW_RES_WITHOUT_VARIANTS( ResourceZoomInNightDisableIcon )
+
+/* Include a file containing the bitmap resource : 'Resource::ZoomOutDayDisableIcon' */
+#include "_ResourceZoomOutDayDisableIcon.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::ZoomOutDayDisableIcon' */
+EW_RES_WITHOUT_VARIANTS( ResourceZoomOutDayDisableIcon )
+
 /* Embedded Wizard */

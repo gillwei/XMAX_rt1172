@@ -574,7 +574,18 @@ static void navi_zoom_level_update
     uint8_t zoom_level_scale_str_size
     )
 {
-PRINTF( "%s: Zoom level is updated: %d, %d, %s\r\n", __FUNCTION__, current_level, max_level, zoom_level_scale_str );
+PRINTF( "%s: %d, %d, %s\r\n", __FUNCTION__, current_level, max_level, (char*)zoom_level_scale_str );
+
+memcpy( navi_data_obj.zoom_level, zoom_level_scale_str, MAX_STR_SIZE );
+if( zoom_level_scale_str_size < MAX_STR_SIZE )
+    {
+    navi_data_obj.zoom_level[zoom_level_scale_str_size] = '\0';
+    }
+else
+    {
+    navi_data_obj.zoom_level[MAX_STR_SIZE-1] = '\0';
+    }
+
 if( current_level == max_level )
     {
     zoom_inout_status = EnumNaviZoomInOutStatusTypeREACH_MAXIMUM;

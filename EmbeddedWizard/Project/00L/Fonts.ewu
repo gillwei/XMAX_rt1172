@@ -178,7 +178,7 @@ resource Resources::Font NotoSansMedium16pt
   attr fontrowdistance RowDistance;
 }
 
-$rect <290,80,550,120>
+$rect <290,130,550,170>
 $output false
 resource Resources::Font NotoSansBold24pt
 {
@@ -202,7 +202,7 @@ $rect <860,80,1080,120>
 $output false
 const int32 ROW_DISTANCE_28PT = 36;
 
-$rect <290,130,550,170>
+$rect <290,180,550,220>
 $output false
 resource Resources::Font NotoSansBold38pt
 {
@@ -235,7 +235,7 @@ resource Resources::Font NotoSansMedium40pt
   attr fontrowdistance RowDistance;
 }
 
-$rect <290,30,550,70>
+$rect <290,80,550,120>
 $output false
 resource Resources::Font NotoSansBold20pt
 {
@@ -363,4 +363,20 @@ resource Resources::Font NotoSansCjkTcMedium28pt
   attr fontkerning Kerning = true;
   attr fontheightmode HeightMode = Popular;
   attr fontrowdistance RowDistance = 34;
+}
+
+$rect <290,30,550,70>
+$output false
+resource Resources::Font NotoSansBold12pt
+{
+  attr fontname FontName = Noto Sans;
+  attr fontheight Height = 12;
+  attr fontheightmode HeightMode = Popular;
+  attr fontquality Quality = Medium;
+  attr fontranges Ranges = 0x30-0x39,0x20-0x7E;
+  attr fontaspectratio AspectRatio = 1.0;
+  attr fontbold Bold = false;
+  attr fontitalic Italic = false;
+  attr fontkerning Kerning = true;
+  attr fontrowdistance RowDistance;
 }

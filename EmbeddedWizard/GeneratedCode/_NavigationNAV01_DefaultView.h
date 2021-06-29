@@ -51,6 +51,7 @@
 #include "_NavigationNaviAlert.h"
 #include "_NavigationNaviCurrentRoad.h"
 #include "_NavigationNaviETA.h"
+#include "_NavigationNaviZoomToast.h"
 #include "_PopPOP16_NaviLoadingUI.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
@@ -122,6 +123,7 @@ EW_DEFINE_FIELDS( NavigationNAV01_DefaultView, HomeBaseHome )
   EW_OBJECT  ( CurrentRoadWithGuide, NavigationNaviCurrentRoad )
   EW_OBJECT  ( CurrentRoadWithOutGuide, NavigationNaviCurrentRoad )
   EW_OBJECT  ( Shadow,          ViewsImage )
+  EW_OBJECT  ( ZoomToast,       NavigationNaviZoomToast )
   EW_OBJECT  ( ZoomInButton,    ViewsImage )
   EW_OBJECT  ( ZoomOutButton,   ViewsImage )
   EW_OBJECT  ( SpeedLimitIcon,  ViewsImage )
@@ -144,8 +146,10 @@ EW_DEFINE_FIELDS( NavigationNAV01_DefaultView, HomeBaseHome )
   EW_OBJECT  ( VehicleDataReceivedEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( NaviDialogEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( NaviDisconnectEventHandler, CoreSystemEventHandler )
+  EW_OBJECT  ( ZoomToastDismissTimer, CoreTimer )
+  EW_OBJECT  ( ZoomLevelUpdateEventHandler, CoreSystemEventHandler )
   EW_VARIABLE( MapFrameIdx,     XInt32 )
-  EW_VARIABLE( ZoomButtonStatus, XInt32 )
+  EW_PROPERTY( ZoomAction,      XEnum )
   EW_PROPERTY( IsJcvDisplayed,  XBool )
   EW_VARIABLE( IsEventDisplaying, XBool )
 EW_END_OF_FIELDS( NavigationNAV01_DefaultView )
@@ -316,6 +320,22 @@ void NavigationNAV01_DefaultView_OnNaviDisconnectUpdateSlot( NavigationNAV01_Def
 /* 'C' function for method : 'Navigation::NAV01_DefaultView.OnSetIsJcvDisplayed()' */
 void NavigationNAV01_DefaultView_OnSetIsJcvDisplayed( NavigationNAV01_DefaultView _this, 
   XBool value );
+
+/* 'C' function for method : 'Navigation::NAV01_DefaultView.OnZoomToastDismissSlot()' */
+void NavigationNAV01_DefaultView_OnZoomToastDismissSlot( NavigationNAV01_DefaultView _this, 
+  XObject sender );
+
+/* 'C' function for method : 'Navigation::NAV01_DefaultView.OnSetZoomAction()' */
+void NavigationNAV01_DefaultView_OnSetZoomAction( NavigationNAV01_DefaultView _this, 
+  XEnum value );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void NavigationNAV01_DefaultView_OnZoomLevelUpdateSlot( NavigationNAV01_DefaultView _this, 
+  XObject sender );
+
+/* 'C' function for method : 'Navigation::NAV01_DefaultView.ShowZoomToast()' */
+void NavigationNAV01_DefaultView_ShowZoomToast( NavigationNAV01_DefaultView _this );
 
 #ifdef __cplusplus
   }

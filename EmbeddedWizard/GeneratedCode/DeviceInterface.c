@@ -1250,6 +1250,9 @@ DeviceInterfaceNaviDataClass DeviceInterfaceNavigationDeviceClass_GetNaviData( D
       case EnumNaviDataTypeOFFICE:
         NaviData->IsOfficeSet = (bool)navi_obj->is_office_set;
         break;
+      case EnumNaviDataTypeZOOM_LEVEL:
+        NaviData->ZoomLevel = EwNewStringUtf8( ( const unsigned char* )navi_obj->zoom_level, ( int )strlen( navi_obj->zoom_level ) );
+        break;
       default:
         break;
     }

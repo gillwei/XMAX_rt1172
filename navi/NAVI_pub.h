@@ -91,6 +91,7 @@ typedef struct
     uint8_t via_points;
     uint8_t route_cal_progress;
     navilite_image_type image_type;
+    char zoom_level[MAX_STR_SIZE];
     } navi_data_type;
 
 typedef struct

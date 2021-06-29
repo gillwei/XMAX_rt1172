@@ -810,6 +810,21 @@ EW_DECLARE_BITMAP_RES( ResourceSVSpeedUnLimit )
 /* Bitmap resource : 'Resource::SVSpeedLimit' */
 EW_DECLARE_BITMAP_RES( ResourceSVSpeedLimit )
 
+/* Bitmap resource : 'Resource::ZoomToast' */
+EW_DECLARE_BITMAP_RES( ResourceZoomToast )
+
+/* Bitmap resource : 'Resource::ZoomOutNightDisableIcon' */
+EW_DECLARE_BITMAP_RES( ResourceZoomOutNightDisableIcon )
+
+/* Bitmap resource : 'Resource::ZoomInDayDisableIcon' */
+EW_DECLARE_BITMAP_RES( ResourceZoomInDayDisableIcon )
+
+/* Bitmap resource : 'Resource::ZoomInNightDisableIcon' */
+EW_DECLARE_BITMAP_RES( ResourceZoomInNightDisableIcon )
+
+/* Bitmap resource : 'Resource::ZoomOutDayDisableIcon' */
+EW_DECLARE_BITMAP_RES( ResourceZoomOutDayDisableIcon )
+
 /* Forward declaration of the class Resources::ExternBitmap */
 #ifndef _ResourcesExternBitmap_
   EW_DECLARE_CLASS( ResourcesExternBitmap )

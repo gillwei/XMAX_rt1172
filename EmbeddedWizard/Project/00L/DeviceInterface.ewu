@@ -1022,6 +1022,9 @@ class NavigationDeviceClass : Templates::DeviceClass
         case EnumNaviDataTypeOFFICE:
           NaviData->IsOfficeSet = (bool)navi_obj->is_office_set;
           break;
+        case EnumNaviDataTypeZOOM_LEVEL:
+          NaviData->ZoomLevel = EwNewStringUtf8( ( const unsigned char* )navi_obj->zoom_level, ( int )strlen( navi_obj->zoom_level ) );
+          break;
         default:
           break;
       }
@@ -1411,7 +1414,7 @@ class NavigationDeviceClass : Templates::DeviceClass
   // Methods
   note group Note1
   {
-    attr Bounds = <20,610,1010,1100>;
+    attr Bounds = <20,610,1010,1180>;
   }
 
   // Variables
@@ -3812,6 +3815,10 @@ class NaviDataClass
   $rect <490,140,690,180>
   $output true
   var bool IsOfficeSet;
+
+  $rect <490,180,690,220>
+  $output true
+  var string ZoomLevel;
 }
 
 $rect <811,190,1011,230>

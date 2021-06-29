@@ -351,7 +351,8 @@ typedef enum
   EnumNaviDataTypeHOME                  = 8,
   EnumNaviDataTypeOFFICE                = 9,
   EnumNaviDataTypeNAVI_TBT_LIST         = 10,
-  EnumNaviDataTypeNAVI_TBT_ACTIVE_TBT   = 11
+  EnumNaviDataTypeNAVI_TBT_ACTIVE_TBT   = 11,
+  EnumNaviDataTypeZOOM_LEVEL            = 12
 } EnumNaviDataType;
 
 /* User defined enumeration: 'Enum::NaviAlertType' */
@@ -865,6 +866,13 @@ typedef enum
   EnumTachoFullScaleRPM10000            = 0,
   EnumTachoFullScaleRPM15000            = 1
 } EnumTachoFullScale;
+
+/* User defined enumeration: 'Enum::NaviZoomActionType' */
+typedef enum
+{
+  EnumNaviZoomActionTypeZOOM_IN         = 0,
+  EnumNaviZoomActionTypeZOOM_OUT        = 1
+} EnumNaviZoomActionType;
 
 #ifdef __cplusplus
   }
