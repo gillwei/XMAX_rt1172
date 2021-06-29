@@ -136,7 +136,7 @@ static const XRect _Const0038 = {{ 326, 0 }, { 360, 67 }};
 static const XRect _Const0039 = {{ 290, 0 }, { 321, 67 }};
 static const XRect _Const003A = {{ 362, 0 }, { 416, 67 }};
 static const XRect _Const003B = {{ 290, 0 }, { 417, 67 }};
-static const XRect _Const003C = {{ 37, 1 }, { 233, 76 }};
+static const XRect _Const003C = {{ 37, 1 }, { 233, 78 }};
 static const XRect _Const003D = {{ 253, 18 }, { 351, 52 }};
 static const XRect _Const003E = {{ 357, 18 }, { 417, 52 }};
 

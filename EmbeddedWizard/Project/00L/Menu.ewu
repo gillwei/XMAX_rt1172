@@ -2553,7 +2553,7 @@ class ItemPoiList : Menu::ItemBase
   $rect <20,20,160,60>
   inherited object Title
   {
-    preset Bounds = <37,1,233,76>;
+    preset Bounds = <37,1,233,78>;
     preset Ellipsis = true;
     preset WrapText = true;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertTop];
