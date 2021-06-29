@@ -123,14 +123,17 @@ static void send_linkcard_info
     )
 {
 bc_motocon_ota_linkcard_info_t info;
-uint32_t esn = EW_get_esn();
+uint32_t esn_hexdec = EW_get_esn();
 
 info.current_firmware_ver = SW_VERSION;
 info.linkcard_model = MOTOCON_LINKCARD_MODEL;
-info.serial_number[0] = ( esn >> 24 ) & 0xFF;
-info.serial_number[1] = ( esn >> 16 ) & 0xFF;
-info.serial_number[2] = ( esn >> 8  ) & 0xFF;
-info.serial_number[3] = esn & 0xFF;
+
+for( int32_t i = 0; i < ESN_STR_MAX_LEN; i++ )
+    {
+    info.serial_number[ESN_STR_MAX_LEN - i - 1] = '0' + ( esn_hexdec % 10 );
+    esn_hexdec /= 10;
+    }
+
 if( OTA_SYS_PARTITION_A == OTA_get_sys_parition() )
     {
     info.new_program_position = OTA_SYS_PARTITION_B;
