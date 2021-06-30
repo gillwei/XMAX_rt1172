@@ -1267,6 +1267,7 @@ if( ( ( BT_DEVICE_ADDRESS_LEN + CONNECTION_HANDLE_LENGTH ) == connection_info_le
              paired_device_list[i].connection_handle += (uint16_t)( connection_info[BT_DEVICE_ADDRESS_LEN + 1] << 8 );
              paired_device_list[i].connection_path_type = connection_path;
 
+             EW_notify_btc_pairing_state_changed( EnumBtcPairingStateNAVI_APP_CONNECTED );
              EW_notify_bt_paired_device_status_changed();
 
              // For modify auto connect sequence and write to EEPROM
@@ -1314,6 +1315,7 @@ else if(  ( ( BT_DEVICE_ADDRESS_LEN + CONNECTION_HANDLE_LENGTH ) == connection_i
 
               // TODO Notify EW Y-connect connection status
               EW_notify_btc_pairing_state_changed( EnumBtcPairingStateYAMAHA_APP_CONNECTED );
+              EW_notify_bt_paired_device_status_changed();
               stop_btm_timeout_timer();
               start_btm_timeout_timer( BTM_BLE_PAIR_TIMEOUT );
 
