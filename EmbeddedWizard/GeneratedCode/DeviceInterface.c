@@ -1310,18 +1310,11 @@ DeviceInterfaceNaviTbtDataClass DeviceInterfaceNavigationDeviceClass_GetNaviTbtD
     float distance;
     char* dist_unit;
     char* description;
-    if( aTbtItemIdx == NAVI_get_tbt_list_size() )
-    {
-      NaviTbtData = NULL;
-    }
-    else
-    {
-      NAVI_get_tbt_item( aTbtItemIdx, &icon_idx, &distance, &dist_unit, &description );
-      NaviTbtData->IconIdx = icon_idx;
-      NaviTbtData->Distance = distance;
-      NaviTbtData->DistUnit = EwNewStringUtf8( ( const unsigned char* )dist_unit, ( int )strlen( dist_unit ) );
-      NaviTbtData->TbtDescription = EwNewStringUtf8( ( const unsigned char* )description, ( int )strlen( description ) );
-    }
+    NAVI_get_tbt_item( aTbtItemIdx, &icon_idx, &distance, &dist_unit, &description );
+    NaviTbtData->IconIdx = icon_idx;
+    NaviTbtData->Distance = distance;
+    NaviTbtData->DistUnit = EwNewStringUtf8( ( const unsigned char* )dist_unit, ( int )strlen( dist_unit ) );
+    NaviTbtData->TbtDescription = EwNewStringUtf8( ( const unsigned char* )description, ( int )strlen( description ) );
   }
   return NaviTbtData;
 }

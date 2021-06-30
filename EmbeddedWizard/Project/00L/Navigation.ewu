@@ -2260,35 +2260,38 @@ class NAV05_TBTView : Home::BaseHome
   {
     // The top item of tbt list is always the active tbt item.
     var DeviceInterface::NaviTbtDataClass NaviTbtData = DeviceInterface::NavigationDevice.GetNaviTbtData( 0 );
-    ShowNextTurnIcon( NaviTbtData.IconIdx );
-
-    if( !NextTurnDist.Visible )
+    if( null != NaviTbtData )
     {
-      NextTurnDist.Visible = true;
-    }
+      ShowNextTurnIcon( NaviTbtData.IconIdx );
 
-    if( !NextTurnDistUnit.Visible )
-    {
-      NextTurnDistUnit.Visible = true;
-    }
+      if( !NextTurnDist.Visible )
+      {
+        NextTurnDist.Visible = true;
+      }
 
-    if( !NextTurnDescription.Visible )
-    {
-      NextTurnDescription.Visible = true;
-    }
+      if( !NextTurnDistUnit.Visible )
+      {
+        NextTurnDistUnit.Visible = true;
+      }
 
-    NextTurnDistUnit.String = NaviTbtData.DistUnit;
+      if( !NextTurnDescription.Visible )
+      {
+        NextTurnDescription.Visible = true;
+      }
 
-    if( 0.0 == NaviTbtData.Distance.fract )
-    {
-      NextTurnDist.String = string( (int32)NaviTbtData.Distance );
-    }
-    else
-    {
-      NextTurnDist.String = string( NaviTbtData.Distance, 0 , 1 );
-    }
+      NextTurnDistUnit.String = NaviTbtData.DistUnit;
 
-    NextTurnDescription.String = NaviTbtData.TbtDescription;
+      if( 0.0 == NaviTbtData.Distance.fract )
+      {
+        NextTurnDist.String = string( (int32)NaviTbtData.Distance );
+      }
+      else
+      {
+        NextTurnDist.String = string( NaviTbtData.Distance, 0 , 1 );
+      }
+
+      NextTurnDescription.String = NaviTbtData.TbtDescription;
+    }
   }
 
   $rect <20,20,160,60>
@@ -3081,33 +3084,38 @@ class TbtListMenu : Core::Group
     var Navigation::TbtInfoItem item = ( Navigation::TbtInfoItem )VerticalList.View;
     if( item != null )
     {
-      var DeviceInterface::NaviTbtDataClass NaviTbtData = DeviceInterface::NavigationDevice.GetNaviTbtData( VerticalList.Item );
-      if( null == NaviTbtData )
+      if( DeviceInterface::NavigationDevice.IsTbtMessageDisplayed() &&
+          VerticalList.Item == ( NoOfItems - 1 ) )
       {
         item.TbtItemEnabled = false;
       }
       else
       {
-        item.TbtItemEnabled = true;
+        var DeviceInterface::NaviTbtDataClass NaviTbtData = DeviceInterface::NavigationDevice.GetNaviTbtData( VerticalList.Item );
 
-        ShowTbtListItemIcon( NaviTbtData.IconIdx );
-
-        item.DistanceUnit = NaviTbtData.DistUnit;
-
-        if( 0.0 == NaviTbtData.Distance.fract )
+        if( null != NaviTbtData )
         {
-          item.Distance = string( (int32)NaviTbtData.Distance );
-        }
-        else
-        {
-          item.Distance = string( NaviTbtData.Distance, 0 , 1 );
-        }
-        item.NextTurnDescription.String = NaviTbtData.TbtDescription;
+          item.TbtItemEnabled = true;
 
-        item.TbtItemBg.Visible = false;
-        if( 0 == VerticalList.Item )
-        {
-          item.TbtItemBg.Visible = true;
+          ShowTbtListItemIcon( NaviTbtData.IconIdx );
+
+          item.DistanceUnit = NaviTbtData.DistUnit;
+
+          if( 0.0 == NaviTbtData.Distance.fract )
+          {
+            item.Distance = string( (int32)NaviTbtData.Distance );
+          }
+          else
+          {
+            item.Distance = string( NaviTbtData.Distance, 0 , 1 );
+          }
+          item.NextTurnDescription.String = NaviTbtData.TbtDescription;
+
+          item.TbtItemBg.Visible = false;
+          if( 0 == VerticalList.Item )
+          {
+            item.TbtItemBg.Visible = true;
+          }
         }
       }
 

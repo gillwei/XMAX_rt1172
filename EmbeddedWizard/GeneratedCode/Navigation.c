@@ -3400,27 +3400,30 @@ void NavigationNAV05_TBTView_UpdateActiveTbtItem( NavigationNAV05_TBTView _this 
     EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ), 
     0 );
 
-  NavigationNAV05_TBTView_ShowNextTurnIcon( _this, NaviTbtData->IconIdx );
+  if ( NaviTbtData != 0 )
+  {
+    NavigationNAV05_TBTView_ShowNextTurnIcon( _this, NaviTbtData->IconIdx );
 
-  if ( !ViewsText_OnGetVisible( &_this->NextTurnDist ))
-    ViewsText_OnSetVisible( &_this->NextTurnDist, 1 );
+    if ( !ViewsText_OnGetVisible( &_this->NextTurnDist ))
+      ViewsText_OnSetVisible( &_this->NextTurnDist, 1 );
 
-  if ( !ViewsText_OnGetVisible( &_this->NextTurnDistUnit ))
-    ViewsText_OnSetVisible( &_this->NextTurnDistUnit, 1 );
+    if ( !ViewsText_OnGetVisible( &_this->NextTurnDistUnit ))
+      ViewsText_OnSetVisible( &_this->NextTurnDistUnit, 1 );
 
-  if ( !ViewsText_OnGetVisible( &_this->NextTurnDescription ))
-    ViewsText_OnSetVisible( &_this->NextTurnDescription, 1 );
+    if ( !ViewsText_OnGetVisible( &_this->NextTurnDescription ))
+      ViewsText_OnSetVisible( &_this->NextTurnDescription, 1 );
 
-  ViewsText_OnSetString( &_this->NextTurnDistUnit, NaviTbtData->DistUnit );
+    ViewsText_OnSetString( &_this->NextTurnDistUnit, NaviTbtData->DistUnit );
 
-  if ( 0.000000f == EwMathFract( NaviTbtData->Distance ))
-    ViewsText_OnSetString( &_this->NextTurnDist, EwNewStringInt((XInt32)NaviTbtData->Distance, 
-    0, 10 ));
-  else
-    ViewsText_OnSetString( &_this->NextTurnDist, EwNewStringFloat( NaviTbtData->Distance, 
-    0, 1 ));
+    if ( 0.000000f == EwMathFract( NaviTbtData->Distance ))
+      ViewsText_OnSetString( &_this->NextTurnDist, EwNewStringInt((XInt32)NaviTbtData->Distance, 
+      0, 10 ));
+    else
+      ViewsText_OnSetString( &_this->NextTurnDist, EwNewStringFloat( NaviTbtData->Distance, 
+      0, 1 ));
 
-  ViewsText_OnSetString( &_this->NextTurnDescription, NaviTbtData->TbtDescription );
+    ViewsText_OnSetString( &_this->NextTurnDescription, NaviTbtData->TbtDescription );
+  }
 }
 
 /* Variants derived from the class : 'Navigation::NAV05_TBTView' */
@@ -4345,30 +4348,35 @@ void NavigationTbtListMenu_OnLoadItem( NavigationTbtListMenu _this, XObject send
 
   if ( item != 0 )
   {
-    DeviceInterfaceNaviTbtDataClass NaviTbtData = DeviceInterfaceNavigationDeviceClass_GetNaviTbtData( 
-      EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ), 
-      _this->VerticalList.Item );
-
-    if ( NaviTbtData == 0 )
+    if ( DeviceInterfaceNavigationDeviceClass_IsTbtMessageDisplayed( EwGetAutoObject( 
+        &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )) 
+        && ( _this->VerticalList.Item == ( _this->NoOfItems - 1 )))
       NavigationTbtInfoItem_OnSetTbtItemEnabled( item, 0 );
     else
     {
-      NavigationTbtInfoItem_OnSetTbtItemEnabled( item, 1 );
-      NavigationTbtListMenu_ShowTbtListItemIcon( _this, NaviTbtData->IconIdx );
-      NavigationTbtInfoItem_OnSetDistanceUnit( item, NaviTbtData->DistUnit );
+      DeviceInterfaceNaviTbtDataClass NaviTbtData = DeviceInterfaceNavigationDeviceClass_GetNaviTbtData( 
+        EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ), 
+        _this->VerticalList.Item );
 
-      if ( 0.000000f == EwMathFract( NaviTbtData->Distance ))
-        NavigationTbtInfoItem_OnSetDistance( item, EwNewStringInt((XInt32)NaviTbtData->Distance, 
-        0, 10 ));
-      else
-        NavigationTbtInfoItem_OnSetDistance( item, EwNewStringFloat( NaviTbtData->Distance, 
-        0, 1 ));
+      if ( NaviTbtData != 0 )
+      {
+        NavigationTbtInfoItem_OnSetTbtItemEnabled( item, 1 );
+        NavigationTbtListMenu_ShowTbtListItemIcon( _this, NaviTbtData->IconIdx );
+        NavigationTbtInfoItem_OnSetDistanceUnit( item, NaviTbtData->DistUnit );
 
-      ViewsText_OnSetString( &item->NextTurnDescription, NaviTbtData->TbtDescription );
-      ViewsRectangle_OnSetVisible( &item->TbtItemBg, 0 );
+        if ( 0.000000f == EwMathFract( NaviTbtData->Distance ))
+          NavigationTbtInfoItem_OnSetDistance( item, EwNewStringInt((XInt32)NaviTbtData->Distance, 
+          0, 10 ));
+        else
+          NavigationTbtInfoItem_OnSetDistance( item, EwNewStringFloat( NaviTbtData->Distance, 
+          0, 1 ));
 
-      if ( 0 == _this->VerticalList.Item )
-        ViewsRectangle_OnSetVisible( &item->TbtItemBg, 1 );
+        ViewsText_OnSetString( &item->NextTurnDescription, NaviTbtData->TbtDescription );
+        ViewsRectangle_OnSetVisible( &item->TbtItemBg, 0 );
+
+        if ( 0 == _this->VerticalList.Item )
+          ViewsRectangle_OnSetVisible( &item->TbtItemBg, 1 );
+      }
     }
 
     CoreRectView__OnSetBounds( item, EwSetRectSize( item->Super2.Bounds, EwNewPoint( 

@@ -404,7 +404,7 @@ static void navi_event_update
     uint8_t visibility
     )
 {
-PRINTF( "%s: Event update: %s, %d, %d, %d, %d\r\n", __FUNCTION__, str, str_size, navi_evnt_type, navi_evnt_extra_subtype, visibility );
+PRINTF( "%s: Event update: %s, %d, %d, %d, %d\r\n", __FUNCTION__, (char*)str, str_size, navi_evnt_type, navi_evnt_extra_subtype, visibility );
 if( NULL != str )
     {
     navi_send_event_to_queue( str, str_size, navi_evnt_type, navi_evnt_extra_subtype, visibility );
@@ -656,9 +656,9 @@ static void navi_next_turn_dist_update
     uint8_t unit_str_size
     )
 {
-PRINTF( "%s: Next turn index:%d, Next turn dist: %d, unit:%s, unit size:%d \r\n", __FUNCTION__, icon_index, distance, unit_str, unit_str_size );
+PRINTF( "%s\r\n", __FUNCTION__ );
 
-navi_set_tbt_item( icon_index, distance, (uint8_t*)unit_str, unit_str_size );
+navi_set_tbt_item( icon_index, distance, unit_str, unit_str_size );
 }
 
 /*********************************************************************
