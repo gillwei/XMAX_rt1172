@@ -164,15 +164,18 @@ void ew_save_last_status
 uint8_t last_page = ( ( ew_get_last_home_group() & LAST_PAGE_HOME_GROUP_MASK ) << LAST_PAGE_HOME_GROUP_SHIFT ) |
                     ( ( ew_get_navigation_view_setting() & LAST_PAGE_NAVIGATION_SETTING_MASK ) << LAST_PAGE_NAVI_SETTING_SHIFT ) |
                     ( ew_get_meter_display_setting() & LAST_PAGE_METER_DISP_SETTING_MASK );
-EwPrint( "last pg 0x%x\r\n", last_page );
 if( pdFALSE == EEPM_set_last_page( last_page, &EW_power_write_last_page_callback ) )
     {
     EwPrint( "save last pg err\r\n" );
     }
-if( pdFALSE == EEPM_set_language( last_page, &EW_power_write_language_callback ) )
+
+uint8_t language = (uint8_t)ew_system_get_status( EnumSystemStatusLANGUAGE );
+if( pdFALSE == EEPM_set_language( language, &EW_power_write_language_callback ) )
     {
     EwPrint( "save lang err\r\n" );
     }
+
+EwPrint( "last pg 0x%x, lang %d\r\n", last_page, language );
 
 // write trip time to EEPROM
 VI_trip_time_save();
