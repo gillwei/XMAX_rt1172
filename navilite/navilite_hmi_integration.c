@@ -169,14 +169,6 @@
         )
     {
     NAVILITE_PRINTF( "[ESN acked] ESN ID is sent to app!\r\n" );
-    if( NAVILITE_request_app_start_imageframe_update() == true )
-        {
-        NAVILITE_PRINTF( "[NAVILITE-CB] Start Image Frame Update Request Sent!\r\n" );
-        }
-    else
-        {
-        NAVILITE_PRINTF( "[NAVILITE-CB] Start Image Frame Update Request Failed!\r\n" );
-        }
     }
 
     /*********************************************************************

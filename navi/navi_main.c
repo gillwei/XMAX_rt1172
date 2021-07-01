@@ -266,15 +266,6 @@ static void navi_esn_update
     )
 {
 PRINTF( "%s\r\n", __FUNCTION__ );
-if( true == NAVILITE_request_app_start_imageframe_update() )
-    {
-    PRINTF( "%s, Send image frame request\r\n", __FUNCTION__ );
-    }
-else
-    {
-    PRINTF( "%s, Fail to send image frame request\r\n", __FUNCTION__ );
-    is_navi_app_init_setting_completed = false;
-    }
 }
 
 /*********************************************************************
