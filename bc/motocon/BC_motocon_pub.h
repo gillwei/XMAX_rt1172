@@ -41,7 +41,6 @@ typedef struct
     void ( *device_name_callback) ( const uint8_t length, const uint8_t* content );
     void ( *notification_callback ) ( const bc_motocon_notification_v2_t* notification );
     void ( *can_request_callback ) ( void );
-    void ( *injection_request_callback ) ( void );
     void ( *battery_callback ) ( const uint8_t battery, const bc_motocon_battery_t battery_type );
     void ( *bt_music_meta_data_callback ) ( const bc_motocon_bt_music_meta_data_t* music_meta_data );
     void ( *incoming_call_info_callback ) ( const bc_motocon_incoming_call_info_t* incoming_call_information );

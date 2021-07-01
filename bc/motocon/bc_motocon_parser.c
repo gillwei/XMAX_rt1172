@@ -17,6 +17,7 @@
 #include <time.h>
 #include "client_ble_cmd.h"
 #include "EW_pub.h"
+#include "can_mid.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -610,14 +611,8 @@ bc_motocon_parse_result_t bc_motocon_parser_injection_request
     )
 {
 BC_MOTOCON_PRINTF( "%s\r\n", __FUNCTION__ );
-for( int i = 0; i < BC_MOTOCON_CALLBACK_MAX; i++ )
-    {
-    if( NULL != bc_motocon_callbacks[i] &&
-        NULL != bc_motocon_callbacks[i]->injection_request_callback )
-        {
-        bc_motocon_callbacks[i]->injection_request_callback();
-        }
-    }
+const uint32_t fuel = can_mid_fuel_cons_get();
+BC_motocon_send_injection_quantity( (uint8*)&fuel );
 return BC_MOTOCON_PARSE_SUCCESS;
 }
 
