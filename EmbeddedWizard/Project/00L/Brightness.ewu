@@ -54,7 +54,7 @@ class BRT01_BrightnessSettingMenu : Menu::BaseMenuView
     return Title;
   }
 
-  $rect <510,160,710,200>
+  $rect <510,210,710,250>
   inherited method OnItemActivate()
   {
     // suppress warning
@@ -71,6 +71,18 @@ class BRT01_BrightnessSettingMenu : Menu::BaseMenuView
     }
   }
 
+  $rect <510,160,710,200>
+  inherited method LoadItemEnabled()
+  {
+    var bool ItemEnabled = true;
+    switch( aItemNo )
+    {
+      case 1:ItemEnabled = !DeviceInterface::VehicleDevice.IsTimeoutError2Detected;
+      default:;
+    }
+    return ItemEnabled;
+  }
+
   $rect <20,20,160,60>
   inherited object Menu
   {
@@ -79,11 +91,31 @@ class BRT01_BrightnessSettingMenu : Menu::BaseMenuView
     preset ArrowScrollBarVisible = true;
   }
 
-  // TODO
-  // 1. Gray out "Digital meter" when timeout2 happened.
-  note group Note2
+  $rect <240,300,520,340>
+  object Core::SystemEventHandler VehicleDataReceivedEventHandler
   {
-    attr Bounds = <500,240,960,330>;
+    preset OnEvent = OnVehicleDataReceivedSlot;
+    preset Event = DeviceInterface::VehicleDevice.VehicleDataReceivedSystemEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <240,350,520,390>
+  slot OnVehicleDataReceivedSlot
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = ( DeviceInterface::VehicleDataClass )VehicleDataReceivedEventHandler.Context;
+    if( null != VehicleData )
+    {
+      switch( VehicleData.RxType )
+      {
+        case Enum::VehicleRxType.TIMEOUT_ERROR2_DETECTED,
+             Enum::VehicleRxType.TIMEOUT_ERROR2_RECOVERED:
+        {
+          Menu.InvalidateItems( 1, 1 );
+        }
+        default:;
+      }
+    }
   }
 
   $reorder OnSetDDModeEnabled 1
@@ -359,12 +391,13 @@ class BRT03_MeterBrightness : Components::BaseMainBG
   $rect <210,440,440,480>
   inherited method OnShortDownKeyActivated()
   {
-    if( Brightness::METER_BRIGHTNESS_LEVEL_MIN < BrightnessLevel )
-    {
-      DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.METER_BRIGHTNESS_OPERATION, Brightness::OPERATION_DOWN_CODE );
-    }
-
-    $if $prototyper
+    $if !$prototyper
+      if( Brightness::METER_BRIGHTNESS_LEVEL_MIN < BrightnessLevel &&
+          !DeviceInterface::VehicleDevice.IsTimeoutError2Detected )
+      {
+        DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.METER_BRIGHTNESS_OPERATION, Brightness::OPERATION_DOWN_CODE );
+      }
+    $else
       if( Brightness::METER_BRIGHTNESS_LEVEL_MIN < BrightnessLevel )
       {
         BrightnessLevel--;
@@ -376,12 +409,13 @@ class BRT03_MeterBrightness : Components::BaseMainBG
   $rect <210,540,440,580>
   inherited method OnShortUpKeyActivated()
   {
-    if( Brightness::METER_BRIGHTNESS_LEVEL_MAX > BrightnessLevel )
-    {
-      DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.METER_BRIGHTNESS_OPERATION, Brightness::OPERAION_UP_CODE );
-    }
-
-    $if $prototyper
+    $if !$prototyper
+      if( Brightness::METER_BRIGHTNESS_LEVEL_MAX > BrightnessLevel &&
+          !DeviceInterface::VehicleDevice.IsTimeoutError2Detected )
+      {
+        DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.METER_BRIGHTNESS_OPERATION, Brightness::OPERAION_UP_CODE );
+      }
+    $else
       if( Brightness::METER_BRIGHTNESS_LEVEL_MAX > BrightnessLevel )
       {
         BrightnessLevel++;
@@ -450,11 +484,16 @@ class BRT03_MeterBrightness : Components::BaseMainBG
   $rect <450,490,730,530>
   slot OnVehicleDataReceivedSlot
   {
-    var DeviceInterface::VehicleDataClass VehicleData = ( DeviceInterface::VehicleDataClass )VehicleDataReceivedEventHandler.Context;
-    if( null != VehicleData &&
-        Enum::VehicleRxType.METER_BRIGHTNESS_LEVEL == VehicleData.RxType )
+    var DeviceInterface::VehicleDataClass VehicleData = (DeviceInterface::VehicleDataClass)VehicleDataReceivedEventHandler.Context;
+    if( null != VehicleData )
     {
-      UpdateBrightnessLevel();
+      switch( VehicleData.RxType )
+      {
+        case Enum::VehicleRxType.METER_BRIGHTNESS_LEVEL: UpdateBrightnessLevel();
+        case Enum::VehicleRxType.TIMEOUT_ERROR2_DETECTED: LevelBar.FrameNumber = 0;
+        case Enum::VehicleRxType.TIMEOUT_ERROR2_RECOVERED: LevelBar.FrameNumber = 1;
+        default:;
+      }
     }
   }
 

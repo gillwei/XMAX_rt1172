@@ -158,12 +158,18 @@ switch( signal_id )
         DISP_update_tft_brightness( (uint8_t)( data * TFT_DUTY_FACTOR ) );
         break;
     case IL_CAN0_BRTNSS_CTRL_LCD_LV_RXSIG_HANDLE:
-        rx_brightness_control.lcd_brightness_level = (uint8_t)data;
-        EW_notify_vi_data_received( EnumVehicleRxTypeMETER_BRIGHTNESS_LEVEL );
+        if( MAX_LCD_BRIGHTNESS_LEVEL >= data )
+            {
+            rx_brightness_control.lcd_brightness_level = (uint8_t)data;
+            EW_notify_vi_data_received( EnumVehicleRxTypeMETER_BRIGHTNESS_LEVEL );
+            }
         break;
     case IL_CAN0_BRTNSS_CTRL_TFT_LV_RXSIG_HANDLE:
-        rx_brightness_control.tft_brightness_level = (uint8_t)data;
-        EW_notify_vi_data_received( EnumVehicleRxTypeTFT_BRIGHTNESS_LEVEL );
+        if( MAX_TFT_BRIGHTNESS_LEVEL >= data )
+            {
+            rx_brightness_control.tft_brightness_level = (uint8_t)data;
+            EW_notify_vi_data_received( EnumVehicleRxTypeTFT_BRIGHTNESS_LEVEL );
+            }
         break;
     default:
         PRINTF( "%s unknown signal id: 0x%x\r\n", __FUNCTION__, signal_id );
@@ -1054,9 +1060,17 @@ switch( rx_type )
         break;
     case EnumVehicleRxTypeTFT_BRIGHTNESS_LEVEL:
         *data = rx_brightness_control.tft_brightness_level;
+        if( INVALID_TFT_BRIGHTNESS_LEVEL == rx_brightness_control.tft_brightness_level )
+            {
+            is_valid = false;
+            }
         break;
     case EnumVehicleRxTypeMETER_BRIGHTNESS_LEVEL:
         *data = rx_brightness_control.lcd_brightness_level;
+        if( INVALID_LCD_BRIGHTNESS_LEVEL == rx_brightness_control.lcd_brightness_level )
+            {
+            is_valid = false;
+            }
         break;
     case EnumVehicleRxTypeMILEAGE_UNIT:
         *data = rx_unit_setting.mileage_unit;

@@ -3448,6 +3448,25 @@ XBool DeviceInterfaceVehicleDeviceClass_OnGetEngineIdling( DeviceInterfaceVehicl
   return IsEngineIdling;
 }
 
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetIsTimeoutError2Detected()' */
+XBool DeviceInterfaceVehicleDeviceClass_OnGetIsTimeoutError2Detected( DeviceInterfaceVehicleDeviceClass _this )
+{
+  XBool IsError2Detected;
+  DeviceInterfaceVehicleDataClass VehicleData;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  IsError2Detected = 0;
+  VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+  DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeTIMEOUT_ERROR2_DETECTED );
+
+  if ( !!VehicleData->DataUInt32 )
+    IsError2Detected = 1;
+
+  return IsError2Detected;
+}
+
 /* Variants derived from the class : 'DeviceInterface::VehicleDeviceClass' */
 EW_DEFINE_CLASS_VARIANTS( DeviceInterfaceVehicleDeviceClass )
 EW_END_OF_CLASS_VARIANTS( DeviceInterfaceVehicleDeviceClass )

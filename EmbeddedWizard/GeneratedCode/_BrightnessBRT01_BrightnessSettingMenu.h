@@ -114,6 +114,7 @@
 
 /* Deklaration of class : 'Brightness::BRT01_BrightnessSettingMenu' */
 EW_DEFINE_FIELDS( BrightnessBRT01_BrightnessSettingMenu, MenuBaseMenuView )
+  EW_OBJECT  ( VehicleDataReceivedEventHandler, CoreSystemEventHandler )
 EW_END_OF_FIELDS( BrightnessBRT01_BrightnessSettingMenu )
 
 /* Virtual Method Table (VMT) for the class : 'Brightness::BRT01_BrightnessSettingMenu' */
@@ -178,7 +179,8 @@ EW_DEFINE_METHODS( BrightnessBRT01_BrightnessSettingMenu, MenuBaseMenuView )
   EW_METHOD( OnItemActivate,    void )( BrightnessBRT01_BrightnessSettingMenu _this, 
     XInt32 aItemNo, MenuItemBase aMenuItem )
   EW_METHOD( LoadItemChecked,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemEnabled,   XBool )( BrightnessBRT01_BrightnessSettingMenu _this, 
+    XInt32 aItemNo )
   EW_METHOD( LoadItemBaseValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemMessage,   XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemReceivedTime, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
@@ -214,6 +216,15 @@ XString BrightnessBRT01_BrightnessSettingMenu_LoadItemTitle( BrightnessBRT01_Bri
 /* 'C' function for method : 'Brightness::BRT01_BrightnessSettingMenu.OnItemActivate()' */
 void BrightnessBRT01_BrightnessSettingMenu_OnItemActivate( BrightnessBRT01_BrightnessSettingMenu _this, 
   XInt32 aItemNo, MenuItemBase aMenuItem );
+
+/* 'C' function for method : 'Brightness::BRT01_BrightnessSettingMenu.LoadItemEnabled()' */
+XBool BrightnessBRT01_BrightnessSettingMenu_LoadItemEnabled( BrightnessBRT01_BrightnessSettingMenu _this, 
+  XInt32 aItemNo );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void BrightnessBRT01_BrightnessSettingMenu_OnVehicleDataReceivedSlot( BrightnessBRT01_BrightnessSettingMenu _this, 
+  XObject sender );
 
 #ifdef __cplusplus
   }

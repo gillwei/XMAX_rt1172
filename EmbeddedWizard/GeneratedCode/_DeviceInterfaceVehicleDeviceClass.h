@@ -218,6 +218,9 @@ XBool DeviceInterfaceVehicleDeviceClass_OnGetTireSensorEquipped( DeviceInterface
 /* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetEngineIdling()' */
 XBool DeviceInterfaceVehicleDeviceClass_OnGetEngineIdling( DeviceInterfaceVehicleDeviceClass _this );
 
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetIsTimeoutError2Detected()' */
+XBool DeviceInterfaceVehicleDeviceClass_OnGetIsTimeoutError2Detected( DeviceInterfaceVehicleDeviceClass _this );
+
 #ifdef __cplusplus
   }
 #endif

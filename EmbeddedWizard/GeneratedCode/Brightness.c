@@ -87,6 +87,9 @@ void BrightnessBRT01_BrightnessSettingMenu__Init( BrightnessBRT01_BrightnessSett
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
   _this->_.XObject._.GCT = EW_CLASS_GCT( BrightnessBRT01_BrightnessSettingMenu );
 
+  /* ... then construct all embedded objects */
+  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_.XObject, 0 );
+
   /* Setup the VMT pointer */
   _this->_.VMT = EW_CLASS( BrightnessBRT01_BrightnessSettingMenu );
 
@@ -97,6 +100,9 @@ void BrightnessBRT01_BrightnessSettingMenu__Init( BrightnessBRT01_BrightnessSett
   ComponentsBaseComponent__OnSetDDModeEnabled( &_this->Super1.Menu, 1 );
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 9 );
   MenuVerticalMenu_OnSetArrowScrollBarVisible( &_this->Super1.Menu, 1 );
+  _this->VehicleDataReceivedEventHandler.OnEvent = EwNewSlot( _this, BrightnessBRT01_BrightnessSettingMenu_OnVehicleDataReceivedSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->VehicleDataReceivedEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->VehicleDataReceivedSystemEvent );
 
   /* Call the user defined constructor */
   BrightnessBRT01_BrightnessSettingMenu_Init( _this, aArg );
@@ -107,6 +113,9 @@ void BrightnessBRT01_BrightnessSettingMenu__ReInit( BrightnessBRT01_BrightnessSe
 {
   /* At first re-initialize the super class ... */
   MenuBaseMenuView__ReInit( &_this->_.Super );
+
+  /* ... then re-construct all embedded objects */
+  CoreSystemEventHandler__ReInit( &_this->VehicleDataReceivedEventHandler );
 }
 
 /* Finalizer method for the class 'Brightness::BRT01_BrightnessSettingMenu' */
@@ -114,6 +123,9 @@ void BrightnessBRT01_BrightnessSettingMenu__Done( BrightnessBRT01_BrightnessSett
 {
   /* Finalize this class */
   _this->_.Super._.VMT = EW_CLASS( MenuBaseMenuView );
+
+  /* Finalize all embedded objects */
+  CoreSystemEventHandler__Done( &_this->VehicleDataReceivedEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
   MenuBaseMenuView__Done( &_this->_.Super );
@@ -206,13 +218,62 @@ void BrightnessBRT01_BrightnessSettingMenu_OnItemActivate( BrightnessBRT01_Brigh
   }
 }
 
+/* 'C' function for method : 'Brightness::BRT01_BrightnessSettingMenu.LoadItemEnabled()' */
+XBool BrightnessBRT01_BrightnessSettingMenu_LoadItemEnabled( BrightnessBRT01_BrightnessSettingMenu _this, 
+  XInt32 aItemNo )
+{
+  XBool ItemEnabled;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  ItemEnabled = 1;
+
+  switch ( aItemNo )
+  {
+    case 1 :
+      ItemEnabled = (XBool)!DeviceInterfaceVehicleDeviceClass_OnGetIsTimeoutError2Detected( 
+      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ));
+    break;
+
+    default :; 
+  }
+
+  return ItemEnabled;
+}
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void BrightnessBRT01_BrightnessSettingMenu_OnVehicleDataReceivedSlot( BrightnessBRT01_BrightnessSettingMenu _this, 
+  XObject sender )
+{
+  DeviceInterfaceVehicleDataClass VehicleData;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  VehicleData = EwCastObject( _this->VehicleDataReceivedEventHandler.Context, DeviceInterfaceVehicleDataClass );
+
+  if ( VehicleData != 0 )
+    switch ( VehicleData->RxType )
+    {
+      case EnumVehicleRxTypeTIMEOUT_ERROR2_DETECTED :
+      case EnumVehicleRxTypeTIMEOUT_ERROR2_RECOVERED :
+        MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 1, 1 );
+      break;
+
+      default :; 
+    }
+}
+
 /* Variants derived from the class : 'Brightness::BRT01_BrightnessSettingMenu' */
 EW_DEFINE_CLASS_VARIANTS( BrightnessBRT01_BrightnessSettingMenu )
 EW_END_OF_CLASS_VARIANTS( BrightnessBRT01_BrightnessSettingMenu )
 
 /* Virtual Method Table (VMT) for the class : 'Brightness::BRT01_BrightnessSettingMenu' */
-EW_DEFINE_CLASS( BrightnessBRT01_BrightnessSettingMenu, MenuBaseMenuView, _.VMT, 
-                 _.VMT, _.VMT, _.VMT, _.VMT, _.VMT, "Brightness::BRT01_BrightnessSettingMenu" )
+EW_DEFINE_CLASS( BrightnessBRT01_BrightnessSettingMenu, MenuBaseMenuView, VehicleDataReceivedEventHandler, 
+                 VehicleDataReceivedEventHandler, VehicleDataReceivedEventHandler, 
+                 VehicleDataReceivedEventHandler, _.VMT, _.VMT, "Brightness::BRT01_BrightnessSettingMenu" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -260,7 +321,7 @@ EW_DEFINE_CLASS( BrightnessBRT01_BrightnessSettingMenu, MenuBaseMenuView, _.VMT,
   BrightnessBRT01_BrightnessSettingMenu_LoadItemTitle,
   BrightnessBRT01_BrightnessSettingMenu_OnItemActivate,
   MenuBaseMenuView_LoadItemChecked,
-  MenuBaseMenuView_LoadItemEnabled,
+  BrightnessBRT01_BrightnessSettingMenu_LoadItemEnabled,
   MenuBaseMenuView_LoadItemBaseValue,
   MenuBaseMenuView_LoadItemMessage,
   MenuBaseMenuView_LoadItemReceivedTime,
@@ -689,7 +750,8 @@ void BrightnessBRT03_MeterBrightness_UpdateViewState( BrightnessBRT03_MeterBrigh
 /* 'C' function for method : 'Brightness::BRT03_MeterBrightness.OnShortDownKeyActivated()' */
 void BrightnessBRT03_MeterBrightness_OnShortDownKeyActivated( BrightnessBRT03_MeterBrightness _this )
 {
-  if ( 1 < _this->BrightnessLevel )
+  if (( 1 < _this->BrightnessLevel ) && !DeviceInterfaceVehicleDeviceClass_OnGetIsTimeoutError2Detected( 
+      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )))
     DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
     DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeMETER_BRIGHTNESS_OPERATION, 
     1 );
@@ -698,7 +760,8 @@ void BrightnessBRT03_MeterBrightness_OnShortDownKeyActivated( BrightnessBRT03_Me
 /* 'C' function for method : 'Brightness::BRT03_MeterBrightness.OnShortUpKeyActivated()' */
 void BrightnessBRT03_MeterBrightness_OnShortUpKeyActivated( BrightnessBRT03_MeterBrightness _this )
 {
-  if ( 6 > _this->BrightnessLevel )
+  if (( 6 > _this->BrightnessLevel ) && !DeviceInterfaceVehicleDeviceClass_OnGetIsTimeoutError2Detected( 
+      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )))
     DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
     DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeMETER_BRIGHTNESS_OPERATION, 
     2 );
@@ -744,8 +807,23 @@ void BrightnessBRT03_MeterBrightness_OnVehicleDataReceivedSlot( BrightnessBRT03_
 
   VehicleData = EwCastObject( _this->VehicleDataReceivedEventHandler.Context, DeviceInterfaceVehicleDataClass );
 
-  if (( VehicleData != 0 ) && ( EnumVehicleRxTypeMETER_BRIGHTNESS_LEVEL == VehicleData->RxType ))
-    BrightnessBRT03_MeterBrightness_UpdateBrightnessLevel( _this );
+  if ( VehicleData != 0 )
+    switch ( VehicleData->RxType )
+    {
+      case EnumVehicleRxTypeMETER_BRIGHTNESS_LEVEL :
+        BrightnessBRT03_MeterBrightness_UpdateBrightnessLevel( _this );
+      break;
+
+      case EnumVehicleRxTypeTIMEOUT_ERROR2_DETECTED :
+        ViewsImage_OnSetFrameNumber( &_this->LevelBar, 0 );
+      break;
+
+      case EnumVehicleRxTypeTIMEOUT_ERROR2_RECOVERED :
+        ViewsImage_OnSetFrameNumber( &_this->LevelBar, 1 );
+      break;
+
+      default :; 
+    }
 }
 
 /* 'C' function for method : 'Brightness::BRT03_MeterBrightness.UpdateBrightnessLevel()' */

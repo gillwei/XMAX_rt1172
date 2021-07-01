@@ -58,7 +58,11 @@ extern "C"{
 #define DEFAULT_SEAT_HEATER_HIGH_VALUE      ( 0xA )
 
 #define DEFALUT_LCD_BRIGHTNESS_LEVEL        ( 0x0 )
+#define MAX_LCD_BRIGHTNESS_LEVEL            ( 6 )
+#define INVALID_LCD_BRIGHTNESS_LEVEL        ( 0 )
 #define DEFALUT_TFT_BRIGHTNESS_LEVEL        ( 0x3 )
+#define MAX_TFT_BRIGHTNESS_LEVEL            ( 3 )
+#define INVALID_TFT_BRIGHTNESS_LEVEL        ( 0 )
 #define DEFALUT_TFT_DUTY                    ( 0x3FF )
 
 #define DEFAULT_TACHO_FULLSCALE             ( 0xFF )
