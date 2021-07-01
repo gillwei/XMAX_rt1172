@@ -611,7 +611,7 @@ static void navi_via_point_update
     uint8_t via_point_count
     )
 {
-PRINTF( "%s: Number of via point : %d\r\n", __FUNCTION__, via_point_count );
+PRINTF( "%s: %d\r\n", __FUNCTION__, via_point_count );
 navi_data_obj.via_points = via_point_count;
 EW_notify_via_point_update();
 }
@@ -768,7 +768,7 @@ bool NAVI_get_navigation_status
     void
     )
 {
-PRINTF( "%s: Navigation Status: %d\r\n", __FUNCTION__, navi_data_obj.is_navigating );
+PRINTF( "%s: %d\r\n", __FUNCTION__, navi_data_obj.is_navigating );
 return navi_data_obj.is_navigating? true : false;
 }
 

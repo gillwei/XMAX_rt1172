@@ -739,7 +739,7 @@ class NAV01_DefaultView : Home::BaseHome
   $rect <730,580,930,620>
   slot OnNaviDisconnectUpdateSlot
   {
-    if( null != Owner )
+    if( null != Owner && IsCurrentDialog() )
     {
       Owner.SwitchToDialog( new Pop::POP02_ConnectionError, null, null, null, null, null, null, null, null, null, false );
     }
@@ -1785,8 +1785,8 @@ class NAV05_TBTView : Home::BaseHome
   $rect <520,530,720,570>
   inherited method Init()
   {
+    trace "NAV05 init";
     signal OnNavigatingStatusUpdateSlot;
-    signal OnTbtListUpdateSlot;
     signal OnSpeedLimitUpdateSlot;
 
     // If there is no route guidance, LC will not receive tbt data. Therefore, we don't need loading animation.
@@ -1796,10 +1796,20 @@ class NAV05_TBTView : Home::BaseHome
       {
         DeviceInterface::NavigationDevice.IsNaviLoadingDialogDisplayed = false;
         AccessNaviView = false;
+        signal OnTbtListUpdateSlot;
       }
       else
       {
-        AccessNaviView = true;
+        // If Tbt buffer already have data, we don't need to show loading animation.
+        if( DeviceInterface::NavigationDevice.GetTbtListSize() > 0 )
+        {
+          AccessNaviView = false;
+          signal OnTbtListUpdateSlot;
+        }
+        else
+        {
+          AccessNaviView = true;
+        }
       }
     }
   }
@@ -2239,7 +2249,7 @@ class NAV05_TBTView : Home::BaseHome
   $rect <1200,320,1400,360>
   slot OnNaviDisconnectUpdateSlot
   {
-    if( null != Owner )
+    if( null != Owner && IsCurrentDialog() )
     {
       Owner.SwitchToDialog( new Pop::POP02_ConnectionError, null, null, null, null, null, null, null, null, null, false );
     }
@@ -2336,8 +2346,7 @@ class NAV03_TBTListView : Home::BaseHome
   $rect <530,240,730,280>
   inherited method Init()
   {
-    trace "TBT List View init";
-    signal OnTbtListUpdateSlot;
+    trace "NAV03 init";
 
     // If there is no route guidance, LC will not receive tbt data. Therefore, we don't need loading animation.
     if( DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() )
@@ -2346,10 +2355,20 @@ class NAV03_TBTListView : Home::BaseHome
       {
         DeviceInterface::NavigationDevice.IsNaviLoadingDialogDisplayed = false;
         AccessNaviView = false;
+        signal OnTbtListUpdateSlot;
       }
       else
       {
-        AccessNaviView = true;
+        // If Tbt buffer already have data, we don't need to show loading animation.
+        if( DeviceInterface::NavigationDevice.GetTbtListSize() > 0 )
+        {
+          AccessNaviView = false;
+          signal OnTbtListUpdateSlot;
+        }
+        else
+        {
+          AccessNaviView = true;
+        }
       }
     }
   }
@@ -2497,7 +2516,7 @@ class NAV03_TBTListView : Home::BaseHome
   $rect <740,650,940,690>
   slot OnNaviDisconnectUpdateSlot
   {
-    if( null != Owner )
+    if( null != Owner && IsCurrentDialog() )
     {
       Owner.SwitchToDialog( new Pop::POP02_ConnectionError, null, null, null, null, null, null, null, null, null, false );
     }

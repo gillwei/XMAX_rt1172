@@ -322,7 +322,10 @@ if( pdTRUE == xSemaphoreTake( tbt_semphr_hndl, ticks_to_wait ) )
         {
         navi_tbt_buffer[i-1] = navi_tbt_buffer[i];
         }
-    num_of_tbt_list_item--;
+    if( num_of_tbt_list_item > 0 )
+        {
+        num_of_tbt_list_item--;
+        }
     xSemaphoreGive( tbt_semphr_hndl );
     }
 }

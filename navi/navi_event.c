@@ -247,7 +247,7 @@ if( pdTRUE == xSemaphoreTake( event_buffer_semphr_hndl, ticks_to_wait ) )
             break;
             }
         default:
-            PRINTF( "%s: Unexpected event type\r\n", __FUNCTION__ );
+            PRINTF( "%s: Unexpected event type 0x%x\r\n", __FUNCTION__, navi_evnt_type );
             result = ERR_BUF_OPERATION;
             break;
         }
