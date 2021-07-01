@@ -507,13 +507,13 @@ void LauncherLNC_Main_OnSelectedAnimationFinishedSlot( LauncherLNC_Main _this, X
     break;
 
     case EnumLauncherItemNAVIGATION :
-      if ( !DeviceInterfaceNavigationDeviceClass_GetNaviConnectStatus( EwGetAutoObject( 
+      if ( !DeviceInterfaceNavigationDeviceClass_OnGetNaviAppSppConnected( EwGetAutoObject( 
           &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )))
         ItemDialog = ((ComponentsBaseComponent)EwNewObject( PopPOP09_POP14_BleConnectionErrorUI, 
         0 ));
       else
-        if ( !DeviceInterfaceNavigationDeviceClass_GetNaviAppInitSettingStatus( 
-            EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )))
+        if ( !DeviceInterfaceNavigationDeviceClass_GetNaviConnectStatus( EwGetAutoObject( 
+            &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )))
           ItemDialog = ((ComponentsBaseComponent)EwNewObject( PopPOP17_AppInitSettingError, 
           0 ));
         else

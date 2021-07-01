@@ -553,11 +553,11 @@ class BaseHome : Components::BaseMainBG
     {
       case Enum::HomeType.TACHO_VISUALIZER, Enum::HomeType.ECO_VISUALIZER, Enum::HomeType.SPEED_VISUALIZER:
       {
-        if( !DeviceInterface::NavigationDevice.GetNaviConnectStatus() )
+        if( !DeviceInterface::NavigationDevice.NaviAppSppConnected )
         {
           NextHomeType = Enum::HomeType.VEHICLE_INFO;
         }
-        else if( !DeviceInterface::NavigationDevice.GetNaviAppInitSettingStatus() )
+        else if( !DeviceInterface::NavigationDevice.GetNaviConnectStatus() )
         {
           NextHomeType = Enum::HomeType.VEHICLE_INFO;
         }

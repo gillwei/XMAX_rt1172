@@ -276,11 +276,11 @@ class LNC_Main : Components::BaseComponent
       case Enum::LauncherItem.METER_DISPLAY: ItemDialog = new Info::INF01_MeterDisplaySettingMenu;
       case Enum::LauncherItem.NAVIGATION:
       {
-        if( !DeviceInterface::NavigationDevice.GetNaviConnectStatus() )
+        if( !DeviceInterface::NavigationDevice.NaviAppSppConnected )
         {
           ItemDialog = new Pop::POP09_POP14_BleConnectionErrorUI;
         }
-        else if( !DeviceInterface::NavigationDevice.GetNaviAppInitSettingStatus() )
+        else if( !DeviceInterface::NavigationDevice.GetNaviConnectStatus() )
         {
           ItemDialog = new Pop::POP17_AppInitSettingError;
         }

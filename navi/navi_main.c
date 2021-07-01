@@ -96,7 +96,6 @@ static generic_fc_ptr navi_funtion_table[NAVILITE_FUNC_CNT] =
 static navi_data_type navi_data_obj;
 static navi_dialog_type navi_dialog_obj;
 static bool is_navi_app_connected;
-static bool is_navi_app_init_setting_completed;
 static EnumNaviZoomInOutStatusType zoom_inout_status = EnumNaviZoomInOutStatusTypeNORMAL;
 
 /*--------------------------------------------------------------------
@@ -307,7 +306,6 @@ is_navi_app_connected = false;
 if( NAVILITE_CONN_TBD != mode )
     {
     is_navi_app_connected = true;
-    is_navi_app_init_setting_completed = true;
     EW_notify_connect_status_update();
     }
 }
@@ -327,7 +325,6 @@ static void navi_disconnect_update
 {
 PRINTF( "%s: %d\r\n", __FUNCTION__, mode );
 is_navi_app_connected = false;
-is_navi_app_init_setting_completed = false;
 EW_notify_disconnect_status_update();
 }
 
@@ -898,23 +895,6 @@ bool NAVI_get_connect_status
 {
 PRINTF( "%s\r\n", __FUNCTION__ );
 return is_navi_app_connected;
-}
-
-/*********************************************************************
-*
-* @public
-* NAVI_get_navi_app_setup_status
-*
-* Get navi app setup status
-*
-*********************************************************************/
-bool NAVI_get_navi_app_setup_status
-    (
-    void
-    )
-{
-PRINTF( "%s\r\n", __FUNCTION__ );
-return is_navi_app_init_setting_completed;
 }
 
 /*********************************************************************

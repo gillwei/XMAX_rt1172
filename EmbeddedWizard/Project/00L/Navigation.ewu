@@ -7,6 +7,8 @@ class NAV01_DefaultView : Home::BaseHome
   $rect <520,700,720,740>
   inherited method Init()
   {
+    trace "NAV01";
+
     SetItemBounds();
     signal OnCurRdUpdateSlot;
     signal OnETAUpdateSlot;
@@ -69,11 +71,11 @@ class NAV01_DefaultView : Home::BaseHome
     if( !NaviConnectFailedTimer.Enabled &&
         Components::ACTIVATE_LONG_PRESS_REPETITION_COUNT == KeyHandler.RepetitionCount )
     {
-      if( !DeviceInterface::NavigationDevice.GetNaviConnectStatus() )
+      if( !DeviceInterface::NavigationDevice.NaviAppSppConnected )
       {
         PresentDialog( new Pop::POP09_POP14_BleConnectionErrorUI, null, null, null, null, null, null, null, null, false );
       }
-      else if( !DeviceInterface::NavigationDevice.GetNaviAppInitSettingStatus() )
+      else if( !DeviceInterface::NavigationDevice.GetNaviConnectStatus() )
       {
         PresentDialog( new Pop::POP17_AppInitSettingError, null, null, null, null, null, null, null, null, false );
       }
@@ -1823,11 +1825,11 @@ class NAV05_TBTView : Home::BaseHome
     if( !NaviConnectFailedTimer.Enabled &&
         Components::ACTIVATE_LONG_PRESS_REPETITION_COUNT == KeyHandler.RepetitionCount )
     {
-      if( !DeviceInterface::NavigationDevice.GetNaviConnectStatus() )
+      if( !DeviceInterface::NavigationDevice.NaviAppSppConnected )
       {
         PresentDialog( new Pop::POP09_POP14_BleConnectionErrorUI, null, null, null, null, null, null, null, null, false );
       }
-      else if( !DeviceInterface::NavigationDevice.GetNaviAppInitSettingStatus() )
+      else if( !DeviceInterface::NavigationDevice.GetNaviConnectStatus() )
       {
         PresentDialog( new Pop::POP17_AppInitSettingError, null, null, null, null, null, null, null, null, false );
       }
@@ -2394,11 +2396,11 @@ class NAV03_TBTListView : Home::BaseHome
     if( !NaviConnectFailedTimer.Enabled &&
         Components::ACTIVATE_LONG_PRESS_REPETITION_COUNT == KeyHandler.RepetitionCount )
     {
-      if( !DeviceInterface::NavigationDevice.GetNaviConnectStatus() )
+      if( !DeviceInterface::NavigationDevice.NaviAppSppConnected )
       {
         PresentDialog( new Pop::POP09_POP14_BleConnectionErrorUI, null, null, null, null, null, null, null, null, false );
       }
-      else if( !DeviceInterface::NavigationDevice.GetNaviAppInitSettingStatus() )
+      else if( !DeviceInterface::NavigationDevice.GetNaviConnectStatus() )
       {
         PresentDialog( new Pop::POP17_AppInitSettingError, null, null, null, null, null, null, null, null, false );
       }

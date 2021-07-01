@@ -39,8 +39,8 @@ class Application : Core::Root
         Enum::HomeType.NAVI_NEXT_TURN    == DeviceInterface::SystemDevice.HomeType ||
         Enum::HomeType.NAVI_TURN_BY_TURN == DeviceInterface::SystemDevice.HomeType )
     {
-      if( DeviceInterface::NavigationDevice.GetNaviConnectStatus() &&
-        DeviceInterface::NavigationDevice.GetNaviAppInitSettingStatus() )
+      if( DeviceInterface::NavigationDevice.NaviAppSppConnected &&
+          DeviceInterface::NavigationDevice.GetNaviConnectStatus() )
       {
         signal ShowNaviHome;
       }

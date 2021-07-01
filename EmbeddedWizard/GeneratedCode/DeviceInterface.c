@@ -1443,19 +1443,6 @@ XBool DeviceInterfaceNavigationDeviceClass_GetNaviConnectStatus( DeviceInterface
   return IsNaviAppConnected;
 }
 
-/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetNaviAppInitSettingStatus()' */
-XBool DeviceInterfaceNavigationDeviceClass_GetNaviAppInitSettingStatus( DeviceInterfaceNavigationDeviceClass _this )
-{
-  XBool IsNaviAppInitSettingCompleted;
-
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( _this );
-
-  IsNaviAppInitSettingCompleted = 0;
-  IsNaviAppInitSettingCompleted = NAVI_get_navi_app_setup_status();
-  return IsNaviAppInitSettingCompleted;
-}
-
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.StopRoute()' */
 void DeviceInterfaceNavigationDeviceClass_StopRoute( DeviceInterfaceNavigationDeviceClass _this )
 {
@@ -1716,6 +1703,19 @@ XEnum DeviceInterfaceNavigationDeviceClass_GetNaviDialogDefaultButton( DeviceInt
     DefaultButton = navi_dialog_obj->default_selected_button;
   }
   return DefaultButton;
+}
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.OnGetNaviAppSppConnected()' */
+XBool DeviceInterfaceNavigationDeviceClass_OnGetNaviAppSppConnected( DeviceInterfaceNavigationDeviceClass _this )
+{
+  XBool IsNaviAppSppConnected;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  IsNaviAppSppConnected = 0;
+  IsNaviAppSppConnected = BTM_is_bt_connected();
+  return IsNaviAppSppConnected;
 }
 
 /* Variants derived from the class : 'DeviceInterface::NavigationDeviceClass' */

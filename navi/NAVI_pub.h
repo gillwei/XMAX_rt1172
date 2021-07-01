@@ -124,7 +124,6 @@ EnumNaviDialogType NAVI_get_dialog_type( void );
 void NAVI_send_selected_dialog( EnumNaviButtonType button_type );
 void NAVI_get_dialog_message( char** dialog_message );
 bool NAVI_get_connect_status( void );
-bool NAVI_get_navi_app_setup_status( void );
 void NAVI_send_stop_route_request( void );
 void NAVI_send_skip_next_waypoint_request( void );
 void NAVI_send_go_home_request( EnumNaviRouteOptionType route_option_type );

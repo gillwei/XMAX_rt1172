@@ -250,9 +250,6 @@ void DeviceInterfaceNavigationDeviceClass__NotifyViaPointUpdate( void* _this );
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetNaviConnectStatus()' */
 XBool DeviceInterfaceNavigationDeviceClass_GetNaviConnectStatus( DeviceInterfaceNavigationDeviceClass _this );
 
-/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetNaviAppInitSettingStatus()' */
-XBool DeviceInterfaceNavigationDeviceClass_GetNaviAppInitSettingStatus( DeviceInterfaceNavigationDeviceClass _this );
-
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.StopRoute()' */
 void DeviceInterfaceNavigationDeviceClass_StopRoute( DeviceInterfaceNavigationDeviceClass _this );
 
@@ -348,6 +345,9 @@ XInt32 DeviceInterfaceNavigationDeviceClass_GetNaviDialogTimeOut( DeviceInterfac
 
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetNaviDialogDefaultButton()' */
 XEnum DeviceInterfaceNavigationDeviceClass_GetNaviDialogDefaultButton( DeviceInterfaceNavigationDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.OnGetNaviAppSppConnected()' */
+XBool DeviceInterfaceNavigationDeviceClass_OnGetNaviAppSppConnected( DeviceInterfaceNavigationDeviceClass _this );
 
 #ifdef __cplusplus
   }

@@ -1225,21 +1225,6 @@ class NavigationDeviceClass : Templates::DeviceClass
     $endif
   }
 
-  $rect <730,890,930,930>
-  method bool GetNaviAppInitSettingStatus()
-  {
-    $if( !$prototyper )
-      var bool IsNaviAppInitSettingCompleted= false;
-      native( IsNaviAppInitSettingCompleted )
-      {
-        IsNaviAppInitSettingCompleted = NAVI_get_navi_app_setup_status();
-      }
-      return IsNaviAppInitSettingCompleted;
-    $else
-      return false;
-    $endif
-  }
-
   $rect <80,660,280,700>
   method void StopRoute()
   {
@@ -1306,7 +1291,7 @@ class NavigationDeviceClass : Templates::DeviceClass
     $endif
   }
 
-  $rect <730,970,930,1010>
+  $rect <730,930,930,970>
   method Enum::NaviZoomInOutStatusType GetZoomInOutStatus()
   {
     $if !$prototyper
@@ -1336,7 +1321,7 @@ class NavigationDeviceClass : Templates::DeviceClass
     AlertDistanceUpdateEvent.Trigger( null, false );
   }
 
-  $rect <730,930,930,970>
+  $rect <730,890,930,930>
   method string GetAlertDistance()
   {
     $if !$prototyper
@@ -1518,7 +1503,7 @@ class NavigationDeviceClass : Templates::DeviceClass
   $rect <560,100,760,140>
   var int32 CurrentSelectPoiIdx;
 
-  $rect <730,1010,930,1050>
+  $rect <730,970,930,1010>
   method int32 GetNaviDialogTimeOut()
   {
     $if !$prototyper
@@ -1535,7 +1520,7 @@ class NavigationDeviceClass : Templates::DeviceClass
     $endif
   }
 
-  $rect <730,1050,930,1090>
+  $rect <730,1010,930,1050>
   method Enum::NaviButtonType GetNaviDialogDefaultButton()
   {
     $if !$prototyper
@@ -1549,6 +1534,24 @@ class NavigationDeviceClass : Templates::DeviceClass
       return DefaultButton;
     $else
       return Enum::NaviButtonType.TOTAL;
+    $endif
+  }
+
+  $rect <780,40,980,80>
+  property bool NaviAppSppConnected;
+
+  $rect <780,90,980,130>
+  onget NaviAppSppConnected
+  {
+    $if !$prototyper
+      var bool IsNaviAppSppConnected = false;
+      native( IsNaviAppSppConnected )
+      {
+        IsNaviAppSppConnected = BTM_is_bt_connected();
+      }
+      return IsNaviAppSppConnected;
+    $else
+      return pure NaviAppSppConnected;
     $endif
   }
 }

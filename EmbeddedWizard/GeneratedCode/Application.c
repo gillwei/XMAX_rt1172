@@ -222,9 +222,9 @@ void ApplicationApplication_OnDisclaimerAcceptedSlot( ApplicationApplication _th
       || ( EnumHomeTypeNAVI_TURN_BY_TURN == EwGetAutoObject( &DeviceInterfaceSystemDevice, 
       DeviceInterfaceSystemDeviceClass )->HomeType ))
   {
-    if ( DeviceInterfaceNavigationDeviceClass_GetNaviConnectStatus( EwGetAutoObject( 
+    if ( DeviceInterfaceNavigationDeviceClass_OnGetNaviAppSppConnected( EwGetAutoObject( 
         &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )) 
-        && DeviceInterfaceNavigationDeviceClass_GetNaviAppInitSettingStatus( EwGetAutoObject( 
+        && DeviceInterfaceNavigationDeviceClass_GetNaviConnectStatus( EwGetAutoObject( 
         &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )))
       EwSignal( EwNewSlot( _this, ApplicationApplication_ShowNaviHome ), ((XObject)_this ));
     else
