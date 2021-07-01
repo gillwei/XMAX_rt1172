@@ -71,7 +71,7 @@ typedef struct
 typedef struct
     {
     navilite_navievent_type event_type;
-    navilite_navievent_camera_extra_subtype camera_type;
+    navilite_navievent_extra_subtype camera_type;
     char speed[MAX_STR_SIZE];
     char dist[MAX_STR_SIZE];
     uint8_t desc_size;

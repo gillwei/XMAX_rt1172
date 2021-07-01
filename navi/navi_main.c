@@ -451,7 +451,7 @@ static void navi_event_update
     uint8_t* str,
     uint8_t str_size,
     navilite_navievent_type navi_evnt_type,
-    navilite_navievent_camera_extra_subtype navi_evnt_extra_subtype,
+    navilite_navievent_extra_subtype navi_evnt_extra_subtype,
     uint8_t visibility
     )
 {

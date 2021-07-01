@@ -19,9 +19,9 @@ extern "C"{
 #include <stdbool.h>
 #include "NAVILITE_pub.h"
 
-int navi_add_event( uint8_t* str, uint8_t str_size, navilite_navievent_type navi_evnt_type, navilite_navievent_camera_extra_subtype navi_evnt_extra_subtype, uint8_t visibility );
+int navi_add_event( uint8_t* str, uint8_t str_size, navilite_navievent_type navi_evnt_type, navilite_navievent_extra_subtype navi_evnt_extra_subtype, uint8_t visibility );
 void navi_event_init( void );
-void navi_send_event_to_queue( uint8_t* str, uint8_t str_size, navilite_navievent_type navi_evnt_type, navilite_navievent_camera_extra_subtype navi_evnt_extra_subtype, uint8_t visibility );
+void navi_send_event_to_queue( uint8_t* str, uint8_t str_size, navilite_navievent_type navi_evnt_type, navilite_navievent_extra_subtype navi_evnt_extra_subtype, uint8_t visibility );
 void navi_tbt_init( void );
 void navi_poi_init( void );
 void navi_add_tbt_item( navilite_tbt_list_type* tbt_list_item );

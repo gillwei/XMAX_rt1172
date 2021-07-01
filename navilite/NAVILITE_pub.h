@@ -72,7 +72,7 @@ typedef enum tagNAVILITE_CONTENT_MODE_TYPE
     NAVILITE_CONTENT_MODE_MAP = 2 // from TBT to MAP
     } navilite_content_mode_type;
 
-typedef enum tagNAVILITE_EVENT_CAMERA_EXTRA_SUBTYPE
+typedef enum tagNAVILITE_EVENT_EXTRA_SUBTYPE
     {
     NAVILITE_CAM_TYPE_CHECK_FIXED = 0, // A permanent spot check - e.g. a GATSO.
     NAVILITE_CAM_TYPE_CHECK_TEMPORARY = 1, // A site with infrastructure (e.g. lines on road) but no permanent camera.
@@ -85,8 +85,13 @@ typedef enum tagNAVILITE_EVENT_CAMERA_EXTRA_SUBTYPE
     NAVILITE_CAM_TYPE_DANGEROUS_ZONE = 8, // A Dangerous Zone (French regulations)
     NAVILITE_CAM_TYPE_DANGEROUS_POINT = 9, // A Dangerous Point (French regulations)
     NAVILITE_CAM_TYPE_RISK_ZONE = 10, // A Risk Zone (French regulations)
-    NAVILITE_CAM_TYPE_UNKNOWN = 11
-    } navilite_navievent_camera_extra_subtype;
+    NAVILITE_CAM_TYPE_UNKNOWN = 11,
+    // BORDER TYPES
+    NAVILITE_BORDER_TYPE_STATE = 41,  // A state type
+    NAVILITE_BORDER_TYPE_COUNTRY = 42, // A country type
+    // UNDEFINED TYPES
+    NAVILITE_EVENT_EXTRA_SUBTYPE_UNDEFINED = 126 // A undefined extra subtype
+    } navilite_navievent_extra_subtype;
 
 // argument used for start/stop list request
 typedef enum tagNAVILITE_CONTENT_TYPE
@@ -182,7 +187,7 @@ typedef void ( *navilite_callback_func_nextturndistance )( uint8_t icon_index, u
 typedef void ( *navilite_callback_func_nexttbtlist )( navilite_tbt_list_action_type action, navilite_tbt_list_type* list, uint16_t list_item_index, uint16_t list_total_items, uint16_t list_item_total_recevied, uint8_t has_more_items_on_next_request );
 typedef void ( *navilite_callback_func_nexttpoilist )( navilite_poi_list_action_type action, navilite_poi_list_type* list, uint16_t list_item_index, uint16_t list_total_items, uint16_t list_item_total_recevied, uint8_t has_more_items_on_next_request );
 typedef void ( *navilite_callback_func_activetbtitem )( uint16_t active_tbt_index);
-typedef void ( *navilite_callback_func_navieventtext )( uint8_t* str, uint8_t str_size, navilite_navievent_type navi_event_type, navilite_navievent_camera_extra_subtype navi_extra_sub_type, uint8_t visibility );
+typedef void ( *navilite_callback_func_navieventtext )( uint8_t* str, uint8_t str_size, navilite_navievent_type navi_event_type, navilite_navievent_extra_subtype navi_extra_sub_type, uint8_t visibility );
 typedef void ( *navilite_callback_func_homelocationsetting )( uint8_t is_home_location );
 typedef void ( *navilite_callback_func_officelocationsetting )( uint8_t is_office_location );
 typedef void ( *navilite_callback_func_zoomlevel )( uint8_t current_level, uint8_t max_level, uint8_t* zoom_scale_str, uint8_t zoom_scale_str_size );
