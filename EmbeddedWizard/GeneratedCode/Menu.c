@@ -3767,11 +3767,15 @@ void MenuItemPoiList__Init( MenuItemPoiList _this, XObject aLink, XHandle aArg )
   ViewsText_OnSetEllipsis( &_this->Super1.Title, 1 );
   ViewsText_OnSetWrapText( &_this->Super1.Title, 1 );
   ViewsText_OnSetAlignment( &_this->Super1.Title, ViewsTextAlignmentAlignHorzLeft 
-  | ViewsTextAlignmentAlignVertTop );
+  | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->Super1.Title, 0 );
   CoreRectView__OnSetBounds( &_this->ValueText, _Const003D );
+  ViewsText_OnSetAlignment( &_this->ValueText, ViewsTextAlignmentAlignHorzRight 
+  | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->ValueText, 0 );
   CoreRectView__OnSetBounds( &_this->UnitText, _Const003E );
+  ViewsText_OnSetAlignment( &_this->UnitText, ViewsTextAlignmentAlignHorzLeft | 
+  ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->UnitText, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ValueText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->UnitText ), 0 );

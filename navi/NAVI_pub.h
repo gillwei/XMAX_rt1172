@@ -23,7 +23,7 @@ extern "C"{
 #define MAX_ROAD_NAME_SIZE           ( 64 )
 #define MAX_DIALOG_DESCRIPTION_SIZE  ( 64 )
 #define MAX_TBT_DESCRIPTION_SIZE     ( 64 )
-#define MAX_POI_DESCRIPTION_SIZE     ( 40 )
+#define MAX_POI_DESCRIPTION_SIZE     ( 48 )
 #define MAX_TBT_DIST_UNIT_SIZE       ( 16 )
 #define MAX_POI_DIST_UNIT_SIZE       ( 16 )
 #define MAX_EVENT_QUEUE_SIZE         ( 10 )

@@ -2623,7 +2623,7 @@ class ItemPoiList : Menu::ItemBase
     preset Bounds = <37,1,233,78>;
     preset Ellipsis = true;
     preset WrapText = true;
-    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertTop];
+    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "";
   }
 
@@ -2631,6 +2631,7 @@ class ItemPoiList : Menu::ItemBase
   object Views::Text ValueText
   {
     preset Bounds = <253,18,351,52>;
+    preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium28pt;
   }
@@ -2639,6 +2640,7 @@ class ItemPoiList : Menu::ItemBase
   object Views::Text UnitText
   {
     preset Bounds = <357,18,417,52>;
+    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
     preset String = "";
     preset Font = Fonts::NotoSansCjkJpMedium28pt;
   }
