@@ -230,6 +230,45 @@ return existed;
 }
 
 /*================================================================================================
+@brief   Check whether or not the paired device supports iAP connection
+@details Check whether or not the paired device supports iAP connection
+@return  None
+@retval  Whether or not the paired device supports iAP connection
+================================================================================================*/
+bool BT_device_is_iap_support
+    (
+    const uint8_t* bd_addr
+    )
+{
+bool iap_support = false;
+
+if( ( NULL == bd_addr ) || ( BT_DEVICE_ADDRESS_LEN != strlen( (const char*)bd_addr ) ) )
+    {
+    BT_LOG_DEBUG( "Invalid BD address" );
+    }
+else
+    {
+    if( false == xSemaphoreTake( s_mutex, pdMS_TO_TICKS( MUTEX_LOCK_MS ) ) )
+        {
+        BT_LOG_ERROR( "Mutex lock timeout" );
+        }
+    else
+        {
+        for( uint8_t i = 0; i < s_num_paired_devices; ++i )
+            {
+            if( 0 == memcmp( s_paired_devices[i].bd_addr, bd_addr, BT_DEVICE_ADDRESS_LEN ) )
+                {
+                iap_support = s_paired_devices[i].iap_support;
+                break;
+                }
+            }
+        xSemaphoreGive( s_mutex );
+        }
+    }
+return iap_support;
+}
+
+/*================================================================================================
 @brief   Update the local paired device list using the paired device list sent from Cypress module
 @details Update the local paired device list using the devices extracted from the paired device
          list sent from Cypress module.

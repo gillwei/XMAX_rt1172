@@ -175,6 +175,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/bt/include/private/common}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/bt/include/private/hci}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/bt/include/private/manager}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/bt/include/private/spp}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/mm}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/qrcode}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/nanopb}&quot;"/>
@@ -432,6 +433,7 @@
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="bt/src/common"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="bt/src/hci"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="bt/src/manager"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="bt/src/spp"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="bt_hci"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="btm"/>
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="component"/>
@@ -637,6 +639,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/bt/include/private/common}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/bt/include/private/hci}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/bt/include/private/manager}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/bt/include/private/spp}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/mm}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/qrcode}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/nanopb}&quot;"/>
@@ -894,6 +897,7 @@
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="bt/src/common"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="bt/src/hci"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="bt/src/manager"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="bt/src/spp"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="bt_hci"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="btm"/>
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="component"/>

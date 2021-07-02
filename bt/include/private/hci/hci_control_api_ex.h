@@ -74,10 +74,50 @@ extern "C" {
 /*--------------------------------------------------------------------
                         SPP COMMANDS
 --------------------------------------------------------------------*/
+/*====================================================================
+@type: NEW
+@data: Byte[0]: (6-bytes) Bluetooth device address
+       Byte[6]: (1-byte) SPP application type specified in BT_spp_app_type_e
+====================================================================*/
+#define HCI_CONTROL_SPP_COMMAND_CONNECT_GARMIN ( ( HCI_CONTROL_GROUP_SPP << 8 ) | 0xFF )
+
+/*====================================================================
+@type: NEW
+@data: Byte[0]: (2-bytes) Connection handle
+       Byte[2]: (1-byte) SPP application type specified in BT_spp_app_type_e
+====================================================================*/
+#define HCI_CONTROL_SPP_COMMAND_DISCONNECT_GARMIN ( ( HCI_CONTROL_GROUP_SPP << 8 ) | 0xFE )
+
+/*====================================================================
+@type: NEW
+@data: Byte[0]: (2-bytes) Connection handle
+       Byte[2]: (1-byte) SPP application type specified in BT_spp_app_type_e
+       Byte[3]: (n-bytes) Data to remote device, where n <= SPP_DATA_MAX_SIZE
+====================================================================*/
+#define HCI_CONTROL_SPP_COMMAND_DATA_GARMIN ( ( HCI_CONTROL_GROUP_SPP << 8 ) | 0xFD )
 
 /*--------------------------------------------------------------------
                         IAP2 COMMANDS
 --------------------------------------------------------------------*/
+/*====================================================================
+@type: NEW
+@data: Byte[0]: (6-bytes) Bluetooth device address
+====================================================================*/
+#define HCI_CONTROL_IAP2_COMMAND_CONNECT_GARMIN ( ( HCI_CONTROL_GROUP_IAP2 << 8 ) | 0xFF )
+
+/*====================================================================
+@type: NEW
+@data: Byte[0]: (2-bytes) Connection handle
+====================================================================*/
+#define HCI_CONTROL_IAP2_COMMAND_DISCONNECT_GARMIN ( ( HCI_CONTROL_GROUP_IAP2 << 8 ) | 0xFE )
+
+/*====================================================================
+@type: NEW
+@data: Byte[0]: (2-bytes) Connection handle
+       Byte[2]: (1-byte) SPP application type specified in BT_spp_app_type_e
+       Byte[3]: (n-bytes) Data to remote device, where n <= SPP_DATA_MAX_SIZE
+====================================================================*/
+#define HCI_CONTROL_IAP2_COMMAND_DATA_GARMIN ( ( HCI_CONTROL_GROUP_IAP2 << 8 ) | 0xFD )
 
 /*--------------------------------------------------------------------
                         GENERAL EVENTS
@@ -128,10 +168,66 @@ extern "C" {
 /*--------------------------------------------------------------------
                         SPP EVENTS
 --------------------------------------------------------------------*/
+/*====================================================================
+@type: NEW
+@data: Byte[0]: (6-bytes) Bluetooth device address
+       Byte[6]: (2-bytes) Connection handle
+       Byte[8]: (1-byte) SPP application type specified in BT_spp_app_type_e
+====================================================================*/
+#define HCI_CONTROL_SPP_EVENT_CONNECTED_GARMIN ( ( HCI_CONTROL_GROUP_SPP << 8 ) | 0xFF )
+
+/*====================================================================
+@type: NEW
+@data: Byte[0]: (1-byte) SPP application type specified in BT_spp_app_type_e
+====================================================================*/
+#define HCI_CONTROL_SPP_EVENT_CONNECTION_FAILED_GARMIN ( ( HCI_CONTROL_GROUP_SPP << 8 ) | 0xFE )
+
+/*====================================================================
+@type: NEW
+@data: Byte[0]: (2-bytes) Connection handle
+       Byte[2]: (1-byte) SPP application type specified in BT_spp_app_type_e
+====================================================================*/
+#define HCI_CONTROL_SPP_EVENT_DISCONNECTED_GARMIN ( ( HCI_CONTROL_GROUP_SPP << 8 ) | 0xFD )
+
+/*====================================================================
+@type: NEW
+@data: Byte[0]: (2-bytes) Connection handle
+       Byte[2]: (1-byte) SPP application type specified in BT_spp_app_type_e
+       Byte[3]: (n-bytes) Data from remote device, where n <= SPP_DATA_MAX_SIZE
+====================================================================*/
+#define HCI_CONTROL_SPP_EVENT_RX_DATA_GARMIN ( ( HCI_CONTROL_GROUP_SPP << 8 ) | 0xFC )
 
 /*--------------------------------------------------------------------
                         IAP2 EVENTS
 --------------------------------------------------------------------*/
+/*====================================================================
+@type: NEW
+@data: Byte[0]: (6-bytes) Bluetooth device address
+       Byte[6]: (2-bytes) Connection handle
+       Byte[8]: (1-byte) SPP application type specified in BT_spp_app_type_e
+====================================================================*/
+#define HCI_CONTROL_IAP2_EVENT_CONNECTED_GARMIN ( ( HCI_CONTROL_GROUP_IAP2 << 8 ) | 0xFF )
+
+/*====================================================================
+@type: NEW
+@data: Byte[0]: (1-byte) SPP application type specified in BT_spp_app_type_e
+====================================================================*/
+#define HCI_CONTROL_IAP2_EVENT_CONNECTION_FAILED_GARMIN ( ( HCI_CONTROL_GROUP_IAP2 << 8 ) | 0xFE )
+
+/*====================================================================
+@type: NEW
+@data: Byte[0]: (2-bytes) Connection handle
+       Byte[2]: (1-byte) SPP application type specified in BT_spp_app_type_e
+====================================================================*/
+#define HCI_CONTROL_IAP2_EVENT_DISCONNECTED_GARMIN ( ( HCI_CONTROL_GROUP_IAP2 << 8 ) | 0xFD )
+
+/*====================================================================
+@type: NEW
+@data: Byte[0]: (2-bytes) Connection handle
+       Byte[2]: (1-byte) SPP application type specified in BT_spp_app_type_e
+       Byte[3]: (n-bytes) Data from remote device, where n <= SPP_DATA_MAX_SIZE
+====================================================================*/
+#define HCI_CONTROL_IAP2_EVENT_RX_DATA_GARMIN ( ( HCI_CONTROL_GROUP_IAP2 << 8 ) | 0xFC )
 
 #ifdef __cplusplus
 }

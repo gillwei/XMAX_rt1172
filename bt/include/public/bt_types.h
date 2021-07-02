@@ -23,9 +23,10 @@ extern "C" {
 /*--------------------------------------------------------------------
                         LITERAL CONSTANTS
 --------------------------------------------------------------------*/
-#define BT_DEVICE_ADDRESS_LEN ( 6 )
-#define BT_DEVICE_NAME_LEN    ( 20 )
-#define BT_SW_VERSION_LEN     ( 2 )
+#define BT_DEVICE_ADDRESS_LEN    ( 6 )
+#define BT_DEVICE_NAME_LEN       ( 20 )
+#define BT_SW_VERSION_LEN        ( 2 )
+#define BT_CONNECTION_HANDLE_LEN ( 2 )
 
 // Note: MAX_TRANSPORT_DATA_SIZE is the maximum size of HCI payload defined by Cypress in wiced_app.h.
 //       Its value is 240 bytes, we define the same value here for MCU to use.
@@ -34,9 +35,30 @@ extern "C" {
 #define HCI_COMMAND_MAX_SIZE ( HCI_HEADER_LEN + HCI_PAYLOAD_MAX_SIZE )
 #define HCI_EVENT_MAX_SIZE   ( HCI_HEADER_LEN + HCI_PAYLOAD_MAX_SIZE )
 
+#define SPP_APP_TYPE_LEN                     ( 1 )
+#define SPP_DATA_MAX_SIZE                    ( HCI_PAYLOAD_MAX_SIZE - BT_CONNECTION_HANDLE_LEN - SPP_APP_TYPE_LEN )
+#define SPP_APP_CONNECTION_STATUS_CB_MAX_NUM ( 3 ) // For each SPP app
+#define SPP_APP_DATA_RECEIVED_CB_MAX_NUM     ( 3 ) // For each SPP app
+
 /*--------------------------------------------------------------------
                         TYPES
 --------------------------------------------------------------------*/
+typedef void ( *BT_spp_connection_status_callback )( const bool connected, const uint8_t* bd_addr );
+
+typedef void ( *BT_spp_data_received_callback )( const uint8_t* data, const uint8_t data_len );
+
+// Note: The detailed connection status of Bluetooth profile is for Bluetooth Manager internal use only
+typedef enum BT_connection_status
+    {
+    BT_CONNECTION_DISCONNECTED = 0,
+    BT_CONNECTION_CONNECTING,
+    BT_CONNECTION_CONNECTED,
+    BT_CONNECTION_DISCONNECTING,
+
+    BT_CONNECTION_STATUS_CNT,
+    BT_CONNECTION_STATUS_INVALID = BT_CONNECTION_STATUS_CNT
+    } BT_connection_status_e;
+
 // Note: This is a copy of wiced_bt_device_type_t defined by Cypress in wiced_bt_types.h
 typedef enum BT_device_type
     {
@@ -88,6 +110,7 @@ typedef enum BT_status
     BT_STATUS_NO_CONNECTION,     // No device is connected yet
     BT_STATUS_NOT_READY,         // Bluetooth Manager is not initialized yet
     BT_STATUS_NOT_ALLOWED,       // Operation is not allowed
+    BT_STATUS_AUTH_LOST,         // The remote device has lost its authentication data
     BT_STATUS_QUEUE_FULL,        // Bluetooth Manager's request queue is full
 
     BT_STATUS_CNT,

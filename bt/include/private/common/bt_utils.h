@@ -18,6 +18,7 @@ extern "C" {
 #include "bt_core.h"
 #include "bt_hw.h"
 #include "bt_log.h"
+#include "bt_spp_core.h"
 #include "bt_types.h"
 
 /*--------------------------------------------------------------------
@@ -52,6 +53,7 @@ extern "C" {
 #define FUNC_NO_CONNECTION_PRINT() ( BT_LOG_VERBOSE( ">> Error: No Connection" ) )
 #define FUNC_NOT_READY_PRINT()     ( BT_LOG_VERBOSE( ">> Error: Not Ready" ) )
 #define FUNC_NOT_ALLOWED_PRINT()   ( BT_LOG_VERBOSE( ">> Error: Not Allowed" ) )
+#define FUNC_AUTH_LOST_PRINT()     ( BT_LOG_VERBOSE( ">> Error: Auth Lost" ) )
 #define FUNC_QUEUE_FULL_PRINT()    ( BT_LOG_ERROR( ">> Error: Queue Full" ) )
 
 #define INT16_TO_LITTLE_ENDIAN( int16, p_buf ) {\
@@ -83,6 +85,11 @@ extern "C" {
 /*--------------------------------------------------------------------
                         PROCEDURES
 --------------------------------------------------------------------*/
+const char* BT_util_get_connection_status_string
+    (
+    const BT_connection_status_e connection_status
+    );
+
 const char* BT_util_get_device_type_string
     (
     const BT_device_type_e device_type
@@ -101,6 +108,16 @@ const char* BT_util_get_pairing_status_string
 const char* BT_util_get_power_status_string
     (
     const BT_power_status_e power_status
+    );
+
+const char* BT_util_get_spp_app_type_string
+    (
+    const BT_spp_app_type_e app_type
+    );
+
+const char* BT_util_get_spp_connection_type_string
+    (
+    const BT_spp_connection_type_e connection_type
     );
 
 #ifdef __cplusplus

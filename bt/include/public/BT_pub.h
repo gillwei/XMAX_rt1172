@@ -123,7 +123,6 @@ BT_status_e BT_set_tx_carrier_mode
     const BT_tx_channel_type_e channel_type
     );
 
-#if 0
 // SPP
 BT_status_e BT_spp_add_connection_status_callback
     (
@@ -159,6 +158,7 @@ BT_status_e BT_spp_send_data
     const uint8_t data_len
     );
 
+#if 0
 // LE
 BT_status_e BT_le_gatt_notify
     (

@@ -23,6 +23,7 @@ extern "C"{
 #include "bt_db.h"
 #include "bt_device.h"
 #include "bt_log.h"
+#include "bt_spp_core.h"
 #include "bt_tsk.h"
 #include "bt_utils.h"
 #include "hci_tsk.h"
@@ -94,6 +95,7 @@ void BT_tsk_init( void )
 BT_db_init();
 BT_device_init();
 BT_core_init();
+BT_core_spp_init();
 
 // Init HCI task
 HCI_tsk_init();
@@ -192,14 +194,21 @@ while( 1 )
                 {
                 BT_core_update_firmware();
                 } break;
+            // SPP
             case BT_REQUEST_SPP_CONNECT:
                 {
+                BT_core_spp_connect( request.param_u.spp_connect.bd_addr, request.param_u.spp_connect.app_type );
                 } break;
             case BT_REQUEST_SPP_DISCONNECT:
                 {
+                BT_core_spp_disconnect( request.param_u.spp_disconnect.bd_addr, request.param_u.spp_disconnect.app_type );
                 } break;
             case BT_REQUEST_SPP_SEND_DATA:
                 {
+                BT_core_spp_send_data( request.param_u.spp_send_data.bd_addr,
+                                       request.param_u.spp_send_data.app_type,
+                                       request.param_u.spp_send_data.data,
+                                       request.param_u.spp_send_data.data_len );
                 } break;
             case BT_REQUEST_LE_GATT_NOTIFY:
                 {

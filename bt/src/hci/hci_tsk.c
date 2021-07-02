@@ -24,6 +24,7 @@ extern "C"{
 #include "bt_utils.h"
 #include "hci_control_api_ex.h"
 #include "hci_event.h"
+#include "hci_spp_event.h"
 #include "hci_tsk.h"
 
 /*--------------------------------------------------------------------
@@ -145,9 +146,11 @@ while( 1 )
                 } break;
             case HCI_CONTROL_GROUP_SPP:
                 {
+                HCI_handle_spp_event( group_code, event_code, &( hci_event.data[param_pos] ), param_len );
                 } break;
             case HCI_CONTROL_GROUP_IAP2:
                 {
+                HCI_handle_iap_event( group_code, event_code, &( hci_event.data[param_pos] ), param_len );
                 } break;
             case HCI_CONTROL_GROUP_LE:
                 {

@@ -22,6 +22,7 @@ extern "C"{
 #include "bt_device.h"
 #include "bt_hw.h"
 #include "bt_log.h"
+#include "bt_spp_core.h"
 #include "bt_tsk.h"
 #include "bt_update.h"
 #include "bt_utils.h"
@@ -538,6 +539,7 @@ static void BT_core_reset_all( void )
 BT_LOG_DEBUG( "Reset all data" );
 BT_tsk_clear_requests();
 BT_core_reset();
+BT_core_spp_reset();
 }
 
 /*================================================================================================
