@@ -96,6 +96,7 @@
 #include "_TCSTCS01_Main.h"
 #include "_TelephoneImageButton.h"
 #include "_UnitUNT01_UnitSettingMenu.h"
+#include "_UtilityString.h"
 #include "_ViewsBorder.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
@@ -6436,14 +6437,12 @@ EW_END_OF_CLASS( SettingsSET47_WaitingApproval )
 void SettingsSET49_OnlyNaviAppConnected__Init( SettingsSET49_OnlyNaviAppConnected _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
+  SettingsTimeoutDialog__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
   _this->_.XObject._.GCT = EW_CLASS_GCT( SettingsSET49_OnlyNaviAppConnected );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->MessageText, &_this->_.XObject, 0 );
-  MenuPushButton__Init( &_this->PushButton, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->Divider, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
@@ -6451,20 +6450,10 @@ void SettingsSET49_OnlyNaviAppConnected__Init( SettingsSET49_OnlyNaviAppConnecte
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
-  CoreRectView__OnSetBounds( &_this->MessageText, _Const0005 );
-  ViewsText_OnSetWrapText( &_this->MessageText, 1 );
-  ViewsText_OnSetString( &_this->MessageText, 0 );
-  CoreRectView__OnSetBounds( &_this->PushButton, _Const0004 );
-  MenuPushButton_OnSetTitle( &_this->PushButton, EwLoadString( &StringsGEN_LATER ));
   CoreRectView__OnSetBounds( &_this->Divider, _Const0015 );
   ViewsImage_OnSetAlignment( &_this->Divider, ViewsImageAlignmentAlignVertBottom 
   | ViewsImageAlignmentScaleToFit );
-  CoreGroup__Add( _this, ((CoreView)&_this->MessageText ), 0 );
-  CoreGroup__Add( _this, ((CoreView)&_this->PushButton ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Divider ), 0 );
-  ViewsText_OnSetFont( &_this->MessageText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
-  ResourcesFont ));
-  _this->PushButton.OnActivate = EwNewSlot( _this, SettingsSET49_OnlyNaviAppConnected_OnLaterSlot );
   ViewsImage_OnSetBitmap( &_this->Divider, EwLoadResource( &ResourceStatusBarDivider, 
   ResourcesBitmap ));
 
@@ -6476,11 +6465,9 @@ void SettingsSET49_OnlyNaviAppConnected__Init( SettingsSET49_OnlyNaviAppConnecte
 void SettingsSET49_OnlyNaviAppConnected__ReInit( SettingsSET49_OnlyNaviAppConnected _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_.Super );
+  SettingsTimeoutDialog__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
-  ViewsText__ReInit( &_this->MessageText );
-  MenuPushButton__ReInit( &_this->PushButton );
   ViewsImage__ReInit( &_this->Divider );
 
   /* Call the user defined re-constructor of the class */
@@ -6491,15 +6478,13 @@ void SettingsSET49_OnlyNaviAppConnected__ReInit( SettingsSET49_OnlyNaviAppConnec
 void SettingsSET49_OnlyNaviAppConnected__Done( SettingsSET49_OnlyNaviAppConnected _this )
 {
   /* Finalize this class */
-  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( SettingsTimeoutDialog );
 
   /* Finalize all embedded objects */
-  ViewsText__Done( &_this->MessageText );
-  MenuPushButton__Done( &_this->PushButton );
   ViewsImage__Done( &_this->Divider );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_.Super );
+  SettingsTimeoutDialog__Done( &_this->_.Super );
 }
 
 /* 'C' function for method : 'Settings::SET49_OnlyNaviAppConnected.ReInit()' */
@@ -6521,8 +6506,8 @@ void SettingsSET49_OnlyNaviAppConnected_Init( SettingsSET49_OnlyNaviAppConnected
   SettingsSET49_OnlyNaviAppConnected_DisplayString( _this );
 }
 
-/* 'C' function for method : 'Settings::SET49_OnlyNaviAppConnected.OnLaterSlot()' */
-void SettingsSET49_OnlyNaviAppConnected_OnLaterSlot( SettingsSET49_OnlyNaviAppConnected _this, 
+/* 'C' function for method : 'Settings::SET49_OnlyNaviAppConnected.OnTimeoutSlot()' */
+void SettingsSET49_OnlyNaviAppConnected_OnTimeoutSlot( SettingsSET49_OnlyNaviAppConnected _this, 
   XObject sender )
 {
   SettingsSET17_BtcPairedDeviceList PairedDeviceListDialog;
@@ -6530,18 +6515,18 @@ void SettingsSET49_OnlyNaviAppConnected_OnLaterSlot( SettingsSET49_OnlyNaviAppCo
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  PairedDeviceListDialog = EwCastObject( _this->Super5.Owner, SettingsSET17_BtcPairedDeviceList );
+  PairedDeviceListDialog = EwCastObject( _this->Super6.Owner, SettingsSET17_BtcPairedDeviceList );
 
   if ( PairedDeviceListDialog != 0 )
-    CoreGroup_DismissDialog( _this->Super5.Owner, ((CoreGroup)_this ), 0, 0, 0, 
+    CoreGroup_DismissDialog( _this->Super6.Owner, ((CoreGroup)_this ), 0, 0, 0, 
     EwNullSlot, EwNullSlot, 0 );
   else
   {
-    SettingsSET04_BtSettingMenu BtSettingDialog = EwCastObject( _this->Super5.Owner, 
+    SettingsSET04_BtSettingMenu BtSettingDialog = EwCastObject( _this->Super6.Owner, 
       SettingsSET04_BtSettingMenu );
 
     if ( BtSettingDialog != 0 )
-      CoreGroup_SwitchToDialog( _this->Super5.Owner, ((CoreGroup)EwNewObject( SettingsSET17_BtcPairedDeviceList, 
+      CoreGroup_SwitchToDialog( _this->Super6.Owner, ((CoreGroup)EwNewObject( SettingsSET17_BtcPairedDeviceList, 
       0 )), 0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
   }
 }
@@ -6549,17 +6534,11 @@ void SettingsSET49_OnlyNaviAppConnected_OnLaterSlot( SettingsSET49_OnlyNaviAppCo
 /* 'C' function for method : 'Settings::SET49_OnlyNaviAppConnected.DisplayString()' */
 void SettingsSET49_OnlyNaviAppConnected_DisplayString( SettingsSET49_OnlyNaviAppConnected _this )
 {
-  XString ProcessString = EwGetVariantOfString( &StringsSET49_LAUNCH_YAMAHA_APP );
-  XInt32 LeftIdx = EwStringFind( ProcessString, EwLoadString( &StringsARGUMENT_STR ), 
-    0 );
-  XInt32 RightIdx = ( EwGetStringLength( ProcessString ) - LeftIdx ) - EwGetStringLength( 
-    EwLoadString( &StringsARGUMENT_STR ));
+  UtilityString StringUtil = EwNewObject( UtilityString, 0 );
 
-  ViewsText_OnSetString( &_this->MessageText, EwConcatString( _this->MessageText.String, 
-  EwConcatString( EwConcatString( EwStringLeft( ProcessString, LeftIdx ), DeviceInterfaceBluetoothDeviceClass_GetBtcPairingDeviceName( 
-  EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ))), 
-  EwStringRight( ProcessString, RightIdx ))));
-  MenuPushButton_OnSetTitle( &_this->PushButton, EwLoadString( &StringsGEN_LATER ));
+  ViewsText_OnSetString( &_this->Super1.MessageText, UtilityString_ReplaceString( 
+  StringUtil, EwGetVariantOfString( &StringsSET49_LAUNCH_YAMAHA_APP ), DeviceInterfaceBluetoothDeviceClass_GetBtcPairingDeviceName( 
+  EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ))));
 }
 
 /* Variants derived from the class : 'Settings::SET49_OnlyNaviAppConnected' */
@@ -6567,8 +6546,8 @@ EW_DEFINE_CLASS_VARIANTS( SettingsSET49_OnlyNaviAppConnected )
 EW_END_OF_CLASS_VARIANTS( SettingsSET49_OnlyNaviAppConnected )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET49_OnlyNaviAppConnected' */
-EW_DEFINE_CLASS( SettingsSET49_OnlyNaviAppConnected, ComponentsBaseMainBG, MessageText, 
-                 MessageText, MessageText, MessageText, _.VMT, _.VMT, "Settings::SET49_OnlyNaviAppConnected" )
+EW_DEFINE_CLASS( SettingsSET49_OnlyNaviAppConnected, SettingsTimeoutDialog, Divider, 
+                 Divider, Divider, Divider, _.VMT, _.VMT, "Settings::SET49_OnlyNaviAppConnected" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -6612,20 +6591,19 @@ EW_DEFINE_CLASS( SettingsSET49_OnlyNaviAppConnected, ComponentsBaseMainBG, Messa
   ComponentsBaseMainBG_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
   ComponentsBaseComponent_OnUpKeyReleased,
+  SettingsSET49_OnlyNaviAppConnected_OnTimeoutSlot,
 EW_END_OF_CLASS( SettingsSET49_OnlyNaviAppConnected )
 
 /* Initializer for the class 'Settings::SET50_OnlyYahamaAppConnected' */
 void SettingsSET50_OnlyYahamaAppConnected__Init( SettingsSET50_OnlyYahamaAppConnected _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
-  ComponentsBaseMainBG__Init( &_this->_.Super, aLink, aArg );
+  SettingsTimeoutDialog__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
   _this->_.XObject._.GCT = EW_CLASS_GCT( SettingsSET50_OnlyYahamaAppConnected );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->MessageText, &_this->_.XObject, 0 );
-  MenuPushButton__Init( &_this->PushButton, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->Divider, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
@@ -6633,20 +6611,10 @@ void SettingsSET50_OnlyYahamaAppConnected__Init( SettingsSET50_OnlyYahamaAppConn
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
-  CoreRectView__OnSetBounds( &_this->MessageText, _Const0005 );
-  ViewsText_OnSetWrapText( &_this->MessageText, 1 );
-  ViewsText_OnSetString( &_this->MessageText, 0 );
-  CoreRectView__OnSetBounds( &_this->PushButton, _Const0004 );
-  MenuPushButton_OnSetTitle( &_this->PushButton, EwLoadString( &StringsGEN_LATER ));
   CoreRectView__OnSetBounds( &_this->Divider, _Const0015 );
   ViewsImage_OnSetAlignment( &_this->Divider, ViewsImageAlignmentAlignVertBottom 
   | ViewsImageAlignmentScaleToFit );
-  CoreGroup__Add( _this, ((CoreView)&_this->MessageText ), 0 );
-  CoreGroup__Add( _this, ((CoreView)&_this->PushButton ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Divider ), 0 );
-  ViewsText_OnSetFont( &_this->MessageText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
-  ResourcesFont ));
-  _this->PushButton.OnActivate = EwNewSlot( _this, SettingsSET50_OnlyYahamaAppConnected_OnLaterSlot );
   ViewsImage_OnSetBitmap( &_this->Divider, EwLoadResource( &ResourceStatusBarDivider, 
   ResourcesBitmap ));
 
@@ -6658,27 +6626,32 @@ void SettingsSET50_OnlyYahamaAppConnected__Init( SettingsSET50_OnlyYahamaAppConn
 void SettingsSET50_OnlyYahamaAppConnected__ReInit( SettingsSET50_OnlyYahamaAppConnected _this )
 {
   /* At first re-initialize the super class ... */
-  ComponentsBaseMainBG__ReInit( &_this->_.Super );
+  SettingsTimeoutDialog__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
-  ViewsText__ReInit( &_this->MessageText );
-  MenuPushButton__ReInit( &_this->PushButton );
   ViewsImage__ReInit( &_this->Divider );
+
+  /* Call the user defined re-constructor of the class */
+  SettingsSET50_OnlyYahamaAppConnected_ReInit( _this );
 }
 
 /* Finalizer method for the class 'Settings::SET50_OnlyYahamaAppConnected' */
 void SettingsSET50_OnlyYahamaAppConnected__Done( SettingsSET50_OnlyYahamaAppConnected _this )
 {
   /* Finalize this class */
-  _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
+  _this->_.Super._.VMT = EW_CLASS( SettingsTimeoutDialog );
 
   /* Finalize all embedded objects */
-  ViewsText__Done( &_this->MessageText );
-  MenuPushButton__Done( &_this->PushButton );
   ViewsImage__Done( &_this->Divider );
 
   /* Don't forget to deinitialize the super class ... */
-  ComponentsBaseMainBG__Done( &_this->_.Super );
+  SettingsTimeoutDialog__Done( &_this->_.Super );
+}
+
+/* 'C' function for method : 'Settings::SET50_OnlyYahamaAppConnected.ReInit()' */
+void SettingsSET50_OnlyYahamaAppConnected_ReInit( SettingsSET50_OnlyYahamaAppConnected _this )
+{
+  SettingsSET50_OnlyYahamaAppConnected_DisplayString( _this );
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -6687,33 +6660,32 @@ void SettingsSET50_OnlyYahamaAppConnected__Done( SettingsSET50_OnlyYahamaAppConn
 void SettingsSET50_OnlyYahamaAppConnected_Init( SettingsSET50_OnlyYahamaAppConnected _this, 
   XHandle aArg )
 {
-  XString ProcessString;
-  XInt32 LeftIdx;
-  XInt32 RightIdx;
-
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aArg );
 
   EwTrace( "%s", EwLoadString( &_Const0044 ));
-  ProcessString = EwGetVariantOfString( &StringsSET50_LAUNCH_NAVI_APP );
-  LeftIdx = EwStringFind( ProcessString, EwLoadString( &StringsARGUMENT_STR ), 0 );
-  RightIdx = ( EwGetStringLength( ProcessString ) - LeftIdx ) - EwGetStringLength( 
-  EwLoadString( &StringsARGUMENT_STR ));
-  ViewsText_OnSetString( &_this->MessageText, EwConcatString( _this->MessageText.String, 
-  EwConcatString( EwConcatString( EwStringLeft( ProcessString, LeftIdx ), DeviceInterfaceBluetoothDeviceClass_GetBtcPairingDeviceName( 
-  EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ))), 
-  EwStringRight( ProcessString, RightIdx ))));
+  SettingsSET50_OnlyYahamaAppConnected_DisplayString( _this );
 }
 
-/* 'C' function for method : 'Settings::SET50_OnlyYahamaAppConnected.OnLaterSlot()' */
-void SettingsSET50_OnlyYahamaAppConnected_OnLaterSlot( SettingsSET50_OnlyYahamaAppConnected _this, 
+/* 'C' function for method : 'Settings::SET50_OnlyYahamaAppConnected.OnTimeoutSlot()' */
+void SettingsSET50_OnlyYahamaAppConnected_OnTimeoutSlot( SettingsSET50_OnlyYahamaAppConnected _this, 
   XObject sender )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  CoreGroup_DismissDialog( _this->Super5.Owner, ((CoreGroup)_this ), 0, 0, 0, EwNullSlot, 
+  CoreGroup_DismissDialog( _this->Super6.Owner, ((CoreGroup)_this ), 0, 0, 0, EwNullSlot, 
   EwNullSlot, 0 );
+}
+
+/* 'C' function for method : 'Settings::SET50_OnlyYahamaAppConnected.DisplayString()' */
+void SettingsSET50_OnlyYahamaAppConnected_DisplayString( SettingsSET50_OnlyYahamaAppConnected _this )
+{
+  UtilityString StringUtil = EwNewObject( UtilityString, 0 );
+
+  ViewsText_OnSetString( &_this->Super1.MessageText, UtilityString_ReplaceString( 
+  StringUtil, EwGetVariantOfString( &StringsSET50_LAUNCH_NAVI_APP ), DeviceInterfaceBluetoothDeviceClass_GetBtcPairingDeviceName( 
+  EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ))));
 }
 
 /* Variants derived from the class : 'Settings::SET50_OnlyYahamaAppConnected' */
@@ -6721,8 +6693,8 @@ EW_DEFINE_CLASS_VARIANTS( SettingsSET50_OnlyYahamaAppConnected )
 EW_END_OF_CLASS_VARIANTS( SettingsSET50_OnlyYahamaAppConnected )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET50_OnlyYahamaAppConnected' */
-EW_DEFINE_CLASS( SettingsSET50_OnlyYahamaAppConnected, ComponentsBaseMainBG, MessageText, 
-                 MessageText, MessageText, MessageText, _.VMT, _.VMT, "Settings::SET50_OnlyYahamaAppConnected" )
+EW_DEFINE_CLASS( SettingsSET50_OnlyYahamaAppConnected, SettingsTimeoutDialog, Divider, 
+                 Divider, Divider, Divider, _.VMT, _.VMT, "Settings::SET50_OnlyYahamaAppConnected" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -6766,6 +6738,7 @@ EW_DEFINE_CLASS( SettingsSET50_OnlyYahamaAppConnected, ComponentsBaseMainBG, Mes
   ComponentsBaseMainBG_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
   ComponentsBaseComponent_OnUpKeyReleased,
+  SettingsSET50_OnlyYahamaAppConnected_OnTimeoutSlot,
 EW_END_OF_CLASS( SettingsSET50_OnlyYahamaAppConnected )
 
 /* Initializer for the class 'Settings::SET48_ReconnectYamahaApp' */
@@ -6993,16 +6966,11 @@ void SettingsSET51_BothAppConnected_OnTimeoutSlot( SettingsSET51_BothAppConnecte
 /* 'C' function for method : 'Settings::SET51_BothAppConnected.DisplayString()' */
 void SettingsSET51_BothAppConnected_DisplayString( SettingsSET51_BothAppConnected _this )
 {
-  XString ProcessString = EwLoadString( &StringsSET51_BOTH_APP_CONNECTED );
-  XInt32 LeftIdx = EwStringFind( ProcessString, EwLoadString( &StringsARGUMENT_STR ), 
-    0 );
-  XInt32 RightIdx = ( EwGetStringLength( ProcessString ) - LeftIdx ) - EwGetStringLength( 
-    EwLoadString( &StringsARGUMENT_STR ));
+  UtilityString StringUtil = EwNewObject( UtilityString, 0 );
 
-  ViewsText_OnSetString( &_this->Super1.MessageText, EwConcatString( EwConcatString( 
-  EwStringLeft( ProcessString, LeftIdx ), DeviceInterfaceBluetoothDeviceClass_GetBtcPairingDeviceName( 
-  EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ))), 
-  EwStringRight( ProcessString, RightIdx )));
+  ViewsText_OnSetString( &_this->Super1.MessageText, UtilityString_ReplaceString( 
+  StringUtil, EwGetVariantOfString( &StringsSET51_BOTH_APP_CONNECTED ), DeviceInterfaceBluetoothDeviceClass_GetBtcPairingDeviceName( 
+  EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ))));
 }
 
 /* Variants derived from the class : 'Settings::SET51_BothAppConnected' */

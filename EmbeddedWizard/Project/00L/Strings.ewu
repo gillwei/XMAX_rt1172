@@ -1,7 +1,7 @@
 $version 11.00
 
 // This file is generated automatically.
-// Generated: 2021/06/29 08:04:00
+// Generated: 2021/07/02 14:28:43
 
 $output false
 const string ARGUMENT_STR =
@@ -2613,6 +2613,7 @@ $output false
 const string SET51_BOTH_APP_CONNECTED =
 (
   Default = "Connected to YAMAHA MOTORCYCLE CONNECT and (Navi app name) on \u201c%s\u201d.";
+  Japanese = "YAMAHA MOTORCYCLE CONNECT\u30a2\u30d7\u30ea\u3068\n\uff08Navi app name)\u30a2\u30d7\u30ea\u3092\u63a5\u7d9a\u3055\u308c\u307e\u3057\u305f\u3002";
 );
 
 $output false

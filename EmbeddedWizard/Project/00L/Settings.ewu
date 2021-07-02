@@ -3240,7 +3240,7 @@ class SET47_WaitingApproval : Components::BaseMainBG
 
 $rect <280,360,520,400>
 $output false
-class SET49_OnlyNaviAppConnected : Components::BaseMainBG
+class SET49_OnlyNaviAppConnected : Settings::TimeoutDialog
 {
   $rect <3,340,180,380>
   inherited method ReInit()
@@ -3258,25 +3258,8 @@ class SET49_OnlyNaviAppConnected : Components::BaseMainBG
   $rect <0,440,180,480>
   inherited property DDModeEnabled = true;
 
-  $rect <20,20,160,60>
-  object Views::Text MessageText
-  {
-    preset Bounds = <10,46,470,201>;
-    preset WrapText = true;
-    preset String = "";
-    preset Font = Fonts::NotoSansCjkJpMedium24pt;
-  }
-
-  $rect <20,20,160,60>
-  object Menu::PushButton PushButton
-  {
-    preset Bounds = <165,219,315,259>;
-    preset Title = Strings::GEN_LATER;
-    preset OnActivate = OnLaterSlot;
-  }
-
-  $rect <210,290,410,330>
-  slot OnLaterSlot
+  $rect <200,290,400,330>
+  inherited slot OnTimeoutSlot
   {
     var Settings::SET17_BtcPairedDeviceList PairedDeviceListDialog = (Settings::SET17_BtcPairedDeviceList)Owner;
     if( null != PairedDeviceListDialog )
@@ -3296,12 +3279,8 @@ class SET49_OnlyNaviAppConnected : Components::BaseMainBG
   $rect <0,390,180,430>
   method void DisplayString()
   {
-    var string ProcessString = Strings::SET49_LAUNCH_YAMAHA_APP;
-    var int32 LeftIdx = ProcessString.find( Strings::ARGUMENT_STR, 0 );
-    var int32 RightIdx = ProcessString.length - LeftIdx - Strings::ARGUMENT_STR.length;
-    MessageText.String += ProcessString.left( LeftIdx ) + DeviceInterface::BluetoothDevice.GetBtcPairingDeviceName() + ProcessString.right( RightIdx );
-
-    PushButton.Title = Strings::GEN_LATER;
+    var Utility::String StringUtil = new Utility::String;
+    MessageText.String = StringUtil.ReplaceString( Strings::SET49_LAUNCH_YAMAHA_APP, DeviceInterface::BluetoothDevice.GetBtcPairingDeviceName() );
   }
 
   $rect <20,20,160,60>
@@ -3311,45 +3290,37 @@ class SET49_OnlyNaviAppConnected : Components::BaseMainBG
     preset Alignment = Views::ImageAlignment[AlignVertBottom, ScaleToFit];
     preset Bitmap = Resource::StatusBarDivider;
   }
+
+  $reorder Message 1
+  $reorder OnSetMessage 1
+  $reorder TimeoutTimer 1
+  $reorder OnTimeoutSlot 1
+  $reorder OnTimeout 1
+  $reorder DismissAfterTimeout 1
 }
 
 $rect <280,410,520,450>
 $output false
-class SET50_OnlyYahamaAppConnected : Components::BaseMainBG
+class SET50_OnlyYahamaAppConnected : Settings::TimeoutDialog
 {
+  $rect <0,340,180,380>
+  inherited method ReInit()
+  {
+    DisplayString();
+  }
+
   $rect <0,290,180,330>
   inherited method Init()
   {
     trace "SET50";
-
-    var string ProcessString = Strings::SET50_LAUNCH_NAVI_APP;
-    var int32 LeftIdx = ProcessString.find( Strings::ARGUMENT_STR, 0 );
-    var int32 RightIdx = ProcessString.length - LeftIdx - Strings::ARGUMENT_STR.length;
-    MessageText.String += ProcessString.left( LeftIdx ) + DeviceInterface::BluetoothDevice.GetBtcPairingDeviceName() + ProcessString.right( RightIdx );
+    DisplayString();
   }
 
-  $rect <0,340,200,380>
+  $rect <0,440,200,480>
   inherited property DDModeEnabled = true;
 
-  $rect <20,20,160,60>
-  object Views::Text MessageText
-  {
-    preset Bounds = <10,46,470,201>;
-    preset WrapText = true;
-    preset String = "";
-    preset Font = Fonts::NotoSansCjkJpMedium24pt;
-  }
-
-  $rect <20,20,160,60>
-  object Menu::PushButton PushButton
-  {
-    preset Bounds = <165,219,315,259>;
-    preset Title = Strings::GEN_LATER;
-    preset OnActivate = OnLaterSlot;
-  }
-
   $rect <210,290,410,330>
-  slot OnLaterSlot
+  inherited slot OnTimeoutSlot
   {
     Owner.DismissDialog( this, null, null, null, null, null, false );
   }
@@ -3361,6 +3332,20 @@ class SET50_OnlyYahamaAppConnected : Components::BaseMainBG
     preset Alignment = Views::ImageAlignment[AlignVertBottom, ScaleToFit];
     preset Bitmap = Resource::StatusBarDivider;
   }
+
+  $rect <0,390,180,430>
+  method void DisplayString()
+  {
+    var Utility::String StringUtil = new Utility::String;
+    MessageText.String = StringUtil.ReplaceString( Strings::SET50_LAUNCH_NAVI_APP, DeviceInterface::BluetoothDevice.GetBtcPairingDeviceName() );
+  }
+
+  $reorder Message 2
+  $reorder OnSetMessage 2
+  $reorder TimeoutTimer 2
+  $reorder OnTimeoutSlot 2
+  $reorder OnTimeout 2
+  $reorder DismissAfterTimeout 2
 }
 
 $rect <280,310,520,350>
@@ -3436,10 +3421,8 @@ class SET51_BothAppConnected : Settings::TimeoutDialog
   $rect <0,380,200,420>
   method void DisplayString()
   {
-    var string ProcessString = Strings::SET51_BOTH_APP_CONNECTED;
-    var int32 LeftIdx = ProcessString.find( Strings::ARGUMENT_STR, 0 );
-    var int32 RightIdx = ProcessString.length - LeftIdx - Strings::ARGUMENT_STR.length;
-    MessageText.String = ProcessString.left( LeftIdx ) + DeviceInterface::BluetoothDevice.GetBtcPairingDeviceName() + ProcessString.right( RightIdx );
+    var Utility::String StringUtil = new Utility::String;
+    MessageText.String = StringUtil.ReplaceString( Strings::SET51_BOTH_APP_CONNECTED, DeviceInterface::BluetoothDevice.GetBtcPairingDeviceName() );
   }
 
   $rect <20,20,160,60>

@@ -42,15 +42,20 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_ComponentsBaseMainBG.h"
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
-#include "_MenuPushButton.h"
+#include "_SettingsTimeoutDialog.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
+
+/* Forward declaration of the class Components::BaseMainBG */
+#ifndef _ComponentsBaseMainBG_
+  EW_DECLARE_CLASS( ComponentsBaseMainBG )
+#define _ComponentsBaseMainBG_
+#endif
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -102,14 +107,12 @@
 
 
 /* Deklaration of class : 'Settings::SET50_OnlyYahamaAppConnected' */
-EW_DEFINE_FIELDS( SettingsSET50_OnlyYahamaAppConnected, ComponentsBaseMainBG )
-  EW_OBJECT  ( MessageText,     ViewsText )
-  EW_OBJECT  ( PushButton,      MenuPushButton )
+EW_DEFINE_FIELDS( SettingsSET50_OnlyYahamaAppConnected, SettingsTimeoutDialog )
   EW_OBJECT  ( Divider,         ViewsImage )
 EW_END_OF_FIELDS( SettingsSET50_OnlyYahamaAppConnected )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET50_OnlyYahamaAppConnected' */
-EW_DEFINE_METHODS( SettingsSET50_OnlyYahamaAppConnected, ComponentsBaseMainBG )
+EW_DEFINE_METHODS( SettingsSET50_OnlyYahamaAppConnected, SettingsTimeoutDialog )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -163,7 +166,12 @@ EW_DEFINE_METHODS( SettingsSET50_OnlyYahamaAppConnected, ComponentsBaseMainBG )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnTimeoutSlot,     void )( SettingsSET50_OnlyYahamaAppConnected _this, 
+    XObject sender )
 EW_END_OF_METHODS( SettingsSET50_OnlyYahamaAppConnected )
+
+/* 'C' function for method : 'Settings::SET50_OnlyYahamaAppConnected.ReInit()' */
+void SettingsSET50_OnlyYahamaAppConnected_ReInit( SettingsSET50_OnlyYahamaAppConnected _this );
 
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 
@@ -171,9 +179,12 @@ EW_END_OF_METHODS( SettingsSET50_OnlyYahamaAppConnected )
 void SettingsSET50_OnlyYahamaAppConnected_Init( SettingsSET50_OnlyYahamaAppConnected _this, 
   XHandle aArg );
 
-/* 'C' function for method : 'Settings::SET50_OnlyYahamaAppConnected.OnLaterSlot()' */
-void SettingsSET50_OnlyYahamaAppConnected_OnLaterSlot( SettingsSET50_OnlyYahamaAppConnected _this, 
+/* 'C' function for method : 'Settings::SET50_OnlyYahamaAppConnected.OnTimeoutSlot()' */
+void SettingsSET50_OnlyYahamaAppConnected_OnTimeoutSlot( SettingsSET50_OnlyYahamaAppConnected _this, 
   XObject sender );
+
+/* 'C' function for method : 'Settings::SET50_OnlyYahamaAppConnected.DisplayString()' */
+void SettingsSET50_OnlyYahamaAppConnected_DisplayString( SettingsSET50_OnlyYahamaAppConnected _this );
 
 #ifdef __cplusplus
   }

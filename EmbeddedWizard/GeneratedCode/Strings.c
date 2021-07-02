@@ -30,28 +30,28 @@
 /* Compressed strings for the language 'Default'. */
 EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
-  0x00000408, /* ratio 55.43 % */
+  0x00000418, /* ratio 55.34 % */
   0xB8000B00, 0x8004A452, 0x0A120039, 0xC004F824, 0x12008492, 0x04322C0C, 0x6E001840,
-  0x50018C00, 0x881B0006, 0xE1662606, 0xC2E21078, 0xBC004E22, 0x22608881, 0xE8008B13,
-  0xD2039490, 0x77004AA5, 0x995CDA4C, 0x26C12430, 0x2000D200, 0x44C0F103, 0x9C014124,
-  0x27468001, 0x1342A441, 0xB4D89812, 0x4936C4E7, 0x48942633, 0x84490A50, 0x80FE651D,
-  0x10A260C8, 0x90EA008F, 0xA572B994, 0x7C00AACC, 0x80016916, 0x1184DD2E, 0xDB414226,
-  0x005822F1, 0x14C27020, 0x0005D32A, 0x1A1386C3, 0x0006B825, 0x214C17D6, 0x55822D72,
-  0x908EC7E8, 0xF8254EE1, 0xA5C12AD2, 0x54263F17, 0x800AF130, 0xA6BC0020, 0xE520024C,
-  0x26B28811, 0x568C191A, 0x818ECD2D, 0x000602D9, 0xDD9E6607, 0xECCA6517, 0xD0A65198,
-  0xE7031995, 0x64996A6C, 0x89429A60, 0x34B8CD0A, 0x6A95C6F0, 0xFE7D123F, 0x995A2D35,
-  0x26EFA781, 0xE46637DA, 0x06692BC0, 0xA6FD0BFE, 0x31E1845A, 0x9DE35002, 0xA4C36FE6,
-  0x79CC7F51, 0x8D7C37F1, 0x11B46537, 0x14D1E671, 0xEE01739C, 0xF2749ED6, 0x18800755,
-  0x5816FC00, 0xD4751D63, 0xFE0E789B, 0xEA001D86, 0x475BF491, 0xD1945DFF, 0x35658E76,
-  0xEDC86ED4, 0x348216F6, 0x511174AD, 0x55E60586, 0x88AE2479, 0xE50D001B, 0x34475194,
-  0x6052509D, 0x5DE88940, 0x36498768, 0x55156A11, 0x7B000454, 0x03910151, 0x9B393913,
-  0x88318193, 0xF51F6F50, 0x5344E4F7, 0x475246F0, 0xD6156224, 0x7049104C, 0x05BA77A4,
-  0xF4511A86, 0x989E67BD, 0x1094C9F2, 0x29051305, 0xAA445A9F, 0x259B6279, 0x716704C9,
-  0x1A81154E, 0x05E90A50, 0x3400A100, 0xBB5AE5C0, 0x4AD1F455, 0x5636351B, 0xF4125042,
-  0x05BD7B5A, 0x3445DA66, 0x425349C1, 0x9A841165, 0x16BC0015, 0x2D7B9758, 0x101124B9,
-  0xA926702D, 0x5B3002A6, 0xD92C0015, 0x16A10019, 0x5D4A5AC1, 0x002B2952, 0x564ADAB4,
-  0xC001A994, 0x39815EDA, 0x4B501AC9, 0x5752D426, 0x6A56B5A7, 0x3412C3AD, 0x052FB52B,
-  0xBC435156, 0x406DE442, 0x00000000
+  0x50018C00, 0x881B0006, 0xE1662606, 0xC2E21078, 0xBC004E22, 0x89913901, 0x4C77004A,
+  0x30997CB6, 0x0026C124, 0x032000D2, 0x2444C0F1, 0x019C0139, 0x41264680, 0x12133AA0,
+  0xE6B45898, 0x334136C4, 0x50489426, 0x1D84490A, 0x01F800E9, 0x2144C191, 0x21D4011E,
+  0x4AE575A9, 0xD8014DAD, 0x4002D22C, 0x2309B6DB, 0xB612844C, 0x00AC45E3, 0x18B4C040,
+  0x000BAB54, 0xF426FF7F, 0x000D7049, 0x42882FA8, 0xAA045AA4, 0x131D8FCE, 0xD04A5DA7,
+  0x438253A5, 0xA84C7E2F, 0x0015E260, 0x4D580041, 0xCA400499, 0x4D651023, 0xB1F7C234,
+  0x48720058, 0x179B2DEA, 0x79BE1C00, 0xAAD45F6A, 0xAD4663B5, 0xD466573A, 0xEBA8B31B,
+  0xEB637A8E, 0xE333A9E4, 0x571BBD50, 0x33C8FD8E, 0x1FD7D5F9, 0x5E6DEAB5, 0x005DA79B,
+  0x8CAF6B68, 0xF2AF17AD, 0x6E116397, 0xCD4008C7, 0xFFB9D8EB, 0x31FD0E76, 0xEADCC5E6,
+  0xB8CCBE35, 0xD87837D1, 0x1E26F57C, 0x172DD67B, 0x89B55095, 0x7A6E4001, 0x4751D619,
+  0xDCF771B7, 0xA801E882, 0x75B94757, 0x1945DF94, 0x81D87755, 0x5B570A1E, 0xB801C878,
+  0xFD3C45D2, 0xDF5597A5, 0x6D624879, 0x5194C50D, 0x509DB147, 0x71385E92, 0x80669AF8,
+  0x6851362D, 0x04545515, 0x01517400, 0x19130391, 0x7A919AC9, 0x6DD25731, 0xE477DD1F,
+  0x46D85344, 0x421E4752, 0xB1491595, 0x8FC12425, 0x57A6D1AF, 0x97B93C68, 0xB25A7FDE,
+  0x144255A7, 0x7B23944C, 0xE638F163, 0x86BDED4E, 0xFE695690, 0xA1115466, 0x5CD0A4E1,
+  0x4009F800, 0x55925403, 0xAD1F455B, 0x5C6191B4, 0x41248425, 0x9B779DA8, 0x145D9F5E,
+  0x025D9A5B, 0xA14115E0, 0x6A000159, 0xD749557A, 0x01124390, 0x7A6002D1, 0xAC002A0A,
+  0x90C00155, 0x513A6996, 0xC9552969, 0xB800AB24, 0x49576B0A, 0x6940068A, 0x6465E974,
+  0x990D3869, 0x59130210, 0xAF69DA15, 0xAB504AF2, 0x57A4BACD, 0xCAD50D45, 0xFABFA712,
+  0xD444D9CA, 0x4B90D002, 0x246002CB, 0x04051044, 0x00000000
 };
 
 /* Compressed strings for the language 'French'. */
@@ -324,27 +324,27 @@ EW_CONST_STRING_PRAGMA static const unsigned int _StringsPortugueseBrazil0[] =
 /* Compressed strings for the language 'Default'. */
 EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault1[] =
 {
-  0x0000040A, /* ratio 52.22 % */
-  0xB8000D00, 0x80082452, 0x00A40024, 0x6060A858, 0x9E002191, 0x04C00444, 0x00274180,
-  0xD0042CA8, 0x8B10A090, 0x49164319, 0x46CB2008, 0x908D0E06, 0x23518894, 0x48280008,
-  0x729938A6, 0x00968025, 0x38ACC65E, 0x9A822173, 0x5C86590A, 0xC2A1C078, 0x2E150691,
-  0xA210E04C, 0x01072AC2, 0x7230014C, 0x1A8704E1, 0x031800C3, 0x37800D00, 0x01D80139,
-  0x1CC00690, 0x68007500, 0x80164365, 0x0065001E, 0xC118D9C8, 0x128848E1, 0x7B2D8E5F,
-  0xB6DAED36, 0xB5CEE36F, 0x1C2A70EA, 0x84C988B8, 0xAD166BDD, 0xCB6C005A, 0x51BB9606,
-  0x44894120, 0x4AC52E26, 0xB0942112, 0x25323631, 0xE7A151A8, 0x734432B0, 0xF3E00D36,
-  0x210B954B, 0x98826C38, 0x2FB9E20E, 0x7005F315, 0x3CD6AD98, 0xC438171B, 0x4845F13C,
-  0xCE7D9FD6, 0x2CB67C76, 0x3F04E557, 0x06EB057B, 0x0E06C2F1, 0x7C656A31, 0xB2EDB1E6,
-  0x2C7637D4, 0x56B10572, 0x6F055EDB, 0x2BFD907C, 0xCC00EF80, 0xBE7AE5B4, 0x0E85F86D,
-  0x1F7F9B0A, 0xDB7EC916, 0x1C242DEA, 0x65C55341, 0x75D57C1B, 0x1C42D677, 0x6E97172C,
-  0x1886E58F, 0xF5C55C63, 0x55694352, 0x6563DDB7, 0x188006F9, 0x80075990, 0x84484565,
-  0x119B4550, 0x2D000564, 0x48D1F000, 0x62946915, 0x451D2A11, 0x11AA6815, 0x238DE354,
-  0x42DA94BD, 0x16D8E9EC, 0x0585891E, 0xDC6D5691, 0xA46118F6, 0x61E49621, 0xD5A5CD60,
-  0x74BDC05C, 0xAA490024, 0x1642D5A7, 0x8816072C, 0x92F6221D, 0x683D8861, 0x525963E4,
-  0x170025B6, 0x58D06438, 0x9DD0025A, 0x56F15285, 0x598A0026, 0x6B92A689, 0x8AD0E062,
-  0x15A5B653, 0x49D16C88, 0xEA665C66, 0x1B9F2489, 0x4290455D, 0x56D45289, 0xA6D95E77,
-  0xC68C9628, 0x6D87E5E6, 0xA2E67A15, 0x29B97271, 0x6A1A2198, 0x7E78A227, 0x00A8698A,
-  0x665047E4, 0xE4A8255A, 0x57B85A4B, 0xA10B5C5D, 0x675B68F4, 0xAD5611AD, 0xD1BAE1E1,
-  0x00010142, 0x00000000
+  0x00000406, /* ratio 52.04 % */
+  0xB8001500, 0x80084452, 0x24A80020, 0x80045004, 0x00590014, 0xB0306448, 0x00871188,
+  0xB270009E, 0x14000410, 0x04485318, 0xC5E09140, 0x2A391A87, 0x099208F4, 0x11129100,
+  0x71993C54, 0x078942E3, 0x886C3E2A, 0x04C4A1F0, 0xAC608715, 0x80092002, 0x4E470C29,
+  0x0C30A8A8, 0xD0003180, 0xC0037800, 0x69001DA3, 0x5001CC00, 0x36538007, 0x01E80158,
+  0x9C800650, 0x362A1191, 0x6AD1AA14, 0xBF5DADD8, 0xF65B1D86, 0x04A5C4AC, 0xCB21C291,
+  0x00554C97, 0xF5C2B357, 0x566C000A, 0x1A4766BA, 0x4891A8A8, 0x314C9FCD, 0x37F2851A,
+  0x04A048C6, 0xFC9C3E15, 0xC8E5C657, 0xF650019B, 0x84225178, 0xD2F84D8A, 0xA3D67BE1,
+  0xF600C15F, 0x679A7582, 0x00C602E4, 0xB17C6B1C, 0x98E53430, 0x0D6AB9A8, 0x4138150B,
+  0xBAA952CA, 0x41B12BE1, 0x034E8E45, 0x78433803, 0x23E55675, 0xC2BC1205, 0xA96AE9D7,
+  0x783E4775, 0x7580153E, 0x57886600, 0xA25D8B0F, 0xCB488A83, 0xA48BFF7A, 0xB6D679BB,
+  0x9FBEABE1, 0xADF53975, 0x5C107112, 0xE611AF59, 0x41D25F1A, 0x02479655, 0x745CB575,
+  0x1B356584, 0xC6146200, 0x118B001C, 0x2E5191A4, 0x15904641, 0x8000B400, 0xA4B90D41,
+  0x61168790, 0x1E4350D4, 0x4D228659, 0xDE26762B, 0xD1E1614C, 0x39425FD7, 0x4E7E06D5,
+  0x595915DD, 0xD545EE3B, 0x559D4E59, 0x0239479B, 0x3D7863B0, 0x70416002, 0x21285554,
+  0xC5E91E5F, 0x12388117, 0x4D6264B6, 0x4211505E, 0x1D393157, 0x76C54795, 0x217E0025,
+  0x238F25A9, 0x88115061, 0x54E58645, 0x582D6085, 0x61655EE6, 0x6C8EA6A9, 0x43D048FA,
+  0x52E0027A, 0xB549D456, 0xF64A9EDA, 0x0469C009, 0x586516A5, 0xA7C96675, 0xD93D1298,
+  0x5A527968, 0x7995A768, 0xA26929A2, 0x1EF00294, 0xE5398E41, 0x691E7E1F, 0x6572DE51,
+  0x5BD3A44D, 0x97F1AC00, 0x2AB5D8AA, 0xDE787EAA, 0x914211E8, 0x48DAB59E, 0x00040523,
+  0x00000000
 };
 
 /* Compressed strings for the language 'Finnish'. */
@@ -715,27 +715,27 @@ EW_CONST_STRING_PRAGMA static const unsigned int _StringsVietnamese1[] =
 /* Compressed strings for the language 'Default'. */
 EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault2[] =
 {
-  0x00000446, /* ratio 50.46 % */
-  0xB8001D00, 0x000A6452, 0x24CA0038, 0x00064004, 0x00410008, 0x072859B0, 0x18001D00,
-  0x38341205, 0x001A0006, 0x744A406F, 0x488B4008, 0x4A310B37, 0xA2D05818, 0x510F8448,
-  0x07600186, 0x67001A40, 0x78BCCC00, 0x8C4A2433, 0x5C1A5811, 0x4920F363, 0xB8F10A94,
-  0x65C7387C, 0x15188448, 0xF2223CB0, 0x6D90C7E1, 0x30680252, 0x9253AAB5, 0x24564477,
-  0x4B01918A, 0x8A693A23, 0x61517A2D, 0x58168C53, 0xB338593A, 0x790018A2, 0xD99D5248,
-  0x9DCBA994, 0x78027D45, 0x9163400B, 0xA2D31E21, 0x61F0A9CC, 0xC30A9BCD, 0x92C07C62,
-  0x693342C8, 0xE8BC8CEB, 0x8C6468B8, 0xA4132800, 0x45734002, 0xDC002D94, 0xA2FA9BCD,
-  0x013F0069, 0x1A5D1D98, 0x139269C0, 0x88BD366F, 0xBFD08291, 0x8DA697B6, 0xC3EC30B9,
-  0xB735218A, 0x65813D05, 0x1F0D86C4, 0x50BA3DF2, 0x5FC1E729, 0x4E6802A1, 0x924339F0,
-  0x9C4E1FD3, 0x4BF77D7E, 0xA08BA2D0, 0x62F1D99D, 0x1F798AC8, 0x50D90D66, 0x2C0F4621,
-  0x8B7704A1, 0x0008A1FD, 0x17300045, 0x014A0169, 0xDD0F7FC0, 0x2857DCA5, 0x5851743D,
-  0x90A47537, 0x84B1CC0B, 0x01486098, 0xB0605ED0, 0x45601491, 0x593705C8, 0x3429237E,
-  0x2000635D, 0x1D4291F6, 0x54800591, 0xD0A65904, 0x34DD3345, 0xB01C6111, 0x59488484,
-  0x485138A1, 0x53D6011D, 0x46E90F87, 0x2DE5485D, 0x18851174, 0x49E16075, 0xD2E8B21D,
-  0x14BA0D90, 0x4D7766A2, 0x2255DFC4, 0x4E61D4F1, 0x52C05518, 0xA8FE1D15, 0xF9440021,
-  0x2E5D5595, 0x8665C421, 0xDB44924C, 0x213E556B, 0xAD4D4920, 0x6E45DC19, 0x10A28942,
-  0xA3366923, 0x16264848, 0x312C06A7, 0x1D875991, 0x6260E47D, 0x1084CE28, 0x299DB942,
-  0x5A719424, 0x0B8624F1, 0x4925486D, 0xE258D598, 0xA54A1477, 0x9268A762, 0x8244E804,
-  0xA3A8557E, 0xA52A7267, 0x35F98297, 0x618B97A8, 0x908A6A57, 0x7626999E, 0x67C4567A,
-  0x58A18262, 0x210A9491, 0x71876B44, 0x40400682, 0x00000000
+  0x0000042A, /* ratio 50.28 % */
+  0xB8001D00, 0x800A6452, 0x00D00031, 0x0010B378, 0x0020001B, 0x06E86968, 0x18001940,
+  0x082C0C25, 0x38434E80, 0x0C540110, 0x800EC003, 0x00CE0034, 0x2511E920, 0x23188AC3,
+  0xE6B8346C, 0x11900024, 0xD3C45E2B, 0x9E9CE431, 0x5462410C, 0xC348F1B0, 0xB6190A88,
+  0x401188B1, 0x8147A283, 0x50D3BC86, 0x189A800E, 0xB2346C19, 0x9B5564B2, 0xC4FE2F1E,
+  0x13A36168, 0x8AAD24A6, 0xA4279001, 0x233F9251, 0xD2C8F4FE, 0x63004BE6, 0x38240801,
+  0x8AD76124, 0x34462F2A, 0x5522F289, 0x12360F8C, 0x6BA66A61, 0x073D871D, 0x34DC34DB,
+  0x002A4131, 0xD8AD5B1E, 0xB6DAC002, 0x166A3D9D, 0xE5EB54D9, 0x873600CC, 0x6E72887C,
+  0x7B330A53, 0x35DC8DA6, 0x11AA5327, 0x1C7C32AD, 0x8D84E9B6, 0x11900041, 0x486E121E,
+  0x7A78009D, 0x28552B94, 0x8304DF80, 0xD11E1F0F, 0xC687C478, 0x5E6DE397, 0x84576B79,
+  0x6D5A191E, 0xC329711B, 0x7A3117E1, 0x352508D8, 0x01719FD3, 0x04500088, 0xF5CC59C0,
+  0xB90FC8A5, 0x8AD4B796, 0x15447911, 0xE45D084A, 0xF51B6F82, 0xE0721775, 0x445A45D9,
+  0x9BA559F5, 0x07B1887B, 0x09C645D9, 0x0A5F4006, 0x5610845D, 0xD0451000, 0x65D11762,
+  0x717943D3, 0x0D1211B0, 0x43E1A52D, 0x9754210C, 0x14DA0F4B, 0x690C455F, 0x008953F7,
+  0x0751881C, 0x9A445209, 0x08D13D87, 0x3E134F60, 0x6243D6B6, 0x8E50C5F9, 0x54D60136,
+  0x41551B05, 0x5D078C1A, 0x4B0013E5, 0x4811E6CD, 0x63D90D49, 0x369D1153, 0xD84F91DA,
+  0xEE9765B7, 0x98A4E97D, 0xD9010911, 0xD93E3C63, 0x023E4293, 0x4C46C1A0, 0x421A4638,
+  0x97E8050A, 0x04812486, 0xCE596B12, 0x569E6428, 0x5320B904, 0x52191A0D, 0xC4A12463,
+  0x12077124, 0x5AA421C5, 0x532739C6, 0x51E435E1, 0x4A3E59A0, 0x32424B64, 0x52AA23C7,
+  0x86E994FE, 0x13596683, 0xE55A6C73, 0xE5C89866, 0x2045E9C6, 0x9E577AA1, 0x1010014D,
+  0x00000000
 };
 
 /* Compressed strings for the language 'Finnish'. */
@@ -2063,7 +2063,7 @@ EW_CONST_STRING_PRAGMA static const unsigned int _StringsItalian4[] =
 /* Compressed strings for the language 'Japanese'. */
 EW_CONST_STRING_PRAGMA static const unsigned int _StringsJapanese2[] =
 {
-  0x00000364, /* ratio 72.35 % */
+  0x000003DC, /* ratio 69.23 % */
   0xB8003D00, 0x0C172452, 0xC1F8306F, 0x1AA30640, 0xE630548C, 0x230258C1, 0x306D0C11,
   0x1750C144, 0x182C0611, 0xC0C4C0C5, 0x12860922, 0x292C6429, 0x0CC30818, 0xC030278C,
   0x8302A8C0, 0x30010C08, 0x30780000, 0x4812C8B0, 0x70B51CE2, 0xA7C606F2, 0x9D104C2D,
@@ -2078,15 +2078,17 @@ EW_CONST_STRING_PRAGMA static const unsigned int _StringsJapanese2[] =
   0x4514E938, 0x3785DF4F, 0x85E6785E, 0xED7AD967, 0x7CDF17F1, 0x5F7001F5, 0xC7CD967E,
   0xEDFE6A9E, 0x030C2017, 0x739250C2, 0xD60721C6, 0x08C15472, 0x51D20C1D, 0xD80C1D67,
   0x775DB58D, 0x5AF6A9AC, 0x86D5B36C, 0xF1BA91DB, 0xC2701BE6, 0x5B2024AD, 0xC5281E05,
-  0x34C52F82, 0xEE116953, 0xE90C1674, 0x0C0AF0C0, 0x4E70C0B7, 0xC474B347, 0xC1093B50,
-  0x05554EB0, 0x234DD4F4, 0x53A258E2, 0x130D049B, 0x01C02647, 0x27116740, 0x7C49B15C,
-  0x8294F67A, 0xA178A61B, 0x213D0113, 0x3DA1C670, 0x001B71AD, 0x03441288, 0x84128C1B,
-  0xF690A2C2, 0x95244D14, 0x15C1F116, 0xE793969D, 0x02990455, 0x251D2903, 0x5F418303,
-  0x4490A472, 0xD047853A, 0xF6F9AF77, 0x59BC1A1A, 0xBC6C8446, 0x1BDBBA2D, 0x1971CC00,
-  0xE7E863AF, 0x52C0B01E, 0xFA0BD96A, 0x14C0011D, 0x5CF66A1D, 0x07A44C1F, 0xE8690700,
-  0x8C4D0513, 0x735D98CC, 0x1304D800, 0xA0C11319, 0xF46A17D9, 0x54B54803, 0x148290C0,
-  0x54B1D428, 0x59546A53, 0xA1A622AF, 0x3F4113C6, 0x51543505, 0xEF113C7F, 0x354560BC,
-  0xE93A9655, 0x00001014, 0x00000000
+  0x34C52F82, 0x02116953, 0xE48503C0, 0x791E585D, 0x1EE7F21B, 0x3885FB7C, 0xF6267EA2,
+  0x008A9F87, 0x1A11C93C, 0xC08001E9, 0x26C2423F, 0x21B67E9B, 0xAF6EC009, 0x9B5C192D,
+  0xC309422C, 0xC4D07D73, 0x65D98CC8, 0x0C4113C9, 0x2BC303A5, 0xC302DC30, 0xD2CD1D39,
+  0x24ED4311, 0x553AC304, 0x3753D015, 0x8963888D, 0x34129E4E, 0x00991C4C, 0x45A94007,
+  0x26C5709C, 0x53DAADF1, 0xE2986E0A, 0xF4044E85, 0xB819C084, 0x6DC6B4F6, 0x104AE400,
+  0x4AF46C0D, 0x06BC0A10, 0x913453DB, 0x07C45B18, 0x8E5B3857, 0x641157AA, 0x74A40C0A,
+  0x060C0C94, 0x4291CA41, 0x1E14E912, 0xC9F5DF41, 0x59BC1A1B, 0xAF9DC446, 0x1BDBBAF1,
+  0xD971CC00, 0xE7E8639D, 0x16F0BC1E, 0xFA0BD96B, 0x14C0011D, 0x28466A1D, 0x90727113,
+  0x18513E86, 0x7173288A, 0x191304DA, 0xD9A0C113, 0x03F46A17, 0xC054C108, 0x28148290,
+  0x5354B1D4, 0xB219546A, 0xB6A1A622, 0x09404FA8, 0x7F0C1445, 0xC7F1D13C, 0x55354560,
+  0x14E93A96, 0x00000010, 0x00000000
 };
 
 /* Compressed strings for the language 'Korean'. */
@@ -2262,7 +2264,7 @@ EW_CONST_STRING_PRAGMA static const unsigned int _StringsVietnamese4[] =
 };
 
 /* This file is generated automatically.
-   Generated: 2021/06/29 08:04:00 */
+   Generated: 2021/07/02 14:28:43 */
 const XStringRes StringsARGUMENT_STR = { _StringsDefault0, 0x0002 };
 
 /* User defined constant: 'Strings::GEN_OK' */
@@ -2355,9 +2357,6 @@ const XVariantOfString _StringsGEN_NO[] =
 /* Table with links to derived variants of the constant : 'Strings::GEN_NO' */
 EW_CONST_WITHOUT_VARIANTS( StringsGEN_NO )
 
-/* User defined constant: 'Strings::GEN_LATER' */
-const XStringRes StringsGEN_LATER = { _StringsDefault0, 0x0020 };
-
 /* User defined constant: 'Strings::GEN_LOW' */
 const XVariantOfString _StringsGEN_LOW[] = 
 {
@@ -2378,14 +2377,14 @@ const XVariantOfString _StringsGEN_LOW[] =
   { Thai,      { _StringsThai0, 0x0021 }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x0014 }},
   { Vietnamese, { _StringsVietnamese0, 0x0015 }},
-  { Default,   { _StringsDefault0, 0x0028 }}
+  { Default,   { _StringsDefault0, 0x0020 }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::GEN_LOW' */
 EW_CONST_WITHOUT_VARIANTS( StringsGEN_LOW )
 
 /* User defined constant: 'Strings::GEN_LOW_ABBREVIATION' */
-const XStringRes StringsGEN_LOW_ABBREVIATION = { _StringsDefault0, 0x002E };
+const XStringRes StringsGEN_LOW_ABBREVIATION = { _StringsDefault0, 0x0026 };
 
 /* User defined constant: 'Strings::GEN_MIDDLE' */
 const XVariantOfString _StringsGEN_MIDDLE[] = 
@@ -2407,7 +2406,7 @@ const XVariantOfString _StringsGEN_MIDDLE[] =
   { Thai,      { _StringsThai0, 0x0027 }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x0018 }},
   { Vietnamese, { _StringsVietnamese0, 0x001C }},
-  { Default,   { _StringsDefault0, 0x0033 }}
+  { Default,   { _StringsDefault0, 0x002B }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::GEN_MIDDLE' */
@@ -2433,20 +2432,20 @@ const XVariantOfString _StringsGEN_HIGH[] =
   { Thai,      { _StringsThai0, 0x002E }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x001C }},
   { Vietnamese, { _StringsVietnamese0, 0x0023 }},
-  { Default,   { _StringsDefault0, 0x0039 }}
+  { Default,   { _StringsDefault0, 0x0031 }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::GEN_HIGH' */
 EW_CONST_WITHOUT_VARIANTS( StringsGEN_HIGH )
 
 /* User defined constant: 'Strings::GEN_HIGH_ABBREVIATION' */
-const XStringRes StringsGEN_HIGH_ABBREVIATION = { _StringsDefault0, 0x0040 };
+const XStringRes StringsGEN_HIGH_ABBREVIATION = { _StringsDefault0, 0x0038 };
 
 /* User defined constant: 'Strings::GEN_HOUR_ABBREVIATION' */
-const XStringRes StringsGEN_HOUR_ABBREVIATION = { _StringsDefault0, 0x0045 };
+const XStringRes StringsGEN_HOUR_ABBREVIATION = { _StringsDefault0, 0x003D };
 
 /* User defined constant: 'Strings::GEN_MINUTE_ABBREVIATION' */
-const XStringRes StringsGEN_MINUTE_ABBREVIATION = { _StringsDefault0, 0x0049 };
+const XStringRes StringsGEN_MINUTE_ABBREVIATION = { _StringsDefault0, 0x0041 };
 
 /* User defined constant: 'Strings::GEN_RESET_QUESTION_MARK' */
 const XVariantOfString _StringsGEN_RESET_QUESTION_MARK[] = 
@@ -2467,7 +2466,7 @@ const XVariantOfString _StringsGEN_RESET_QUESTION_MARK[] =
   { Thai,      { _StringsThai0, 0x0034 }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x0020 }},
   { Vietnamese, { _StringsVietnamese0, 0x0029 }},
-  { Default,   { _StringsDefault0, 0x004F }}
+  { Default,   { _StringsDefault0, 0x0047 }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::GEN_RESET_QUESTION_MARK' */
@@ -2479,14 +2478,14 @@ const XVariantOfString _StringsGEN_BLUETOOTH[] =
   { Hindi,     { _StringsHindi0, 0x0048 }},
   { SimplifiedChinese, { _StringsSimplifiedChinese0, 0x0026 }},
   { Thai,      { _StringsThai0, 0x0044 }},
-  { Default,   { _StringsDefault0, 0x0058 }}
+  { Default,   { _StringsDefault0, 0x0050 }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::GEN_BLUETOOTH' */
 EW_CONST_WITHOUT_VARIANTS( StringsGEN_BLUETOOTH )
 
 /* User defined constant: 'Strings::GEN_THREE_HYPHENS' */
-const XStringRes StringsGEN_THREE_HYPHENS = { _StringsDefault0, 0x0064 };
+const XStringRes StringsGEN_THREE_HYPHENS = { _StringsDefault0, 0x005C };
 
 /* User defined constant: 'Strings::GEN_PLEASE_WAIT' */
 const XVariantOfString _StringsGEN_PLEASE_WAIT[] = 
@@ -2508,23 +2507,23 @@ const XVariantOfString _StringsGEN_PLEASE_WAIT[] =
   { Thai,      { _StringsThai0, 0x004D }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x0028 }},
   { Vietnamese, { _StringsVietnamese0, 0x0034 }},
-  { Default,   { _StringsDefault0, 0x006A }}
+  { Default,   { _StringsDefault0, 0x0062 }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::GEN_PLEASE_WAIT' */
 EW_CONST_WITHOUT_VARIANTS( StringsGEN_PLEASE_WAIT )
 
 /* User defined constant: 'Strings::GEN_SPEED_KM_PER_HOUR' */
-const XStringRes StringsGEN_SPEED_KM_PER_HOUR = { _StringsDefault0, 0x007B };
+const XStringRes StringsGEN_SPEED_KM_PER_HOUR = { _StringsDefault0, 0x0073 };
 
 /* User defined constant: 'Strings::GEN_SPEED_MILE_PER_HOUR' */
-const XStringRes StringsGEN_SPEED_MILE_PER_HOUR = { _StringsDefault0, 0x0082 };
+const XStringRes StringsGEN_SPEED_MILE_PER_HOUR = { _StringsDefault0, 0x007A };
 
 /* User defined constant: 'Strings::GEN_FUEL_UNIT_LITTER' */
-const XStringRes StringsGEN_FUEL_UNIT_LITTER = { _StringsDefault0, 0x008B };
+const XStringRes StringsGEN_FUEL_UNIT_LITTER = { _StringsDefault0, 0x0083 };
 
 /* User defined constant: 'Strings::GEN_FUEL_UNIT_GALLON' */
-const XStringRes StringsGEN_FUEL_UNIT_GALLON = { _StringsDefault0, 0x008F };
+const XStringRes StringsGEN_FUEL_UNIT_GALLON = { _StringsDefault0, 0x0087 };
 
 /* User defined constant: 'Strings::TOP01_WARNING' */
 const XVariantOfString _StringsTOP01_WARNING[] = 
@@ -2546,7 +2545,7 @@ const XVariantOfString _StringsTOP01_WARNING[] =
   { Thai,      { _StringsThai0, 0x0057 }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x0030 }},
   { Vietnamese, { _StringsVietnamese0, 0x0044 }},
-  { Default,   { _StringsDefault0, 0x0095 }}
+  { Default,   { _StringsDefault0, 0x008D }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::TOP01_WARNING' */
@@ -2572,7 +2571,7 @@ const XVariantOfString _StringsTOP01_DISCLAIMER[] =
   { Thai,      { _StringsThai0, 0x0061 }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x0035 }},
   { Vietnamese, { _StringsVietnamese0, 0x004F }},
-  { Default,   { _StringsDefault0, 0x009F }}
+  { Default,   { _StringsDefault0, 0x0097 }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::TOP01_DISCLAIMER' */
@@ -2598,7 +2597,7 @@ const XVariantOfString _StringsTOP01_ACCEPT[] =
   { Thai,      { _StringsThai0, 0x00F2 }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x006F }},
   { Vietnamese, { _StringsVietnamese0, 0x00F9 }},
-  { Default,   { _StringsDefault0, 0x0151 }}
+  { Default,   { _StringsDefault0, 0x0149 }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::TOP01_ACCEPT' */
@@ -2624,7 +2623,7 @@ const XVariantOfString _StringsBRT01_TFT_DISPLAY[] =
   { Thai,      { _StringsThai0, 0x00FB }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x0077 }},
   { Vietnamese, { _StringsVietnamese0, 0x0105 }},
-  { Default,   { _StringsDefault0, 0x015A }}
+  { Default,   { _StringsDefault0, 0x0152 }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::BRT01_TFT_DISPLAY' */
@@ -2650,7 +2649,7 @@ const XVariantOfString _StringsBRT01_SPEED_METER[] =
   { Thai,      { _StringsThai0, 0x010A }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x0081 }},
   { Vietnamese, { _StringsVietnamese0, 0x0114 }},
-  { Default,   { _StringsDefault0, 0x0168 }}
+  { Default,   { _StringsDefault0, 0x0160 }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::BRT01_SPEED_METER' */
@@ -2676,7 +2675,7 @@ const XVariantOfString _StringsCLK01_AUTO_ADJUSTMENT[] =
   { Thai,      { _StringsThai0, 0x011F }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x0087 }},
   { Vietnamese, { _StringsVietnamese0, 0x0122 }},
-  { Default,   { _StringsDefault0, 0x0176 }}
+  { Default,   { _StringsDefault0, 0x016E }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::CLK01_AUTO_ADJUSTMENT' */
@@ -2702,17 +2701,17 @@ const XVariantOfString _StringsCLK01_MANUAL_ADJUSTMENT[] =
   { Thai,      { _StringsThai0, 0x0132 }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x008E }},
   { Vietnamese, { _StringsVietnamese0, 0x0137 }},
-  { Default,   { _StringsDefault0, 0x0188 }}
+  { Default,   { _StringsDefault0, 0x0180 }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::CLK01_MANUAL_ADJUSTMENT' */
 EW_CONST_WITHOUT_VARIANTS( StringsCLK01_MANUAL_ADJUSTMENT )
 
 /* User defined constant: 'Strings::CLK02_AM' */
-const XStringRes StringsCLK02_AM = { _StringsDefault0, 0x019C };
+const XStringRes StringsCLK02_AM = { _StringsDefault0, 0x0194 };
 
 /* User defined constant: 'Strings::CLK02_PM' */
-const XStringRes StringsCLK02_PM = { _StringsDefault0, 0x01A1 };
+const XStringRes StringsCLK02_PM = { _StringsDefault0, 0x0199 };
 
 /* User defined constant: 'Strings::CLK03_SET_CLOCK' */
 const XVariantOfString _StringsCLK03_SET_CLOCK[] = 
@@ -2734,7 +2733,7 @@ const XVariantOfString _StringsCLK03_SET_CLOCK[] =
   { Thai,      { _StringsThai0, 0x0145 }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x0095 }},
   { Vietnamese, { _StringsVietnamese0, 0x014D }},
-  { Default,   { _StringsDefault0, 0x01A6 }}
+  { Default,   { _StringsDefault0, 0x019E }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::CLK03_SET_CLOCK' */
@@ -2759,53 +2758,53 @@ const XVariantOfString _StringsGPW01_GRIP_WARMER[] =
   { Thai,      { _StringsThai0, 0x0159 }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x009D }},
   { Vietnamese, { _StringsVietnamese0, 0x015C }},
-  { Default,   { _StringsDefault0, 0x01B3 }}
+  { Default,   { _StringsDefault0, 0x01AB }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::GPW01_GRIP_WARMER' */
 EW_CONST_WITHOUT_VARIANTS( StringsGPW01_GRIP_WARMER )
 
 /* User defined constant: 'Strings::HOM03_AVG_SPEED' */
-const XStringRes StringsHOM03_AVG_SPEED = { _StringsDefault0, 0x01C1 };
+const XStringRes StringsHOM03_AVG_SPEED = { _StringsDefault0, 0x01B9 };
 
 /* User defined constant: 'Strings::HOM03_AVG_FUEL' */
-const XStringRes StringsHOM03_AVG_FUEL = { _StringsDefault0, 0x01CD };
+const XStringRes StringsHOM03_AVG_FUEL = { _StringsDefault0, 0x01C5 };
 
 /* User defined constant: 'Strings::HOM03_INST_FUEL' */
-const XStringRes StringsHOM03_INST_FUEL = { _StringsDefault0, 0x01D8 };
+const XStringRes StringsHOM03_INST_FUEL = { _StringsDefault0, 0x01D0 };
 
 /* User defined constant: 'Strings::HOM03_TRIP_TIME' */
-const XStringRes StringsHOM03_TRIP_TIME = { _StringsDefault0, 0x01E4 };
+const XStringRes StringsHOM03_TRIP_TIME = { _StringsDefault0, 0x01DC };
 
 /* User defined constant: 'Strings::HOM03_RANGE' */
-const XStringRes StringsHOM03_RANGE = { _StringsDefault0, 0x01F0 };
+const XStringRes StringsHOM03_RANGE = { _StringsDefault0, 0x01E8 };
 
 /* User defined constant: 'Strings::HOM03_FUEL_CONSUMPTION' */
-const XStringRes StringsHOM03_FUEL_CONSUMPTION = { _StringsDefault0, 0x01F8 };
+const XStringRes StringsHOM03_FUEL_CONSUMPTION = { _StringsDefault0, 0x01F0 };
 
 /* User defined constant: 'Strings::HOM03_AIR' */
-const XStringRes StringsHOM03_AIR = { _StringsDefault1, 0x0002 };
+const XStringRes StringsHOM03_AIR = { _StringsDefault0, 0x01FC };
 
 /* User defined constant: 'Strings::HOM03_COOLANT' */
-const XStringRes StringsHOM03_COOLANT = { _StringsDefault1, 0x0008 };
+const XStringRes StringsHOM03_COOLANT = { _StringsDefault0, 0x0202 };
 
 /* User defined constant: 'Strings::HOM03_BATTERY' */
-const XStringRes StringsHOM03_BATTERY = { _StringsDefault1, 0x0012 };
+const XStringRes StringsHOM03_BATTERY = { _StringsDefault1, 0x0002 };
 
 /* User defined constant: 'Strings::HOM03_FRONT_R' */
-const XStringRes StringsHOM03_FRONT_R = { _StringsDefault1, 0x001C };
+const XStringRes StringsHOM03_FRONT_R = { _StringsDefault1, 0x000C };
 
 /* User defined constant: 'Strings::HOM03_FRONT_L' */
-const XStringRes StringsHOM03_FRONT_L = { _StringsDefault1, 0x0028 };
+const XStringRes StringsHOM03_FRONT_L = { _StringsDefault1, 0x0018 };
 
 /* User defined constant: 'Strings::HOM03_FRONT' */
-const XStringRes StringsHOM03_FRONT = { _StringsDefault1, 0x0034 };
+const XStringRes StringsHOM03_FRONT = { _StringsDefault1, 0x0024 };
 
 /* User defined constant: 'Strings::HOM03_REAR' */
-const XStringRes StringsHOM03_REAR = { _StringsDefault1, 0x003C };
+const XStringRes StringsHOM03_REAR = { _StringsDefault1, 0x002C };
 
 /* User defined constant: 'Strings::HOM03_CRUISE' */
-const XStringRes StringsHOM03_CRUISE = { _StringsDefault1, 0x0043 };
+const XStringRes StringsHOM03_CRUISE = { _StringsDefault1, 0x0033 };
 
 /* User defined constant: 'Strings::INF01_TACHO_VISUALIZER' */
 const XVariantOfString _StringsINF01_TACHO_VISUALIZER[] = 
@@ -2827,7 +2826,7 @@ const XVariantOfString _StringsINF01_TACHO_VISUALIZER[] =
   { Thai,      { _StringsThai0, 0x016B }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x00A5 }},
   { Vietnamese, { _StringsVietnamese0, 0x0170 }},
-  { Default,   { _StringsDefault1, 0x004C }}
+  { Default,   { _StringsDefault1, 0x003C }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::INF01_TACHO_VISUALIZER' */
@@ -2853,7 +2852,7 @@ const XVariantOfString _StringsINF01_ECHO_VISUALIZER[] =
   { Thai,      { _StringsThai0, 0x0184 }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x00AE }},
   { Vietnamese, { _StringsVietnamese0, 0x018A }},
-  { Default,   { _StringsDefault1, 0x005F }}
+  { Default,   { _StringsDefault1, 0x004F }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::INF01_ECHO_VISUALIZER' */
@@ -2879,23 +2878,23 @@ const XVariantOfString _StringsINF01_SPEED_VISUALIZER[] =
   { Thai,      { _StringsThai0, 0x0199 }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x00BA }},
   { Vietnamese, { _StringsVietnamese0, 0x019F }},
-  { Default,   { _StringsDefault1, 0x0070 }}
+  { Default,   { _StringsDefault1, 0x0060 }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::INF01_SPEED_VISUALIZER' */
 EW_CONST_WITHOUT_VARIANTS( StringsINF01_SPEED_VISUALIZER )
 
 /* User defined constant: 'Strings::INF26_ODO' */
-const XStringRes StringsINF26_ODO = { _StringsDefault1, 0x0083 };
+const XStringRes StringsINF26_ODO = { _StringsDefault1, 0x0073 };
 
 /* User defined constant: 'Strings::INF26_TRIP_1' */
-const XStringRes StringsINF26_TRIP_1 = { _StringsDefault1, 0x0089 };
+const XStringRes StringsINF26_TRIP_1 = { _StringsDefault1, 0x0079 };
 
 /* User defined constant: 'Strings::INF26_TRIP_2' */
-const XStringRes StringsINF26_TRIP_2 = { _StringsDefault1, 0x0092 };
+const XStringRes StringsINF26_TRIP_2 = { _StringsDefault1, 0x0082 };
 
 /* User defined constant: 'Strings::INF26_TRIP_F' */
-const XStringRes StringsINF26_TRIP_F = { _StringsDefault1, 0x009B };
+const XStringRes StringsINF26_TRIP_F = { _StringsDefault1, 0x008B };
 
 /* User defined constant: 'Strings::LNC_METER_DISPLAY' */
 const XVariantOfString _StringsLNC_METER_DISPLAY[] = 
@@ -2917,14 +2916,14 @@ const XVariantOfString _StringsLNC_METER_DISPLAY[] =
   { Thai,      { _StringsThai0, 0x01AF }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x00C3 }},
   { Vietnamese, { _StringsVietnamese0, 0x01B4 }},
-  { Default,   { _StringsDefault1, 0x00A4 }}
+  { Default,   { _StringsDefault1, 0x0094 }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::LNC_METER_DISPLAY' */
 EW_CONST_WITHOUT_VARIANTS( StringsLNC_METER_DISPLAY )
 
 /* User defined constant: 'Strings::LNC_ODO_TRIP' */
-const XStringRes StringsLNC_ODO_TRIP = { _StringsDefault1, 0x00B4 };
+const XStringRes StringsLNC_ODO_TRIP = { _StringsDefault1, 0x00A4 };
 
 /* User defined constant: 'Strings::LNC_MUSIC' */
 const XVariantOfString _StringsLNC_MUSIC[] = 
@@ -2946,7 +2945,7 @@ const XVariantOfString _StringsLNC_MUSIC[] =
   { Thai,      { _StringsThai0, 0x01C1 }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x00CA }},
   { Vietnamese, { _StringsVietnamese0, 0x01C7 }},
-  { Default,   { _StringsDefault1, 0x00BF }}
+  { Default,   { _StringsDefault1, 0x00AF }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::LNC_MUSIC' */
@@ -2972,7 +2971,7 @@ const XVariantOfString _StringsLNC_PHONE[] =
   { Thai,      { _StringsThai0, 0x01C9 }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x00CF }},
   { Vietnamese, { _StringsVietnamese0, 0x01D1 }},
-  { Default,   { _StringsDefault1, 0x00C7 }}
+  { Default,   { _StringsDefault1, 0x00B7 }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::LNC_PHONE' */
@@ -2996,7 +2995,7 @@ const XVariantOfString _StringsLNC_NAVIGATION[] =
   { Thai,      { _StringsThai0, 0x01D4 }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x00D4 }},
   { Vietnamese, { _StringsVietnamese0, 0x01DE }},
-  { Default,   { _StringsDefault1, 0x00CF }}
+  { Default,   { _StringsDefault1, 0x00BF }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::LNC_NAVIGATION' */
@@ -3022,7 +3021,7 @@ const XVariantOfString _StringsLNC_WEATHER[] =
   { Thai,      { _StringsThai0, 0x01DF }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x00D9 }},
   { Vietnamese, { _StringsVietnamese0, 0x01EB }},
-  { Default,   { _StringsDefault1, 0x00DC }}
+  { Default,   { _StringsDefault1, 0x00CC }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::LNC_WEATHER' */
@@ -3047,7 +3046,7 @@ const XVariantOfString _StringsLNC_NOTIFICATION[] =
   { Thai,      { _StringsThai0, 0x01EB }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x00DE }},
   { Vietnamese, { _StringsVietnamese0, 0x01F7 }},
-  { Default,   { _StringsDefault1, 0x00E6 }}
+  { Default,   { _StringsDefault1, 0x00D6 }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::LNC_NOTIFICATION' */
@@ -3073,7 +3072,7 @@ const XVariantOfString _StringsLNC_SEAT_HEATER[] =
   { Thai,      { _StringsThai0, 0x01FA }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x00E3 }},
   { Vietnamese, { _StringsVietnamese1, 0x0002 }},
-  { Default,   { _StringsDefault1, 0x00F5 }}
+  { Default,   { _StringsDefault1, 0x00E5 }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::LNC_SEAT_HEATER' */
@@ -3099,7 +3098,7 @@ const XVariantOfString _StringsLNC_SETTINGS[] =
   { Thai,      { _StringsThai1, 0x0002 }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x00EB }},
   { Vietnamese, { _StringsVietnamese1, 0x0010 }},
-  { Default,   { _StringsDefault1, 0x0103 }}
+  { Default,   { _StringsDefault1, 0x00F3 }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::LNC_SETTINGS' */
@@ -3124,59 +3123,59 @@ const XVariantOfString _StringsMED02_DEV_UNAVAILABLE[] =
   { Thai,      { _StringsThai1, 0x000F }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x00F0 }},
   { Vietnamese, { _StringsVietnamese1, 0x001A }},
-  { Default,   { _StringsDefault1, 0x010E }}
+  { Default,   { _StringsDefault1, 0x00FE }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::MED02_DEV_UNAVAILABLE' */
 EW_CONST_WITHOUT_VARIANTS( StringsMED02_DEV_UNAVAILABLE )
 
 /* User defined constant: 'Strings::MNT01_OIL' */
-const XStringRes StringsMNT01_OIL = { _StringsDefault1, 0x012A };
+const XStringRes StringsMNT01_OIL = { _StringsDefault1, 0x011A };
 
 /* User defined constant: 'Strings::MNT01_V_BELT' */
-const XStringRes StringsMNT01_V_BELT = { _StringsDefault1, 0x0130 };
+const XStringRes StringsMNT01_V_BELT = { _StringsDefault1, 0x0120 };
 
 /* User defined constant: 'Strings::MNT01_FREE1' */
-const XStringRes StringsMNT01_FREE1 = { _StringsDefault1, 0x0139 };
+const XStringRes StringsMNT01_FREE1 = { _StringsDefault1, 0x0129 };
 
 /* User defined constant: 'Strings::MNT01_FREE2' */
-const XStringRes StringsMNT01_FREE2 = { _StringsDefault1, 0x0142 };
+const XStringRes StringsMNT01_FREE2 = { _StringsDefault1, 0x0132 };
 
 /* User defined constant: 'Strings::NAV01_CHECK_FIXED' */
-const XStringRes StringsNAV01_CHECK_FIXED = { _StringsDefault1, 0x014B };
+const XStringRes StringsNAV01_CHECK_FIXED = { _StringsDefault1, 0x013B };
 
 /* User defined constant: 'Strings::NAV01_CHECK_TEMPORARY' */
-const XStringRes StringsNAV01_CHECK_TEMPORARY = { _StringsDefault1, 0x015A };
+const XStringRes StringsNAV01_CHECK_TEMPORARY = { _StringsDefault1, 0x014A };
 
 /* User defined constant: 'Strings::NAV01_MOBILE' */
-const XStringRes StringsNAV01_MOBILE = { _StringsDefault1, 0x016D };
+const XStringRes StringsNAV01_MOBILE = { _StringsDefault1, 0x015D };
 
 /* User defined constant: 'Strings::NAV01_AVERAGE' */
-const XStringRes StringsNAV01_AVERAGE = { _StringsDefault1, 0x0183 };
+const XStringRes StringsNAV01_AVERAGE = { _StringsDefault1, 0x0173 };
 
 /* User defined constant: 'Strings::NAV01_VARIABLE' */
-const XStringRes StringsNAV01_VARIABLE = { _StringsDefault1, 0x019A };
+const XStringRes StringsNAV01_VARIABLE = { _StringsDefault1, 0x018A };
 
 /* User defined constant: 'Strings::NAV01_RED_LIGHT' */
-const XStringRes StringsNAV01_RED_LIGHT = { _StringsDefault1, 0x01B2 };
+const XStringRes StringsNAV01_RED_LIGHT = { _StringsDefault1, 0x01A2 };
 
 /* User defined constant: 'Strings::NAV01_USER' */
-const XStringRes StringsNAV01_USER = { _StringsDefault1, 0x01C5 };
+const XStringRes StringsNAV01_USER = { _StringsDefault1, 0x01B5 };
 
 /* User defined constant: 'Strings::NAV01_MOBILE_ZONE' */
-const XStringRes StringsNAV01_MOBILE_ZONE = { _StringsDefault1, 0x01D5 };
+const XStringRes StringsNAV01_MOBILE_ZONE = { _StringsDefault1, 0x01C5 };
 
 /* User defined constant: 'Strings::NAV01_DANGEROUS_ZONE' */
-const XStringRes StringsNAV01_DANGEROUS_ZONE = { _StringsDefault1, 0x01EB };
+const XStringRes StringsNAV01_DANGEROUS_ZONE = { _StringsDefault1, 0x01DB };
 
 /* User defined constant: 'Strings::NAV01_RISK_ZONE' */
-const XStringRes StringsNAV01_RISK_ZONE = { _StringsDefault1, 0x01F9 };
+const XStringRes StringsNAV01_RISK_ZONE = { _StringsDefault1, 0x01E9 };
 
 /* User defined constant: 'Strings::NAV01_UNKNOWN' */
-const XStringRes StringsNAV01_UNKNOWN = { _StringsDefault2, 0x0002 };
+const XStringRes StringsNAV01_UNKNOWN = { _StringsDefault1, 0x01F5 };
 
 /* User defined constant: 'Strings::NAV01_SCHOOL_ZONE' */
-const XStringRes StringsNAV01_SCHOOL_ZONE = { _StringsDefault2, 0x0010 };
+const XStringRes StringsNAV01_SCHOOL_ZONE = { _StringsDefault2, 0x0002 };
 
 /* User defined constant: 'Strings::NAV06_STOP_NAVIGATION' */
 const XVariantOfString _StringsNAV06_STOP_NAVIGATION[] = 
@@ -3198,7 +3197,7 @@ const XVariantOfString _StringsNAV06_STOP_NAVIGATION[] =
   { Thai,      { _StringsThai1, 0x002C }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x00FB }},
   { Vietnamese, { _StringsVietnamese1, 0x003F }},
-  { Default,   { _StringsDefault2, 0x001E }}
+  { Default,   { _StringsDefault2, 0x0010 }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::NAV06_STOP_NAVIGATION' */
@@ -3224,7 +3223,7 @@ const XVariantOfString _StringsNAV06_SKIP_NEXT_STOP[] =
   { Thai,      { _StringsThai1, 0x003B }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x0102 }},
   { Vietnamese, { _StringsVietnamese1, 0x0051 }},
-  { Default,   { _StringsDefault2, 0x0030 }}
+  { Default,   { _StringsDefault2, 0x0022 }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::NAV06_SKIP_NEXT_STOP' */
@@ -3250,7 +3249,7 @@ const XVariantOfString _StringsNAV06_GO_HOME[] =
   { Thai,      { _StringsThai1, 0x004D }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x010A }},
   { Vietnamese, { _StringsVietnamese1, 0x006E }},
-  { Default,   { _StringsDefault2, 0x0041 }}
+  { Default,   { _StringsDefault2, 0x0033 }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::NAV06_GO_HOME' */
@@ -3276,7 +3275,7 @@ const XVariantOfString _StringsNAV06_GO_TO_WORK[] =
   { Thai,      { _StringsThai1, 0x0056 }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x010F }},
   { Vietnamese, { _StringsVietnamese1, 0x0077 }},
-  { Default,   { _StringsDefault2, 0x004B }}
+  { Default,   { _StringsDefault2, 0x003D }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::NAV06_GO_TO_WORK' */
@@ -3302,7 +3301,7 @@ const XVariantOfString _StringsNAV06_FAVORITES[] =
   { Thai,      { _StringsThai1, 0x0060 }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x0114 }},
   { Vietnamese, { _StringsVietnamese1, 0x0080 }},
-  { Default,   { _StringsDefault2, 0x0058 }}
+  { Default,   { _StringsDefault2, 0x004A }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::NAV06_FAVORITES' */
@@ -3328,7 +3327,7 @@ const XVariantOfString _StringsNAV06_NEARBY_GAS_STATIONS[] =
   { Thai,      { _StringsThai1, 0x006B }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x011B }},
   { Vietnamese, { _StringsVietnamese1, 0x008C }},
-  { Default,   { _StringsDefault2, 0x0064 }}
+  { Default,   { _StringsDefault2, 0x0056 }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::NAV06_NEARBY_GAS_STATIONS' */
@@ -3354,7 +3353,7 @@ const XVariantOfString _StringsNAV06_CHANGE_VIEW[] =
   { Thai,      { _StringsThai1, 0x0088 }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x0124 }},
   { Vietnamese, { _StringsVietnamese1, 0x009F }},
-  { Default,   { _StringsDefault2, 0x007A }}
+  { Default,   { _StringsDefault2, 0x006C }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::NAV06_CHANGE_VIEW' */
@@ -3380,7 +3379,7 @@ const XVariantOfString _StringsNAV08_DEFAULT_VIEW[] =
   { Thai,      { _StringsThai1, 0x0098 }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x012B }},
   { Vietnamese, { _StringsVietnamese1, 0x00B5 }},
-  { Default,   { _StringsDefault2, 0x0088 }}
+  { Default,   { _StringsDefault2, 0x007A }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::NAV08_DEFAULT_VIEW' */
@@ -3406,7 +3405,7 @@ const XVariantOfString _StringsNAV08_TURN_BY_TURN[] =
   { Thai,      { _StringsThai1, 0x00A9 }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x0132 }},
   { Vietnamese, { _StringsVietnamese1, 0x00CB }},
-  { Default,   { _StringsDefault2, 0x0097 }}
+  { Default,   { _StringsDefault2, 0x0089 }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::NAV08_TURN_BY_TURN' */
@@ -3432,26 +3431,26 @@ const XVariantOfString _StringsNAV08_TURN_LIST[] =
   { Thai,      { _StringsThai1, 0x00BB }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x0139 }},
   { Vietnamese, { _StringsVietnamese1, 0x00D6 }},
-  { Default,   { _StringsDefault2, 0x00A6 }}
+  { Default,   { _StringsDefault2, 0x0098 }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::NAV08_TURN_LIST' */
 EW_CONST_WITHOUT_VARIANTS( StringsNAV08_TURN_LIST )
 
 /* User defined constant: 'Strings::NAV11_NEW_ROUTE' */
-const XStringRes StringsNAV11_NEW_ROUTE = { _StringsDefault2, 0x00B2 };
+const XStringRes StringsNAV11_NEW_ROUTE = { _StringsDefault2, 0x00A4 };
 
 /* User defined constant: 'Strings::NAV11_NEXT_STOP' */
-const XStringRes StringsNAV11_NEXT_STOP = { _StringsDefault2, 0x00C6 };
+const XStringRes StringsNAV11_NEXT_STOP = { _StringsDefault2, 0x00B8 };
 
 /* User defined constant: 'Strings::NAV11_LAST_STOP' */
-const XStringRes StringsNAV11_LAST_STOP = { _StringsDefault2, 0x00D9 };
+const XStringRes StringsNAV11_LAST_STOP = { _StringsDefault2, 0x00CB };
 
 /* User defined constant: 'Strings::OPN02_FACTORY_MODE' */
-const XStringRes StringsOPN02_FACTORY_MODE = { _StringsDefault2, 0x00EC };
+const XStringRes StringsOPN02_FACTORY_MODE = { _StringsDefault2, 0x00DE };
 
 /* User defined constant: 'Strings::OPN02_ENTER_TWICE' */
-const XStringRes StringsOPN02_ENTER_TWICE = { _StringsDefault2, 0x00FB };
+const XStringRes StringsOPN02_ENTER_TWICE = { _StringsDefault2, 0x00ED };
 
 /* User defined constant: 'Strings::POP02_CONNECTION_ERR' */
 const XVariantOfString _StringsPOP02_CONNECTION_ERR[] = 
@@ -3473,7 +3472,7 @@ const XVariantOfString _StringsPOP02_CONNECTION_ERR[] =
   { Thai,      { _StringsThai1, 0x00C8 }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x0141 }},
   { Vietnamese, { _StringsVietnamese1, 0x00E9 }},
-  { Default,   { _StringsDefault2, 0x0119 }}
+  { Default,   { _StringsDefault2, 0x010B }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::POP02_CONNECTION_ERR' */
@@ -3499,7 +3498,7 @@ const XVariantOfString _StringsPOP02_PLEASE_CHECK[] =
   { Thai,      { _StringsThai1, 0x00E3 }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x0148 }},
   { Vietnamese, { _StringsVietnamese1, 0x00F9 }},
-  { Default,   { _StringsDefault2, 0x012C }}
+  { Default,   { _StringsDefault2, 0x011E }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::POP02_PLEASE_CHECK' */
@@ -3524,7 +3523,7 @@ const XVariantOfString _StringsPOP02_DETAILS[] =
   { Thai,      { _StringsThai1, 0x00F1 }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x014F }},
   { Vietnamese, { _StringsVietnamese1, 0x010D }},
-  { Default,   { _StringsDefault2, 0x013B }}
+  { Default,   { _StringsDefault2, 0x012D }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::POP02_DETAILS' */
@@ -3550,7 +3549,7 @@ const XVariantOfString _StringsPOP03_NO_HOME_LOCATION[] =
   { Thai,      { _StringsThai1, 0x00FE }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x0156 }},
   { Vietnamese, { _StringsVietnamese1, 0x0118 }},
-  { Default,   { _StringsDefault2, 0x0145 }}
+  { Default,   { _StringsDefault2, 0x0137 }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::POP03_NO_HOME_LOCATION' */
@@ -3576,7 +3575,7 @@ const XVariantOfString _StringsPOP07_TROUBLE_SHOOTING[] =
   { Thai,      { _StringsThai1, 0x0119 }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x0161 }},
   { Vietnamese, { _StringsVietnamese1, 0x012F }},
-  { Default,   { _StringsDefault2, 0x0161 }}
+  { Default,   { _StringsDefault2, 0x0153 }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::POP07_TROUBLE_SHOOTING' */
@@ -3602,7 +3601,7 @@ const XVariantOfString _StringsPOP07_UNLOCK_PHONE[] =
   { Thai,      { _StringsThai1, 0x0135 }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x016A }},
   { Vietnamese, { _StringsVietnamese1, 0x0149 }},
-  { Default,   { _StringsDefault2, 0x017E }}
+  { Default,   { _StringsDefault2, 0x0170 }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::POP07_UNLOCK_PHONE' */
@@ -3628,7 +3627,7 @@ const XVariantOfString _StringsPOP07_TURN_ON_BT[] =
   { Thai,      { _StringsThai1, 0x0148 }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x0178 }},
   { Vietnamese, { _StringsVietnamese1, 0x016A }},
-  { Default,   { _StringsDefault2, 0x0193 }}
+  { Default,   { _StringsDefault2, 0x0185 }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::POP07_TURN_ON_BT' */
@@ -3654,7 +3653,7 @@ const XVariantOfString _StringsPOP07_LAUNCH_APP[] =
   { Thai,      { _StringsThai1, 0x015E }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x018E }},
   { Vietnamese, { _StringsVietnamese1, 0x0195 }},
-  { Default,   { _StringsDefault2, 0x01B3 }}
+  { Default,   { _StringsDefault2, 0x01A5 }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::POP07_LAUNCH_APP' */
@@ -3680,7 +3679,7 @@ const XVariantOfString _StringsPOP09_CONNECTION_FAILED[] =
   { Thai,      { _StringsThai1, 0x0170 }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x0198 }},
   { Vietnamese, { _StringsVietnamese1, 0x01AB }},
-  { Default,   { _StringsDefault2, 0x01CD }}
+  { Default,   { _StringsDefault2, 0x01BF }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::POP09_CONNECTION_FAILED' */
@@ -4816,7 +4815,14 @@ const XVariantOfString _StringsSET50_LAUNCH_NAVI_APP[] =
 EW_CONST_WITHOUT_VARIANTS( StringsSET50_LAUNCH_NAVI_APP )
 
 /* User defined constant: 'Strings::SET51_BOTH_APP_CONNECTED' */
-const XStringRes StringsSET51_BOTH_APP_CONNECTED = { _StringsDefault6, 0x00FE };
+const XVariantOfString _StringsSET51_BOTH_APP_CONNECTED[] = 
+{
+  { Japanese,  { _StringsJapanese2, 0x0117 }},
+  { Default,   { _StringsDefault6, 0x00FE }}
+};
+
+/* Table with links to derived variants of the constant : 'Strings::SET51_BOTH_APP_CONNECTED' */
+EW_CONST_WITHOUT_VARIANTS( StringsSET51_BOTH_APP_CONNECTED )
 
 /* User defined constant: 'Strings::TCS01_TCS' */
 const XVariantOfString _StringsTCS01_TCS[] = 
@@ -4828,7 +4834,7 @@ const XVariantOfString _StringsTCS01_TCS[] =
   { Hindi,     { _StringsHindi3, 0x01FF }},
   { Indonesian, { _StringsIndonesian4, 0x0028 }},
   { Italian,   { _StringsItalian4, 0x009E }},
-  { Japanese,  { _StringsJapanese2, 0x0117 }},
+  { Japanese,  { _StringsJapanese2, 0x0153 }},
   { Korean,    { _StringsKorean2, 0x008D }},
   { Malay,     { _StringsMalay4, 0x00A6 }},
   { Polish,    { _StringsPolish3, 0x01ED }},
@@ -4854,7 +4860,7 @@ const XVariantOfString _StringsUNT01_UNIT_MILEAGE[] =
   { Hindi,     { _StringsHindi4, 0x0002 }},
   { Indonesian, { _StringsIndonesian4, 0x0039 }},
   { Italian,   { _StringsItalian4, 0x00B3 }},
-  { Japanese,  { _StringsJapanese2, 0x0126 }},
+  { Japanese,  { _StringsJapanese2, 0x0162 }},
   { Korean,    { _StringsKorean2, 0x0099 }},
   { Malay,     { _StringsMalay4, 0x00BA }},
   { Polish,    { _StringsPolish3, 0x0200 }},
@@ -4880,7 +4886,7 @@ const XVariantOfString _StringsUNT01_UNIT_FUEL[] =
   { Hindi,     { _StringsHindi4, 0x000B }},
   { Indonesian, { _StringsIndonesian4, 0x0048 }},
   { Italian,   { _StringsItalian4, 0x00C4 }},
-  { Japanese,  { _StringsJapanese2, 0x012B }},
+  { Japanese,  { _StringsJapanese2, 0x0167 }},
   { Korean,    { _StringsKorean2, 0x009E }},
   { Malay,     { _StringsMalay4, 0x00C6 }},
   { Polish,    { _StringsPolish4, 0x0002 }},
@@ -4906,7 +4912,7 @@ const XVariantOfString _StringsUNT01_UNIT_PRESSURE[] =
   { Hindi,     { _StringsHindi4, 0x0012 }},
   { Indonesian, { _StringsIndonesian4, 0x0056 }},
   { Italian,   { _StringsItalian4, 0x00D1 }},
-  { Japanese,  { _StringsJapanese2, 0x0130 }},
+  { Japanese,  { _StringsJapanese2, 0x016C }},
   { Korean,    { _StringsKorean2, 0x00A3 }},
   { Malay,     { _StringsMalay4, 0x00CF }},
   { Polish,    { _StringsPolish4, 0x000B }},
@@ -4932,7 +4938,7 @@ const XVariantOfString _StringsUNT01_UNIT_TEMPERATURE[] =
   { Hindi,     { _StringsHindi4, 0x0019 }},
   { Indonesian, { _StringsIndonesian4, 0x0060 }},
   { Italian,   { _StringsItalian4, 0x00DD }},
-  { Japanese,  { _StringsJapanese2, 0x0135 }},
+  { Japanese,  { _StringsJapanese2, 0x0171 }},
   { Korean,    { _StringsKorean2, 0x00A8 }},
   { Malay,     { _StringsMalay4, 0x00D9 }},
   { Polish,    { _StringsPolish4, 0x0017 }},
@@ -4988,7 +4994,7 @@ const XVariantOfString _StringsWEA01_MONDAY[] =
   { Hindi,     { _StringsHindi4, 0x0022 }},
   { Indonesian, { _StringsIndonesian4, 0x0067 }},
   { Italian,   { _StringsItalian4, 0x00EB }},
-  { Japanese,  { _StringsJapanese2, 0x013A }},
+  { Japanese,  { _StringsJapanese2, 0x0176 }},
   { Korean,    { _StringsKorean2, 0x00AD }},
   { Malay,     { _StringsMalay4, 0x00E0 }},
   { Polish,    { _StringsPolish4, 0x0025 }},
@@ -5014,7 +5020,7 @@ const XVariantOfString _StringsWEA01_TUESDAY[] =
   { Hindi,     { _StringsHindi4, 0x0028 }},
   { Indonesian, { _StringsIndonesian4, 0x006D }},
   { Italian,   { _StringsItalian4, 0x00F2 }},
-  { Japanese,  { _StringsJapanese2, 0x013E }},
+  { Japanese,  { _StringsJapanese2, 0x017A }},
   { Korean,    { _StringsKorean2, 0x00B1 }},
   { Malay,     { _StringsMalay4, 0x00E6 }},
   { Polish,    { _StringsPolish4, 0x002C }},
@@ -5040,7 +5046,7 @@ const XVariantOfString _StringsWEA01_WEDNESDAY[] =
   { Hindi,     { _StringsHindi4, 0x002F }},
   { Indonesian, { _StringsIndonesian4, 0x0073 }},
   { Italian,   { _StringsItalian4, 0x00F9 }},
-  { Japanese,  { _StringsJapanese2, 0x0142 }},
+  { Japanese,  { _StringsJapanese2, 0x017E }},
   { Korean,    { _StringsKorean2, 0x00B5 }},
   { Malay,     { _StringsMalay4, 0x00EC }},
   { Polish,    { _StringsPolish4, 0x0032 }},
@@ -5066,7 +5072,7 @@ const XVariantOfString _StringsWEA01_THURSDAY[] =
   { Hindi,     { _StringsHindi4, 0x0035 }},
   { Indonesian, { _StringsIndonesian4, 0x0079 }},
   { Italian,   { _StringsItalian4, 0x0100 }},
-  { Japanese,  { _StringsJapanese2, 0x0146 }},
+  { Japanese,  { _StringsJapanese2, 0x0182 }},
   { Korean,    { _StringsKorean2, 0x00B9 }},
   { Malay,     { _StringsMalay4, 0x00F2 }},
   { Polish,    { _StringsPolish4, 0x0038 }},
@@ -5092,7 +5098,7 @@ const XVariantOfString _StringsWEA01_FRIDAY[] =
   { Hindi,     { _StringsHindi4, 0x003C }},
   { Indonesian, { _StringsIndonesian4, 0x007F }},
   { Italian,   { _StringsItalian4, 0x0107 }},
-  { Japanese,  { _StringsJapanese2, 0x014A }},
+  { Japanese,  { _StringsJapanese2, 0x0186 }},
   { Korean,    { _StringsKorean2, 0x00BD }},
   { Malay,     { _StringsMalay4, 0x00F8 }},
   { Polish,    { _StringsPolish4, 0x003F }},
@@ -5118,7 +5124,7 @@ const XVariantOfString _StringsWEA01_SATURDAY[] =
   { Hindi,     { _StringsHindi4, 0x0044 }},
   { Indonesian, { _StringsIndonesian4, 0x0085 }},
   { Italian,   { _StringsItalian4, 0x010E }},
-  { Japanese,  { _StringsJapanese2, 0x014E }},
+  { Japanese,  { _StringsJapanese2, 0x018A }},
   { Korean,    { _StringsKorean2, 0x00C1 }},
   { Malay,     { _StringsMalay4, 0x00FE }},
   { Polish,    { _StringsPolish4, 0x0045 }},
@@ -5144,7 +5150,7 @@ const XVariantOfString _StringsWEA01_SUNDAY[] =
   { Hindi,     { _StringsHindi4, 0x004A }},
   { Indonesian, { _StringsIndonesian4, 0x008B }},
   { Italian,   { _StringsItalian4, 0x0115 }},
-  { Japanese,  { _StringsJapanese2, 0x0152 }},
+  { Japanese,  { _StringsJapanese2, 0x018E }},
   { Korean,    { _StringsKorean2, 0x00C5 }},
   { Malay,     { _StringsMalay4, 0x0104 }},
   { Polish,    { _StringsPolish4, 0x004C }},
@@ -5170,7 +5176,7 @@ const XVariantOfString _StringsWSC01_WIND_SCREEN[] =
   { Hindi,     { _StringsHindi4, 0x0050 }},
   { Indonesian, { _StringsIndonesian4, 0x0091 }},
   { Italian,   { _StringsItalian4, 0x011C }},
-  { Japanese,  { _StringsJapanese2, 0x0156 }},
+  { Japanese,  { _StringsJapanese2, 0x0192 }},
   { Korean,    { _StringsKorean2, 0x00C9 }},
   { Malay,     { _StringsMalay4, 0x010A }},
   { Polish,    { _StringsPolish4, 0x0055 }},
@@ -5196,7 +5202,7 @@ const XVariantOfString _StringsYDT01_MESSAGE[] =
   { Hindi,     { _StringsHindi4, 0x005F }},
   { Indonesian, { _StringsIndonesian4, 0x00A4 }},
   { Italian,   { _StringsItalian4, 0x0129 }},
-  { Japanese,  { _StringsJapanese2, 0x0162 }},
+  { Japanese,  { _StringsJapanese2, 0x019E }},
   { Korean,    { _StringsKorean2, 0x00D0 }},
   { Malay,     { _StringsMalay4, 0x011B }},
   { Polish,    { _StringsPolish4, 0x005F }},
@@ -5222,7 +5228,7 @@ const XVariantOfString _StringsDD_WARNING[] =
   { Hindi,     { _StringsHindi4, 0x00B8 }},
   { Indonesian, { _StringsIndonesian4, 0x0106 }},
   { Italian,   { _StringsItalian4, 0x0195 }},
-  { Japanese,  { _StringsJapanese2, 0x01A3 }},
+  { Japanese,  { _StringsJapanese2, 0x01DF }},
   { Korean,    { _StringsKorean2, 0x010D }},
   { Malay,     { _StringsMalay4, 0x017A }},
   { Polish,    { _StringsPolish4, 0x00C1 }},

@@ -1,0 +1,25 @@
+﻿$version 11.00
+
+$rect <20,60,220,100>
+$output false
+class String
+{
+  // Replace %s in String1 with String2
+  $rect <10,10,210,50>
+  method string ReplaceString( arg string String1, arg string String2 )
+  {
+    var string ResultString;
+    var int32 LeftIdx = String1.find( Strings::ARGUMENT_STR, 0 );
+    if( LeftIdx >= 0 )
+    {
+      var int32 RightIdx = String1.length - LeftIdx - Strings::ARGUMENT_STR.length;
+      ResultString = String1.left( LeftIdx ) + String2 + String1.right( RightIdx );
+    }
+    else
+    {
+      ResultString = String1;
+    }
+
+    return ResultString;
+  }
+}

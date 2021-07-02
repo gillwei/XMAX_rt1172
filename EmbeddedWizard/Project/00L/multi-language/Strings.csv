@@ -518,7 +518,8 @@ SET50_LAUNCH_NAVI_APP,YAMAHA MOTORCYCLE CONNECT connected. Launch (Navi app name
 接続しました。
 接続を完了させるため、(Navi app name)
 アプリを起動してください。",,,,,,,,,,,,,,,,
-SET51_BOTH_APP_CONNECTED,Connected to YAMAHA MOTORCYCLE CONNECT and (Navi app name) on “%s”.,,,,,,,,,,,,,,,,,
+SET51_BOTH_APP_CONNECTED,Connected to YAMAHA MOTORCYCLE CONNECT and (Navi app name) on “%s”.,"YAMAHA MOTORCYCLE CONNECTアプリと
+（Navi app name)アプリを接続されました。",,,,,,,,,,,,,,,,
 TCS01_TCS,Traction Control,トラクションコントロール,Antipatinage,Control de tracción,Controllo trazione,Traktionskontrolle,循跡控制,牵引力控制,Έλεγχος πρόσφυσης,Luistonesto,ट्रैक्शन कंट्रोल,Kontrol Traksi,Kontrola trakcji,Controle de tração,การควบคุมแรงฉุด,Kiểm soát lực kéo,정지 마찰력 제어,Kawalan Cengkaman
 UNT01_UNIT_MILEAGE,Mileage,距離,Kilométrage,Kilometraje,Chilometraggio,Kilometerstand,里程數,里程,Χιλιόμετρα,Ajokilometrit,माइलेज,Jarak tempuh,Dystans,Quilometragem,ไมล์สะสม,Dặm đi,거리,Perbatuan
 UNT01_UNIT_FUEL,Fuel,燃料,Essence,Combustible,Carburante,Treibstoff,燃油,燃油,Καύσιμο,Polttoaine,ईंधन,Bahan bakar,Paliwo,Combustível,เชื้อเพลิง,Nhiên liệu,연료,Minyak

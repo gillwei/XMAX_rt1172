@@ -42,15 +42,20 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_ComponentsBaseMainBG.h"
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
-#include "_MenuPushButton.h"
+#include "_SettingsTimeoutDialog.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
 #include "_ViewsText.h"
+
+/* Forward declaration of the class Components::BaseMainBG */
+#ifndef _ComponentsBaseMainBG_
+  EW_DECLARE_CLASS( ComponentsBaseMainBG )
+#define _ComponentsBaseMainBG_
+#endif
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -102,14 +107,12 @@
 
 
 /* Deklaration of class : 'Settings::SET49_OnlyNaviAppConnected' */
-EW_DEFINE_FIELDS( SettingsSET49_OnlyNaviAppConnected, ComponentsBaseMainBG )
-  EW_OBJECT  ( MessageText,     ViewsText )
-  EW_OBJECT  ( PushButton,      MenuPushButton )
+EW_DEFINE_FIELDS( SettingsSET49_OnlyNaviAppConnected, SettingsTimeoutDialog )
   EW_OBJECT  ( Divider,         ViewsImage )
 EW_END_OF_FIELDS( SettingsSET49_OnlyNaviAppConnected )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET49_OnlyNaviAppConnected' */
-EW_DEFINE_METHODS( SettingsSET49_OnlyNaviAppConnected, ComponentsBaseMainBG )
+EW_DEFINE_METHODS( SettingsSET49_OnlyNaviAppConnected, SettingsTimeoutDialog )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -163,6 +166,8 @@ EW_DEFINE_METHODS( SettingsSET49_OnlyNaviAppConnected, ComponentsBaseMainBG )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
+  EW_METHOD( OnTimeoutSlot,     void )( SettingsSET49_OnlyNaviAppConnected _this, 
+    XObject sender )
 EW_END_OF_METHODS( SettingsSET49_OnlyNaviAppConnected )
 
 /* 'C' function for method : 'Settings::SET49_OnlyNaviAppConnected.ReInit()' */
@@ -174,8 +179,8 @@ void SettingsSET49_OnlyNaviAppConnected_ReInit( SettingsSET49_OnlyNaviAppConnect
 void SettingsSET49_OnlyNaviAppConnected_Init( SettingsSET49_OnlyNaviAppConnected _this, 
   XHandle aArg );
 
-/* 'C' function for method : 'Settings::SET49_OnlyNaviAppConnected.OnLaterSlot()' */
-void SettingsSET49_OnlyNaviAppConnected_OnLaterSlot( SettingsSET49_OnlyNaviAppConnected _this, 
+/* 'C' function for method : 'Settings::SET49_OnlyNaviAppConnected.OnTimeoutSlot()' */
+void SettingsSET49_OnlyNaviAppConnected_OnTimeoutSlot( SettingsSET49_OnlyNaviAppConnected _this, 
   XObject sender );
 
 /* 'C' function for method : 'Settings::SET49_OnlyNaviAppConnected.DisplayString()' */

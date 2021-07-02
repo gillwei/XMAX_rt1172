@@ -41,4 +41,5 @@ set(EMWIFILES
 	"Color.c" 
 	"Clock.c" 
 	"YDT.c" 
-	"Maintenance.c")
+	"Maintenance.c" 
+	"Utility.c")

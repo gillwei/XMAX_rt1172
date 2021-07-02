@@ -43,7 +43,7 @@
 #endif
 
 /* This file is generated automatically.
-   Generated: 2021/06/29 08:04:00 */
+   Generated: 2021/07/02 14:28:43 */
 extern const XStringRes StringsARGUMENT_STR;
 
 /* User defined constant: 'Strings::GEN_OK' */
@@ -57,9 +57,6 @@ EW_DECLARE_CONST( StringsGEN_YES )
 
 /* User defined constant: 'Strings::GEN_NO' */
 EW_DECLARE_CONST( StringsGEN_NO )
-
-/* User defined constant: 'Strings::GEN_LATER' */
-extern const XStringRes StringsGEN_LATER;
 
 /* User defined constant: 'Strings::GEN_LOW' */
 EW_DECLARE_CONST( StringsGEN_LOW )
@@ -515,7 +512,7 @@ EW_DECLARE_CONST( StringsSET49_LAUNCH_YAMAHA_APP )
 EW_DECLARE_CONST( StringsSET50_LAUNCH_NAVI_APP )
 
 /* User defined constant: 'Strings::SET51_BOTH_APP_CONNECTED' */
-extern const XStringRes StringsSET51_BOTH_APP_CONNECTED;
+EW_DECLARE_CONST( StringsSET51_BOTH_APP_CONNECTED )
 
 /* User defined constant: 'Strings::TCS01_TCS' */
 EW_DECLARE_CONST( StringsTCS01_TCS )

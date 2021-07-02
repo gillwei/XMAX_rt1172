@@ -39,3 +39,4 @@ module Color                    file "Color.c";
 module Clock                    file "Clock.c";
 module YDT                      file "YDT.c";
 module Maintenance              file "Maintenance.c";
+module Utility                  file "Utility.c";
