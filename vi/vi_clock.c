@@ -39,7 +39,8 @@ typedef enum
     {
     CLK_UPDATE_STATE_IDLE,
     CLK_UPDATE_STATE_WAITING_10_SEC,
-    CLK_UPDATE_STATE_CHECK_AFTER_500_MS
+    CLK_UPDATE_STATE_CHECK_AFTER_500_MS,
+    CLK_UPDATE_STATE_TIMEOUT_ERR2_DETECTED
     } clk_update_state_enum;
 
 /*--------------------------------------------------------------------
@@ -108,6 +109,45 @@ if( pdTRUE == xTimerIsTimerActive( clock_timer_handle ) )
 /*********************************************************************
 *
 * @private
+* enter_state
+*
+* Enter clock update state
+*
+* @param update_state Clock update state
+*
+*********************************************************************/
+static void enter_state
+    (
+    const clk_update_state_enum update_state
+    )
+{
+PRINTF( "vi clk state %d\r\n", update_state );
+switch( update_state )
+    {
+    case CLK_UPDATE_STATE_IDLE:
+        clk_update_state = update_state;
+        stop_timer();
+        break;
+    case CLK_UPDATE_STATE_WAITING_10_SEC:
+        clk_update_state = update_state;
+        start_timer( WAIT_TIME_TO_SEND_CLK_TO_METER_MS );
+        break;
+    case CLK_UPDATE_STATE_CHECK_AFTER_500_MS:
+        clk_update_state = update_state;
+        start_timer( WAIT_TIME_TO_CHECK_METER_CLK_AUTO_ADJ_STATUS );
+        break;
+    case CLK_UPDATE_STATE_TIMEOUT_ERR2_DETECTED:
+        clk_update_state = update_state;
+        stop_timer();
+        break;
+    default:
+        break;
+    }
+}
+
+/*********************************************************************
+*
+* @private
 * clock_timer_callback
 *
 * Clock timer callback function
@@ -120,7 +160,6 @@ static void clock_timer_callback
     TimerHandle_t timer_handle
     )
 {
-snvs_lp_srtc_datetime_t srtc_datetime;
 uint32_t clk_adj_status;
 
 if( !vi_is_timeout_error2_detected() )
@@ -128,21 +167,19 @@ if( !vi_is_timeout_error2_detected() )
     switch( clk_update_state )
         {
         case CLK_UPDATE_STATE_WAITING_10_SEC:
-            RTC_get_datetime( &srtc_datetime );
-            VI_clock_notify_meter_time_updated( srtc_datetime );
+            VI_clock_notify_meter_time_updated();
             break;
         case CLK_UPDATE_STATE_CHECK_AFTER_500_MS:
             VI_get_rx_data_uint( EnumVehicleRxTypeCLOCK_ADJUSTMENT_STATUS, &clk_adj_status );
             if( METER_CLOCK_STATE_IDLE == clk_adj_status )
                 {
                 /* meter has received the clock successfully */
-                clk_update_state = CLK_UPDATE_STATE_IDLE;
+                enter_state( CLK_UPDATE_STATE_IDLE );
                 }
             else
                 {
                 /* meter does not receive the clock successfully, retry */
-                RTC_get_datetime( &srtc_datetime );
-                VI_clock_notify_meter_time_updated( srtc_datetime );
+                VI_clock_notify_meter_time_updated();
                 }
             break;
         default:
@@ -151,9 +188,7 @@ if( !vi_is_timeout_error2_detected() )
     }
 else
     {
-    // abort sending the clock to meter due to the timeout error 2 detected
-    clk_update_state = CLK_UPDATE_STATE_IDLE;
-    PRINTF("abort clk sync\r\n");
+    enter_state( CLK_UPDATE_STATE_TIMEOUT_ERR2_DETECTED );
     }
 }
 
@@ -162,31 +197,31 @@ else
 * @public
 * VI_clock_notify_meter_time_updated
 *
-* Update time to Meter.
+* Update time to Meter
 *
 * @param datetime the received datetime
 *
 *********************************************************************/
 void VI_clock_notify_meter_time_updated
     (
-    const snvs_lp_srtc_datetime_t datetime
+    void
     )
 {
 stop_timer();
+
+snvs_lp_srtc_datetime_t datetime;
+RTC_get_datetime( &datetime );
 
 /* If the current second is 50 or later, wait 10 seconds before sending clock to meter */
 if( datetime.second < 50 )
     {
     uint64_t unix_timestamp = RTC_convert_datetime_to_epoch_sec( &datetime );
     VI_set_tx_data( EnumVehicleTxTypeCLOCK_DATE, unix_timestamp );
-
-    clk_update_state = CLK_UPDATE_STATE_CHECK_AFTER_500_MS;
-    start_timer( WAIT_TIME_TO_CHECK_METER_CLK_AUTO_ADJ_STATUS );
+    enter_state( CLK_UPDATE_STATE_CHECK_AFTER_500_MS );
     }
 else
     {
-    clk_update_state = CLK_UPDATE_STATE_WAITING_10_SEC;
-    start_timer( WAIT_TIME_TO_SEND_CLK_TO_METER_MS );
+    enter_state( CLK_UPDATE_STATE_WAITING_10_SEC );
     }
 }
 
@@ -205,13 +240,11 @@ void VI_clock_send_rtc_time_to_meter
 {
 if( !vi_is_timeout_error2_detected() )
     {
-    snvs_lp_srtc_datetime_t datetime;
-    RTC_get_datetime( &datetime );
-    VI_clock_notify_meter_time_updated( datetime );
+    VI_clock_notify_meter_time_updated();
     }
 else
     {
-    PRINTF("abort clk sync\r\n");
+    enter_state( CLK_UPDATE_STATE_TIMEOUT_ERR2_DETECTED );
     }
 }
 
@@ -237,8 +270,7 @@ switch( meter_clock_adj_status )
         /* meter has received the clock successfully, so no need to check after 500ms */
         if( CLK_UPDATE_STATE_CHECK_AFTER_500_MS == clk_update_state )
             {
-            stop_timer();
-            clk_update_state = CLK_UPDATE_STATE_IDLE;
+            enter_state( CLK_UPDATE_STATE_IDLE );
             }
         break;
     case METER_CLOCK_STATE_REQUEST:
@@ -255,6 +287,25 @@ switch( meter_clock_adj_status )
         break;
     default:
         break;
+    }
+}
+
+/*********************************************************************
+*
+* @private
+* vi_clock_timeout_err2_recovered
+*
+* Notify CAN timeout error2 recovered
+*
+*********************************************************************/
+void vi_clock_timeout_err2_recovered
+    (
+    void
+    )
+{
+if( CLK_UPDATE_STATE_TIMEOUT_ERR2_DETECTED == clk_update_state )
+    {
+    VI_clock_notify_meter_time_updated();
     }
 }
 

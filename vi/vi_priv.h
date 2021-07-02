@@ -183,6 +183,7 @@ bool vi_trip_time_get_current( uint32_t* current_trip_time_sec );
 void vi_trip_time_reset( void );
 void vi_clock_init( void );
 void vi_clock_notify_meter_clk_adj_status_changed( const uint32_t clock_adj_status );
+void vi_clock_timeout_err2_recovered( void );
 uint8_t vi_get_progsts( void );
 void vi_clear_progsts( void );
 bool vi_is_timeout_error2_detected( void );

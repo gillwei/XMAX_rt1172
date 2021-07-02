@@ -89,7 +89,7 @@ void VI_send_inspection_response( const EnumInspectionMode mode, const uint8_t f
 void VI_notify_ydt_detected( void );
 void VI_trip_time_count( void );
 void VI_trip_time_save( void );
-void VI_clock_notify_meter_time_updated( const snvs_lp_srtc_datetime_t datetime );
+void VI_clock_notify_meter_time_updated( void );
 void VI_clock_send_rtc_time_to_meter( void );
 bool VI_is_engine_idling( void );
 

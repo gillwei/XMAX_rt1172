@@ -297,7 +297,7 @@ if( EW_get_clk_auto_adj() )
     if( is_request_from_clock )
         {
         is_request_from_clock = false;
-        VI_clock_notify_meter_time_updated( srtc_datetime );
+        VI_clock_notify_meter_time_updated();
         }
     }
 }

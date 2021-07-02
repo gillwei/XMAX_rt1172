@@ -963,6 +963,7 @@ else if( 0 != last_timeout_err2_status &&
          0 == timeout_err2_status )
     {
     EW_notify_vi_data_received( EnumVehicleRxTypeTIMEOUT_ERROR2_RECOVERED );
+    vi_clock_timeout_err2_recovered();
     }
 else
     {
