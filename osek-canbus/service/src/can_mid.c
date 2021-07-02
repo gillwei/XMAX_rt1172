@@ -820,6 +820,17 @@ if( status == TRUE )
 }
 
 /*------------------------------------------------------
+Read the current fuel consumption
+------------------------------------------------------*/
+uint32 can_mid_fuel_cons_get
+    (
+    void
+    )
+{
+return fuel_cons_curr;
+}
+
+/*------------------------------------------------------
 Read the previous consumption eeprom every IGN ON
 ------------------------------------------------------*/
 void can_mid_fuel_cons_init
