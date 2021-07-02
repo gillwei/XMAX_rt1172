@@ -220,6 +220,10 @@ void LauncherLNC_RotaryPlate_StartSelectedAnimation( LauncherLNC_RotaryPlate _th
 void LauncherLNC_RotaryPlate_OnSelectedAnimationFinishedSlot( LauncherLNC_RotaryPlate _this, 
   XObject sender );
 
+/* 'C' function for method : 'Launcher::LNC_RotaryPlate.SetIconFrameNumber()' */
+void LauncherLNC_RotaryPlate_SetIconFrameNumber( LauncherLNC_RotaryPlate _this, 
+  XEnum aLauncherItem, ViewsImage aIcon );
+
 #ifdef __cplusplus
   }
 #endif

@@ -228,6 +228,9 @@ void LauncherLNC_Main_GetVehicleSupportedFeature( LauncherLNC_Main _this );
 void LauncherLNC_Main_OnVehicleDataReceivedSlot( LauncherLNC_Main _this, XObject 
   sender );
 
+/* 'C' function for method : 'Launcher::LNC_Main.IsLauncherItemEnabled()' */
+XBool LauncherLNC_Main_IsLauncherItemEnabled( LauncherLNC_Main _this, XEnum aLauncherItem );
+
 #ifdef __cplusplus
   }
 #endif

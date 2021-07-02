@@ -59,6 +59,7 @@
 #include "_ViewsImage.h"
 #include "_ViewsText.h"
 #include "_ViewsWallpaper.h"
+#include "Color.h"
 #include "Core.h"
 #include "DeviceInterface.h"
 #include "Effects.h"
@@ -72,11 +73,10 @@
 /* Compressed strings for the language 'Default'. */
 EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
-  0x0000008C, /* ratio 80.00 % */
+  0x00000050, /* ratio 95.00 % */
   0xB8001F00, 0x80098452, 0x00EA0030, 0x0C600370, 0xCA003400, 0x20039000, 0x690042C9,
   0xC001D000, 0x22C0C2F1, 0x98023044, 0x488DA003, 0x3C872492, 0x0006C914, 0x33210019,
-  0x06F96C22, 0x009199C0, 0xE0047040, 0x0014A3E1, 0xA4223735, 0x8B000798, 0x44A6009C,
-  0xA99158D4, 0x75249344, 0x90A95520, 0x0C894522, 0xB9D54A37, 0x00406773, 0x00000000
+  0x06F96C22, 0x009199C0, 0xC9DC7040, 0x00002031, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -98,13 +98,12 @@ static const XRect _Const000E = {{ 0, 0 }, { 0, 0 }};
 static const XRect _Const000F = {{ -1, 249 }, { 41, 291 }};
 static const XRect _Const0010 = {{ 13, 74 }, { 91, 152 }};
 static const XRect _Const0011 = {{ 0, 70 }, { 122, 156 }};
-static const XStringRes _Const0012 = { _StringsDefault0, 0x0028 };
-static const XRect _Const0013 = {{ 0, 0 }, { 480, 234 }};
-static const XRect _Const0014 = {{ 0, 58 }, { 480, 168 }};
-static const XRect _Const0015 = {{ 138, 92 }, { 469, 135 }};
-static const XRect _Const0016 = {{ 121, 17 }, { 439, 50 }};
-static const XColor _Const0017 = { 0x6B, 0x6B, 0x6B, 0xFF };
-static const XRect _Const0018 = {{ 121, 173 }, { 439, 206 }};
+static const XRect _Const0012 = {{ 0, 0 }, { 480, 234 }};
+static const XRect _Const0013 = {{ 0, 58 }, { 480, 168 }};
+static const XRect _Const0014 = {{ 138, 92 }, { 469, 135 }};
+static const XRect _Const0015 = {{ 121, 17 }, { 439, 50 }};
+static const XColor _Const0016 = { 0x6B, 0x6B, 0x6B, 0xFF };
+static const XRect _Const0017 = {{ 121, 173 }, { 439, 206 }};
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.
@@ -298,7 +297,8 @@ void LauncherLNC_Main_OnShortUpKeyActivated( LauncherLNC_Main _this )
 void LauncherLNC_Main_OnShortEnterKeyActivated( LauncherLNC_Main _this )
 {
   if ( !(( EnumLauncherItemSETTINGS == _this->CurrentItem ) && DeviceInterfaceVehicleDeviceClass_OnGetDDModeActivated( 
-      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ))))
+      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ))) 
+      && LauncherLNC_Main_IsLauncherItemEnabled( _this, _this->CurrentItem ))
     LauncherLNC_RotaryPlate_StartSelectedAnimation( &_this->LNC_RotaryPlate );
 }
 
@@ -675,8 +675,47 @@ void LauncherLNC_Main_OnVehicleDataReceivedSlot( LauncherLNC_Main _this, XObject
       }
       break;
 
+      case EnumVehicleRxTypeTIMEOUT_ERROR2_DETECTED :
+      case EnumVehicleRxTypeTIMEOUT_ERROR2_RECOVERED :
+      case EnumVehicleRxTypeTIMEOUT_ERROR1_UPDATED :
+      {
+        LauncherLNC_Base_SetItems( &_this->LNC_Base, _this->PreviousItem, _this->CurrentItem, 
+        _this->NextItem );
+        LauncherLNC_RotaryPlate_SetItems( &_this->LNC_RotaryPlate, _this->PreviousItem, 
+        _this->CurrentItem, _this->NextItem );
+      }
+      break;
+
       default :; 
     }
+}
+
+/* 'C' function for method : 'Launcher::LNC_Main.IsLauncherItemEnabled()' */
+XBool LauncherLNC_Main_IsLauncherItemEnabled( LauncherLNC_Main _this, XEnum aLauncherItem )
+{
+  XBool ItemEnabled;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  ItemEnabled = 1;
+
+  switch ( aLauncherItem )
+  {
+    case EnumLauncherItemSEAT_HEATER :
+    case EnumLauncherItemGRIP_WARMER :
+    case EnumLauncherItemWIND_SCREEN :
+      if ( DeviceInterfaceVehicleDeviceClass_OnGetIsTimeoutError2Detected( EwGetAutoObject( 
+          &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )) || 
+          DeviceInterfaceVehicleDeviceClass_OnGetIsHeaterStatusTimeoutErr1Detected( 
+          EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )))
+        ItemEnabled = 0;
+    break;
+
+    default :; 
+  }
+
+  return ItemEnabled;
 }
 
 /* Variants derived from the class : 'Launcher::LNC_Main' */
@@ -912,12 +951,16 @@ void LauncherLNC_RotaryPlate_StartIconRotation( LauncherLNC_RotaryPlate _this, X
   HiddenIconIdx = ( _this->SelectedIconIdx + 2 ) % 4;
   ViewsImage_OnSetBitmap( _this->Icons[ EwCheckIndex( HiddenIconIdx, 4 )], LauncherLNC_RotaryPlate_GetSmallIconResourceOfItem( 
   _this, _this->HiddenItem ));
+  LauncherLNC_RotaryPlate_SetIconFrameNumber( _this, _this->HiddenItem, _this->Icons[ 
+  EwCheckIndex( HiddenIconIdx, 4 )]);
   ViewsImage_OnSetVisible( &_this->IconSelectedLarge, 0 );
+  LauncherLNC_RotaryPlate_SetIconFrameNumber( _this, _this->CurrentItem, _this->Icons[ 
+  EwCheckIndex( _this->SelectedIconIdx, 4 )]);
   ViewsImage_OnSetVisible( _this->Icons[ EwCheckIndex( _this->SelectedIconIdx, 4 )], 
   1 );
   IconIdx = 0;
 
-  for ( i = 0; i < 4; i = i + 1 )
+  for ( i = 0; i < 4; i++ )
   {
     EffectsRectEffect Effect = _this->RectEffectArray[ EwCheckIndex( i, 4 )];
 
@@ -969,6 +1012,7 @@ void LauncherLNC_RotaryPlate_OnIconRotationFinished( LauncherLNC_RotaryPlate _th
 
   ViewsImage_OnSetBitmap( &_this->IconSelectedLarge, LauncherLNC_RotaryPlate_GetLargeIconResourceOfItem( 
   _this, _this->CurrentItem ));
+  LauncherLNC_RotaryPlate_SetIconFrameNumber( _this, _this->CurrentItem, &_this->IconSelectedLarge );
   ViewsImage_OnSetVisible( _this->Icons[ EwCheckIndex( _this->SelectedIconIdx, 4 )], 
   0 );
   ViewsImage_OnSetVisible( &_this->IconSelectedLarge, 1 );
@@ -982,7 +1026,6 @@ void LauncherLNC_RotaryPlate_SetItems( LauncherLNC_RotaryPlate _this, XEnum aPre
   XInt32 PeviousIconIdx;
   XInt32 NextIconIdx;
 
-  EwTrace( "%s%e", EwLoadString( &_Const0012 ), aCurrentItem );
   _this->PreviousItem = aPreviousItem;
   _this->CurrentItem = aCurrentItem;
   _this->NextItem = aNextItem;
@@ -990,12 +1033,17 @@ void LauncherLNC_RotaryPlate_SetItems( LauncherLNC_RotaryPlate _this, XEnum aPre
   LauncherLNC_RotaryPlate_GetSmallIconResourceOfItem( _this, _this->CurrentItem ));
   ViewsImage_OnSetBitmap( &_this->IconSelectedLarge, LauncherLNC_RotaryPlate_GetLargeIconResourceOfItem( 
   _this, _this->CurrentItem ));
+  LauncherLNC_RotaryPlate_SetIconFrameNumber( _this, _this->CurrentItem, &_this->IconSelectedLarge );
   PeviousIconIdx = (( _this->SelectedIconIdx - 1 ) + 4 ) % 4;
   ViewsImage_OnSetBitmap( _this->Icons[ EwCheckIndex( PeviousIconIdx, 4 )], LauncherLNC_RotaryPlate_GetSmallIconResourceOfItem( 
   _this, _this->PreviousItem ));
+  LauncherLNC_RotaryPlate_SetIconFrameNumber( _this, _this->PreviousItem, _this->Icons[ 
+  EwCheckIndex( PeviousIconIdx, 4 )]);
   NextIconIdx = ( _this->SelectedIconIdx + 1 ) % 4;
   ViewsImage_OnSetBitmap( _this->Icons[ EwCheckIndex( NextIconIdx, 4 )], LauncherLNC_RotaryPlate_GetSmallIconResourceOfItem( 
   _this, _this->NextItem ));
+  LauncherLNC_RotaryPlate_SetIconFrameNumber( _this, _this->NextItem, _this->Icons[ 
+  EwCheckIndex( NextIconIdx, 4 )]);
 }
 
 /* 'C' function for method : 'Launcher::LNC_RotaryPlate.GetSmallIconResourceOfItem()' */
@@ -1265,6 +1313,21 @@ void LauncherLNC_RotaryPlate_OnSelectedAnimationFinishedSlot( LauncherLNC_Rotary
   EwPostSignal( _this->OnSelectedAnimationFinished, ((XObject)_this ));
 }
 
+/* 'C' function for method : 'Launcher::LNC_RotaryPlate.SetIconFrameNumber()' */
+void LauncherLNC_RotaryPlate_SetIconFrameNumber( LauncherLNC_RotaryPlate _this, 
+  XEnum aLauncherItem, ViewsImage aIcon )
+{
+  LauncherLNC_Main LNCMain = EwCastObject( _this->Super4.Owner, LauncherLNC_Main );
+
+  if ( LNCMain != 0 )
+  {
+    if ( LauncherLNC_Main_IsLauncherItemEnabled( LNCMain, aLauncherItem ))
+      ViewsImage_OnSetFrameNumber( aIcon, 1 );
+    else
+      ViewsImage_OnSetFrameNumber( aIcon, 0 );
+  }
+}
+
 /* Variants derived from the class : 'Launcher::LNC_RotaryPlate' */
 EW_DEFINE_CLASS_VARIANTS( LauncherLNC_RotaryPlate )
 EW_END_OF_CLASS_VARIANTS( LauncherLNC_RotaryPlate )
@@ -1339,21 +1402,21 @@ void LauncherLNC_Base__Init( LauncherLNC_Base _this, XObject aLink, XHandle aArg
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0001 );
   CoreView_OnSetLayout((CoreView)&_this->Background, CoreLayoutAlignToBottom | CoreLayoutAlignToLeft );
-  CoreRectView__OnSetBounds( &_this->Background, _Const0013 );
-  CoreRectView__OnSetBounds( &_this->ImgLCBlueline, _Const0014 );
-  CoreRectView__OnSetBounds( &_this->CurrentItemTitleText, _Const0015 );
+  CoreRectView__OnSetBounds( &_this->Background, _Const0012 );
+  CoreRectView__OnSetBounds( &_this->ImgLCBlueline, _Const0013 );
+  CoreRectView__OnSetBounds( &_this->CurrentItemTitleText, _Const0014 );
   ViewsText_OnSetAlignment( &_this->CurrentItemTitleText, ViewsTextAlignmentAlignHorzLeft 
   | ViewsTextAlignmentAlignVertCenter );
-  CoreRectView__OnSetBounds( &_this->PreviousItemTitleText, _Const0016 );
+  CoreRectView__OnSetBounds( &_this->PreviousItemTitleText, _Const0015 );
   ViewsText_OnSetAlignment( &_this->PreviousItemTitleText, ViewsTextAlignmentAlignHorzLeft 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->PreviousItemTitleText, 0 );
-  ViewsText_OnSetColor( &_this->PreviousItemTitleText, _Const0017 );
-  CoreRectView__OnSetBounds( &_this->NextItemTitleText, _Const0018 );
+  ViewsText_OnSetColor( &_this->PreviousItemTitleText, _Const0016 );
+  CoreRectView__OnSetBounds( &_this->NextItemTitleText, _Const0017 );
   ViewsText_OnSetAlignment( &_this->NextItemTitleText, ViewsTextAlignmentAlignHorzLeft 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->NextItemTitleText, 0 );
-  ViewsText_OnSetColor( &_this->NextItemTitleText, _Const0017 );
+  ViewsText_OnSetColor( &_this->NextItemTitleText, _Const0016 );
   CoreGroup__Add( _this, ((CoreView)&_this->Background ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ImgLCBlueline ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->CurrentItemTitleText ), 0 );
@@ -1475,6 +1538,27 @@ void LauncherLNC_Base_SetItems( LauncherLNC_Base _this, XEnum aPreviousItem, XEn
   _this, aCurrentItem ));
   ViewsText_OnSetString( &_this->NextItemTitleText, LauncherLNC_Base_GetStringOfLauncherItem( 
   _this, aNextItem ));
+  LauncherLNC_Base_SetTextColor( _this, aPreviousItem, &_this->PreviousItemTitleText, 
+  _Const0016, ColorGRAY_FOR_DISABLED );
+  LauncherLNC_Base_SetTextColor( _this, aCurrentItem, &_this->CurrentItemTitleText, 
+  ColorWHITE, ColorGRAY_FOR_DISABLED );
+  LauncherLNC_Base_SetTextColor( _this, aNextItem, &_this->NextItemTitleText, _Const0016, 
+  ColorGRAY_FOR_DISABLED );
+}
+
+/* 'C' function for method : 'Launcher::LNC_Base.SetTextColor()' */
+void LauncherLNC_Base_SetTextColor( LauncherLNC_Base _this, XEnum aItem, ViewsText 
+  aText, XColor aColorEnabled, XColor aColorDisabled )
+{
+  LauncherLNC_Main LNCMain = EwCastObject( _this->Super3.Owner, LauncherLNC_Main );
+
+  if ( LNCMain != 0 )
+  {
+    if ( LauncherLNC_Main_IsLauncherItemEnabled( LNCMain, aItem ))
+      ViewsText_OnSetColor( aText, aColorEnabled );
+    else
+      ViewsText_OnSetColor( aText, aColorDisabled );
+  }
 }
 
 /* Variants derived from the class : 'Launcher::LNC_Base' */

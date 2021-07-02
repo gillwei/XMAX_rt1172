@@ -158,6 +158,10 @@ XString LauncherLNC_Base_GetStringOfLauncherItem( LauncherLNC_Base _this, XEnum
 void LauncherLNC_Base_SetItems( LauncherLNC_Base _this, XEnum aPreviousItem, XEnum 
   aCurrentItem, XEnum aNextItem );
 
+/* 'C' function for method : 'Launcher::LNC_Base.SetTextColor()' */
+void LauncherLNC_Base_SetTextColor( LauncherLNC_Base _this, XEnum aItem, ViewsText 
+  aText, XColor aColorEnabled, XColor aColorDisabled );
+
 #ifdef __cplusplus
   }
 #endif

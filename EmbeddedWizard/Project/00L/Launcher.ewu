@@ -49,7 +49,11 @@ class LNC_Main : Components::BaseComponent
     if( Enum::LauncherItem.SETTINGS == CurrentItem &&
         DeviceInterface::VehicleDevice.DDModeActivated )
     {
-      // not enter settings menu when DD mode is activated
+      /* not enter settings menu when DD mode is activated */
+    }
+    else if( !IsLauncherItemEnabled( CurrentItem ) )
+    {
+      /* not enter disabled item */
     }
     else
     {
@@ -158,7 +162,7 @@ class LNC_Main : Components::BaseComponent
   // Vehicle Supported Feature
   note group Note5
   {
-    attr Bounds = <810,360,1150,720>;
+    attr Bounds = <810,360,1150,770>;
   }
 
   $rect <850,460,1050,500>
@@ -475,9 +479,37 @@ class LNC_Main : Components::BaseComponent
             LNC_RotaryPlate.SetItems( PreviousItem, CurrentItem, NextItem );
           }
         }
+        case Enum::VehicleRxType.TIMEOUT_ERROR2_DETECTED,
+             Enum::VehicleRxType.TIMEOUT_ERROR2_RECOVERED,
+             Enum::VehicleRxType.TIMEOUT_ERROR1_UPDATED:
+        {
+          LNC_Base.SetItems( PreviousItem, CurrentItem, NextItem );
+          LNC_RotaryPlate.SetItems( PreviousItem, CurrentItem, NextItem );
+        }
         default:;
       }
     }
+  }
+
+  $rect <850,710,1080,750>
+  method bool IsLauncherItemEnabled( arg Enum::LauncherItem aLauncherItem )
+  {
+    var bool ItemEnabled = true;;
+    switch( aLauncherItem )
+    {
+      case Enum::LauncherItem.SEAT_HEATER,
+           Enum::LauncherItem.GRIP_WARMER,
+           Enum::LauncherItem.WIND_SCREEN:
+      {
+        if( DeviceInterface::VehicleDevice.IsTimeoutError2Detected ||
+            DeviceInterface::VehicleDevice.IsHeaterStatusTimeoutErr1Detected )
+        {
+          ItemEnabled = false;
+        }
+      }
+      default:;
+    }
+    return ItemEnabled;
   }
 }
 
@@ -488,13 +520,13 @@ class LNC_RotaryPlate : Components::BaseComponent
   $rect <60,250,220,290>
   inherited property Bounds = <0,0,134,234>;
 
-  $rect <-4,380,220,420>
+  $rect <10,430,234,470>
   inherited method OnShortDownKeyActivated()
   {
     StartIconRotation( Enum::RotationDirection.COUNTER_CLOCKWISE );
   }
 
-  $rect <-4,340,220,380>
+  $rect <10,390,234,430>
   inherited method OnShortUpKeyActivated()
   {
     StartIconRotation( Enum::RotationDirection.CLOCKWISE );
@@ -593,13 +625,15 @@ class LNC_RotaryPlate : Components::BaseComponent
 
     var int32 HiddenIconIdx = ( SelectedIconIdx + 2 ) % Icons.size;
     Icons[HiddenIconIdx].Bitmap = GetSmallIconResourceOfItem( HiddenItem );
+    SetIconFrameNumber( HiddenItem, Icons[HiddenIconIdx] );
 
     IconSelectedLarge.Visible = false;
+    SetIconFrameNumber( CurrentItem, Icons[SelectedIconIdx] );
     Icons[SelectedIconIdx].Visible = true;
 
     var int32 IconIdx = 0;
     var int32 i = 0;
-    for( i = 0; i < RectEffectArray.size; i = i + 1)
+    for( i = 0; i < RectEffectArray.size; i++ )
     {
       var Effects::RectEffect Effect = RectEffectArray[i];
       if( Enum::RotationDirection.CLOCKWISE == aDirection )
@@ -647,6 +681,7 @@ class LNC_RotaryPlate : Components::BaseComponent
     }
 
     IconSelectedLarge.Bitmap = GetLargeIconResourceOfItem( CurrentItem );
+    SetIconFrameNumber( CurrentItem, IconSelectedLarge );
     Icons[SelectedIconIdx].Visible = false;
     IconSelectedLarge.Visible = true;
 
@@ -659,22 +694,24 @@ class LNC_RotaryPlate : Components::BaseComponent
   $rect <170,80,370,120>
   property Enum::LauncherItem NextItem;
 
-  $rect <-4,300,220,340>
+  $rect <10,300,234,340>
   method void SetItems( arg Enum::LauncherItem aPreviousItem, arg Enum::LauncherItem aCurrentItem, arg Enum::LauncherItem aNextItem )
   {
-    trace "Rotary, SetItems: Current: ", aCurrentItem;
     PreviousItem = aPreviousItem;
     CurrentItem = aCurrentItem;
     NextItem = aNextItem;
 
     Icons[SelectedIconIdx].Bitmap = GetSmallIconResourceOfItem( CurrentItem );
     IconSelectedLarge.Bitmap = GetLargeIconResourceOfItem( CurrentItem );
+    SetIconFrameNumber( CurrentItem, IconSelectedLarge );
 
     var int32 PeviousIconIdx = ( SelectedIconIdx - 1 + Icons.size ) % Icons.size;
     Icons[PeviousIconIdx].Bitmap = GetSmallIconResourceOfItem( PreviousItem );
+    SetIconFrameNumber( PreviousItem, Icons[PeviousIconIdx] );
 
     var int32 NextIconIdx = ( SelectedIconIdx + 1 ) % Icons.size;
     Icons[NextIconIdx].Bitmap = GetSmallIconResourceOfItem( NextItem );
+    SetIconFrameNumber( NextItem, Icons[NextIconIdx] );
   }
 
   $rect <430,120,690,160>
@@ -795,21 +832,21 @@ class LNC_RotaryPlate : Components::BaseComponent
     return IconBitmap;
   }
 
-  $rect <0,450,220,490>
+  $rect <10,500,230,540>
   method void StartSelectedAnimation()
   {
     HighlightImage.Visible = true;
     SelectedAnimationTimer.Enabled = true;
   }
 
-  $rect <0,490,220,530>
+  $rect <10,540,230,580>
   object Core::Timer SelectedAnimationTimer
   {
     preset OnTrigger = OnSelectedAnimationFinishedSlot;
     preset Period = 100;
   }
 
-  $rect <0,530,220,570>
+  $rect <10,580,280,620>
   slot OnSelectedAnimationFinishedSlot
   {
     HighlightImage.Visible = false;
@@ -817,7 +854,7 @@ class LNC_RotaryPlate : Components::BaseComponent
     postsignal OnSelectedAnimationFinished;
   }
 
-  $rect <0,570,220,610>
+  $rect <10,620,280,660>
   property slot OnSelectedAnimationFinished;
 
   $rect <20,20,160,60>
@@ -884,6 +921,23 @@ class LNC_RotaryPlate : Components::BaseComponent
 
   $rect <170,120,370,160>
   property Enum::LauncherItem HiddenItem;
+
+  $rect <10,340,230,380>
+  method void SetIconFrameNumber( arg Enum::LauncherItem aLauncherItem, arg Views::Image aIcon )
+  {
+    var Launcher::LNC_Main LNCMain = (Launcher::LNC_Main)Owner;
+    if( null != LNCMain )
+    {
+      if( LNCMain.IsLauncherItemEnabled( aLauncherItem ) )
+      {
+        aIcon.FrameNumber = 1;
+      }
+      else
+      {
+        aIcon.FrameNumber = 0;
+      }
+    }
+  }
 
   $reorder Opacity 1
   $reorder Embedded 1
@@ -973,5 +1027,26 @@ class LNC_Base : Core::Group
     PreviousItemTitleText.String = GetStringOfLauncherItem( aPreviousItem );
     CurrentItemTitleText.String = GetStringOfLauncherItem( aCurrentItem );
     NextItemTitleText.String = GetStringOfLauncherItem( aNextItem );
+
+    SetTextColor( aPreviousItem, PreviousItemTitleText, #6B6B6BFF, Color::GRAY_FOR_DISABLED );
+    SetTextColor( aCurrentItem, CurrentItemTitleText, Color::WHITE, Color::GRAY_FOR_DISABLED );
+    SetTextColor( aNextItem, NextItemTitleText, #6B6B6BFF, Color::GRAY_FOR_DISABLED );
+  }
+
+  $rect <0,400,200,440>
+  method void SetTextColor( arg Enum::LauncherItem aItem, arg Views::Text aText, arg color aColorEnabled, arg color aColorDisabled )
+  {
+    var Launcher::LNC_Main LNCMain = (Launcher::LNC_Main)Owner;
+    if( null != LNCMain )
+    {
+      if( LNCMain.IsLauncherItemEnabled( aItem ) )
+      {
+        aText.Color = aColorEnabled;
+      }
+      else
+      {
+        aText.Color = aColorDisabled;
+      }
+    }
   }
 }

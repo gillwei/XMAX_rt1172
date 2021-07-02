@@ -3467,6 +3467,25 @@ XBool DeviceInterfaceVehicleDeviceClass_OnGetIsTimeoutError2Detected( DeviceInte
   return IsError2Detected;
 }
 
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetIsHeaterStatusTimeoutErr1Detected()' */
+XBool DeviceInterfaceVehicleDeviceClass_OnGetIsHeaterStatusTimeoutErr1Detected( DeviceInterfaceVehicleDeviceClass _this )
+{
+  XBool Detected;
+  DeviceInterfaceVehicleDataClass VehicleData;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  Detected = 0;
+  VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+  DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeHEATER_STATUS_TIMEOUT_ERR1 );
+
+  if ( !!VehicleData->DataUInt32 )
+    Detected = 1;
+
+  return Detected;
+}
+
 /* Variants derived from the class : 'DeviceInterface::VehicleDeviceClass' */
 EW_DEFINE_CLASS_VARIANTS( DeviceInterfaceVehicleDeviceClass )
 EW_END_OF_CLASS_VARIANTS( DeviceInterfaceVehicleDeviceClass )

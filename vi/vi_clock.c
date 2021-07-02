@@ -121,7 +121,6 @@ static void enter_state
     const clk_update_state_enum update_state
     )
 {
-PRINTF( "vi clk state %d\r\n", update_state );
 switch( update_state )
     {
     case CLK_UPDATE_STATE_IDLE:
@@ -137,6 +136,7 @@ switch( update_state )
         start_timer( WAIT_TIME_TO_CHECK_METER_CLK_AUTO_ADJ_STATUS );
         break;
     case CLK_UPDATE_STATE_TIMEOUT_ERR2_DETECTED:
+        PRINTF( "vi clk state %d\r\n", update_state );
         clk_update_state = update_state;
         stop_timer();
         break;

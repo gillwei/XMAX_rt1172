@@ -32,13 +32,36 @@
 #define POSITIVE_RESPONSE   ( 0x0 )
 #define NEGATIVE_RESPONSE   ( 0xFF )
 
-#define TIMEOUT_ERR2_OFFSET_FUNC_SW_STATUS          ( 0 )
-#define TIMEOUT_ERR2_OFFSET_ECU_INDICATE_STATUS     ( 1 )
-#define TIMEOUT_ERR2_OFFSET_VH_EG_SPD               ( 2 )
-
 /*--------------------------------------------------------------------
                                  TYPES
 --------------------------------------------------------------------*/
+typedef enum
+    {
+    TIMEOUT_ERR1_OFFSET_RES_SUPPORT,
+    TIMEOUT_ERR1_OFFSET_BRGTHNSS_CTRL,
+    TIMEOUT_ERR1_OFFSET_RES_MT_FUNC_CNT,
+    TIMEOUT_ERR1_OFFSET_VEHICLE_INFO,
+    TIMEOUT_ERR1_OFFSET_FUNCSW_STAT,
+    TIMEOUT_ERR1_OFFSET_FUEL_RATE,
+    TIMEOUT_ERR1_OFFSET_ODO_TRIP,
+    TIMEOUT_ERR1_OFFSET_RES_RPRGRM_INFO,
+    TIMEOUT_ERR1_OFFSET_VEHICLE_INFO_2,
+    TIMEOUT_ERR1_OFFSET_VEHICLE_INFO_3,
+    TIMEOUT_ERR1_OFFSET_VEHICLE_INFO_4,
+    TIMEOUT_ERR1_OFFSET_MAINT_TRIP,
+    TIMEOUT_ERR1_OFFSET_HEATER_STAT,
+    TIMEOUT_ERR1_OFFSET_FACT_INSP_NS,
+    TIMEOUT_ERR1_OFFSET_TPMS_STAT,
+    TIMEOUT_ERR1_OFFSET_ECU_INDCT_STAT,
+    TIMEOUT_ERR1_OFFSET_ECU_COM_DATA
+    } timeout_err1_offset_enum;
+
+typedef enum
+    {
+    TIMEOUT_ERR2_OFFSET_FUNC_SW_STATUS,
+    TIMEOUT_ERR2_OFFSET_ECU_INDICATE_STATUS,
+    TIMEOUT_ERR2_OFFSET_VH_EG_SPD
+    } timeout_err2_offset_enum;
 
 /*--------------------------------------------------------------------
                            PROJECT INCLUDES
@@ -69,7 +92,8 @@ static SemaphoreHandle_t supported_function_semaphore_handle;
 static supported_func_data_src_enum supported_func_data_source;
 static const int32_t ticks_to_wait = pdMS_TO_TICKS( 500 );
 
-static uint8_t  timeout_err2_status;
+static uint32_t  timeout_err1_status;
+static uint32_t  timeout_err2_status;
 
 /*--------------------------------------------------------------------
                                 MACROS
@@ -838,61 +862,135 @@ switch( msg_idx )
 
 /*********************************************************************
 *
+* @private
+* is_timeout_error_detected
+*
+* Return if the specified timeout error is detected
+*
+* @param error_status Pointer to the error status
+* @param offset Bit offset for the error item
+* @param detected Error status. True for detected. False for recovered.
+*
+*********************************************************************/
+static bool is_timeout_error_detected
+    (
+    uint32_t      error_status,
+    const int32_t offset
+    )
+{
+bool detected = false;
+if( error_status & ( 1 << offset ) )
+    {
+    detected = true;
+    }
+return detected;
+}
+
+/*********************************************************************
+*
+* @private
+* set_timeout_error_status
+*
+* Set timeout error status
+*
+* @param error_status Pointer to the error status
+* @param offset Offset for the error item
+* @param detected Error status. True for detected. False for recovered.
+*
+*********************************************************************/
+static void set_timeout_error_status
+    (
+    uint32_t*     error_status,
+    const int32_t offset,
+    const bool    detected
+    )
+{
+if( detected )
+    {
+    set_bit( *error_status, offset );
+    }
+else
+    {
+    clear_bit( *error_status, offset );
+    }
+}
+
+/*********************************************************************
+*
 * @public
 * VI_notify_timeout1_changed
 *
 * Notify timeout error 1 status changed
 *
 * @param handle CAN signal handle
-* @param status Timeout error 1 trigger status
+* @param detected Timeout error 1 trigger detected
 *
 *********************************************************************/
 void VI_notify_timeout1_changed
     (
     const dll_frm_handle_t handle,
-    const bool status
+    const bool detected
     )
 {
-PRINTF( "timeout1, 0x%x %d\r\n", handle, status );
+PRINTF( "timeout1, 0x%x %d\r\n", handle, detected );
 switch( handle )
     {
     case IL_CAN0_RX2_RES_SUPPORT_RXFRM_HANDLE:     /* H'582 */
+        set_timeout_error_status( &timeout_err1_status, TIMEOUT_ERR1_OFFSET_RES_SUPPORT, detected );
         break;
     case IL_CAN0_RX3_BRGTHNSS_CTRL_RXFRM_HANDLE:   /* H'583 */
+        set_timeout_error_status( &timeout_err1_status, TIMEOUT_ERR1_OFFSET_BRGTHNSS_CTRL, detected );
         break;
     case IL_CAN0_RX4_RES_MT_FUNC_CNT_RXFRM_HANDLE: /* H'585 */
+        set_timeout_error_status( &timeout_err1_status, TIMEOUT_ERR1_OFFSET_RES_MT_FUNC_CNT, detected );
         break;
     case IL_CAN0_RX5_VEHICLE_INFO_RXFRM_HANDLE:    /* H'5A0 */
+        set_timeout_error_status( &timeout_err1_status, TIMEOUT_ERR1_OFFSET_VEHICLE_INFO, detected );
         break;
     case IL_CAN0_RX6_FUNCSW_STAT_RXFRM_HANDLE:     /* H'5A1 */
+        set_timeout_error_status( &timeout_err1_status, TIMEOUT_ERR1_OFFSET_FUNCSW_STAT, detected );
         break;
     case IL_CAN0_RX7_FUEL_RATE_RXFRM_HANDLE:       /* H'5A6 */
+        set_timeout_error_status( &timeout_err1_status, TIMEOUT_ERR1_OFFSET_FUEL_RATE, detected );
         break;
     case IL_CAN0_RX8_ODO_TRIP_RXFRM_HANDLE:        /* H'5A7 */
+        set_timeout_error_status( &timeout_err1_status, TIMEOUT_ERR1_OFFSET_ODO_TRIP, detected );
         break;
     case IL_CAN0_RX9_RES_RPRGRM_INFO_RXFRM_HANDLE: /* H'5AF */
+        set_timeout_error_status( &timeout_err1_status, TIMEOUT_ERR1_OFFSET_RES_RPRGRM_INFO, detected );
         break;
     case IL_CAN0_RXA_VEHICLE_INFO_2_RXFRM_HANDLE:  /* H'5BA */
+        set_timeout_error_status( &timeout_err1_status, TIMEOUT_ERR1_OFFSET_VEHICLE_INFO_2, detected );
         break;
     case IL_CAN0_RXB_VEHICLE_INFO_3_RXFRM_HANDLE:  /* H'5BB */
+        set_timeout_error_status( &timeout_err1_status, TIMEOUT_ERR1_OFFSET_VEHICLE_INFO_3, detected );
         break;
     case IL_CAN0_RXC_VEHICLE_INFO_4_RXFRM_HANDLE:  /* H'5BC */
+        set_timeout_error_status( &timeout_err1_status, TIMEOUT_ERR1_OFFSET_VEHICLE_INFO_4, detected );
         break;
     case IL_CAN0_RXD_MAINT_TRIP_RXFRM_HANDLE:      /* H'5BD */
+        set_timeout_error_status( &timeout_err1_status, TIMEOUT_ERR1_OFFSET_MAINT_TRIP, detected );
         break;
     case IL_CAN0_RXE_HEATER_STAT_RXFRM_HANDLE:     /* H'5BE */
+        set_timeout_error_status( &timeout_err1_status, TIMEOUT_ERR1_OFFSET_HEATER_STAT, detected );
         break;
     case IL_CAN0_RXF_FACT_INSP_NS_RXFRM_HANDLE:    /* H'5D5 */
+        set_timeout_error_status( &timeout_err1_status, TIMEOUT_ERR1_OFFSET_FACT_INSP_NS, detected );
         break;
     case IL_CAN0_RXI_TPMS_STAT_RXFRM_HANDLE:       /* H'550 */
+        set_timeout_error_status( &timeout_err1_status, TIMEOUT_ERR1_OFFSET_TPMS_STAT, detected );
         break;
     case IL_CAN0_RX0_ECU_INDCT_STAT_RXFRM_HANDLE:  /* H'209 */
+        set_timeout_error_status( &timeout_err1_status, TIMEOUT_ERR1_OFFSET_ECU_INDCT_STAT, detected );
         break;
     case IL_CAN0_RX1_ECU_COM_DATA_RXFRM_HANDLE:    /* H'350 */
+        set_timeout_error_status( &timeout_err1_status, TIMEOUT_ERR1_OFFSET_ECU_COM_DATA, detected );
         break;
     default:
         break;
     }
+
+    EW_notify_vi_data_received( EnumVehicleRxTypeTIMEOUT_ERROR1_UPDATED );
 }
 
 /*********************************************************************
@@ -900,55 +998,31 @@ switch( handle )
 * @public
 * VI_notify_timeout2_changed
 *
-* Notify timeout error 2 status changed
+* Notify timeout error 2 detected changed
 *
 * @param handle CAN signal handle
-* @param status Timeout error 2 trigger status
+* @param detected Timeout error 2 trigger detected
 *
 *********************************************************************/
 void VI_notify_timeout2_changed
     (
     const dll_frm_handle_t handle,
-    const bool status
+    const bool detected
     )
 {
-PRINTF( "timeout2, 0x%x %d\r\n", handle, status );
+PRINTF( "timeout2, 0x%x %d\r\n", handle, detected );
 uint8_t last_timeout_err2_status = timeout_err2_status;
 switch( handle )
     {
     case IL_CAN0_RX6_FUNCSW_STAT_RXFRM_HANDLE: /* H'5A1 */
-        if( status )
-            {
-            set_bit( timeout_err2_status, TIMEOUT_ERR2_OFFSET_FUNC_SW_STATUS );
-            }
-        else
-            {
-            clear_bit( timeout_err2_status, TIMEOUT_ERR2_OFFSET_FUNC_SW_STATUS );
-            }
+        set_timeout_error_status( &timeout_err2_status, TIMEOUT_ERR2_OFFSET_FUNC_SW_STATUS, detected );
         break;
-
     case IL_CAN0_RX0_ECU_INDCT_STAT_RXFRM_HANDLE: /* H'209 */
-        if( status )
-            {
-            set_bit( timeout_err2_status, TIMEOUT_ERR2_OFFSET_ECU_INDICATE_STATUS );
-            }
-        else
-            {
-            clear_bit( timeout_err2_status, TIMEOUT_ERR2_OFFSET_ECU_INDICATE_STATUS );
-            }
+        set_timeout_error_status( &timeout_err2_status, TIMEOUT_ERR2_OFFSET_ECU_INDICATE_STATUS, detected );
         break;
-
     case IL_CAN0_RXH_VH_EG_SPD_RXFRM_HANDLE: /* H'20A */
-        if( status )
-            {
-            set_bit( timeout_err2_status, TIMEOUT_ERR2_OFFSET_VH_EG_SPD );
-            }
-        else
-            {
-            clear_bit( timeout_err2_status, TIMEOUT_ERR2_OFFSET_VH_EG_SPD );
-            }
+        set_timeout_error_status( &timeout_err2_status, TIMEOUT_ERR2_OFFSET_VH_EG_SPD, detected );
         break;
-
     default:
         break;
     }
@@ -1246,6 +1320,9 @@ switch( rx_type )
         break;
     case EnumVehicleRxTypeTIMEOUT_ERROR2_DETECTED:
         *data = (uint32_t)timeout_err2_status;
+        break;
+    case EnumVehicleRxTypeHEATER_STATUS_TIMEOUT_ERR1:
+        *data = (uint32_t)is_timeout_error_detected( timeout_err1_status, TIMEOUT_ERR1_OFFSET_HEATER_STAT );
         break;
     default:
         PRINTF( "Err: %s invalid rx type %d\r\n", __FUNCTION__, rx_type );

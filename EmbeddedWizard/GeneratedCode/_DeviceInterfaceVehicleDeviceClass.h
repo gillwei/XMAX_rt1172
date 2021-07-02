@@ -221,6 +221,9 @@ XBool DeviceInterfaceVehicleDeviceClass_OnGetEngineIdling( DeviceInterfaceVehicl
 /* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetIsTimeoutError2Detected()' */
 XBool DeviceInterfaceVehicleDeviceClass_OnGetIsTimeoutError2Detected( DeviceInterfaceVehicleDeviceClass _this );
 
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetIsHeaterStatusTimeoutErr1Detected()' */
+XBool DeviceInterfaceVehicleDeviceClass_OnGetIsHeaterStatusTimeoutErr1Detected( DeviceInterfaceVehicleDeviceClass _this );
+
 #ifdef __cplusplus
   }
 #endif
