@@ -63,7 +63,8 @@ typedef enum
 --------------------------------------------------------------------*/
 AT_BOARDSDRAM_SECTION( uint8_t navilite_command_buffer[NAVILITE_QUEUE_BUFFER_SIZE * 2] );
 AT_BOARDSDRAM_SECTION( uint8_t navilite_command_buffer_unused_alignment[256 * 2 - NAVILITE_QUEUE_BUFFER_SIZE * 2] );
-AT_BOARDSDRAM_SECTION( uint8_t navilite_buffer[1024 * 4] );
+AT_BOARDSDRAM_SECTION( uint8_t navilite_buffer[1024 * 5] );
+
 AT_BOARDSDRAM_SECTION( uint8_t navilite_jpg_buffer[NAVILITE_JPEG_BUFFER_MAX_SIZE] );
 AT_BOARDSDRAM_SECTION( uint8_t navilite_queue_buffer[NAVILITE_QUEUE_BUFFER_SIZE] );
 AT_BOARDSDRAM_SECTION( uint8_t navilite_queue_buffer_unused_alignment[256 - NAVILITE_QUEUE_BUFFER_SIZE] );
@@ -93,6 +94,7 @@ static uint8_t image_type = 0;
 #define NAVILITE_DEBUG false
 #define NAVILITE_DEBUG_DETAIL false
 #define NAVILITE_TEST_IOP_SPEED false
+#define NAVILITE_DEBUG_PROTO false
 
 /*--------------------------------------------------------------------
                               PROCEDURES
@@ -486,7 +488,11 @@ void NAVILITE_queue_hci_buffer
     )
 {
 size_t buffer_write = 0;
-buffer_write = xStreamBufferSend( xQueueBuffer, data, data_len, pdMS_TO_TICKS( NAVILITE_QUEUE_BUFFER_TIMEOUT ) );
+int try_count = 3;
+
+do {
+    buffer_write = xStreamBufferSend( xQueueBuffer, data, data_len, pdMS_TO_TICKS( NAVILITE_QUEUE_BUFFER_TIMEOUT ) );
+} while( try_count-- && ( buffer_write != data_len ) );
 
 if( buffer_write != data_len )
     {
@@ -565,6 +571,42 @@ return -1;
 /*********************************************************************
 *
 * @private
+* navilite_validate_frame
+*
+* Validate frame header
+*
+* @param frame frame buffer to check
+* @param data_size size of frame buffer
+* @return true if frame is a complete header
+*         false otherwise
+*
+*********************************************************************/
+bool navilite_validate_frame
+    (
+    uint8_t* frame,
+    uint8_t data_size
+    )
+{
+navilite_message* msg = (navilite_message*)frame;
+if( memcmp( (char*)msg->magic_code, MAGIC_CODE, 4 ) != 0 )
+    {
+    return false;
+    }
+if( NAVILITE_SERVICETYPE_IMAGEFRAME_UPDATE == msg->service_type )
+    {
+    PRINTF( "jpeg image frame service detected\r\n" );
+    return true;
+    }
+if( msg->payload_size == ( data_size - 12 ) )
+    {
+    return true;
+    }
+return false;
+}
+
+/*********************************************************************
+*
+* @private
 * navilite_receive_buffer_and_parse
 *
 * Receive buffer and parse the buffer from message queue
@@ -586,6 +628,9 @@ static int token_next = 110;
 static int token_level = 0;
 static int jpeg_mode = 0;
 
+// stage buffer
+static uint8_t last_navilite_command_buffer[NAVILITE_QUEUE_BUFFER_SIZE];
+static uint8_t last_received_byte = 0;
 
 while( ( buffer_remained = xStreamBufferBytesAvailable( buffer_handle ) > 0 ) )
     {
@@ -593,6 +638,13 @@ while( ( buffer_remained = xStreamBufferBytesAvailable( buffer_handle ) > 0 ) )
             ( void * ) navilite_queue_buffer,
             sizeof( navilite_queue_buffer ),
             portMAX_DELAY );
+
+    if( NAVILITE_DEBUG_PROTO )
+        {
+        PRINTF( "\r\n## RAW DATA:\r\n" );
+        NAVILITE_print_raw_data( navilite_queue_buffer, received_bytes );
+        PRINTF( "\r\n## END RAW DATA:\r\n" );
+        }
 
     for( int i = 0; i < received_bytes; i++ )
         {
@@ -620,10 +672,39 @@ while( ( buffer_remained = xStreamBufferBytesAvailable( buffer_handle ) > 0 ) )
             token_start_frame++;
             }
 
+        // check if any left chunk data during last scan, if yes. append it, and continue.
+        if( last_received_byte > 0 )
+            {
+            #if( NAVILITE_DEBUG_PROTO )
+                PRINTF( "\r\n*append last stage buffer:%d, tokenindex=%d, token_start_frame=%d\r\n", last_received_byte, token_index, token_start_frame );
+            #endif
+            // when last_received_byte is set
+            // append current stage buffer to navilite_command_buffer by
+            // adding to index of array.
+            // note: token_index shoul be 0
+            // case 1: jpeg data
+            // case 2: head+data
+            // case 3: head+data... head+data (should be avoided!!!)
+            memcpy( navilite_command_buffer, last_navilite_command_buffer, last_received_byte );
+
+            // reset last_receive_byte
+            // dump the data to check
+            #if( NAVILITE_DEBUG_PROTO )
+                NAVILITE_print_raw_data( navilite_command_buffer, last_received_byte + token_index );
+            #endif
+            // update token_index to last_receive_byte to point the right buffer pointer
+            token_index = last_received_byte + token_index;
+            last_received_byte = 0;
+        }
+
+        //continue the original protocol process
         navilite_command_buffer[token_index++] = token_char;
 
         if( token_start_frame == 1 )
             {
+            #if( NAVILITE_DEBUG_PROTO )
+                PRINTF( "\r\n*TK0\r\n" );
+            #endif
             token_start_frame = 0;
             token_index -= 4;
             jpeg_mode = NAVILITE_parse_data( navilite_command_buffer, token_index );
@@ -634,6 +715,9 @@ while( ( buffer_remained = xStreamBufferBytesAvailable( buffer_handle ) > 0 ) )
             }
         else if( token_start_frame > 1 )
             {
+            #if( NAVILITE_DEBUG_PROTO )
+                PRINTF( "\r\n*TK1\r\n" );
+            #endif
             token_start_frame = 0;
             token_index -= 4;
             jpeg_mode = NAVILITE_parse_data( navilite_command_buffer, token_index );
@@ -645,10 +729,34 @@ while( ( buffer_remained = xStreamBufferBytesAvailable( buffer_handle ) > 0 ) )
             }
         else if( token_index >= received_bytes )
             {
-            jpeg_mode = NAVILITE_parse_data( navilite_command_buffer, token_index );
-            token_index = 0;
+            #if( NAVILITE_DEBUG_PROTO )
+                PRINTF( "\r\n*TK3\r\n" );
+            #endif
+            // larger than frame MTU, but if it is not a complete request
+            // should hold on until the data size is met
+            // original logic is to parse the command when it reaches or larger mtu size
+
+            #if ( NAVILITE_DEBUG_PROTO )
+                PRINTF( "\r\n--- PARSE SEPERATE ---\r\n" );
+                NAVILITE_print_raw_data( navilite_command_buffer, token_index );
+            #endif
+            if( true == navilite_validate_frame( navilite_command_buffer, token_index ) || jpeg_mode )
+                {
+                #if( NAVILITE_DEBUG_PROTO )
+                    PRINTF( "\r\ncomplete or is_jpeg:%d parse it!\r\n", jpeg_mode );
+                #endif
+                jpeg_mode = NAVILITE_parse_data( navilite_command_buffer, token_index );
+                token_index = 0;
+                }
+            else
+                {
+                #if( NAVILITE_DEBUG_PROTO )
+                    PRINTF( "\r\not incomplete, continue on!\r\n" );
+                #endif
+                }
             }
 
+        // otherwise, if it is jpeg data, then reset the token_level
         if( jpeg_mode )
             {
             token_level = 0;
@@ -656,11 +764,46 @@ while( ( buffer_remained = xStreamBufferBytesAvailable( buffer_handle ) > 0 ) )
 
         }
 
-    if( received_bytes < NAVILITE_QUEUE_BUFFER_SIZE )
+    // Staging the current buffer for next parse
+
+    if( token_index < NAVILITE_QUEUE_BUFFER_SIZE )
         {
-        jpeg_mode = NAVILITE_parse_data( navilite_command_buffer, token_index );
+        if( !jpeg_mode )
+            {
+            #if( NAVILITE_DEBUG_PROTO )
+                PRINTF( "\r\nSTAGING:%d\r\n", token_index );
+            #endif
+            memcpy( last_navilite_command_buffer, navilite_command_buffer, token_index );
+            last_received_byte = token_index;
+
+            #if( NAVILITE_DEBUG_PROTO )
+                PRINTF( "validate frame:%d\r\n", token_index);
+            #endif
+            if( true == navilite_validate_frame( last_navilite_command_buffer, token_index ) )
+                {
+                #if( NAVILITE_DEBUG_PROTO )
+                    PRINTF( "parse this frame as it is complete data\r\n" );
+                #endif
+                jpeg_mode = NAVILITE_parse_data( navilite_command_buffer, token_index );
+                last_received_byte = 0;
+                token_start_frame = 0;
+                token_index = 0;
+                // no need to push into stage buffer as it is complete full frame data.
+                }
+
+            // reset for new stage
+            token_start_frame = 0;
+            token_index = 0;
+            }
+        else
+            {
+            #if( NAVILITE_DEBUG_PROTO )
+                PRINTF( "\r\nTK5\r\n" );
+            #endif
+            jpeg_mode = NAVILITE_parse_data( navilite_command_buffer, token_index );
+            }
         }
-}
+    }
 }
 
 /*********************************************************************
@@ -802,6 +945,12 @@ static int jpg_current_size = 0;
 // parse magic code
 // when frame request come with a full header, then check if the header has nAl@.
 // if no, in general. it wll be map update frame request because it will have fragmented data
+
+#if( NAVILITE_DEBUG_PROTO )
+    PRINTF( "\r\nPARSING:\r\n" );
+    NAVILITE_print_raw_data( data, data_len );
+    PRINTF( "\r\nPARSING-END:\r\n" );
+#endif
 
 if( data_len >= 4 && strncmp( (char*)data, MAGIC_CODE, 4 ) == 0 )
     {
@@ -1145,8 +1294,9 @@ if( data_len >= 4 && strncmp( (char*)data, MAGIC_CODE, 4 ) == 0 )
 
         session_list_size_total[NAVILITE_SESSION_INDEX_TBTLIST] = list_item_count;
         session_list_item_counter[NAVILITE_SESSION_INDEX_TBTLIST] = 0; // reset the counter when this command is received
+#if (NAVILITE_DEBUG )
         PRINTF( "[NAVILITE_BEGIN TBT LIST ITEM SIZE: %d, reset session_tbtlist_item_counter = 0]\r\n", session_list_size_total[NAVILITE_SESSION_INDEX_TBTLIST] );
-
+#endif
         if( session_list_size_last_total[NAVILITE_SESSION_INDEX_TBTLIST] != session_list_size_counter[NAVILITE_SESSION_INDEX_TBTLIST] )
             {
             session_list_size_last_total[NAVILITE_SESSION_INDEX_TBTLIST] = session_list_size_total[NAVILITE_SESSION_INDEX_TBTLIST];
@@ -1217,6 +1367,10 @@ if( data_len >= 4 && strncmp( (char*)data, MAGIC_CODE, 4 ) == 0 )
                 session_tbt_list_data[NAVILITE_SESSION_INDEX_TBTLIST].distance_unit = dist_unit_str;
                 session_tbt_list_data[NAVILITE_SESSION_INDEX_TBTLIST].desc = desc_str;
                 // Callback API for turn by turn list update and increase the session_tbtlist_item_counter from 0
+                #if( NAVILITE_DEBUG_PROTO )
+                    PRINTF( "\r\nTBTLIST1(%d)%s-%d",list_item_index, desc_str, desc_str_size );
+                    PRINTF( "\r\n" );
+                #endif
                 navilite_content_update_callbacks.callback_func_nexttbtist( NAVILITE_TBTLIST_ACTION_ITEMADD, &session_tbt_list_data[NAVILITE_SESSION_INDEX_TBTLIST], list_item_index, session_list_size_total[NAVILITE_SESSION_INDEX_TBTLIST], ++session_list_item_counter[NAVILITE_SESSION_INDEX_TBTLIST], 0 );
                 }
         }
@@ -1300,6 +1454,10 @@ if( data_len >= 4 && strncmp( (char*)data, MAGIC_CODE, 4 ) == 0 )
                 session_poi_list_data[NAVILITE_SESSION_INDEX_FAVLIST].distance_unit = dist_unit_str;
                 session_poi_list_data[NAVILITE_SESSION_INDEX_FAVLIST].desc = desc_str;
                 // Callback API for turn by turn list update and increase the session_tbtlist_item_counter from 0
+                #if( NAVILITE_DEBUG_PROTO )
+                    PRINTF( "\r\nFAVLIST1(%d)%s-%d",list_item_index, desc_str, desc_str_size );
+                    PRINTF( "\r\n" );
+                #endif
                 navilite_content_update_callbacks.callback_func_nextfavlist( NAVILITE_POILIST_ACTION_ITEMADD, &session_poi_list_data[NAVILITE_SESSION_INDEX_FAVLIST], list_item_index, session_list_size_total[NAVILITE_SESSION_INDEX_FAVLIST], ++session_list_item_counter[NAVILITE_SESSION_INDEX_FAVLIST], 0 );
                 }
         }
@@ -1338,7 +1496,6 @@ if( data_len >= 4 && strncmp( (char*)data, MAGIC_CODE, 4 ) == 0 )
     // NAVILITE_SERVICETYPE_GASLIST_DATA_UPDATE  // list item data notify
     if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_GASPOILIST_DATA_UPDATE )
         {
-
         if( session_list_size_total[NAVILITE_SESSION_INDEX_GASLIST] == 0 )
             {
             PRINTF( "#ERROR: session_list_size_total[NAVILITE_SESSION_INDEX_GASLIST] = 0 ; NAVILITE_SERVICETYPE_GASLIST_UPDATE request need to be issued first from app!\r\n" );
@@ -1384,6 +1541,10 @@ if( data_len >= 4 && strncmp( (char*)data, MAGIC_CODE, 4 ) == 0 )
                     session_poi_list_data[NAVILITE_SESSION_INDEX_GASLIST].distance_unit = dist_unit_str;
                     session_poi_list_data[NAVILITE_SESSION_INDEX_GASLIST].desc = desc_str;
                     // Callback API for turn by turn list update and increase the session_tbtlist_item_counter from 0
+                    #if( NAVILITE_DEBUG_PROTO )
+                        PRINTF( "\r\nGASLIST1(%d)%s-%d",list_item_index, desc_str, desc_str_size );
+                        PRINTF( "\r\n" );
+                    #endif
                     navilite_content_update_callbacks.callback_func_nextgaslist( NAVILITE_POILIST_ACTION_ITEMADD, &session_poi_list_data[NAVILITE_SESSION_INDEX_GASLIST], list_item_index, session_list_size_total[NAVILITE_SESSION_INDEX_GASLIST], ++session_list_item_counter[NAVILITE_SESSION_INDEX_GASLIST], 0 );
                     }
                 }
@@ -1899,6 +2060,10 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
                 session_tbt_list_data[NAVILITE_SESSION_INDEX_TBTLIST].distance_unit = dist_unit_str;
                 session_tbt_list_data[NAVILITE_SESSION_INDEX_TBTLIST].desc = desc_str;
                 // Callback API for turn by turn list update and increase the session_tbtlist_item_counter from 0
+                #if( NAVILITE_DEBUG_PROTO )
+                    PRINTF( "\r\nTBTLIST2(%d)%s-%d\r\n", list_item_index, desc_str, desc_str_size );
+                    PRINTF( "\r\n" );
+                #endif
                 navilite_content_update_callbacks.callback_func_nexttbtist( NAVILITE_TBTLIST_ACTION_ITEMADD, &session_tbt_list_data[NAVILITE_SESSION_INDEX_TBTLIST], list_item_index, session_list_size_total[NAVILITE_SESSION_INDEX_TBTLIST], ++session_list_item_counter[NAVILITE_SESSION_INDEX_TBTLIST], 0 );
                 }
         }
@@ -1981,6 +2146,9 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
                 session_poi_list_data[NAVILITE_SESSION_INDEX_FAVLIST].distance = distance;
                 session_poi_list_data[NAVILITE_SESSION_INDEX_FAVLIST].distance_unit = dist_unit_str;
                 session_poi_list_data[NAVILITE_SESSION_INDEX_FAVLIST].desc = desc_str;
+                #if( NAVILITE_DEBUG_PROTO )
+                    PRINTF( "\r\nFAVLIST2(%d)%s-%d\r\n", list_item_index, desc_str, desc_str_size );
+                #endif
                 // Callback API for turn by turn list update and increase the session_tbtlist_item_counter from 0
                 navilite_content_update_callbacks.callback_func_nextfavlist( NAVILITE_POILIST_ACTION_ITEMADD, &session_poi_list_data[NAVILITE_SESSION_INDEX_FAVLIST], list_item_index, session_list_size_total[NAVILITE_SESSION_INDEX_FAVLIST], ++session_list_item_counter[NAVILITE_SESSION_INDEX_FAVLIST], 0 );
                 }
@@ -2065,6 +2233,9 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
                     session_poi_list_data[NAVILITE_SESSION_INDEX_GASLIST].distance= distance;
                     session_poi_list_data[NAVILITE_SESSION_INDEX_GASLIST].distance_unit = dist_unit_str;
                     session_poi_list_data[NAVILITE_SESSION_INDEX_GASLIST].desc = desc_str;
+                    #if( NAVILITE_DEBUG_PROTO )
+                        PRINTF( "\r\nGASLIST2(%d)%s-%d\r\n", list_item_index, desc_str, desc_str_size );
+                    #endif
                     // Callback API for turn by turn list update and increase the session_tbtlist_item_counter from 0
                     navilite_content_update_callbacks.callback_func_nextgaslist( NAVILITE_POILIST_ACTION_ITEMADD, &session_poi_list_data[NAVILITE_SESSION_INDEX_GASLIST], list_item_index, session_list_size_total[NAVILITE_SESSION_INDEX_GASLIST], ++session_list_item_counter[NAVILITE_SESSION_INDEX_GASLIST], 0 );
                     }
