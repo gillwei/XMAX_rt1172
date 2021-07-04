@@ -22,10 +22,12 @@
 #include "client_ble_cmd.h"
 
 
+
 /*Micro switch for DEBUG*/
 #define APPL_DEBUG                                   (TRUE)
 #define APPL_PENDING                                 (TRUE )
 #define CLIENT_DEBUG(x)   PRINTF("[%s-%s-%s]:%s\r\n",__FILE__,__TIME__,__func__, x)
+#define SIMULATE_INPUT_DEBUG  FALSE
 
 
 /*--------------------------------------------------------------------
@@ -67,7 +69,7 @@ static const uint8 support_market_data_id_list[SUPPORT_MARKET_COUNT]= SUPPORT_MA
 static uint8 rx_monitor_data_id_list[SUPPORT_MONITOR_COUNT] = { 0 };
 static boolean support_id_received_flag[SUPPORT_MONITOR_COUNT] = { FALSE };
 /* SUPPORT_MONITOR_COUNT suuport id + 1 server code */
-static uint32 response_support_monitor_data_id_list[SUPPORT_MONITOR_COUNT + 1] = { 0 };
+static uint8 response_support_monitor_data_id_list[SUPPORT_MONITOR_COUNT] = { 0 };
 static const uint8 support_monitor_data_id_list[SUPPORT_MONITOR_COUNT] = SUPPORT_MONITOR_IDS_LIST;
 static client_appl_read_data_by_local_id_type read_loacl_market_infos = {0};
 static client_appl_read_data_by_local_id_type read_local_monitor_infos = {0};
@@ -75,6 +77,27 @@ static client_appl_read_data_by_local_id_type read_local_monitor_infos = {0};
 /*for freeze frame data*/
 static client_appl_read_freeze_frame_data_type read_freeze_frame_data_infos = {0};
 static uint8 current_request_freeze_frame_id_list[20] = {0};
+
+/*For protobuf repeated data*/
+id_list_type vehicle_iden_list = {0};/*common data*/
+id_list_type market_data_list = {0};/*market data*/
+id_list_type vhicle_information_list = {0};/*monitor data*/
+id_list_type* curr_id_list_ptr = NULL;
+
+
+uint8 McServerListResponse_protobuf[3000];
+uint8 McMalfunctionResponse_protobuf[3000];
+uint8 McLocalRecordVehicleInformationSupportIdListResponse_protobuf[3000];
+uint8 McVehicleIdentificationResponse_protobuf[3000];
+uint8 McFfdResponse_protobuf[5000];
+uint8 McCanResponse_protobuf[100];
+
+IdDataList g_IdDataList;
+IdDataList g_McCanResponse_dataList;
+McFfdResponse_data_list_t g_McFfdResponse_data_list;
+McServerListResponse_server_list_t g_McServerListResponse_server_list;
+McMalfunctionResponse_list_t g_McMalfunctionResponse_list;
+McLocalRecordVehicleInformationSupportIdListResponse_id_list_t g_McLocalRecordVehicleInformationSupportIdListResponse_id_list;
 
 #if( APPL_DEBUG )
 const char* print_header_0 = "Server connect detect flow(default session)";
@@ -322,6 +345,13 @@ void client_appl_rsp_server_list_after_ble_connect
     );
 
 
+static void client_appl_send_protobuf_data_success
+    (
+    void
+    );
+
+
+
 static client_process_flow_handler_type client_process_flow_handler[SUPPORT_FUCNTION_NUMS - 1] =
 {
     { PROCESS_FLOW_DETECT_SERVER, &client_appl_detect_connected_server_handler_5ms, &client_appl_detect_connected_server_positive_response_handler, &client_appl_detect_connected_server_negative_response_handler, &client_appl_detect_connected_server_response_timeout_notify },
@@ -446,6 +476,7 @@ uint16 return_data = ( data[0] << 8 ) | ( 0x00FF & data[1]);
 return return_data;
 }
 
+#if 0
 /*!*******************************************************************
 * @public
 * Function name: byte_merge_u24
@@ -462,6 +493,7 @@ uint32 return_value = ( 0x00 << 24 & 0xFF000000 )\
                     | ( data[2] & 0x000000FF);
 return return_value;
 }
+
 
 /*!*******************************************************************
 * @public
@@ -480,7 +512,6 @@ uint32 return_value = ( data[0] << 24 & 0xFF000000 )\
 return return_value;
 }
 
-
 /*!*******************************************************************
 * @public
 * Function name: clent_appl_data_swap_u16
@@ -494,6 +525,7 @@ static uint16 clent_appl_data_swap_u16
 return ( ( data >> 8 ) |
          ( ( data << 8 ) & 0xFF00 ) );
 }
+#endif
 
 /*!*******************************************************************
 * @public
@@ -690,7 +722,7 @@ switch( client_process_flow_state )
         /*initial structure*/
         /*clear the read_dtc_infos except the read_dtc_infos.is_storge_init_dtc*/
         /*sizeof ( read_dtc_infos) = 12, Byte alignment */
-        (void)memset( &read_dtc_infos, 0x00, sizeof( read_dtc_infos ) - 2 );
+        (void)memset( &read_dtc_infos, 0x00, sizeof( read_dtc_infos ) - 4 );
         (void)memset( &read_common_identifier_infos, 0x00, sizeof( read_common_identifier_infos ));
         (void)memset( &read_loacl_market_infos, 0x00, sizeof( read_loacl_market_infos ) );
         (void)memset( &read_local_monitor_infos, 0x00, sizeof( read_local_monitor_infos ));
@@ -1058,11 +1090,476 @@ if( TRUE == ydt_timer_flag )
                 upper layer when handle process flow
 * usage        : called by upper layer period function
 *********************************************************************************/
+
+void McLocalRecordVehicleInformationSupportIdListResponse_list_add_id
+    (
+    McLocalRecordVehicleInformationSupportIdListResponse_id_list_t * list,
+    int32_t id
+    )
+{
+if ( list->count < MAX_MCLOCALRECORDVEHICLEINFORMATIONSUPPORTIDLISTRESPONSE_ID_LIST_COUNT )
+    {
+    list->id_list[list->count] = id;
+    list->count++;
+    }
+}
+
+bool Encode_McLocalRecordVehicleInformationSupportIdListResponse_id_list
+    (
+    pb_ostream_t *ostream,
+    const pb_field_t *field,
+    void * const *arg
+    )
+{
+McLocalRecordVehicleInformationSupportIdListResponse_id_list_t * source = (McLocalRecordVehicleInformationSupportIdListResponse_id_list_t*)(*arg);
+
+// encode all
+for ( int i = 0; i < source->count; i++ )
+    {
+    if ( !pb_encode_tag_for_field( ostream, field ) )
+        {
+        const char * error = PB_GET_ERROR(ostream);
+        PRINTF("Encode_McLocalRecordVehicleInformationSupportIdListResponse_id_list field error: %s", error);
+        return false;
+        }
+
+
+    if ( !pb_encode_varint( ostream, source->id_list[i] ) )
+        {
+        const char * error = PB_GET_ERROR( ostream );
+        PRINTF( "Encode_McLocalRecordVehicleInformationSupportIdListResponse_id_list submessage error: %s", error );
+        return false;
+        }
+    }
+
+return true;
+}
+
+
+void McMalfunctionResponse_list_add_data
+    (
+    McMalfunctionResponse_list_t * list,
+    int32_t server,
+    int32_t code,
+    McMalfunctionStatus status
+    )
+{
+if ( list->count < MAX_MCMALFUNCTIONRESPONSE_LIST_COUNT )
+    {
+    list->ServerCodeStatus_list[list->count].server = server;
+    list->ServerCodeStatus_list[list->count].code = code;
+    list->ServerCodeStatus_list[list->count].status = status;
+    list->count++;
+    }
+}
+
+bool Encode_McMalfunctionResponse_list
+    (
+    pb_ostream_t *ostream,
+    const pb_field_t *field,
+    void * const *arg
+    )
+{
+McMalfunctionResponse_list_t * source = (McMalfunctionResponse_list_t*)(*arg);
+
+// encode all
+for ( int i = 0; i < source->count; i++ )
+    {
+    if ( !pb_encode_tag_for_field( ostream, field ) )
+        {
+        const char * error = PB_GET_ERROR( ostream );
+        PRINTF( "Encode_McMalfunctionResponse_list field error: %s", error );
+        return false;
+        }
+
+    McMalfunctionResponse_ServerCodeStatus subMessage_ServerCodeStatus = McMalfunctionResponse_ServerCodeStatus_init_default;
+    subMessage_ServerCodeStatus.server = source->ServerCodeStatus_list[i].server;
+    subMessage_ServerCodeStatus.code = source->ServerCodeStatus_list[i].code;
+    subMessage_ServerCodeStatus.status = source->ServerCodeStatus_list[i].status;
+
+    if ( !pb_encode_submessage( ostream, McMalfunctionResponse_ServerCodeStatus_fields, &subMessage_ServerCodeStatus ) )
+        {
+        const char * error = PB_GET_ERROR( ostream );
+        PRINTF( "Encode_McMalfunctionResponse_list submessage error: %s", error );
+        return false;
+        }
+
+    }
+
+return true;
+}
+
+
+void McServerListResponse_server_list_add_server
+    (
+    McServerListResponse_server_list_t * list,
+    int32_t server
+    )
+{
+if ( list->count < MAX_MMCSERVERLISTRESPONSE_LIST_COUNT )
+    {
+    list->server_list[list->count] = server;
+    list->count++;
+    }
+}
+
+bool Encode_McServerListResponse_server_list
+    (
+    pb_ostream_t *ostream,
+    const pb_field_t *field,
+    void * const *arg
+    )
+{
+McServerListResponse_server_list_t * source = (McServerListResponse_server_list_t*)(*arg);
+
+// encode all
+for ( int i = 0; i < source->count; i++ )
+    {
+    if ( !pb_encode_tag_for_field( ostream, field ) )
+        {
+        const char * error = PB_GET_ERROR(ostream);
+        PRINTF( "Encode_McServerListResponse_server_list field error: %s", error );
+        return false;
+        }
+
+
+    if ( !pb_encode_varint( ostream, source->server_list[i] ) )
+        {
+        const char * error = PB_GET_ERROR( ostream );
+        PRINTF( "Encode_McServerListResponse_server_list submessage error: %s", error );
+        return false;
+        }
+    }
+
+return true;
+}
+
+
+void IdDataList_add_IdData
+    (
+    IdDataList * list,
+    int32_t id,
+    uint8_t* data,
+    uint32_t len
+    )
+{
+if ( list->count < MAX_IDDATA_COUNT )
+    {
+    list->IdData_array[list->count].id = id;
+    memcpy (list->IdData_array[list->count].data, data, len );
+    list->IdData_array[list->count].len = len;
+    list->count++;
+    }
+}
+
+bool Encode_IdData_data
+    (
+    pb_ostream_t *ostream,
+    const pb_field_t *field,
+    void * const *arg
+    )
+{
+IdData * source = (IdData*)(*arg);
+
+if ( !pb_encode_tag_for_field( ostream, field ) )
+    {
+    const char * error = PB_GET_ERROR(ostream);
+    PRINTF( "Encode_IdData_data field error: %s", error );
+    return false;
+    }
+
+if ( !pb_encode_string(ostream, source->data,source->len ) )
+    {
+    const char * error = PB_GET_ERROR( ostream );
+    PRINTF( "Encode_IdDatas bytes error: %s", error );
+    return false;
+    }
+
+return true;
+}
+
+
+bool Encode_IdData_list
+    (
+    pb_ostream_t *ostream,
+    const pb_field_t *field,
+    void * const *arg
+    )
+{
+    IdDataList * source = (IdDataList*)(*arg);
+
+    // encode all IdData
+    for ( int i = 0; i < source->count; i++ )
+        {
+        if ( !pb_encode_tag_for_field( ostream, field ) )
+            {
+            const char * error = PB_GET_ERROR( ostream );
+            PRINTF( "Encode_IdData_list field error: %s", error );
+            return false;
+            }
+
+        /*All Id data sub message has the same structure, so use cVehicleIdentificationResponse*/
+        McVehicleIdentificationResponse_IdData subMessage_IdData = McVehicleIdentificationResponse_IdData_init_default;
+        subMessage_IdData.id = source->IdData_array[i].id;
+        subMessage_IdData.data.arg = &source->IdData_array[i];
+        subMessage_IdData.data.funcs.encode = Encode_IdData_data;
+
+        if (!pb_encode_submessage( ostream, source->fields, &subMessage_IdData ) )
+            {
+            const char * error = PB_GET_ERROR(ostream);
+            PRINTF("Encode_IdData_list submessage error: %s", error);
+            return false;
+            }
+        }
+
+    return true;
+}
+
+void McFfdResponse_data_list_add_data
+    (
+    McFfdResponse_data_list_t* list,
+    uint8_t* data,
+    uint32_t len
+    )
+{
+if( list->count < MAX_MCFFDRESPONSE_DATA_LIST_COUNT )
+    {
+    memcpy( list->data_list_array[list->count].data, data, len );
+    list->data_list_array[list->count].len = len;
+    list->count++;
+    }
+}
+
+bool Encode_McFfdResponse_data_list
+    (
+    pb_ostream_t *ostream,
+    const pb_field_t *field,
+    void * const *arg
+    )
+{
+McFfdResponse_data_list_t * source = (McFfdResponse_data_list_t*)(*arg);
+
+// encode all IdData
+for ( int i = 0; i < source->count; i++ )
+    {
+    if ( !pb_encode_tag_for_field( ostream, field ) )
+        {
+        const char * error = PB_GET_ERROR( ostream );
+        PRINTF( "Encode_McFfdResponse_data_list field error: %s", error );
+        return false;
+        }
+
+
+    if ( !pb_encode_string( ostream, source->data_list_array[i].data, source->data_list_array[i].len ) )
+        {
+        const char * error = PB_GET_ERROR( ostream );
+        PRINTF( "Encode_McFfdResponse_data_list submessage error: %s", error );
+        return false;
+        }
+    }
+
+return true;
+}
+
+size_t Gen_McServerListResponse
+    (
+    McServerListResponse_server_list_t* pList,
+    uint8_t* out_buf,
+    size_t out_buf_size
+    )
+{
+McServerListResponse mc_server_list_resp_fb = McServerListResponse_init_default;
+
+// prepare the nanopb ENCODING callback
+mc_server_list_resp_fb.server_list.arg = pList;
+mc_server_list_resp_fb.server_list.funcs.encode = Encode_McServerListResponse_server_list;
+
+// call nanopb
+pb_ostream_t ostream = pb_ostream_from_buffer( out_buf, out_buf_size );
+if ( !pb_encode( &ostream, McServerListResponse_fields, &mc_server_list_resp_fb ) )
+    {
+    const char * error = PB_GET_ERROR( &ostream );
+    PRINTF( "Gen_McServerListResponse pb_encode error: %s\r\n", error );
+    return 0;
+    }
+else
+    {
+    PRINTF( "Gen_McServerListResponse pb_encode for: %d bytes\r\n", ostream.bytes_written );
+    return ostream.bytes_written;
+    }
+
+}
+
+size_t Gen_McMalfunctionResponse
+    (
+    McMalfunctionResponse_list_t* pList,
+    uint8_t* out_buf,
+    size_t out_buf_size
+    )
+{
+McMalfunctionResponse mc_malfunction_resp_fb = McMalfunctionResponse_init_default;
+
+// prepare the nanopb ENCODING callback
+mc_malfunction_resp_fb.list.arg = pList;
+mc_malfunction_resp_fb.list.funcs.encode = Encode_McMalfunctionResponse_list;
+
+// call nanopb
+pb_ostream_t ostream = pb_ostream_from_buffer( out_buf, out_buf_size );
+if ( !pb_encode( &ostream, McMalfunctionResponse_fields, &mc_malfunction_resp_fb ) )
+    {
+    const char * error = PB_GET_ERROR( &ostream );
+    PRINTF( "Gen_McMalfunctionResponse pb_encode error: %s\r\n", error );
+    return 0;
+    }
+else
+    {
+    #if PB_MESSAGE_WHEN_SUCCESS
+        PRINTF( "Gen_McMalfunctionResponse pb_encode for: %d bytes\r\n", ostream.bytes_written );
+    #endif
+    return ostream.bytes_written;
+    }
+
+}
+
+size_t Gen_McLocalRecordVehicleInformationSupportIdListResponse
+    (
+    int32_t server,
+    McLocalRecordVehicleInformationSupportIdListResponse_id_list_t* pList,
+    uint8_t* out_buf,
+    size_t out_buf_size
+    )
+{
+McLocalRecordVehicleInformationSupportIdListResponse mc_support_server_list_resp_fb = McLocalRecordVehicleInformationSupportIdListResponse_init_zero;
+
+// prepare the nanopb ENCODING callback
+mc_support_server_list_resp_fb.server = server;
+mc_support_server_list_resp_fb.id_list.arg = pList;
+mc_support_server_list_resp_fb.id_list.funcs.encode = Encode_McLocalRecordVehicleInformationSupportIdListResponse_id_list;
+
+// call nanopb
+pb_ostream_t ostream = pb_ostream_from_buffer( out_buf, out_buf_size );
+if ( !pb_encode(&ostream, McLocalRecordVehicleInformationSupportIdListResponse_fields, &mc_support_server_list_resp_fb ) )
+    {
+    const char * error = PB_GET_ERROR( &ostream );
+    PRINTF( "Gen_McLocalRecordVehicleInformationSupportIdListResponse pb_encode error: %s\r\n", error );
+    return 0;
+    }
+else
+    {
+    #if PB_MESSAGE_WHEN_SUCCESS
+        PRINTF( "Gen_McLocalRecordVehicleInformationSupportIdListResponse pb_encode for: %d bytes\r\n", ostream.bytes_written );
+    #endif
+    return ostream.bytes_written;
+    }
+
+}
+
+
+/*For McVehicleIdentificationResponse, McMarketDataResponse, McLocalRecordVehicleInformationResponse*/
+size_t Gen_McVehicleIdentificationResponse
+    (
+    int32_t server,
+    IdDataList* pList,
+    uint8_t* out_buf,
+    size_t out_buf_size
+    )
+{
+McVehicleIdentificationResponse mc_vehicle_iden_resp_fb = McVehicleIdentificationResponse_init_zero;
+
+// prepare the nanopb ENCODING callback
+mc_vehicle_iden_resp_fb.server = server;
+mc_vehicle_iden_resp_fb.data_list.arg = pList;
+mc_vehicle_iden_resp_fb.data_list.funcs.encode = Encode_IdData_list;
+
+// call nanopb
+pb_ostream_t ostream = pb_ostream_from_buffer( out_buf, out_buf_size );
+if (!pb_encode(&ostream, McVehicleIdentificationResponse_fields, &mc_vehicle_iden_resp_fb ) )
+    {
+    const char * error = PB_GET_ERROR( &ostream );
+    PRINTF("Gen_McVehicleIdentificationResponse pb_encode error: %s\r\n", error);
+    return 0;
+    }
+else
+    {
+    #if PB_MESSAGE_WHEN_SUCCESS
+        PRINTF("Gen_McVehicleIdentificationResponse pb_encode for: %d bytes\r\n", ostream.bytes_written );
+    #endif
+    return ostream.bytes_written;
+    }
+}
+
+size_t Gen_McCanResponse
+    (
+    IdDataList* pList,
+    uint8_t* out_buf,
+    size_t out_buf_size
+    )
+{
+McCanResponse mc_can_resp_fb = McCanResponse_init_default;
+
+// prepare the nanopb ENCODING callback
+mc_can_resp_fb.data_list.arg = pList;
+mc_can_resp_fb.data_list.funcs.encode = Encode_IdData_list;
+
+// call nanopb
+pb_ostream_t ostream = pb_ostream_from_buffer( out_buf, out_buf_size );
+if ( !pb_encode( &ostream, McCanResponse_fields, &mc_can_resp_fb ) )
+    {
+    const char * error = PB_GET_ERROR( &ostream );
+    PRINTF( "Gen_McCanResponse pb_encode error: %s\r\n", error );
+    return 0;
+    }
+else
+    {
+    #if PB_MESSAGE_WHEN_SUCCESS
+        PRINTF( "Gen_McCanResponse pb_encode for: %d bytes\r\n", ostream.bytes_written );
+    #endif
+
+    return ostream.bytes_written;
+    }
+}
+
+
+size_t Gen_McFfdResponse
+    (
+    int32_t server,
+    McFfdResponse_data_list_t* pList,
+    uint8_t* out_buf,
+    size_t out_buf_size
+    )
+{
+McFfdResponse mc_ffd_resp_fb = McFfdResponse_init_zero;
+
+// prepare the nanopb ENCODING callback
+mc_ffd_resp_fb.server = server;
+mc_ffd_resp_fb.data_list.arg = pList;
+mc_ffd_resp_fb.data_list.funcs.encode = Encode_McFfdResponse_data_list;
+
+// call nanopb
+pb_ostream_t ostream = pb_ostream_from_buffer( out_buf, out_buf_size );
+if (!pb_encode( &ostream, McFfdResponse_fields, &mc_ffd_resp_fb ) )
+    {
+    const char * error = PB_GET_ERROR( &ostream );
+    PRINTF( "Gen_McFfdResponse pb_encode error: %s\r\n", error );
+    return 0;
+    }
+else
+    {
+    #if PB_MESSAGE_WHEN_SUCCESS
+        PRINTF("Gen_McFfdResponse pb_encode for: %d bytes\r\n", ostream.bytes_written );
+    #endif
+    return ostream.bytes_written;
+    }
+
+}
+
+
 void client_appl_main_5ms_handler
     (
     void
     )
 {
+
 client_appl_delay_ydt_online();
 
 if( FALSE == client_appl_diagnostic_enable() )
@@ -1191,52 +1688,6 @@ set_client_app_cmd_rsp_state( CMD_RSP_PROCESSING );
 BC_motocon_send_can_related_data( command, size, data,result_callback );
 }
 
-/*!******************************************************************************
-*
-* @public
-* Function name: client_appl_ble_req_authentication
-* Description  : authentication
-*********************************************************************************/
-boolean client_appl_ble_req_authentication
-    (
-    uint32 data_size,
-    const uint8* data
-    )
-{
-uint8 return_value = TRUE;
-const uint8* p_uuid = data + BLE_AUT_UUID_OFSET_ADDR;
-const uint8* p_ccu_id = data + BLE_AUT_CCU_ID_OFFSET_ADDR;
-const uint8* P_pass_key = data + BLE_AUT_PASS_KEY_OFFSET_ADDR;
-
-
-/*temporary,this data is read from EEP*/
-const uint8 tmep_ccu_id[BLE_AUT_CCU_ID_LENGTH] = {0};
-const uint8 temp_pass_key[BLE_AUT_PASS_KEY_LENGTH] = {0};
-const uint8 temp_uuid[BLE_AUT_UUID_KEY_LENGTH] = {0};
-
-uint8 data_total_length = BLE_AUT_CCU_ID_LENGTH + BLE_AUT_PASS_KEY_LENGTH + BLE_AUT_UUID_KEY_LENGTH;
-/*check CCU, pass_key, UUID*/
-if( (uint32)data_total_length != data_size )
-    {
-    return_value = FALSE;
-    }
-else
-    {
-    if( ( TRUE == client_appl_data_compare( p_ccu_id, tmep_ccu_id, BLE_AUT_CCU_ID_LENGTH ) )\
-        && ( TRUE == client_appl_data_compare( P_pass_key, temp_pass_key, BLE_AUT_PASS_KEY_LENGTH ) )\
-        && ( TRUE == client_appl_data_compare( p_uuid, temp_uuid, BLE_AUT_UUID_KEY_LENGTH ) ) )
-        {
-        return_value = TRUE;
-        }
-    else
-        {
-        return_value = FALSE;
-        }
-    }
-/*feedback check result to MOTOCAN*/
-
-return return_value;
-}
 
 
 /*!******************************************************************************
@@ -1274,7 +1725,7 @@ void client_appl_ble_rsp_connect_server_list
     )
 {
 uint8 index = 0x00;
-uint32 resp_data_pos = 0;
+uint32 server_code = 0;
 uint32 resp_data_length = 0;
 
 if( FALSE == check_result )
@@ -1283,16 +1734,24 @@ if( FALSE == check_result )
     }
 else
     {
-    for( ; index < SUPPORT_SERVER_NUM; index++ )
+    /* Clear the list */
+    g_McServerListResponse_server_list.count = 0;
+    for( index = 0; index < SUPPORT_SERVER_NUM; index++ )
         {
         if( SERVER_CONNECT == server_list_detect_infos[index].server_connect_status_default )
             {
-            resp_data_length += PROTO_SERVER_LEN; /*ECU code length: 4 bytes*/
-            connected_server_list[resp_data_pos] = client_app_data_swap_u32( client_appl_ble_server_code_mapping[index].ble_server_code );
-            resp_data_pos++;
+            McServerListResponse_server_list_add_server( &g_McServerListResponse_server_list, client_appl_ble_server_code_mapping[index].ble_server_code );
             }
         }
-        client_appl_response_can_related_data( BLE_RSP_CMD_SERVERLIST, resp_data_length, (uint8*)connected_server_list, &client_appl_cmd_rsp_result_notify );
+        resp_data_length = Gen_McServerListResponse( &g_McServerListResponse_server_list, McServerListResponse_protobuf, sizeof( McServerListResponse_protobuf ) );
+        if( 0 == resp_data_length )
+            {
+            client_appl_response_can_related_data( BLE_RSP_CMD_SERVERLIST, (uint32)BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL, &client_appl_cmd_rsp_result_notify );
+            }
+        else
+            {
+            client_appl_response_can_related_data( BLE_RSP_CMD_SERVERLIST, resp_data_length, (uint8*)McServerListResponse_protobuf, &client_appl_cmd_rsp_result_notify );
+            }
     }
 }
 
@@ -1333,6 +1792,85 @@ else
 return return_value;
 }
 
+
+/*!******************************************************************************
+*
+* @public
+* Function name: client_appl_get_curr_id_list_ptr
+* Description  : this function will get the address that ponit current repeat data list
+*********************************************************************************/
+id_list_type* client_appl_get_curr_id_list_ptr
+    (
+    void
+    )
+{
+return curr_id_list_ptr;
+}
+
+/*!******************************************************************************
+*
+* @public
+* Function name: client_appl_set_curr_id_list_ptr
+* Description  : this function will set the address that ponit current repeat data list
+*********************************************************************************/
+void client_appl_set_curr_id_list_ptr
+    (
+    id_list_type* ptr
+    )
+{
+curr_id_list_ptr = ptr;
+}
+
+
+/*!******************************************************************************
+*
+* @public
+* Function name: add_data_to_id_list
+* Description  : this function will fill the parse repeat type data into buff
+*********************************************************************************/
+boolean add_data_to_id_list
+    (
+    uint32 data
+    )
+{
+id_list_type* list = client_appl_get_curr_id_list_ptr();
+
+if( list == NULL )
+    {
+    return FALSE;
+    }
+
+if( list->id_list_num < MAX_ID_LIST_NUM )
+    {
+    list->id_list_array[list->id_list_num] = data;
+    list->id_list_num++;
+    }
+return TRUE;
+}
+
+/*!******************************************************************************
+*
+* @public
+* Function name: read_bytes
+* Description  : this function will read and handle repeat type data
+* NoteL: This is a callback function
+*********************************************************************************/
+boolean read_bytes
+(
+    pb_istream_t*     stream,
+    const pb_field_t* field,
+    void**            arg
+)
+{
+uint64 number = 0;
+while( stream->bytes_left )
+    {
+    pb_decode_varint( stream, &number );
+    add_data_to_id_list( (uint32) number);
+    }
+return TRUE;
+}
+
 /*!******************************************************************************
 *
 * @public
@@ -1346,39 +1884,68 @@ boolean client_appl_ble_req_malfunction
     const uint8* data
     )
 {
-uint8 channel_id = 0xFF;
+uint8 channel_id = NO_SERVER_CONNECT;
 uint8 status_code = 0;
 uint32 server_code = 0;
 uint32 interval_time = 0;
 
-/*check data length*/
-if( FALSE == is_request_interval )
+/*For Command: MALFUNCTION REQUEST */
+/*Command type: 0x0105 */
+if ( FALSE == is_request_interval )
     {
-    /*4 bytes server + 1byte status*/
-    if( MAL_CMD_LEN != data_size )
+    uint8 sdata[5] = {0x18,0xE0,0x09,0x20,0x01};
+    uint8 sdata_len = 5;
+    McMalfunctionRequest mal_fucntion_requset_pb = McMalfunctionRequest_init_zero;
+
+    #if ( TRUE == SIMULATE_INPUT_DEBUG )
+    pb_istream_t stream = pb_istream_from_buffer( sdata, sdata_len );
+    #else
+    pb_istream_t stream = pb_istream_from_buffer( data, data_size );
+    #endif
+
+
+    if (pb_decode( &stream, McMalfunctionRequest_fields, &mal_fucntion_requset_pb ) )
         {
-        return FALSE;
+        server_code = mal_fucntion_requset_pb.server;
+        status_code = mal_fucntion_requset_pb.status;
+        }
+    else
+        {
+        return E_PARSE_FAILED;
         }
     }
 else
+/*For Command: MALFUNCTION REQUEST INTERVAL*/
+/*Command type: 0x0109 */
     {
-    /*4 bytes server + 1byte status + 4 bytes interval_time*/
-    if( MAL_INTER_CMD_LEN != data_size )
+    uint8 sdata[8] = {0x18,0xE0,0x09,0x20,0x01,0x28,0xE0,0x09};
+    uint8 sdata_len = 8;
+    McMalfunctionIntervalRequest mal_fucntion_interval_requset_pb = McMalfunctionIntervalRequest_init_zero;
+    #if ( TRUE == SIMULATE_INPUT_DEBUG )
+    pb_istream_t stream = pb_istream_from_buffer( sdata, sdata_len );
+    #else
+    pb_istream_t stream = pb_istream_from_buffer( data, data_size );
+    #endif
+    if ( pb_decode( &stream, McMalfunctionIntervalRequest_fields, &mal_fucntion_interval_requset_pb ) )
         {
-        return FALSE;
+        server_code = (uint32)mal_fucntion_interval_requset_pb.server;
+        status_code = mal_fucntion_interval_requset_pb.status;
+        interval_time = mal_fucntion_interval_requset_pb.interval;
+        }
+    else
+        {
+        return E_PARSE_FAILED;
         }
     }
 
-/*Check server code and status code*/
-server_code = byte_merge_u32( data ) ;
-status_code = *( data + PROTO_SERVER_LEN );
+/*check current server is connect*/
 channel_id = client_appl_channel_mapping( server_code );
 if( NO_SERVER_CONNECT == channel_id  )
     {
-    return FALSE;
+    return E_PARAMETER_ERROR;
     }
-#ifdef APPL_PENDING
-/*the status code need confirm*/
+
+/*check status code*/
 switch( status_code )
     {
     case BLE_CMD_MAL_STATUS_MARK:
@@ -1398,15 +1965,17 @@ switch( status_code )
         break;
 
     default:
-        return FALSE;
+        return E_PARAMETER_ERROR;
         break;
     }
-#endif
 
-/*Check interval time*/
-if( TRUE == is_request_interval )
+if( FALSE == is_request_interval )
     {
-    interval_time = byte_merge_u32( data + MAL_CMD_LEN );
+    read_dtc_infos.is_cycle_transmission = FALSE;
+    read_dtc_infos.cycle_tarns_interval_time = STOP_INTER_TIME;
+    }
+else
+    {
     if( STOP_INTER_TIME == interval_time )
         {
         read_dtc_infos.is_cycle_transmission = FALSE;
@@ -1414,27 +1983,20 @@ if( TRUE == is_request_interval )
         }
     else
         {
-        /*received data uint: MS*/
-        /*The minimum interval time shall be 100ms*/
-        if( interval_time <= MIN_INTER_TIME )
-            {
-            interval_time = MIN_INTER_TIME;
-            }
         read_dtc_infos.is_cycle_transmission = TRUE;
-        read_dtc_infos.cycle_tarns_interval_time = interval_time / 5 ;
+        read_dtc_infos.cycle_tarns_interval_time = interval_time;
         }
     }
-else
-    {
-    read_dtc_infos.is_cycle_transmission = FALSE;
-    read_dtc_infos.cycle_tarns_interval_time = STOP_INTER_TIME;
-    }
+
 read_dtc_infos.connected_server_id = channel_id;
 read_dtc_infos.current_STADTC = status_code;
 set_current_conncet_server_id( channel_id );
 client_appl_set_current_process_flow_step( PROCESS_FLOW_INIT_RDTCBS );
 
-return TRUE;
+g_McMalfunctionResponse_list.count = 0;
+
+
+return E_SUCCESS;
 }
 
 
@@ -1451,40 +2013,44 @@ boolean client_appl_ble_req_vehicle_identification
     )
 {
 uint8 index = 0;
-boolean read_all_id = FALSE;
-uint8 received_id_amount = 0x00;
 uint8 channel_id = NO_SERVER_CONNECT;
-uint32 server_code = byte_merge_u32( data );
-uint32 data_element = 0;
-uint8 data_addr_offset = 0;
+uint32 server_code = 0;
+boolean read_all_id = FALSE;
+
+uint8 sdata[13] = { 0x18, 0xE0, 0x09, 0x22, 0x06, 0x03, 0x8E, 0x02 ,0x9E ,0xA7 ,0x05, 0x28, 0x01 };
+uint16 sdata_len = 13;
+McVehicleIdentificationRequest mc_vehicle_iden_req_fb = McVehicleIdentificationRequest_init_zero;
+
+/*Shall reset current id number when received a new command*/
+vehicle_iden_list.id_list_num = 0;
+client_appl_set_curr_id_list_ptr( &vehicle_iden_list );
+
+void* pointer = &vehicle_iden_list;
+mc_vehicle_iden_req_fb.id_list.arg = &pointer;
+mc_vehicle_iden_req_fb.id_list.funcs.decode = read_bytes;
+
+
+#if ( TRUE == SIMULATE_INPUT_DEBUG )
+    pb_istream_t stream = pb_istream_from_buffer( sdata, sdata_len );
+#else
+    pb_istream_t stream = pb_istream_from_buffer( data, data_size );
+#endif
+
+if( pb_decode( &stream, McVehicleIdentificationRequest_fields, &mc_vehicle_iden_req_fb ) )
+    {
+    server_code = mc_vehicle_iden_req_fb.server;
+    read_all_id = mc_vehicle_iden_req_fb.all_id;
+    }
+else
+    {
+    return E_PARSE_FAILED;
+    }
 
 /*check server code */
 channel_id = client_appl_channel_mapping( server_code );
 if( NO_SERVER_CONNECT == channel_id )
     {
-    return FALSE;
-    }
-
-/*Check data length */
-if( PROTO_VID_FIXED_LEN > data_size  )
-    {
-    return FALSE;
-    }
-else if( PROTO_VID_FIXED_LEN == data_size )
-    {
-    read_all_id = *( data + PROTO_VID_ID_LEN );
-    }
-else
-    {
-    if( ( data_size - PROTO_VID_FIXED_LEN ) % PROTO_VID_ID_LEN != 0x00 )
-        {
-        return FALSE;
-        }
-    else
-        {
-        received_id_amount = ( data_size - PROTO_VID_FIXED_LEN ) / PROTO_VID_ID_LEN;
-        read_all_id = *( data + data_size - 1);
-        }
+    return E_PARAMETER_ERROR;
     }
 
 /*command data handle*/
@@ -1496,33 +2062,28 @@ if( TRUE == read_all_id )
     read_common_identifier_infos.common_id_list = (uint16*)support_common_data_id_list;
     read_common_identifier_infos.common_data_amount = SUPPORT_COMMON_COUNT;
     read_common_identifier_infos.current_common_data_index = 0x00;
-    return TRUE;
+
+    g_IdDataList.count = 0;
+    g_IdDataList.fields = McVehicleIdentificationResponse_IdData_fields;
+    return E_SUCCESS;
     }
-else if( 0x01 <= received_id_amount )
+else
     {
-    for( index = 0; index < received_id_amount; index ++ )
+    for( index = 0; index < vehicle_iden_list.id_list_num; index++ )
         {
-        data_addr_offset = PROTO_SERVER_LEN + index*PROTO_VID_ID_LEN;
-        data_element = byte_merge_u32( data + data_addr_offset );
-        rx_comman_data_id_list[index] = (uint16)data_element;
+        rx_comman_data_id_list[index] = (uint16)vehicle_iden_list.id_list_array[index];
         }
+
     client_appl_set_current_process_flow_step( PROCESS_FLOW_RDBCID );
     set_current_conncet_server_id( channel_id );
     read_common_identifier_infos.connected_server_id = channel_id;
     read_common_identifier_infos.common_id_list = rx_comman_data_id_list;
-    #if 0
-    for( index = 0; index < received_id_amount; index++ )
-        {
-        rx_comman_data_id_list[index] = clent_appl_data_swap_u16( rx_comman_data_id_list[index] );
-        }
-    #endif
-    read_common_identifier_infos.common_data_amount = received_id_amount;
+    read_common_identifier_infos.common_data_amount = vehicle_iden_list.id_list_num;
     read_common_identifier_infos.current_common_data_index = 0x00;
-    return TRUE;
-    }
-else
-    {
-    return FALSE;
+
+    g_IdDataList.count = 0;
+    g_IdDataList.fields = McVehicleIdentificationResponse_IdData_fields;
+    return E_SUCCESS;
     }
 }
 
@@ -1540,41 +2101,44 @@ boolean client_appl_ble_req_market_data
     )
 {
 uint8 index = 0;
-uint8 data_addr_offset = 0;
-uint8 received_id_amount = 0x00;
 uint8 channel_id = NO_SERVER_CONNECT;
-uint32 data_element = 0;
-uint32 server_code = byte_merge_u32( data );
+uint32 server_code = 0;
 boolean read_all_id = FALSE;
 
+uint8 sdata[11] = { 0x18, 0xE0, 0x09, 0x22, 0x06, 0x03, 0x8E, 0x02 ,0x9E ,0xA7 ,0x05 };
+uint16 sdata_len = 11;
+McMarketDataRequest mc_market_data_req_fb = McMarketDataRequest_init_zero;
+
+
+/*Shall reset current id number when received a new command*/
+market_data_list.id_list_num = 0;
+client_appl_set_curr_id_list_ptr( &market_data_list );
+void* pointer = &market_data_list;
+mc_market_data_req_fb.id_list.arg = &pointer;
+mc_market_data_req_fb.id_list.funcs.decode = read_bytes;
+
+
+#if ( TRUE == SIMULATE_INPUT_DEBUG )
+    pb_istream_t stream = pb_istream_from_buffer( sdata, sdata_len );
+#else
+    pb_istream_t stream = pb_istream_from_buffer( data, data_size );
+#endif
+
+if( pb_decode( &stream, McMarketDataRequest_fields, &mc_market_data_req_fb ) )
+    {
+    server_code = mc_market_data_req_fb.server;
+    read_all_id = mc_market_data_req_fb.all_id;
+    }
+else
+    {
+    return E_PARSE_FAILED;
+    }
 
 /*check server code */
 channel_id = client_appl_channel_mapping( server_code );
 if( NO_SERVER_CONNECT == channel_id )
     {
-    return FALSE;
-    }
-
-/*Check data length */
-if( PROTO_MARKET_FIXED_LEN > data_size  )
-    {
-    return FALSE;
-    }
-else if( PROTO_MARKET_FIXED_LEN == data_size )
-    {
-    read_all_id = *( data + PROTO_MARIKET_ID_LEN );
-    }
-else
-    {
-    if( ( data_size - PROTO_MARKET_FIXED_LEN ) % PROTO_MARIKET_ID_LEN != 0x00 )
-        {
-        return FALSE;
-        }
-    else
-        {
-        received_id_amount = ( data_size - PROTO_MARKET_FIXED_LEN ) / PROTO_MARIKET_ID_LEN;
-        read_all_id = *( data + data_size - 1);
-        }
+    return E_PARAMETER_ERROR;
     }
 
 /*command data handle*/
@@ -1586,27 +2150,27 @@ if( TRUE == read_all_id )
     read_loacl_market_infos.local_id_list = (uint8*)support_market_data_id_list;
     read_loacl_market_infos.amount_local_data = SUPPORT_MARKET_COUNT;
     read_loacl_market_infos.current_local_data_index = 0x00;
-    return TRUE;
+
+    g_IdDataList.count = 0;
+    g_IdDataList.fields = McMarketDataResponse_IdData_fields;
+    return E_SUCCESS;
     }
-else if( 0x01 <= received_id_amount )
+else
     {
-    for( index = 0; index < received_id_amount; index++ )
+    for( index = 0; index < market_data_list.id_list_num; index++ )
         {
-        data_addr_offset = PROTO_SERVER_LEN + index*PROTO_MARKET_FIXED_LEN;
-        data_element = byte_merge_u32( data + data_addr_offset );
-        rx_market_data_id_list[index] = (uint8)data_element;
+        rx_market_data_id_list[index] = (uint8)market_data_list.id_list_array[index];
         }
     client_appl_set_current_process_flow_step( PROCESS_FLOW_MARKET );
     set_current_conncet_server_id( channel_id );
     read_loacl_market_infos.connected_server_id = channel_id;
     read_loacl_market_infos.local_id_list = rx_market_data_id_list;
-    read_loacl_market_infos.amount_local_data = received_id_amount;
+    read_loacl_market_infos.amount_local_data = market_data_list.id_list_num;
     read_loacl_market_infos.current_local_data_index = 0x00;
-    return TRUE;
-    }
-else
-    {
-    return FALSE;
+
+    g_IdDataList.count = 0;
+    g_IdDataList.fields = McMarketDataResponse_IdData_fields;
+    return E_SUCCESS;
     }
 }
 
@@ -1623,20 +2187,30 @@ boolean client_appl_ble_req_vehicle_information_supproted_list
     uint8* data
     )
 {
+
+#if ( TRUE == SIMULATE_INPUT_DEBUG )
+data[0]= 0x04;
+data[1] = 0xE0;
+data_size = 2;
+#else
+#endif
+
 uint8 channel_id = NO_SERVER_CONNECT;
+uint16 server_code_u16 = 0;
+uint32 server_code = 0;
+
+if( 0x02 != data_size )
+    {
+    return E_PARAMETER_ERROR;
+    }
 
 /*Check server code*/
-uint32 server_code = byte_merge_u32( data );
+server_code_u16 = byte_merge_u16( data );
+server_code = (uint32)server_code_u16;
 channel_id = client_appl_channel_mapping( server_code );
 if( NO_SERVER_CONNECT == channel_id )
     {
-    return FALSE;
-    }
-
-/*check data length*/
-if( PROTO_SERVER_LEN != data_size )/*server_code*/
-    {
-    return FALSE;
+    return E_PARAMETER_ERROR;
     }
 
 client_appl_set_current_process_flow_step( PROCESS_FLOW_MONITOR );
@@ -1647,7 +2221,10 @@ read_local_monitor_infos.amount_local_data = SUPPORT_MONITOR_COUNT;
 read_local_monitor_infos.current_local_data_index = 0x00;
 read_local_monitor_infos.is_request_support_list_flow = TRUE;
 read_local_monitor_infos.support_id_received_flag_array = (boolean*)support_id_received_flag;
-return TRUE;
+
+g_McLocalRecordVehicleInformationSupportIdListResponse_id_list.count = 0;
+
+return E_SUCCESS;
 }
 
 /*!******************************************************************************
@@ -1663,128 +2240,197 @@ boolean client_appl_ble_req_vehicle_information
     uint8* data
     )
 {
+uint8 index = 0;
 uint8 channel_id = NO_SERVER_CONNECT;
 uint32 interval_time= 0;
-uint8 received_id_amount = 0x00;
 boolean read_all_id = FALSE;
-uint8 inter_addr_offset = 0;
-uint32 id_data = 0;
-uint8 index = 0;
+uint32 server_code = 0;
 
-/*Check server code */
-uint32 server_code = byte_merge_u32( data );
-channel_id = client_appl_channel_mapping( server_code );
-if( NO_SERVER_CONNECT == channel_id )
-    {
-    return FALSE;
-    }
-
-/*check data length*/
+/*For command VEHICLE INFORMATION REQUEST */
+/*Command type: 0x010E*/
 if( FALSE == is_request_interval )
     {
-    if( PROTO_VIF_FIXED_LEN > data_size )
+    /*--------------------------------command parse--------------------------------------------*/
+    uint8 sdata[13] = { 0x18, 0xE0, 0x09, 0x22, 0x06, 0x03, 0x8E, 0x02 ,0x9E ,0xA7 ,0x05, 0x28, 0x00 };
+    uint16 sdata_len = 13;
+    McLocalRecordVehicleInformationRequest mc_vehicle_info_req_fb = McLocalRecordVehicleInformationRequest_init_zero;
+
+
+    /*Shall reset current id number when received a new command*/
+    vhicle_information_list.id_list_num = 0;
+    client_appl_set_curr_id_list_ptr( &vhicle_information_list );
+    void* pointer = &vhicle_information_list;
+    mc_vehicle_info_req_fb.id_list.arg = &pointer;
+    mc_vehicle_info_req_fb.id_list.funcs.decode = read_bytes;
+
+
+#if ( TRUE == SIMULATE_INPUT_DEBUG )
+    pb_istream_t stream = pb_istream_from_buffer( sdata, sdata_len );
+#else
+    pb_istream_t stream = pb_istream_from_buffer( data, data_size );
+#endif
+    if( pb_decode( &stream, McLocalRecordVehicleInformationRequest_fields, &mc_vehicle_info_req_fb ) )
         {
-        return FALSE;
-        }
-    else if( PROTO_VIF_FIXED_LEN == data_size )
-        {
-        read_all_id = *( data + PROTO_SERVER_LEN );
+        server_code = mc_vehicle_info_req_fb.server;
+        read_all_id = mc_vehicle_info_req_fb.all_id;
         }
     else
         {
-        if( ( data_size - PROTO_VIF_FIXED_LEN ) % PROTO_VIF_ID_LEN != 0x00 )
-            {
-            return FALSE;
-            }
-        else
-            {
-            received_id_amount = ( data_size - PROTO_VIF_FIXED_LEN ) / PROTO_VIF_ID_LEN;
-            read_all_id = *( data + data_size - 1);/*PROTO_VIF_ALL_ID_LEN*/
-            }
+        return E_PARSE_FAILED;
         }
-    }
-else
-    {
-    if( PROTO_VIF_INTER_FIXED_LEN > data_size )
-        {
-        return FALSE;
-        }
-    else if( PROTO_VIF_INTER_FIXED_LEN == data_size )
-        {
-        read_all_id = *( data + PROTO_SERVER_LEN );
-        }
-    else
-        {
-        if( ( data_size - PROTO_VIF_INTER_FIXED_LEN ) % PROTO_VIF_ID_LEN != 0x00 )
-            {
-            return FALSE;
-            }
-        else
-            {
-            received_id_amount = ( data_size - PROTO_VIF_INTER_FIXED_LEN ) / PROTO_VIF_ID_LEN;
-            read_all_id = *( data + data_size - 5);/*PROTO_VIF_ALL_ID_LEN + PROTO_VIF_ALL_ID_LEN*/
-            }
-        }
-    }
 
+    /*--------------------------------Process flow--------------------------------------------*/
+    /*Check server code*/
+    channel_id = client_appl_channel_mapping( server_code );
+    if( NO_SERVER_CONNECT == channel_id )
+        {
+        return E_PARSE_FAILED;
+        }
 
-
-/*data handle*/
-if( TRUE == is_request_interval )
-    {
-    inter_addr_offset = PROTO_VIF_INTER_OFFSET( data_size );
-    interval_time = byte_merge_u32( data + inter_addr_offset );
-    if( STOP_INTER_TIME == interval_time )
+    if( TRUE == read_all_id )
         {
         read_local_monitor_infos.is_cycle_transmission = FALSE;
         read_local_monitor_infos.cycle_tarns_interval_time = STOP_INTER_TIME;
+        read_local_monitor_infos.local_id_list = (uint8*)support_monitor_data_id_list;
+        read_local_monitor_infos.amount_local_data = SUPPORT_MONITOR_COUNT;
+        client_appl_set_current_process_flow_step( PROCESS_FLOW_MONITOR );
+        read_local_monitor_infos.current_local_data_index = 0x00;
+        read_local_monitor_infos.is_request_support_list_flow = FALSE;
+        read_local_monitor_infos.connected_server_id = channel_id;
+        set_current_conncet_server_id( channel_id );
+
+        g_IdDataList.count = 0;
+        g_IdDataList.fields = McLocalRecordVehicleInformationResponse_fields;
+        return E_SUCCESS;
+        }
+    else if( FALSE == read_all_id )
+        {
+        for( index = 0; index < vhicle_information_list.id_list_num; index++ )
+            {
+            rx_monitor_data_id_list[index] = vhicle_information_list.id_list_array[index];
+            }
+        read_local_monitor_infos.is_cycle_transmission = FALSE;
+        read_local_monitor_infos.cycle_tarns_interval_time = STOP_INTER_TIME;
+        read_local_monitor_infos.local_id_list = (uint8*)rx_monitor_data_id_list;
+        read_local_monitor_infos.amount_local_data =  vhicle_information_list.id_list_num;
+        client_appl_set_current_process_flow_step( PROCESS_FLOW_MONITOR );
+        read_local_monitor_infos.current_local_data_index = 0x00;
+        read_local_monitor_infos.is_request_support_list_flow = FALSE;
+        read_local_monitor_infos.connected_server_id = channel_id;
+
+        g_IdDataList.count = 0;
+        g_IdDataList.fields = McLocalRecordVehicleInformationResponse_fields;
+        return E_SUCCESS;
         }
     else
         {
-        /*received data uint: MS*/
-        /*The minimum interval time shall be 100ms*/
-        if( interval_time <= MIN_INTER_TIME )
-            {
-            interval_time = MIN_INTER_TIME;
-            }
-        read_local_monitor_infos.is_cycle_transmission = TRUE;
-        read_local_monitor_infos.cycle_tarns_interval_time = interval_time/5;
+        return E_PARAMETER_ERROR;
         }
     }
-else
-    {
-    read_local_monitor_infos.is_cycle_transmission = FALSE;
-    read_local_monitor_infos.cycle_tarns_interval_time = STOP_INTER_TIME;
-    }
 
 
-if( TRUE == read_all_id )
+
+/*For command VEHICLE INFORMATION INTERVAL REQUEST */
+/*Command type: 0x0110*/
+if( TRUE == is_request_interval )
     {
-    read_local_monitor_infos.local_id_list = (uint8*)support_monitor_data_id_list;
-    read_local_monitor_infos.amount_local_data = SUPPORT_MONITOR_COUNT;
-    }
-else if( 0 < received_id_amount )
-    {
-    for( index = 0; index < received_id_amount; index ++ )
+    /*--------------------------------command parse--------------------------------------------*/
+    uint8 sdata[16] = { 0x18, 0xE0, 0x09, 0x22, 0x06, 0x03, 0x8E, 0x02 ,0x9E ,0xA7 ,0x05, 0x28, 0x01, 0x30, 0xE0, 0x09};
+    uint16 sdata_len = 16;
+    McLocalRecordVehicleInformationIntervalRequest mc_vehicle_info_inter_req_fb = McLocalRecordVehicleInformationIntervalRequest_init_zero;
+
+
+    /*Shall reset current id number when received a new command*/
+    vhicle_information_list.id_list_num = 0;
+    client_appl_set_curr_id_list_ptr( &vhicle_information_list );
+    void* pointer = &vhicle_information_list;
+    mc_vehicle_info_inter_req_fb.id_list.arg = &pointer;
+    mc_vehicle_info_inter_req_fb.id_list.funcs.decode = read_bytes;
+
+
+#if ( TRUE == SIMULATE_INPUT_DEBUG )
+    pb_istream_t stream = pb_istream_from_buffer( sdata, sdata_len );
+#else
+    pb_istream_t stream = pb_istream_from_buffer( data, data_size );
+#endif
+    if( pb_decode( &stream, McLocalRecordVehicleInformationIntervalRequest_fields, &mc_vehicle_info_inter_req_fb ) )
         {
-        id_data = byte_merge_u32(data + PROTO_SERVER_LEN + index*PROTO_VIF_ID_LEN );
-        rx_monitor_data_id_list[index] = (uint8 )id_data;
+        server_code = mc_vehicle_info_inter_req_fb.server;
+        read_all_id = mc_vehicle_info_inter_req_fb.all_id;
+        interval_time = mc_vehicle_info_inter_req_fb.interval;
         }
-    read_local_monitor_infos.local_id_list = rx_monitor_data_id_list;
-    read_local_monitor_infos.amount_local_data = received_id_amount;
-    }
-else
-    {
-    return FALSE;
-    }
+    else
+        {
+        return E_PARSE_FAILED;
+        }
 
-client_appl_set_current_process_flow_step( PROCESS_FLOW_MONITOR );
-read_local_monitor_infos.current_local_data_index = 0x00;
-read_local_monitor_infos.is_request_support_list_flow = FALSE;
-read_local_monitor_infos.connected_server_id = channel_id;
-set_current_conncet_server_id( channel_id );
+    /*--------------------------------Process flow--------------------------------------------*/
+    /*Check server code*/
+    channel_id = client_appl_channel_mapping( server_code );
+    if( NO_SERVER_CONNECT == channel_id )
+        {
+        return E_PARSE_FAILED;
+        }
 
-return TRUE;
+    if( TRUE == read_all_id )
+        {
+        if( STOP_INTER_TIME == interval_time )
+            {
+            read_local_monitor_infos.is_cycle_transmission = FALSE;
+            read_local_monitor_infos.cycle_tarns_interval_time = STOP_INTER_TIME;
+            }
+        else
+            {
+            read_local_monitor_infos.is_cycle_transmission = TRUE;
+            read_local_monitor_infos.cycle_tarns_interval_time = read_all_id / 5;
+            }
+
+        read_local_monitor_infos.local_id_list = (uint8*)support_monitor_data_id_list;
+        read_local_monitor_infos.amount_local_data = SUPPORT_MONITOR_COUNT;
+        client_appl_set_current_process_flow_step( PROCESS_FLOW_MONITOR );
+        read_local_monitor_infos.current_local_data_index = 0x00;
+        read_local_monitor_infos.is_request_support_list_flow = FALSE;
+        read_local_monitor_infos.connected_server_id = channel_id;
+        set_current_conncet_server_id( channel_id );
+
+        g_IdDataList.count = 0;
+        g_IdDataList.fields = McLocalRecordVehicleInformationResponse_fields;
+        return E_SUCCESS;
+        }
+    else if( FALSE == read_all_id )
+        {
+        for( index = 0; index < vhicle_information_list.id_list_num; index++ )
+            {
+            rx_monitor_data_id_list[index] = vhicle_information_list.id_list_array[index];
+            }
+
+        if( interval_time == 0 )
+            {
+            read_local_monitor_infos.is_cycle_transmission = FALSE;
+            read_local_monitor_infos.cycle_tarns_interval_time = STOP_INTER_TIME;
+            }
+        else
+            {
+            read_local_monitor_infos.is_cycle_transmission = TRUE;
+            read_local_monitor_infos.cycle_tarns_interval_time = read_all_id / 5;
+            }
+        read_local_monitor_infos.local_id_list = (uint8*)rx_monitor_data_id_list;
+        read_local_monitor_infos.amount_local_data =  vhicle_information_list.id_list_num;
+        client_appl_set_current_process_flow_step( PROCESS_FLOW_MONITOR );
+        read_local_monitor_infos.current_local_data_index = 0x00;
+        read_local_monitor_infos.is_request_support_list_flow = FALSE;
+        read_local_monitor_infos.connected_server_id = channel_id;
+
+        g_IdDataList.count = 0;
+        g_IdDataList.fields = McLocalRecordVehicleInformationResponse_fields;
+        return E_SUCCESS;
+        }
+    else
+        {
+        return E_PARAMETER_ERROR;
+        }
+    }
+return E_SUCCESS;
 }
 
 
@@ -1801,135 +2447,162 @@ boolean client_app_ble_req_freeze_frame_data
     )
 {
 uint8 channel_id = NO_SERVER_CONNECT;
+uint16 server_code_u16 = 0;
 uint32 server_code = 0;
 
-/*Check server code*/
-server_code = byte_merge_u32( data );
-channel_id = client_appl_channel_mapping( server_code );
-if( NO_SERVER_CONNECT == channel_id )
+#if ( TRUE == SIMULATE_INPUT_DEBUG )
+data[0]= 0x04;
+data[1] = 0xE0;
+data_size = 2;
+#else
+#endif
+
+/*Check data length*/
+if( 0x02 != data_size )
     {
-    return FALSE;
+    return E_PARAMETER_ERROR;
     }
 
-if( PROTO_FFFD_LEN != (uint8)data_size )
+/*Check server code*/
+server_code_u16 = byte_merge_u16( data );
+server_code = (uint32)server_code_u16;
+channel_id = client_appl_channel_mapping( server_code );
+
+if( NO_SERVER_CONNECT == channel_id )
     {
-    return FALSE;
+    return E_PARAMETER_ERROR;
     }
 
 client_appl_set_current_process_flow_step( PROCESS_FLOW_RFFD );
 set_current_conncet_server_id( channel_id );
 read_freeze_frame_data_infos.connected_server_id = channel_id;
+g_McFfdResponse_data_list.count = 0;
 
-return TRUE;
+return E_SUCCESS;
 }
 
 
-/*!******************************************************************************
-*
-* @public
-* Function name: client_appl_cmd_rsp_result_notify
-* Description  : this function will reset data storage zone
-* Usage: Callback function by upper layer when upper layer transmit data finished
-*********************************************************************************/
-void client_appl_cmd_rsp_result_notify
-    (
-    const uint8 vlaue
-    )
-{
-client_process_flow_type process_flow = client_get_current_process_flow();
-
-
-if( CMD_RSP_PROCESSING != get_client_app_cmd_rsp_state() )
-    {
-    return;
-    }
-
-switch( process_flow )
-    {
-    case PROCESS_FLOW_DETECT_SERVER:
-        (void)memset( connected_server_list, 0x00, sizeof(connected_server_list) );
-        set_client_app_cmd_rsp_state( CMD_RSP_DONE );
-        break;
-
-    case PROCESS_FLOW_INIT_RDTCBS:
-        if( TRUE == read_dtc_infos.is_storge_init_dtc )
-            {
-            client_mem_reset_data();
-            }
-        set_client_app_cmd_rsp_state( CMD_RSP_DONE );
-        break;
-
-    case PROCESS_FLOW_RDBCID:
-    case PROCESS_FLOW_MARKET:
-    case PROCESS_FLOW_MONITOR:
-    case PROCESS_FLOW_RFFD:
-        client_mem_reset_data();
-        set_client_app_cmd_rsp_state( CMD_RSP_DONE );
-        break;
-
-    default:
-        set_client_app_cmd_rsp_state( CMD_RSP_IDLE );
-        break;
-    }
-}
-
-
+typedef void (*rsp_result_func_notify)(uint8);
 
 void client_appl_rsp_initial_dtc_after_ble_connect
     (
     boolean value
     )
 {
+uint8 index = 0;
+uint8 dtc_number = 0;
 uint8 result = 0x00;
 uint8* data_ptr =  NULL;
 uint16 data_length = 0;
+uint32 resp_data_len = 0;
 static uint8 current_send_channel_id = 0;
+uint32 server_code = 0;
+uint8* start_addr = NULL;
+uint16 dtc_code = 0;
+rsp_result_func_notify rsp_result_func_ptr = NULL;
 
 
 for( ; current_send_channel_id < SUPPORT_SERVER_NUM; current_send_channel_id++ )
     {
+    server_code = client_appl_ble_server_code_mapping[current_send_channel_id].ble_server_code ;
+
     if( SERVER_CONNECT == server_list_detect_infos[current_send_channel_id].server_connect_status_default )
         {
         client_mem_get_init_dtc_data( current_send_channel_id, &result, &data_length, &data_ptr );
 
-        /*current channel is valid and have been storaged initial data*/
+        /*choose callback function*/
+        if( current_send_channel_id == client_appl_get_last_detected_server_index() )
+            {
+            rsp_result_func_ptr = &client_appl_cmd_rsp_result_notify;
+            current_send_channel_id = 0;
+            }
+        else
+            {
+            rsp_result_func_ptr = &client_appl_rsp_initial_dtc_after_ble_connect;
+            current_send_channel_id++;
+            }
+
         if( E_OK == result )
             {
-            /*handle the last server*/
-            if( current_send_channel_id == client_appl_get_last_detected_server_index() )
+            g_McMalfunctionResponse_list.count = 0;
+            /*postive resposne data foramt */
+            /*  1 bytes SID  + n #DTC     + n *(2 bytes DTC + 1 bytes status)*/
+            dtc_number = data_ptr[BYTE_NUM_1];
+
+            if( ( 0 == dtc_number ) && ( 0x02 == data_length ) )
                 {
-                client_appl_response_can_related_data( BLE_RSP_CMD_MALFUNCTION, data_length, (uint8*)data_ptr, &client_appl_cmd_rsp_result_notify );
-                current_send_channel_id = 0;
-                return;
+                /*1 fill data*/
+                McMalfunctionResponse_list_add_data( &g_McMalfunctionResponse_list, server_code, 0x0000, read_dtc_infos.current_STADTC );
+
+                /*2 generate protobuf data*/
+                resp_data_len = Gen_McMalfunctionResponse( &g_McMalfunctionResponse_list, McMalfunctionResponse_protobuf, sizeof( McMalfunctionResponse_protobuf ) );
+
+                /*3 send protobuf data*/
+                if( 0 == resp_data_len )
+                    {
+                    client_appl_response_can_related_data( BLE_RSP_CMD_MALFUNCTION, 0x00, NULL, rsp_result_func_ptr );
+                    }
+                else
+                    {
+                    client_appl_response_can_related_data( BLE_RSP_CMD_MALFUNCTION,resp_data_len,McMalfunctionResponse_protobuf, rsp_result_func_ptr );
+                    }
                 }
-            /*handle the non-last server*/
-            else
+            else if( data_length == 3* dtc_number + 2 )
                 {
-                current_send_channel_id++;
-                client_appl_response_can_related_data( BLE_RSP_CMD_MALFUNCTION, data_length, (uint8*)data_ptr, &client_appl_rsp_initial_dtc_after_ble_connect );
+                /*1 fill data*/
+                for( index = 0; index < dtc_number; index++ )
+                    {
+                    start_addr = data_ptr + 2 + (dtc_number - 1 )* 3;
+                    if( read_dtc_infos.current_STADTC == start_addr[2] )
+                        {
+                        dtc_code = byte_merge_u16( start_addr );
+                         McMalfunctionResponse_list_add_data( &g_McMalfunctionResponse_list, server_code, dtc_code, McMalfunctionStatus_TRIANGLE );
+                        }
+                    }
+
+                /*2 generate protobuf data*/
+                resp_data_len = Gen_McMalfunctionResponse( &g_McMalfunctionResponse_list, McMalfunctionResponse_protobuf, sizeof( McMalfunctionResponse_protobuf ) );
+
+               /*3 send protobuf data*/
+                if( 0 == resp_data_len )
+                    {
+                    client_appl_response_can_related_data( BLE_RSP_CMD_MALFUNCTION, 0x00, NULL, rsp_result_func_ptr );
+                    }
+                else
+                    {
+                    client_appl_response_can_related_data( BLE_RSP_CMD_MALFUNCTION,resp_data_len,McMalfunctionResponse_protobuf, rsp_result_func_ptr );
+                    }
+                }
+           else
+                {
+                client_appl_response_can_related_data( BLE_RSP_CMD_MALFUNCTION, 0x00, NULL, rsp_result_func_ptr );
                 return;
                 }
             }
         /*current channel is valid,but no initial data*/
         else
             {
-            if( current_send_channel_id == client_appl_get_last_detected_server_index() )
-                {
-                current_send_channel_id = 0;
-                client_appl_response_can_related_data( BLE_RSP_CMD_MALFUNCTION, 0x00, NULL, &client_appl_cmd_rsp_result_notify );
-                return;
-                }
-            else
-                {
-                current_send_channel_id++;
-                client_appl_response_can_related_data( BLE_RSP_CMD_MALFUNCTION, 0x00, NULL, &client_appl_rsp_initial_dtc_after_ble_connect );
-                return;
-                }
+            client_appl_response_can_related_data( BLE_RSP_CMD_MALFUNCTION, 0x00, NULL, rsp_result_func_ptr );
+            return;
+            }
+        }
+    else
+        {
+        /*choose callback function*/
+        if( current_send_channel_id == client_appl_get_last_detected_server_index() )
+            {
+            /*There shall not call a callback fucntion*/
+            current_send_channel_id = 0;
+            }
+        else
+            {
+            current_send_channel_id++;
+            /*There shall call a callback fucntion*/
+            client_appl_rsp_initial_dtc_after_ble_connect( TRUE );
             }
         }
     }
 }
-
 
 /*!******************************************************************************
 *
@@ -1946,25 +2619,35 @@ uint8 index = 0x00;
 uint8 resp_data_pos = 0x00;
 uint32 resp_data_length = 0x00;
 
+
+/*Clear the list*/
+g_McServerListResponse_server_list.count = 0;
+
 /*Get connect server list data*/
 for( ; index < SUPPORT_SERVER_NUM; index++ )
     {
     if( SERVER_CONNECT == server_list_detect_infos[index].server_connect_status_default )
         {
-        resp_data_length += PROTO_SERVER_LEN; /*ECU code length: 4 bytes*/
-        connected_server_list[resp_data_pos] = client_app_data_swap_u32( client_appl_ble_server_code_mapping[index].ble_server_code );
-        resp_data_pos++;
+        McServerListResponse_server_list_add_server( &g_McServerListResponse_server_list, client_appl_ble_server_code_mapping[index].ble_server_code );
         }
     }
+/*Gernerate protobuf*/
+resp_data_length = Gen_McServerListResponse( &g_McServerListResponse_server_list, McServerListResponse_protobuf, sizeof( McServerListResponse_protobuf ) );
 
-/*LC will send init DTC data continuosly if have been storaged init DTC data*/
-if( TRUE == read_dtc_infos.is_storge_init_dtc )
+/*No valid data*/
+if( 0 == resp_data_length )
     {
-    client_appl_response_can_related_data( BLE_RSP_CMD_SERVERLIST, resp_data_length, (uint8*)connected_server_list, &client_appl_rsp_initial_dtc_after_ble_connect );
+    client_appl_response_can_related_data( BLE_RSP_CMD_SERVERLIST, resp_data_length, NULL, &client_appl_cmd_rsp_result_notify );
+    }
+/*LC will send init DTC data continuosly if have been storaged init DTC data*/
+else if( TRUE == read_dtc_infos.is_storge_init_dtc )
+    {
+    //client_appl_response_can_related_data( BLE_RSP_CMD_SERVERLIST, resp_data_length, (uint8*)McServerListResponse_protobuf, &client_appl_rsp_initial_dtc_after_ble_connect );
+     client_appl_response_can_related_data( BLE_RSP_CMD_SERVERLIST, resp_data_length, (uint8*)McServerListResponse_protobuf, &client_appl_cmd_rsp_result_notify );
     }
 else
     {
-    client_appl_response_can_related_data( BLE_RSP_CMD_SERVERLIST, resp_data_length, (uint8*)connected_server_list, &client_appl_cmd_rsp_result_notify );
+    client_appl_response_can_related_data( BLE_RSP_CMD_SERVERLIST, resp_data_length, (uint8*)McServerListResponse_protobuf, &client_appl_cmd_rsp_result_notify );
     }
 }
 
@@ -1992,18 +2675,31 @@ if( FALSE == client_appl_get_ble_connected_state() )
     return;
     }
 */
+uint32 temp = 0;
+PRINTF("Received cmd:%2x,Len %d\r\n",req_command, data_size);
+for(temp = 0; temp < data_size; temp++ )
+    {
+    PRINTF("%x ",data[temp]);
+    }
+PRINTF("\r\n");
+
 
 switch( req_command )
     {
+    /*This is only for DEBUG*/
+    case BLE_REQ_CMD_AUTHENTICATION:
+        client_appl_set_ble_connected_state( TRUE );
+        break;
+
     case BLE_REQ_CMD_SERVERLIST:
         CLIENT_DEBUG("BleCmdReqServerList SUCCESS\r\n");
         client_appl_ble_rsp_connect_server_list( client_appl_ble_req_connect_server_list());
         break;
 
     case BLE_REQ_CMD_MALFUNCTION:
-        if( FALSE == client_appl_ble_req_malfunction( FALSE, data_size, data ) )
+        if( E_SUCCESS != client_appl_ble_req_malfunction( FALSE, data_size, data ) )
             {
-            CLIENT_DEBUG("BleCmdMalFunction FAILED\r\n");
+            CLIENT_DEBUG("HandlerCMDResult BleCmdMalFunction FAILED\r\n");
             client_appl_response_can_related_data( BLE_RSP_CMD_MALFUNCTION, (uint32)BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL ,&client_appl_cmd_rsp_result_notify);
             }
         else
@@ -2013,7 +2709,7 @@ switch( req_command )
         break;
 
     case BLE_REQ_CMD_MALFUNCTION_INTERVAL:
-         if( FALSE == client_appl_ble_req_malfunction( TRUE, data_size, data ) )
+         if( E_SUCCESS != client_appl_ble_req_malfunction( TRUE, data_size, data ) )
             {
             CLIENT_DEBUG("BleCmdMalFunctionInterval FAILED\r\n");
             client_appl_response_can_related_data( BLE_RSP_CMD_MALFUNCTION, (uint32)BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL ,&client_appl_cmd_rsp_result_notify);
@@ -2025,15 +2721,19 @@ switch( req_command )
         break;
 
     case BLE_REQ_CMD_VEHICLE_IDENTIFICATION:
-        if( FALSE == client_appl_ble_req_vehicle_identification( data_size, data ) )
+        if( E_SUCCESS != client_appl_ble_req_vehicle_identification( data_size, data ) )
             {
             CLIENT_DEBUG("BleCmdVehicleFucntion FAILED\r\n");
             client_appl_response_can_related_data( BLE_RSP_CMD_VEHICLE_IDENTIFICATION, (uint32)BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL ,&client_appl_cmd_rsp_result_notify);
             }
+        else
+            {
+            CLIENT_DEBUG("BleCmdMalFunctionInterval SUCCESS\r\n");
+            }
         break;
 
     case BLE_REQ_CMD_MARKET_DATA:
-        if( FALSE == client_appl_ble_req_market_data( data_size, data ) )
+        if( E_SUCCESS != client_appl_ble_req_market_data( data_size, data ) )
             {
             CLIENT_DEBUG("BleCmdMarketData FAILED\r\n");
             client_appl_response_can_related_data( BLE_RSP_CMD_MARKET_DATA, (uint32)BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL ,&client_appl_cmd_rsp_result_notify);
@@ -2045,7 +2745,7 @@ switch( req_command )
         break;
 
     case BLE_REQ_CMD_VEHICLE_INFORMATION:
-        if( FALSE == client_appl_ble_req_vehicle_information( FALSE, data_size, data ) )
+        if( E_SUCCESS != client_appl_ble_req_vehicle_information( FALSE, data_size, data ) )
             {
             CLIENT_DEBUG("BleCmdVehicleInformation FAILED\r\n");
             client_appl_response_can_related_data( BLE_RSP_CMD_VEHICLE_INFORMATION, (uint32)BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL, &client_appl_cmd_rsp_result_notify );
@@ -2057,7 +2757,7 @@ switch( req_command )
         break;
 
     case BLE_REQ_CMD_VEHIVLE_INFORMATION_SUPPORT_LIST:
-        if( FALSE == client_appl_ble_req_vehicle_information_supproted_list( data_size, data ) )
+        if( E_SUCCESS != client_appl_ble_req_vehicle_information_supproted_list( data_size, data ) )
             {
             CLIENT_DEBUG("BleCmdVehicleFucntionSupportList FAILED\r\n");
             client_appl_response_can_related_data( BLE_RSP_CMD_VEHIVLE_INFORMATION_SUPPORT_LIST, (uint32)BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL, &client_appl_cmd_rsp_result_notify );
@@ -2069,7 +2769,7 @@ switch( req_command )
         break;
 
     case BLE_REQ_CMD_VEHICLE_INFORMATION_INTERVAL:
-        if( FALSE == client_appl_ble_req_vehicle_information( TRUE, data_size, data ) )
+        if( E_SUCCESS != client_appl_ble_req_vehicle_information( TRUE, data_size, data ) )
             {
             CLIENT_DEBUG("BleCmdVehicleInterval  FAILED\r\n");
             client_appl_response_can_related_data( BLE_RSP_CMD_VEHICLE_INFORMATION, (uint32)BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL ,&client_appl_cmd_rsp_result_notify );
@@ -2081,7 +2781,7 @@ switch( req_command )
         break;
 
     case BLE_REQ_CMD_FFD:
-        if( FALSE == client_app_ble_req_freeze_frame_data( data_size, data ) )
+        if( E_SUCCESS != client_app_ble_req_freeze_frame_data( data_size, data ) )
             {
             CLIENT_DEBUG("BleCmdFFD  FAILED\r\n");
             client_appl_response_can_related_data( BLE_RSP_CMD_FFD, (uint32)BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL ,&client_appl_cmd_rsp_result_notify );
@@ -2150,35 +2850,247 @@ uint16 server_code = 0x0000;
 uint32* data_ptr = &response_support_monitor_data_id_list[BYTE_NUM_1];
 uint8 data_length = 0x00;
 uint8 server_id = 0;
+uint8 monitor_id = 0;
+uint32 resp_data_len = 0;
 
+/*Clear the list*/
+g_McServerListResponse_server_list.count = 0;
 
-if( TRUE == read_local_monitor_infos.is_request_support_list_flow )
-    {
-    server_id = server_list_detect_infos[read_local_monitor_infos.connected_server_id].server_id;
-    server_code = client_appl_ble_server_code_mapping[server_id].ble_server_code;
-    response_support_monitor_data_id_list[BYTE_NUM_0] = client_app_data_swap_u32( server_code );
-
-    for( index = 0; index < SUPPORT_MONITOR_COUNT; index++ )
+for( index = 0; index < SUPPORT_MONITOR_COUNT; index++ )
         {
         if( TRUE == read_local_monitor_infos.support_id_received_flag_array[index] )
             {
-            *( data_ptr ) = client_app_data_swap_u32( (uint32)read_local_monitor_infos.local_id_list[index] );
-            data_length += PROTO_VIF_ID_LEN;
-            data_ptr ++;
+            monitor_id = support_monitor_data_id_list[index];
+            McServerListResponse_server_list_add_server( &g_McServerListResponse_server_list, monitor_id );
             }
         }
+
+if( 0 == g_McServerListResponse_server_list.count )
+    {
+    client_appl_response_can_related_data( BLE_RSP_CMD_VEHIVLE_INFORMATION_SUPPORT_LIST, BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL , &client_appl_cmd_rsp_result_notify );
     }
-    client_appl_response_can_related_data( BLE_RSP_CMD_VEHIVLE_INFORMATION_SUPPORT_LIST, (uint32)( data_length + PROTO_SERVER_LEN ), (uint8*)response_support_monitor_data_id_list, &client_appl_cmd_rsp_result_notify );
+else
+    {
+    resp_data_len = Gen_McServerListResponse( &g_McServerListResponse_server_list, McServerListResponse_protobuf, sizeof( McServerListResponse_protobuf ) );
+    if( 0 != resp_data_len )
+        {
+        client_appl_response_can_related_data( BLE_RSP_CMD_VEHIVLE_INFORMATION_SUPPORT_LIST, resp_data_len, McServerListResponse_protobuf , &client_appl_cmd_rsp_result_notify );
+        }
+    else
+        {
+        client_appl_response_can_related_data( BLE_RSP_CMD_VEHIVLE_INFORMATION_SUPPORT_LIST, BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL , &client_appl_cmd_rsp_result_notify );
+        }
+    }
+}
+
+
+
+
+/*!******************************************************************************
+*
+* @public
+* Function name: client_appl_cmd_rsp_result_notify
+* Description  : this function will reset data storage zone
+* Usage: Callback function by upper layer when upper layer transmit data finished
+*********************************************************************************/
+void client_appl_cmd_rsp_result_notify
+    (
+    const uint8 vlaue
+    )
+{
+client_process_flow_type process_flow = client_get_current_process_flow();
+
+
+if( CMD_RSP_PROCESSING != get_client_app_cmd_rsp_state() )
+    {
+    return;
+    }
+
+set_client_app_cmd_rsp_state( CMD_RSP_DONE );
+
+
+#if 0
+switch( process_flow )
+    {
+    case PROCESS_FLOW_DETECT_SERVER:
+        (void)memset( connected_server_list, 0x00, sizeof(connected_server_list) );
+        set_client_app_cmd_rsp_state( CMD_RSP_DONE );
+        break;
+
+    case PROCESS_FLOW_INIT_RDTCBS:
+        if( TRUE == read_dtc_infos.is_storge_init_dtc )
+            {
+            client_mem_reset_data();
+            }
+        set_client_app_cmd_rsp_state( CMD_RSP_DONE );
+        break;
+
+    case PROCESS_FLOW_RDBCID:
+    case PROCESS_FLOW_MARKET:
+    case PROCESS_FLOW_MONITOR:
+    case PROCESS_FLOW_RFFD:
+        client_mem_reset_data();
+
+        break;
+
+    default:
+        set_client_app_cmd_rsp_state( CMD_RSP_IDLE );
+        break;
+    }
+#endif
+}
+
+
+static void client_appl_send_protobuf_data_success
+    (
+    void
+    )
+{
+uint8 connect_server_id = 0xFF;
+uint16 resp_cmd = 0;
+uint32 resp_data_len = 0;
+client_process_flow_type current_flow = client_get_current_process_flow();
+uint32 server_code = 0;
+
+switch( current_flow )
+    {
+    case PROCESS_FLOW_INIT_RDTCBS:
+        resp_cmd = BLE_RSP_CMD_MALFUNCTION;
+        if( 0 == g_McMalfunctionResponse_list.count )
+            {
+            client_appl_response_can_related_data( resp_cmd, BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL , &client_appl_cmd_rsp_result_notify );
+            }
+        else
+            {
+            resp_data_len = Gen_McMalfunctionResponse( &g_McMalfunctionResponse_list, McMalfunctionResponse_protobuf, sizeof( McMalfunctionResponse_protobuf ) );
+            if( 0 == resp_data_len )
+                {
+                client_appl_response_can_related_data( resp_cmd, BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL , &client_appl_cmd_rsp_result_notify );
+                }
+            else
+                {
+                client_appl_response_can_related_data( resp_cmd, resp_data_len, McMalfunctionResponse_protobuf , &client_appl_cmd_rsp_result_notify );
+                }
+             /*reset array*/
+             g_McMalfunctionResponse_list.count = 0;
+            }
+        break;
+
+    case PROCESS_FLOW_RDBCID:
+        resp_cmd = BLE_RSP_CMD_VEHICLE_IDENTIFICATION;
+    case PROCESS_FLOW_MARKET:
+        resp_cmd = BLE_RSP_CMD_MARKET_DATA;
+        if( 0 == g_IdDataList.count )
+            {
+            client_appl_response_can_related_data( resp_cmd, BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL , &client_appl_cmd_rsp_result_notify );
+            }
+        else
+            {
+            connect_server_id = get_current_connect_server_id();
+            server_code = client_appl_ble_server_code_mapping[connect_server_id].ble_server_code ;
+
+            resp_data_len = Gen_McVehicleIdentificationResponse( server_code, &g_IdDataList, McVehicleIdentificationResponse_protobuf,sizeof( McVehicleIdentificationResponse_protobuf ) );
+            if( 0 == resp_data_len )
+                {
+                client_appl_response_can_related_data( resp_cmd, BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL , &client_appl_cmd_rsp_result_notify );
+                }
+            else
+                {
+                client_appl_response_can_related_data( resp_cmd, resp_data_len, McMalfunctionResponse_protobuf , &client_appl_cmd_rsp_result_notify );
+                }
+             /*reset array*/
+             g_McMalfunctionResponse_list.count = 0;
+            }
+    break;
+
+    case PROCESS_FLOW_MONITOR:
+        if( TRUE == read_local_monitor_infos.is_request_support_list_flow )
+            {
+            resp_cmd = BLE_RSP_CMD_VEHIVLE_INFORMATION_SUPPORT_LIST;
+            if( 0 == g_McLocalRecordVehicleInformationSupportIdListResponse_id_list.count )
+                {
+                client_appl_response_can_related_data( resp_cmd, BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL , &client_appl_cmd_rsp_result_notify );
+                }
+            else
+                {
+                connect_server_id = get_current_connect_server_id();
+                server_code = client_appl_ble_server_code_mapping[connect_server_id].ble_server_code ;
+                resp_data_len = Gen_McLocalRecordVehicleInformationSupportIdListResponse( server_code, &g_McLocalRecordVehicleInformationSupportIdListResponse_id_list, McLocalRecordVehicleInformationSupportIdListResponse_protobuf, sizeof( McLocalRecordVehicleInformationSupportIdListResponse_protobuf ) );
+                if( 0 == resp_data_len )
+                    {
+                    client_appl_response_can_related_data( resp_cmd, BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL , &client_appl_cmd_rsp_result_notify );
+                    }
+                else
+                    {
+                    client_appl_response_can_related_data( resp_cmd, resp_data_len, McLocalRecordVehicleInformationSupportIdListResponse_protobuf , &client_appl_cmd_rsp_result_notify );
+                    }
+                }
+            g_McLocalRecordVehicleInformationSupportIdListResponse_id_list.count = 0;
+            }
+        else
+            {
+            resp_cmd = BLE_RSP_CMD_VEHICLE_INFORMATION;
+            if( 0 == g_IdDataList.count )
+                {
+                client_appl_response_can_related_data( resp_cmd, BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL , &client_appl_cmd_rsp_result_notify );
+                }
+            else
+                {
+                connect_server_id = get_current_connect_server_id();
+                server_code = client_appl_ble_server_code_mapping[connect_server_id].ble_server_code ;
+
+                resp_data_len = Gen_McVehicleIdentificationResponse( server_code, &g_IdDataList, McVehicleIdentificationResponse_protobuf,sizeof( McVehicleIdentificationResponse_protobuf ) );
+                if( 0 == resp_data_len )
+                    {
+                    client_appl_response_can_related_data( resp_cmd, BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL , &client_appl_cmd_rsp_result_notify );
+                    }
+                else
+                    {
+                    client_appl_response_can_related_data( resp_cmd, resp_data_len, McMalfunctionResponse_protobuf , &client_appl_cmd_rsp_result_notify );
+                    }
+                 /*reset array*/
+                 g_McMalfunctionResponse_list.count = 0;
+                }
+            }
+
+    break;
+
+    case PROCESS_FLOW_RFFD:
+        resp_cmd = BLE_RSP_CMD_FFD;
+
+        if( 0 == g_McFfdResponse_data_list.count )
+            {
+            client_appl_response_can_related_data( resp_cmd, BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL , &client_appl_cmd_rsp_result_notify );
+            }
+        else
+            {
+            connect_server_id = get_current_connect_server_id();
+            server_code = client_appl_ble_server_code_mapping[connect_server_id].ble_server_code ;
+
+            resp_data_len =  Gen_McFfdResponse( server_code, &g_McFfdResponse_data_list, McFfdResponse_protobuf, sizeof( McFfdResponse_protobuf ) );
+            if( 0 == resp_data_len )
+                {
+                client_appl_response_can_related_data( resp_cmd, BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL , &client_appl_cmd_rsp_result_notify );
+                }
+            else
+                {
+                client_appl_response_can_related_data( resp_cmd, resp_data_len, McFfdResponse_protobuf , &client_appl_cmd_rsp_result_notify );
+                }
+            /*reset array*/
+            g_McFfdResponse_data_list.count = 0;
+            }
+    break;
+    }
 }
 
 
 /*!******************************************************************************
 *
 * @public
-* Function name: client_appl_send_faild_to_motocon
+* Function name: client_appl_send_protobuf_failed_data
 * Description  : this function send notify to upper layer when current process flow execute failed
 *********************************************************************************/
-static void client_appl_send_faild_to_motocon
+static void client_appl_send_protobuf_failed_data
     (
     client_process_flow_type process_flow
     )
@@ -2200,7 +3112,14 @@ switch( process_flow )
         break;
 
     case PROCESS_FLOW_MONITOR:
-        resp_command = BLE_RSP_CMD_VEHICLE_INFORMATION;
+        if( TRUE == read_local_monitor_infos.is_request_support_list_flow )
+            {
+            resp_command = BLE_RSP_CMD_VEHIVLE_INFORMATION_SUPPORT_LIST;
+            }
+        else
+            {
+            resp_command = BLE_RSP_CMD_VEHICLE_INFORMATION;
+            }
         break;
 
     case PROCESS_FLOW_RFFD:
@@ -2214,7 +3133,6 @@ switch( process_flow )
     client_appl_response_can_related_data( resp_command, BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL , &client_appl_cmd_rsp_result_notify );
 
 }
-
 
 /**************************Dividing line***************************/
 /********************For server detect*****************************/
@@ -2661,6 +3579,10 @@ boolean client_appl_get_storage_init_dtc_state
 return read_dtc_infos.is_storge_init_dtc;
 }
 
+
+
+
+
 /*!******************************************************************************
 *
 * @public
@@ -2669,12 +3591,16 @@ return read_dtc_infos.is_storge_init_dtc;
                  upper layer when handle process flow Read_DTC_infos
 * usage        : period callback
 *********************************************************************************/
+
+
+
 static void client_appl_req_initial_dtc_status_handler_5ms
     (
     void
     )
 {
 uint32 server_code = 0;
+uint32 resp_data_len = 0;
 
 switch( read_dtc_infos.next_req_dtc_status_frame )
     {
@@ -2744,15 +3670,32 @@ if( PROCESS_RESULT_INIT != read_dtc_infos.process_result )
             #if (APPL_DEBUG )
             client_appl_debug_printf( read_dtc_infos.process_result );
             #endif
-            server_code =  client_appl_ble_server_code_mapping[read_dtc_infos.connected_server_id].ble_server_code ;
-            client_mem_storage_server_code( server_code );
+
             if( PROCESS_RESULT_END == read_dtc_infos.process_result )
                 {
-                client_mem_send_can_data();
+                server_code =  client_appl_ble_server_code_mapping[read_dtc_infos.connected_server_id].ble_server_code ;
+                if( 0 == g_McMalfunctionResponse_list.count )
+                    {
+                    client_appl_response_can_related_data( BLE_RSP_CMD_MALFUNCTION, BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL , &client_appl_cmd_rsp_result_notify );
+                    }
+                else
+                    {
+                    resp_data_len = Gen_McMalfunctionResponse( &g_McMalfunctionResponse_list, McMalfunctionResponse_protobuf, sizeof( McMalfunctionResponse_protobuf ) );
+                    if( 0 == resp_data_len )
+                        {
+                        client_appl_response_can_related_data( BLE_RSP_CMD_MALFUNCTION, BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL , &client_appl_cmd_rsp_result_notify );
+                        }
+                    else
+                        {
+                        client_appl_response_can_related_data( BLE_RSP_CMD_MALFUNCTION, resp_data_len, McMalfunctionResponse_protobuf , &client_appl_cmd_rsp_result_notify );
+                        }
+                     /*reset array*/
+                     g_McMalfunctionResponse_list.count = 0;
+                    }
                 }
             else
                 {
-                client_appl_send_faild_to_motocon( PROCESS_FLOW_INIT_RDTCBS );
+                client_appl_send_protobuf_failed_data( PROCESS_FLOW_INIT_RDTCBS );
                 client_appl_set_current_process_flow_step( PROCESS_FLOW_IDLE );
                 }
             }
@@ -2761,6 +3704,7 @@ if( PROCESS_RESULT_INIT != read_dtc_infos.process_result )
             set_client_app_cmd_rsp_state( CMD_RSP_IDLE );
             if( TRUE == read_dtc_infos.is_cycle_transmission )
                 {
+                g_McMalfunctionResponse_list.count = 0;
                 client_appl_set_delay_timer( read_dtc_infos.cycle_tarns_interval_time );
                 read_dtc_infos.curr_dtc_status_frame = REQ_NO_FRAME;
                 read_dtc_infos.next_req_dtc_status_frame = REQ_ORIGINAL_FRAME;
@@ -2796,36 +3740,61 @@ static void client_appl_read_initial_dtc_status_positive_response_handler
  uint8 channel_id
 )
 {
+uint8 index = 0;
+uint8 dtc_number = 0;
 uint8 connect_server_id = 0xFF;
 uint32 server_code = 0;
-
+uint8* start_addr = NULL;
+uint8 dtc_code = 0;
 if( channel_id != read_dtc_infos.connected_server_id )
     {
     return;
+    }
+
+if( 2 >= resp_lenth )
+    {
+    read_dtc_infos.process_result = PROCESS_RESULT_INVALID_DATA;
     }
 
 switch( read_dtc_infos.curr_dtc_status_frame )
     {
     case REQ_ORIGINAL_FRAME:
     case REQ_RESEND_FRAME:
-        /*storage example :04 DE 23 4E A1 E0 24 A1*/
-        /*04 DE: server code*/
-        /*23 4E:  diagnostic trouble code*/
-        /*A1: status code */
         if( FALSE == read_dtc_infos.is_storge_init_dtc )
             {
-            /*Positive response format*/
-            connect_server_id = get_current_connect_server_id();
-            server_code = client_app_data_swap_u32( client_appl_ble_server_code_mapping[connect_server_id].ble_server_code );
-            /* RDDRCSPR + DTC number + LIST DTC */
-            client_mem_storage_init_dtc_data( connect_server_id, (uint16)PROTO_SERVER_LEN, (uint8*)&server_code );
-            /* 2 bytes consist of 1 byte RDDRCSPR and 1 byte DTC number*/
-            client_mem_storage_init_dtc_data( connect_server_id, ( resp_lenth - 2), ( resp_data + 2 ));
+            client_mem_storage_init_dtc_data( connect_server_id, resp_lenth,  resp_data );
             }
         else
             {
-            /* 2 bytes consist of 1 byte RDDRCSPR and 1 byte DTC number*/
-            client_mem_storage_identifier_data( get_current_connect_server_id(), ( resp_lenth - 2 ), ( resp_data + 2 ) );
+            /*Clear the list*/
+            g_McMalfunctionResponse_list.count = 0;
+            /*postive resposne data foramt */
+            /*  1 bytes SID  + n #DTC     + n *(2 bytes DTC + 1 bytes status)*/
+            dtc_number = resp_data[BYTE_NUM_1];
+
+            connect_server_id = get_current_connect_server_id();
+            server_code = client_appl_ble_server_code_mapping[connect_server_id].ble_server_code ;
+
+            if( ( 0 == dtc_number ) && ( 0x02 == resp_lenth ) )
+                {
+                McMalfunctionResponse_list_add_data( &g_McMalfunctionResponse_list, server_code, 0x0000, read_dtc_infos.current_STADTC );
+                }
+            else if( resp_lenth == 3* dtc_number + 2 )
+                {
+                for( index = 0; index < dtc_number; index++ )
+                    {
+                    start_addr = resp_data + 2 + (dtc_number -1 )* 3;
+                    if( read_dtc_infos.current_STADTC == start_addr[2] )
+                        {
+                        dtc_code = byte_merge_u16( start_addr );
+                         McMalfunctionResponse_list_add_data( &g_McMalfunctionResponse_list, server_code, dtc_code, read_dtc_infos.current_STADTC );
+                        }
+                    }
+                }
+            else
+                {
+                read_dtc_infos.process_result = PROCESS_RESULT_INVALID_DATA;
+                }
             }
         read_dtc_infos.process_result = PROCESS_RESULT_END;
         break;
@@ -2992,8 +3961,10 @@ static void client_appl_read_data_by_common_identifier_handler_5ms
     void
     )
 {
+uint8 connect_channel_id  = 0xFF;
 uint16 common_identifier = 0x0000;
 uint32 server_code = 0;
+uint32 resp_data_len = 0;
 
 switch( read_common_identifier_infos.next_req_frame )
     {
@@ -3044,21 +4015,23 @@ if( PROCESS_RESULT_INIT != read_common_identifier_infos.process_result )
         {
         if( is_client_app_cmd_rsp_state( CMD_RSP_IDLE ) )
             {
-            if( 0x02 < client_mem_get_iden_data_storage_length() )
+            if( 0 != g_IdDataList.count )
                 {
-                #if (APPL_DEBUG )
-                client_appl_debug_printf( read_common_identifier_infos.process_result );
-                #endif
-
-                /*have been already all identifier data of current server*/
-                server_code = client_appl_ble_server_code_mapping[read_common_identifier_infos.connected_server_id].ble_server_code ;
-                client_mem_storage_server_code( server_code );
-                client_mem_send_can_data();
+                connect_channel_id = get_current_connect_server_id();
+                server_code = client_appl_ble_server_code_mapping[connect_channel_id].ble_server_code ;
+                resp_data_len = Gen_McVehicleIdentificationResponse( server_code, &g_IdDataList,McVehicleIdentificationResponse_protobuf,sizeof( McVehicleIdentificationResponse_protobuf ) );
+                if( 0 == resp_data_len )
+                    {
+                    client_appl_send_protobuf_failed_data( PROCESS_FLOW_RDBCID );
+                    }
+                else
+                    {
+                    client_appl_response_can_related_data( BLE_RSP_CMD_VEHICLE_IDENTIFICATION, resp_data_len, McVehicleIdentificationResponse_protobuf , &client_appl_cmd_rsp_result_notify );
+                    }
                 }
             else
                 {
-                client_appl_send_faild_to_motocon( PROCESS_FLOW_RDBCID );
-                client_appl_set_current_process_flow_step( PROCESS_FLOW_IDLE );
+                client_appl_send_protobuf_failed_data( PROCESS_FLOW_RDBCID );
                 }
             }
         else if( is_client_app_cmd_rsp_state( CMD_RSP_DONE ) )
@@ -3088,13 +4061,21 @@ static void client_appl_read_data_by_common_identifier_positive_response_handler
  uint8 channel_id
 )
 {
+uint8 connect_server_id = 0;
 uint16 resp_identifier = 0x0000;
 uint32 resp_swap_id_u32 = 0;
+uint32 server_code = 0;
 
 if( channel_id != read_common_identifier_infos.connected_server_id )
     {
     return;
     }
+
+if( 3 >= resp_lenth )
+    {
+    read_common_identifier_infos.process_result = PROCESS_RESULT_INVALID_DATA;
+    return;
+    };
 
 switch( read_common_identifier_infos.curr_req_frame )
     {
@@ -3103,10 +4084,7 @@ switch( read_common_identifier_infos.curr_req_frame )
          resp_identifier = (uint16)( resp_data[BYTE_NUM_1] << 8 | resp_data[BYTE_NUM_2] );
          if( resp_identifier == read_common_identifier_infos.common_id_list[read_common_identifier_infos.current_common_data_index] )
             {
-            resp_swap_id_u32 = client_app_data_swap_u32( (uint32)resp_identifier );
-            client_mem_storage_identifier_data( read_common_identifier_infos.connected_server_id, PROTO_VID_ID_LEN, (uint8*)&resp_swap_id_u32 );
-            /*3 bytes = 1 byte 0x61 + 2 bytes common id*/
-            client_mem_storage_identifier_data( read_common_identifier_infos.connected_server_id, resp_lenth - 3, resp_data + 3 );
+            IdDataList_add_IdData( &g_IdDataList, (uint32)resp_identifier, ( resp_data + 3 ), (uint32)(resp_lenth - 3 ) );
             read_common_identifier_infos.process_result = PROCESS_RESULT_SUCCESS;
             }
          else
@@ -3273,8 +4251,10 @@ static void client_appl_read_data_by_local_identifier_market_handler_5ms
     void
     )
 {
+uint8 connect_channel_id = 0;
 uint8 market_id = 0x00;
 uint32 server_code = 0;
+uint32 resp_data_len = 0;
 
 switch( read_loacl_market_infos.next_req_frame )
     {
@@ -3331,20 +4311,23 @@ if( PROCESS_RESULT_INIT != read_loacl_market_infos.process_result )
         /*shall send the process result and data to upper layer whether process is success*/
         if( is_client_app_cmd_rsp_state( CMD_RSP_IDLE ) )
             {
-            if( 0x02 < client_mem_get_iden_data_storage_length() )
+            if( 0 != g_IdDataList.count )
                 {
-                #if (APPL_DEBUG )
-                client_appl_debug_printf( read_loacl_market_infos.process_result );
-                #endif
-                /*step 1:response data to upper layer and reset buff*/
-                server_code = client_appl_ble_server_code_mapping[read_loacl_market_infos.connected_server_id].ble_server_code ;
-                client_mem_storage_server_code( server_code );
-                client_mem_send_can_data();
+                connect_channel_id = get_current_connect_server_id();
+                server_code = client_appl_ble_server_code_mapping[connect_channel_id].ble_server_code ;
+                resp_data_len = Gen_McVehicleIdentificationResponse( server_code, &g_IdDataList,McVehicleIdentificationResponse_protobuf,sizeof( McVehicleIdentificationResponse_protobuf ) );
+                if( 0 == resp_data_len )
+                    {
+                    client_appl_send_protobuf_failed_data( PROCESS_FLOW_RDBCID );
+                    }
+                else
+                    {
+                    client_appl_response_can_related_data( BLE_RSP_CMD_VEHICLE_IDENTIFICATION, resp_data_len, McVehicleIdentificationResponse_protobuf , &client_appl_cmd_rsp_result_notify );
+                    }
                 }
             else
                 {
-                client_appl_send_faild_to_motocon( PROCESS_FLOW_MARKET );
-                client_appl_set_current_process_flow_step( PROCESS_FLOW_IDLE );
+                client_appl_send_protobuf_failed_data( PROCESS_FLOW_RDBCID );
                 }
             }
         else if( is_client_app_cmd_rsp_state( CMD_RSP_DONE ) )
@@ -3378,23 +4361,29 @@ if( channel_id != read_loacl_market_infos.connected_server_id )
     return;
     }
 
+if( 2 >= resp_lenth )
+    {
+    read_loacl_market_infos.process_result = PROCESS_RESULT_INVALID_DATA;
+    return;
+    }
+
 switch( read_loacl_market_infos.curr_req_frame )
     {
     case REQ_ORIGINAL_FRAME:
     case REQ_RESEND_FRAME:
         resp_identifier = resp_data[BYTE_NUM_1];
-        if(  resp_identifier == read_loacl_market_infos.local_id_list[read_loacl_market_infos.current_local_data_index])
+
+         if(  resp_identifier == read_loacl_market_infos.local_id_list[read_loacl_market_infos.current_local_data_index])
             {
-            resp_id_swap_u32 = client_app_data_swap_u32( (uint32) resp_identifier );
-            client_mem_storage_identifier_data( get_current_connect_server_id(),PROTO_MARIKET_ID_LEN , (uint8*)&resp_id_swap_u32 );
-            /*2 bytes = 1 byte 0x62 + 1 byte market id*/
-            client_mem_storage_identifier_data( get_current_connect_server_id(), resp_lenth - 2, resp_data + 2 );
+            g_IdDataList.fields = McMarketDataResponse_IdData_fields;
+            IdDataList_add_IdData( &g_IdDataList, (uint32)resp_identifier, ( resp_data + 2 ), (uint32)(resp_lenth - 2 ) );
             read_loacl_market_infos.process_result = PROCESS_RESULT_SUCCESS;
             }
-        else
+         else
             {
             read_loacl_market_infos.process_result = PROCESS_RESULT_INVALID_DATA;
             }
+
         read_loacl_market_infos.receive_SNS_timer = 0x00;
         read_loacl_market_infos.resend_timer = 0x00;
         break;
@@ -3552,8 +4541,10 @@ static void client_appl_read_data_by_local_identifier_monitor_handler_5ms
     void
     )
 {
-uint8 monitor_id = 0x0000;
+uint8 monitor_id = 0;
+uint8 connect_channel_id = 0;
 uint32 server_code = 0;
+uint32 resp_data_len = 0;
 
 switch( read_local_monitor_infos.next_req_frame )
     {
@@ -3613,15 +4604,23 @@ if( PROCESS_RESULT_INIT != read_local_monitor_infos.process_result )
                 {
                 client_appl_ble_rsp_request_support_monitor_list();
                 }
-            else if( 0x02 < client_mem_get_iden_data_storage_length() )
+            else if( 0 != g_IdDataList.count )
                 {
-                server_code = client_appl_ble_server_code_mapping[read_local_monitor_infos.connected_server_id].ble_server_code ;
-                client_mem_storage_server_code( server_code );
-                client_mem_send_can_data();
+                connect_channel_id = get_current_connect_server_id();
+                server_code = client_appl_ble_server_code_mapping[connect_channel_id].ble_server_code ;
+                resp_data_len = Gen_McVehicleIdentificationResponse( server_code, &g_IdDataList,McVehicleIdentificationResponse_protobuf,sizeof( McVehicleIdentificationResponse_protobuf ) );
+                if( 0 == resp_data_len )
+                    {
+                    client_appl_send_protobuf_failed_data( PROCESS_FLOW_MONITOR );
+                    }
+                else
+                    {
+                    client_appl_response_can_related_data( BLE_RSP_CMD_VEHICLE_INFORMATION, resp_data_len, McVehicleIdentificationResponse_protobuf , &client_appl_cmd_rsp_result_notify );
+                    }
                 }
-           else
+            else
                 {
-                client_appl_send_faild_to_motocon( PROCESS_FLOW_MONITOR );
+                client_appl_send_protobuf_failed_data( PROCESS_FLOW_MONITOR );
                 }
             }
         else if( is_client_app_cmd_rsp_state( CMD_RSP_DONE ) )
@@ -3629,6 +4628,7 @@ if( PROCESS_RESULT_INIT != read_local_monitor_infos.process_result )
             set_client_app_cmd_rsp_state( CMD_RSP_IDLE );
             if( TRUE == read_local_monitor_infos.is_cycle_transmission )
                 {
+                g_IdDataList.count = 0;
                 client_appl_set_delay_timer( read_local_monitor_infos.cycle_tarns_interval_time );
                 read_local_monitor_infos.current_local_data_index = 0x00;
                 read_local_monitor_infos.process_result = PROCESS_RESULT_INIT;
@@ -3661,10 +4661,19 @@ static void client_appl_read_data_by_local_identifier_monitor_positive_response_
  uint8 channel_id
 )
 {
+uint8 connect_channel_id = 0;
+uint32 server_code = 0;
+
 uint32 resp_id_swap_u32 = 0;
 
 if( channel_id != read_local_monitor_infos.connected_server_id )
     {
+    return;
+    }
+
+if( 2 >= resp_lenth )
+    {
+    read_local_monitor_infos.process_result = PROCESS_RESULT_INVALID_DATA;
     return;
     }
 
@@ -3687,10 +4696,9 @@ switch( read_local_monitor_infos.curr_req_frame )
                 }
             else
                 {
-                resp_id_swap_u32 = client_app_data_swap_u32( (uint32) resp_data[BYTE_NUM_1] );
-                client_mem_storage_identifier_data( get_current_connect_server_id(), PROTO_VIF_ID_LEN, (uint8*)&resp_id_swap_u32 );
-            /*2 bytes = 1 byte 0x62 + 1 byte market id*/
-                client_mem_storage_identifier_data( get_current_connect_server_id(), resp_lenth - 2 , resp_data + 2 );
+                connect_channel_id = get_current_connect_server_id();
+                server_code = client_appl_ble_server_code_mapping[connect_channel_id].ble_server_code ;
+                IdDataList_add_IdData( &g_IdDataList, (uint32)resp_data[BYTE_NUM_1], resp_data + 2 , (uint32)( resp_lenth  - 2 ) );
                 }
             }
         else
@@ -3879,8 +4887,10 @@ static void client_appl_read_freeze_frame_data_handler_5ms
     void
     )
 {
+uint8 connect_channel_id = 0;
 uint8 req_identifier = 0x00;
 uint32 server_code = 0;
+uint32 resp_data_len = 0;
 
 switch( read_freeze_frame_data_infos.next_request_frame )
 {
@@ -3935,14 +4945,22 @@ if( PROCESS_RESULT_INIT != read_freeze_frame_data_infos.process_result )
             #if (APPL_DEBUG )
             client_appl_debug_printf( read_freeze_frame_data_infos.process_result );
             #endif
-            /*have been already all identifier data of current server*/
-            server_code =  client_appl_ble_server_code_mapping[read_dtc_infos.connected_server_id].ble_server_code ;
-            client_mem_storage_server_code( server_code );
-            client_mem_send_can_data();
+
+            connect_channel_id = get_current_connect_server_id();
+            server_code = client_appl_ble_server_code_mapping[connect_channel_id].ble_server_code ;
+            resp_data_len = Gen_McFfdResponse( server_code, &g_McFfdResponse_data_list, McFfdResponse_protobuf, sizeof( McFfdResponse_protobuf ) );
+            if( 0 == resp_data_len )
+                {
+                client_appl_send_protobuf_failed_data( PROCESS_FLOW_RFFD );
+                }
+            else
+                {
+                client_appl_response_can_related_data( BLE_RSP_CMD_FFD, resp_data_len, McFfdResponse_protobuf , &client_appl_cmd_rsp_result_notify );
+                }
             }
          else
             {
-            client_appl_send_faild_to_motocon( PROCESS_FLOW_RFFD );
+            client_appl_send_protobuf_failed_data( PROCESS_FLOW_RFFD );
             }
         }
     else if( is_client_app_cmd_rsp_state( CMD_RSP_DONE ) )
@@ -3968,11 +4986,23 @@ static void client_appl_read_freeze_frame_data_positive_response_handler
     )
 {
 uint8 amount_of_list = 0;
+uint8 connect_channel_id = 0;
+uint32 server_code = 0;
+uint32 resp_len = 0;
+
 
 if( channel_id != read_freeze_frame_data_infos.connected_server_id )
     {
     return;
     }
+
+if( 2 >= resp_lenth  )
+    {
+    return;
+    }
+
+connect_channel_id = get_current_connect_server_id();
+server_code = client_appl_ble_server_code_mapping[connect_channel_id].ble_server_code ;
 
 switch( read_freeze_frame_data_infos.curr_request_frame )
     {
@@ -4021,7 +5051,8 @@ switch( read_freeze_frame_data_infos.curr_request_frame )
         else
             {
             read_freeze_frame_data_infos.current_request_id++;
-            client_mem_storage_identifier_data( read_freeze_frame_data_infos.connected_server_id, resp_lenth, resp_data );
+
+            McFfdResponse_data_list_add_data( &g_McFfdResponse_data_list, resp_data + 2, (uint32)(resp_lenth - 2 ) );
             if( read_freeze_frame_data_infos.current_request_id < read_freeze_frame_data_infos.requset_id_list_amount )
                 {
                 client_appl_set_next_ffd_frame_frame( REQ_FFD_FRAME );
@@ -4048,7 +5079,7 @@ switch( read_freeze_frame_data_infos.curr_request_frame )
 
     case REQ_FFD_FRAME:
     read_freeze_frame_data_infos.current_request_id++;
-    client_mem_storage_identifier_data( read_freeze_frame_data_infos.connected_server_id, resp_lenth, resp_data );
+    McFfdResponse_data_list_add_data( &g_McFfdResponse_data_list, resp_data + 2, (uint32)(resp_lenth - 2) );
     if( read_freeze_frame_data_infos.current_request_id < read_freeze_frame_data_infos.requset_id_list_amount )
         {
         client_appl_set_next_ffd_frame_frame( REQ_FFD_FRAME );

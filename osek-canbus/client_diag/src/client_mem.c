@@ -18,7 +18,7 @@
                                  MACROS
 --------------------------------------------------------------------*/
 #define INIT_DTC_DATA_MAX_CONUT           (238)
-#define INDENTIFIER_DATA_MAX_COUNT        (10000)
+#define INDENTIFIER_DATA_MAX_COUNT        (2000)
 #define CHANNELS_COUNT                    (SUPPORT_SERVER_NUM)
 /*--------------------------------------------------------------------
                             VARIABLES

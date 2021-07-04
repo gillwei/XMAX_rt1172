@@ -932,7 +932,8 @@ void VI_notify_timeout1_changed
     const bool detected
     )
 {
-PRINTF( "timeout1, 0x%x %d\r\n", handle, detected );
+//PRINTF( "timeout1, 0x%x %d\r\n", handle, status );
+
 switch( handle )
     {
     case IL_CAN0_RX2_RES_SUPPORT_RXFRM_HANDLE:     /* H'582 */
@@ -1010,7 +1011,8 @@ void VI_notify_timeout2_changed
     const bool detected
     )
 {
-PRINTF( "timeout2, 0x%x %d\r\n", handle, detected );
+//PRINTF( "timeout2, 0x%x %d\r\n", handle, status );
+
 uint8_t last_timeout_err2_status = timeout_err2_status;
 switch( handle )
     {

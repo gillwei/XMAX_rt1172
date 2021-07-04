@@ -4,8 +4,14 @@
 
 #include "client_dcm_type.h"
 #include "client_dcm_cfg.h"
-#include "fsl_debug_console.h"/*for debug*/
+#include "fsl_debug_console.h"/*foE_SUCCESSr debug*/
+#include "BleServiceStructure.pb.h"
+#include "pb_decode.h"
+#include "pb_encode.h"
 
+
+
+#define MAX_ID_LIST_NUM    (50)
 
 typedef void (*appl_period_func_ptr)(void);
 typedef void (*appl_postive_response_dispatch_ptr)(uint8 * resp_data,uint16 resp_lenth,uint8 channel_id);
@@ -14,6 +20,83 @@ typedef void (*apppl_response_timeout_notify_ptr)(void);
 typedef void (*appl_RCPP_notify_ptr)(void);
 
 
+#define PB_ENCODE_DEBUG                         1
+#define PB_MESSAGE_WHEN_SUCCESS                 1
+
+#define MAX_MMCSERVERLISTRESPONSE_LIST_COUNT  25
+
+#define MAX_MCMALFUNCTIONRESPONSE_LIST_COUNT  25
+
+#define MAX_MCLOCALRECORDVEHICLEINFORMATIONSUPPORTIDLISTRESPONSE_ID_LIST_COUNT  25
+
+
+#define MAX_MCFFDRESPONSE_DATA_LIST_BYTES_NUMBER  100
+#define MAX_MCFFDRESPONSE_DATA_LIST_COUNT  50
+
+#define MAX_IDDATA_BYTES_NUMBER  100
+#define MAX_IDDATA_COUNT  150
+
+typedef struct
+{
+    int32_t id_list[MAX_MCLOCALRECORDVEHICLEINFORMATIONSUPPORTIDLISTRESPONSE_ID_LIST_COUNT];
+    int32_t count;
+}McLocalRecordVehicleInformationSupportIdListResponse_id_list_t;
+
+typedef struct
+{
+    int32_t server_list[MAX_MMCSERVERLISTRESPONSE_LIST_COUNT];
+    int32_t count;
+}McServerListResponse_server_list_t;
+
+
+typedef struct
+{
+    McMalfunctionResponse_ServerCodeStatus ServerCodeStatus_list[MAX_MCMALFUNCTIONRESPONSE_LIST_COUNT];
+    int32_t count;
+}McMalfunctionResponse_list_t;
+
+
+typedef struct
+{
+    uint8_t data[MAX_MCFFDRESPONSE_DATA_LIST_BYTES_NUMBER];
+    int32_t len;
+}McFfdResponse_data_list_item_t;
+
+typedef struct
+{
+    McFfdResponse_data_list_item_t data_list_array[MAX_MCFFDRESPONSE_DATA_LIST_COUNT];
+    int32_t count;
+}McFfdResponse_data_list_t;
+
+
+typedef struct
+{
+    int32_t id;
+    uint8_t data[MAX_IDDATA_BYTES_NUMBER];
+    int32_t len;
+}IdData;
+
+typedef struct
+{
+    IdData IdData_array[MAX_IDDATA_COUNT];
+    int32_t count;
+    const pb_msgdesc_t *fields;
+} IdDataList;
+
+
+typedef struct
+{
+uint32 id_list_array[MAX_ID_LIST_NUM];
+uint32 id_list_num;
+}id_list_type;
+
+
+typedef enum
+{
+E_PARSE_FAILED = 0,
+E_SUCCESS,
+E_PARAMETER_ERROR
+}E_reuset_type;
 
 typedef enum
 {
@@ -110,9 +193,13 @@ uint8 resend_timer;
 uint8 receive_SNS_timer;
 process_flow_result_type process_result;
 boolean is_cycle_transmission;
-uint16 cycle_tarns_interval_time;
+uint32 cycle_tarns_interval_time;
 boolean is_storge_init_dtc;/*This parameter shall be puted in the last*/
 }client_appl_read_dtc_infos_type;
+/*Note: if you want to modify the struct of  client_appl_read_dtc_infos_type
+you have to modify (void)memset( &read_dtc_infos, 0x00, sizeof( read_dtc_infos ) - 4 );*/
+
+
 
 typedef struct
 {
@@ -260,7 +347,7 @@ extern void client_appl_ble_req_command_dispatch
 
 extern void client_appl_cmd_rsp_result_notify
     (
-    const uint8 vlaue
+    uint8 vlaue
     );
 
 extern void client_appl_response_can_related_data
