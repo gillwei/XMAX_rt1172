@@ -207,21 +207,27 @@ void VI_clock_notify_meter_time_updated
     void
     )
 {
-stop_timer();
-
 snvs_lp_srtc_datetime_t datetime;
-RTC_get_datetime( &datetime );
 
-/* If the current second is 50 or later, wait 10 seconds before sending clock to meter */
-if( datetime.second < 50 )
+if( !vi_is_timeout_error2_detected() )
     {
-    uint64_t unix_timestamp = RTC_convert_datetime_to_epoch_sec( &datetime );
-    VI_set_tx_data( EnumVehicleTxTypeCLOCK_DATE, unix_timestamp );
-    enter_state( CLK_UPDATE_STATE_CHECK_AFTER_500_MS );
+    RTC_get_datetime( &datetime );
+
+    /* If the current second is 50 or later, wait 10 seconds before sending clock to meter */
+    if( datetime.second < 50 )
+        {
+        uint64_t unix_timestamp = RTC_convert_datetime_to_epoch_sec( &datetime );
+        VI_set_tx_data( EnumVehicleTxTypeCLOCK_DATE, unix_timestamp );
+        enter_state( CLK_UPDATE_STATE_CHECK_AFTER_500_MS );
+        }
+    else
+        {
+        enter_state( CLK_UPDATE_STATE_WAITING_10_SEC );
+        }
     }
 else
     {
-    enter_state( CLK_UPDATE_STATE_WAITING_10_SEC );
+    enter_state( CLK_UPDATE_STATE_TIMEOUT_ERR2_DETECTED );
     }
 }
 
