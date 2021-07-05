@@ -278,6 +278,7 @@ class HOM12_EcoVisualizer : Home::BaseHome
         case Enum::VehicleRxType.FUEL_CONSUMPTION_UNIT:
         {
           SetFuelRateUnit();
+          RemoveAllEcoRecord();
         }
         default:;
       }

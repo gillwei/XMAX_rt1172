@@ -586,7 +586,10 @@ void HomeHOM12_EcoVisualizer_OnVehicleDataReceivedSlot( HomeHOM12_EcoVisualizer 
       break;
 
       case EnumVehicleRxTypeFUEL_CONSUMPTION_UNIT :
+      {
         HomeHOM12_EcoVisualizer_SetFuelRateUnit( _this );
+        HomeHOM12_EcoVisualizer_RemoveAllEcoRecord( _this );
+      }
       break;
 
       default :; 
