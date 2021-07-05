@@ -702,7 +702,7 @@ switch( meter_info )
         break;
     case EnumMeterInfoTRIP_TIME:
         /* trip time is kept in LinkCard, not in meter, so no need to send CAN message to meter */
-        vi_trip_time_reset();
+        VI_trip_time_reset();
         EW_notify_vi_data_received( EnumVehicleRxTypeTRIP_TIME );
         break;
     default:

@@ -167,7 +167,8 @@ void EW_reset_to_factory_default
 {
 factory_reset_status = 0;
 
-/* save trip time before system reboot after all reset */
+/* reset trip time to zero and save to EEPROM */
+VI_trip_time_reset();
 VI_trip_time_save();
 
 uint8_t last_page = ( DEFAULT_HOME_GROUP << LAST_PAGE_HOME_GROUP_SHIFT ) |

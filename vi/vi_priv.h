@@ -180,7 +180,6 @@ void vi_key_proc( void );
 void vi_rx_init( void );
 void vi_trip_time_init( void );
 bool vi_trip_time_get_current( uint32_t* current_trip_time_sec );
-void vi_trip_time_reset( void );
 void vi_clock_init( void );
 void vi_clock_notify_meter_clk_adj_status_changed( const uint32_t clock_adj_status );
 void vi_clock_timeout_err2_recovered( void );

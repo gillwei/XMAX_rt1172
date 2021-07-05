@@ -162,16 +162,9 @@ void VI_trip_time_save
     )
 {
 PRINTF( "%s %d %d\r\n", __FUNCTION__, is_trip_time_valid, trip_time_sec );
-if( is_trip_time_valid )
+if( pdFALSE == EEPM_set_trip_time( trip_time_sec, VI_trip_time_write_cb ) )
     {
-    if( pdFALSE == EEPM_set_trip_time( trip_time_sec, VI_trip_time_write_cb ) )
-        {
-        PRINTF( "wt trip time fail\r\n" );
-        EW_power_update_ignoff_task_status( IGN_OFF_TASK_WRITE_TRIP_TIME );
-        }
-    }
-else
-    {
+    PRINTF( "wt trip time fail\r\n" );
     EW_power_update_ignoff_task_status( IGN_OFF_TASK_WRITE_TRIP_TIME );
     }
 }
@@ -205,13 +198,13 @@ return is_trip_time_valid;
 
 /*********************************************************************
 *
-* @private
-* vi_trip_time_reset
+* @public
+* VI_trip_time_reset
 *
 * Reset trip time
 *
 *********************************************************************/
-void vi_trip_time_reset
+void VI_trip_time_reset
     (
     void
     )
