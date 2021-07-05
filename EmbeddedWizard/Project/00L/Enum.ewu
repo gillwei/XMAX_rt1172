@@ -581,8 +581,13 @@ enum VehicleRxType
   $rect <1070,310,1340,350>
   item TIMEOUT_ERROR1_UPDATED;
 
+  // H'5BE timeout error 1
   $rect <1070,360,1340,400>
   item HEATER_STATUS_TIMEOUT_ERR1;
+
+  // H'5AF timeout error 1
+  $rect <1070,410,1340,450>
+  item RES_REPGROGRAM_INFO_TIMEOUT_ERR1;
 
   $rect <1360,10,1630,50>
   item FUEL_RATE_INSTANT_UNIT_CONVERTED;

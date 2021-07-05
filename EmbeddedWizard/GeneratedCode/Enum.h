@@ -272,9 +272,10 @@ typedef enum
   EnumVehicleRxTypeTIMEOUT_ERROR2_RECOVERED = 55,
   EnumVehicleRxTypeTIMEOUT_ERROR1_UPDATED = 56,
   EnumVehicleRxTypeHEATER_STATUS_TIMEOUT_ERR1 = 57,
-  EnumVehicleRxTypeFUEL_RATE_INSTANT_UNIT_CONVERTED = 58,
-  EnumVehicleRxTypeFUEL_RATE_AVERAGE_UNIT_CONVERTED = 59,
-  EnumVehicleRxTypeTOTAL                = 60
+  EnumVehicleRxTypeRES_REPGROGRAM_INFO_TIMEOUT_ERR1 = 58,
+  EnumVehicleRxTypeFUEL_RATE_INSTANT_UNIT_CONVERTED = 59,
+  EnumVehicleRxTypeFUEL_RATE_AVERAGE_UNIT_CONVERTED = 60,
+  EnumVehicleRxTypeTOTAL                = 61
 } EnumVehicleRxType;
 
 /* User defined enumeration: 'Enum::VehicleTxType' */

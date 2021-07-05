@@ -3193,10 +3193,10 @@ class VehicleDeviceClass : Templates::DeviceClass
     return pure CruiseSpeedStr;
   }
 
-  $rect <280,680,490,720>
+  $rect <20,650,230,690>
   property bool LowFuelWarning;
 
-  $rect <280,720,490,760>
+  $rect <20,690,230,730>
   onget LowFuelWarning
   {
     $if !$prototyper
@@ -3284,10 +3284,10 @@ class VehicleDeviceClass : Templates::DeviceClass
     return pure TireRearPressureStr;
   }
 
-  $rect <280,780,500,820>
+  $rect <20,750,240,790>
   property bool TireSensorEquipped;
 
-  $rect <280,820,510,860>
+  $rect <20,790,250,830>
   onget TireSensorEquipped
   {
     var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.TIRE_SENSOR_EQUIPPED );
@@ -3295,10 +3295,10 @@ class VehicleDeviceClass : Templates::DeviceClass
     return pure TireSensorEquipped;
   }
 
-  $rect <280,890,480,930>
+  $rect <20,860,220,900>
   property bool EngineIdling;
 
-  $rect <280,930,480,970>
+  $rect <20,900,220,940>
   onget EngineIdling
   {
     $if !$prototyper
@@ -3342,6 +3342,21 @@ class VehicleDeviceClass : Templates::DeviceClass
   {
     var bool Detected = false;
     var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.HEATER_STATUS_TIMEOUT_ERR1 );
+    if( VehicleData.DataUInt32 )
+    {
+      Detected = true;
+    }
+    return Detected;
+  }
+
+  $rect <280,680,540,720>
+  property bool IsResReprogramInfoTimeoutErr1Detected;
+
+  $rect <280,720,540,760>
+  onget IsResReprogramInfoTimeoutErr1Detected
+  {
+    var bool Detected = false;
+    var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.RES_REPGROGRAM_INFO_TIMEOUT_ERR1 );
     if( VehicleData.DataUInt32 )
     {
       Detected = true;

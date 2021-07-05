@@ -2275,7 +2275,7 @@ class SET42_ResetCompleted : Components::BaseMainBG
   $rect <10,300,190,340>
   inherited method Init()
   {
-    trace "Init SET42";
+    trace "SET42";
     DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.REBOOT_REQUEST, 0 );
   }
 
@@ -2350,7 +2350,8 @@ class SET42_ResetCompleted : Components::BaseMainBG
   $rect <760,350,990,390>
   slot OnHoldTimerFinishedSlot
   {
-    if( IsRebootResponseReceived )
+    if( IsRebootResponseReceived ||
+        DeviceInterface::VehicleDevice.IsResReprogramInfoTimeoutErr1Detected )
     {
       DeviceInterface::SystemDevice.RebootSystem();
     }

@@ -113,7 +113,7 @@
 /* Compressed strings for the language 'Default'. */
 EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
-  0x00000354, /* ratio 49.30 % */
+  0x0000034A, /* ratio 49.41 % */
   0xB8001B00, 0x00092452, 0x00D20037, 0x040003A0, 0x8A002980, 0x0002A000, 0x00198006,
   0x68240A32, 0x8642A110, 0xA44A210E, 0x46473188, 0x1E0B1B00, 0xE1B0B84C, 0x011388C3,
   0xE31000D0, 0x45818124, 0x803C9C14, 0x8A8EA313, 0xC0223340, 0x45A63229, 0x5A71361B,
@@ -126,9 +126,9 @@ EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
   0xD65B81BE, 0xEF74263E, 0x9FB392E2, 0x35DD50D4, 0xB9DA96EC, 0xBC1DD4BB, 0xDAE0F337,
   0x00073729, 0xC704233A, 0xDC11452B, 0x25F1A110, 0x5DC76457, 0x4568D707, 0x0C800570,
   0x5885660F, 0xE8311884, 0xF9338420, 0xB366D387, 0x5A514649, 0x59679510, 0xE681A05A,
-  0xCDA58590, 0x514A2154, 0x485CE4AD, 0x15084629, 0x04B62E47, 0x613355A3, 0x1E4AA335,
-  0x4C5558D9, 0xA3B52133, 0x48FE2F54, 0xA1858411, 0x49002388, 0x8355A002, 0xE4E6A231,
-  0x352D5884, 0x7E4B6925, 0x584C64A5, 0x91E5B4D5, 0x52790800, 0x00010146, 0x00000000
+  0xCDA58590, 0x5A002154, 0x84629835, 0x92B47150, 0x88BD2173, 0x792A8C55, 0x568D52D4,
+  0x8E1484CD, 0x5558D152, 0x8616104C, 0x18008F62, 0x3384E2C9, 0x6924B6A1, 0xD4B56156,
+  0xF9222E93, 0x613191D5, 0x14961355, 0x49E3F841, 0x00040519, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -193,17 +193,17 @@ static const XRect _Const0039 = {{ 0, 61 }, { 388, 1301 }};
 static const XStringRes _Const003A = { _StringsDefault0, 0x012E };
 static const XStringRes _Const003B = { _StringsDefault0, 0x013E };
 static const XStringRes _Const003C = { _StringsDefault0, 0x0146 };
-static const XStringRes _Const003D = { _StringsDefault0, 0x0153 };
-static const XStringRes _Const003E = { _StringsDefault0, 0x0160 };
+static const XStringRes _Const003D = { _StringsDefault0, 0x014E };
+static const XStringRes _Const003E = { _StringsDefault0, 0x015B };
 static const XRect _Const003F = {{ 10, 40 }, { 470, 168 }};
-static const XStringRes _Const0040 = { _StringsDefault0, 0x016D };
+static const XStringRes _Const0040 = { _StringsDefault0, 0x0168 };
 static const XRect _Const0041 = {{ 10, 156 }, { 470, 227 }};
-static const XStringRes _Const0042 = { _StringsDefault0, 0x017A };
-static const XStringRes _Const0043 = { _StringsDefault0, 0x0182 };
-static const XStringRes _Const0044 = { _StringsDefault0, 0x018A };
-static const XStringRes _Const0045 = { _StringsDefault0, 0x0192 };
-static const XStringRes _Const0046 = { _StringsDefault0, 0x019A };
-static const XStringRes _Const0047 = { _StringsDefault0, 0x01A2 };
+static const XStringRes _Const0042 = { _StringsDefault0, 0x0175 };
+static const XStringRes _Const0043 = { _StringsDefault0, 0x017D };
+static const XStringRes _Const0044 = { _StringsDefault0, 0x0185 };
+static const XStringRes _Const0045 = { _StringsDefault0, 0x018D };
+static const XStringRes _Const0046 = { _StringsDefault0, 0x0195 };
+static const XStringRes _Const0047 = { _StringsDefault0, 0x019D };
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.
@@ -5058,7 +5058,8 @@ void SettingsSET42_ResetCompleted_OnHoldTimerFinishedSlot( SettingsSET42_ResetCo
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  if ( _this->IsRebootResponseReceived )
+  if ( _this->IsRebootResponseReceived || DeviceInterfaceVehicleDeviceClass_OnGetIsResReprogramInfoTimeoutErr1Detected( 
+      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )))
     DeviceInterfaceSystemDeviceClass_RebootSystem( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
     DeviceInterfaceSystemDeviceClass ));
   else

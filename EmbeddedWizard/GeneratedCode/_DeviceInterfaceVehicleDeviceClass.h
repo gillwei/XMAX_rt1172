@@ -224,6 +224,9 @@ XBool DeviceInterfaceVehicleDeviceClass_OnGetIsTimeoutError2Detected( DeviceInte
 /* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetIsHeaterStatusTimeoutErr1Detected()' */
 XBool DeviceInterfaceVehicleDeviceClass_OnGetIsHeaterStatusTimeoutErr1Detected( DeviceInterfaceVehicleDeviceClass _this );
 
+/* 'C' function for method : 'DeviceInterface::VehicleDeviceClass.OnGetIsResReprogramInfoTimeoutErr1Detected()' */
+XBool DeviceInterfaceVehicleDeviceClass_OnGetIsResReprogramInfoTimeoutErr1Detected( DeviceInterfaceVehicleDeviceClass _this );
+
 #ifdef __cplusplus
   }
 #endif

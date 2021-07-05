@@ -1324,6 +1324,9 @@ switch( rx_type )
     case EnumVehicleRxTypeHEATER_STATUS_TIMEOUT_ERR1:
         *data = (uint32_t)is_timeout_error_detected( timeout_err1_status, TIMEOUT_ERR1_OFFSET_HEATER_STAT );
         break;
+    case EnumVehicleRxTypeRES_REPGROGRAM_INFO_TIMEOUT_ERR1:
+        *data = (uint32_t)is_timeout_error_detected( timeout_err1_status, TIMEOUT_ERR1_OFFSET_RES_RPRGRM_INFO );
+        break;
     default:
         PRINTF( "Err: %s invalid rx type %d\r\n", __FUNCTION__, rx_type );
         is_valid = false;
@@ -1889,6 +1892,7 @@ void VI_rx_reprogram_info_response
 {
 uint8_t progsts = 0;
 
+PRINTF( "%s 0x%02x 0x%02x %d 0x%02x\r\n", __FUNCTION__, svc_type, svc_id, svc_data_size, *svc_data_p );
 if( svc_type == MID_MSG_NRES_NACK )
     {
     progsts = vi_get_progsts();
@@ -1901,7 +1905,7 @@ if( svc_type == MID_MSG_NRES_NACK )
                 }
             else if( MID_MSG_PROGSTS_COMPLETE_REQ == progsts )
                 {
-                EW_notify_system_event_received( EnumSystemRxEventREBOOT_ACCEPTED );
+                EW_notify_system_event_received( EnumSystemRxEventREBOOT_REJECTED );
                 }
             else
                 {
