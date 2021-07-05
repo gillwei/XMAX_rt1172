@@ -51,6 +51,11 @@ void RTC_init
     void
     );
 
+void RTC_reset
+    (
+    void
+    );
+
 status_t RTC_set_dateTime
     (
     snvs_lp_srtc_datetime_t * datetime

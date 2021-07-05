@@ -22,6 +22,12 @@
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
+#define DEFAULT_RTC_YEAR    ( 2020 )
+#define DEFAULT_RTC_MONTH   ( 1 )
+#define DEFAULT_RTC_DAY     ( 1 )
+#define DEFAULT_RTC_HOUR    ( 1 )
+#define DEFAULT_RTC_MINUTE  ( 0 )
+#define DEFAULT_RTC_SEC     ( 0 )
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -60,7 +66,6 @@ void RTC_init
     void
     )
 {
-snvs_lp_srtc_datetime_t srtcDate;
 snvs_lp_srtc_config_t snvsSrtcConfig;
 
 /* Init SNVS_LP */
@@ -70,16 +75,32 @@ SNVS_LP_SRTC_Init( SNVS, &snvsSrtcConfig );
 PRINTF( "%s ok\r\n", __FUNCTION__ );
 
 /* Set a start date time and start RT */
-srtcDate.year   = 2022U;
-srtcDate.month  = 1U;
-srtcDate.day    = 1U;
-srtcDate.hour   = 0U;
-srtcDate.minute = 0;
-srtcDate.second = 0;
-
-/* Set SRTC time to default time and date and start the SRTC */
-SNVS_LP_SRTC_SetDatetime( SNVS, &srtcDate );
+RTC_reset();
 SNVS_LP_SRTC_StartTimer( SNVS );
+}
+
+/*********************************************************************
+*
+* @public
+* RTC_reset
+*
+* @brief Reset RTC to the default time
+*
+*********************************************************************/
+void RTC_reset
+    (
+    void
+    )
+{
+/* reset RTC */
+snvs_lp_srtc_datetime_t datetime;
+datetime.year   = DEFAULT_RTC_YEAR;
+datetime.month  = DEFAULT_RTC_MONTH;
+datetime.day    = DEFAULT_RTC_DAY;
+datetime.hour   = DEFAULT_RTC_HOUR;
+datetime.minute = DEFAULT_RTC_MINUTE;
+datetime.second = DEFAULT_RTC_SEC;
+RTC_set_dateTime( &datetime );
 }
 
 /*********************************************************************

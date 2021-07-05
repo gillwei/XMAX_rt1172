@@ -22,6 +22,7 @@
 #include "EEPM_pub.h"
 #include "BTM_pub.h"
 #include "VI_pub.h"
+#include "RTC_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -31,10 +32,13 @@
 #define DEFAULT_METER_DISPLAY_SETTING   ( 0 )
 #define DEFAULT_LANGUAGE                ( EnumLanguageENGLISH ) //TODO: depends on SKU
 
+#define DEFAULT_CLK_AUTO_ADJUSTMENT     ( 1 )
+
 #define FACTORY_RESET_BT_MANAGER    ( 1 << 0 )
 #define FACTORY_RESET_LANGUAGE      ( 1 << 1 )
 #define FACTORY_RESET_LAST_PAGE     ( 1 << 2 )
-#define FACTORY_RESET_TOTAL         ( FACTORY_RESET_BT_MANAGER | FACTORY_RESET_LANGUAGE | FACTORY_RESET_LAST_PAGE )
+#define FACTORY_RESET_CLK_AUTO_ADJ  ( 1 << 3 )
+#define FACTORY_RESET_TOTAL         ( FACTORY_RESET_BT_MANAGER | FACTORY_RESET_LANGUAGE | FACTORY_RESET_LAST_PAGE | FACTORY_RESET_CLK_AUTO_ADJ )
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -77,6 +81,31 @@ if( FACTORY_RESET_TOTAL == factory_reset_status )
     {
     EW_notify_system_event_received( EnumSystemRxEventFACTORY_RESET_COMPLETED );
     }
+}
+
+/*********************************************************************
+*
+* @public
+* EW_eeprom_set_clk_auto_adj_callback
+*
+* The callback function of resetting clock auto adjustment in EEPROM
+*
+* @param result True if writing clk auto adj to EEPROM succeeded.
+*               False if writing clk auto adj to EEPROM failed.
+* @param data The pointer to the value of last page
+*
+*********************************************************************/
+void EW_eeprom_set_clk_auto_adj_callback
+    (
+    bool  result,
+    void* data
+    )
+{
+if( !result )
+    {
+    EwPrint( "reset clk auto adj fail\r\n" );
+    }
+update_factory_reset_status( FACTORY_RESET_CLK_AUTO_ADJ );
 }
 
 /*********************************************************************
@@ -171,6 +200,13 @@ factory_reset_status = 0;
 VI_trip_time_reset();
 VI_trip_time_save();
 
+/* reset clock auto adjustment to ON and save to EEPROM */
+EEPM_set_clk_auto_adjustment( DEFAULT_CLK_AUTO_ADJUSTMENT, EW_eeprom_set_clk_auto_adj_callback );
+
+/* reset RTC */
+RTC_reset();
+
+/* reset last page */
 uint8_t last_page = ( DEFAULT_HOME_GROUP << LAST_PAGE_HOME_GROUP_SHIFT ) |
                     ( DEFAULT_NAVI_VIEW_SETTING << LAST_PAGE_NAVI_SETTING_SHIFT ) |
                     ( DEFAULT_METER_DISPLAY_SETTING );
@@ -178,9 +214,13 @@ if( pdFALSE == EEPM_set_last_page( last_page, &EW_eeprom_set_last_page_callback 
     {
     EwPrint( "reset page false\r\n" );
     }
+
+/* reset language */
 if( pdFALSE == EEPM_set_language( DEFAULT_LANGUAGE, &EW_eeprom_set_language_callback ) )
     {
     EwPrint( "reset lang false\r\n" );
     }
+
+/* reset BT */
 BTM_reset_factory_default( &EW_btm_reset_callback );
 }
