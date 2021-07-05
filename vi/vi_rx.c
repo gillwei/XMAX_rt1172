@@ -1438,14 +1438,20 @@ switch( rx_unit_setting.fuel_consumption_unit )
             {
             cvrt_fuel_inst = 299.9;
             }
-        cvrt_fuel_inst = ( cvrt_fuel_inst / 1.6 ) / 0.264;
+        else
+            {
+            cvrt_fuel_inst = ( cvrt_fuel_inst / 1.6 ) / 0.264;
+            }
         break;
     case FUEL_CONSUMPTION_UNIT_MILE_LMPGAL:
         if( cvrt_fuel_inst >= 100.0 )
             {
             cvrt_fuel_inst = 299.9;
             }
-        cvrt_fuel_inst = ( cvrt_fuel_inst / 1.6 ) / 0.220;
+        else
+            {
+            cvrt_fuel_inst = ( cvrt_fuel_inst / 1.6 ) / 0.220;
+            }
         break;
     case FUEL_CONSUMPTION_UNIT_L_100KM:
         if( cvrt_fuel_inst == 0.0 )
@@ -1458,9 +1464,8 @@ switch( rx_unit_setting.fuel_consumption_unit )
             }
         else
             {
-            // empty.
+            cvrt_fuel_inst = 100 / cvrt_fuel_inst;
             }
-        cvrt_fuel_inst = 100 / cvrt_fuel_inst;
         break;
     default:
         break;
