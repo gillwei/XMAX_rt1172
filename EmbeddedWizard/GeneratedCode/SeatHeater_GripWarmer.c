@@ -320,8 +320,7 @@ void SeatHeater_GripWarmerSHT02_GPW02_Main_UpdateLevel( SeatHeater_GripWarmerSHT
         VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
         &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeGRIP_WARMER_VALUE_LOW );
 
-      if ((((( VehicleData != 0 ) && VehicleData->Valid ) && ( _this->ItemValueArray[ 
-          0 ] != VehicleData->DataUInt32 )) && ( 10 >= VehicleData->DataUInt32 )) 
+      if (((( VehicleData != 0 ) && VehicleData->Valid ) && ( 10 >= VehicleData->DataUInt32 )) 
           && ( VehicleData->DataUInt32 >= 1 ))
       {
         _this->ItemValidStatusArray[ 0 ] = 1;
@@ -352,8 +351,7 @@ void SeatHeater_GripWarmerSHT02_GPW02_Main_UpdateLevel( SeatHeater_GripWarmerSHT
         VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
         &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeGRIP_WARMER_VALUE_MIDDLE );
 
-      if ((((( VehicleData != 0 ) && VehicleData->Valid ) && ( _this->ItemValueArray[ 
-          1 ] != VehicleData->DataUInt32 )) && ( 10 >= VehicleData->DataUInt32 )) 
+      if (((( VehicleData != 0 ) && VehicleData->Valid ) && ( 10 >= VehicleData->DataUInt32 )) 
           && ( VehicleData->DataUInt32 >= 1 ))
       {
         _this->ItemValidStatusArray[ 1 ] = 1;
@@ -384,8 +382,7 @@ void SeatHeater_GripWarmerSHT02_GPW02_Main_UpdateLevel( SeatHeater_GripWarmerSHT
         VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
         &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeGRIP_WARMER_VALUE_HIGH );
 
-      if ((((( VehicleData != 0 ) && VehicleData->Valid ) && ( _this->ItemValueArray[ 
-          2 ] != VehicleData->DataUInt32 )) && ( 10 >= VehicleData->DataUInt32 )) 
+      if (((( VehicleData != 0 ) && VehicleData->Valid ) && ( 10 >= VehicleData->DataUInt32 )) 
           && ( VehicleData->DataUInt32 >= 1 ))
       {
         _this->ItemValidStatusArray[ 2 ] = 1;

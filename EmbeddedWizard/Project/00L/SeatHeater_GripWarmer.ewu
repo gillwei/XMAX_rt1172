@@ -335,7 +335,6 @@ class SHT02_GPW02_Main : Menu::BaseMenuView
 
         if( null != VehicleData &&
             VehicleData.Valid &&
-            ItemValueArray[0] != VehicleData.DataUInt32 &&
             SeatHeater_GripWarmer::MAX_LEVEL >= VehicleData.DataUInt32 &&
             VehicleData.DataUInt32 >= SeatHeater_GripWarmer::MIN_LEVEL )
         {
@@ -370,7 +369,6 @@ class SHT02_GPW02_Main : Menu::BaseMenuView
 
         if( null != VehicleData &&
             VehicleData.Valid &&
-            ItemValueArray[1] != VehicleData.DataUInt32 &&
             SeatHeater_GripWarmer::MAX_LEVEL >= VehicleData.DataUInt32 &&
             VehicleData.DataUInt32 >= SeatHeater_GripWarmer::MIN_LEVEL )
         {
@@ -405,7 +403,6 @@ class SHT02_GPW02_Main : Menu::BaseMenuView
 
         if( null != VehicleData &&
             VehicleData.Valid &&
-            ItemValueArray[2] != VehicleData.DataUInt32 &&
             SeatHeater_GripWarmer::MAX_LEVEL >= VehicleData.DataUInt32 &&
             VehicleData.DataUInt32 >= SeatHeater_GripWarmer::MIN_LEVEL )
         {
