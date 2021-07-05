@@ -97,8 +97,7 @@ class MNT01_MaintenanceReset : Menu::BaseMenuView
 
     if( 0 < NoOfSupportedItem )
     {
-      VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.TIMEOUT_ERROR2_DETECTED );
-      if( 0 == VehicleData.DataUInt32 )
+      if( DeviceInterface::VehicleDevice.IsTimeoutError2Detected )
       {
         switch( aItemNo )
         {
@@ -243,8 +242,7 @@ class MNT01_MaintenanceReset : Menu::BaseMenuView
         case Enum::VehicleRxType.MAINTENANCE_TRIP1: ReloadItem( 0 );
         case Enum::VehicleRxType.MAINTENANCE_TRIP2: ReloadItem( 1 );
         case Enum::VehicleRxType.MAINTENANCE_TRIP3: ReloadItem( 2 );
-        case Enum::VehicleRxType.TIMEOUT_ERROR2_DETECTED,
-             Enum::VehicleRxType.TIMEOUT_ERROR2_RECOVERED:
+        case Enum::VehicleRxType.TIMEOUT_ERROR2_UPDATED:
         {
           Menu.InvalidateItems( 0, Menu.NoOfItems - 1 );
         }

@@ -675,8 +675,7 @@ void LauncherLNC_Main_OnVehicleDataReceivedSlot( LauncherLNC_Main _this, XObject
       }
       break;
 
-      case EnumVehicleRxTypeTIMEOUT_ERROR2_DETECTED :
-      case EnumVehicleRxTypeTIMEOUT_ERROR2_RECOVERED :
+      case EnumVehicleRxTypeTIMEOUT_ERROR2_UPDATED :
       case EnumVehicleRxTypeTIMEOUT_ERROR1_UPDATED :
       {
         LauncherLNC_Base_SetItems( &_this->LNC_Base, _this->PreviousItem, _this->CurrentItem, 

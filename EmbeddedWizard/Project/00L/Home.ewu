@@ -39,9 +39,8 @@ class HOM12_EcoVisualizer : Home::BaseHome
   $rect <550,600,730,640>
   inherited method Init()
   {
-    trace "Init HOM12";
-    var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.TIMEOUT_ERROR2_DETECTED );
-    if( (bool)VehicleData.DataUInt32 )
+    trace "HOM12";
+    if( DeviceInterface::VehicleDevice.IsTimeoutError2Detected )
     {
       RemoveAllEcoRecord();
     }
@@ -260,20 +259,22 @@ class HOM12_EcoVisualizer : Home::BaseHome
   slot OnVehicleDataReceivedSlot
   {
     var DeviceInterface::VehicleDataClass VehicleData = ( DeviceInterface::VehicleDataClass )VehicleDataReceivedEventHandler.Context;
-
     if( null != VehicleData )
     {
       switch( VehicleData.RxType )
       {
-        case Enum::VehicleRxType.TIMEOUT_ERROR2_DETECTED:
+        case Enum::VehicleRxType.TIMEOUT_ERROR2_UPDATED:
         {
-          EcoBarUpdateTimer.Enabled = false;
-          RemoveAllEcoRecord();
-          Average.String = Strings::GEN_THREE_HYPHENS;
-        }
-        case Enum::VehicleRxType.TIMEOUT_ERROR2_RECOVERED:
-        {
-          EcoBarUpdateTimer.Enabled = true;
+          if( DeviceInterface::VehicleDevice.IsTimeoutError2Detected )
+          {
+            EcoBarUpdateTimer.Enabled = false;
+            RemoveAllEcoRecord();
+            Average.String = Strings::GEN_THREE_HYPHENS;
+          }
+          else
+          {
+            EcoBarUpdateTimer.Enabled = true;
+          }
         }
         case Enum::VehicleRxType.FUEL_CONSUMPTION_UNIT:
         {

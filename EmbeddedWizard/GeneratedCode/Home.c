@@ -74,13 +74,13 @@
 /* Compressed strings for the language 'Default'. */
 EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
-  0x000000D4, /* ratio 69.81 % */
+  0x000000CA, /* ratio 71.29 % */
   0xB8001B00, 0x00092452, 0x00D20037, 0x040003A0, 0x9E002400, 0x20026800, 0x18004546,
-  0x122C0C17, 0x00158004, 0x30021A47, 0x800AA002, 0x60980022, 0xA0902004, 0x190A8441,
-  0x9128843A, 0x2B1945A2, 0x983C165B, 0x9A48A170, 0xC8CE2F13, 0x4F65F1B9, 0x06230F99,
-  0x28600185, 0x79450846, 0x061001DA, 0x649E9B00, 0x98442A44, 0x3C000CB5, 0x946C332B,
-  0xD56BC003, 0x88D00031, 0x6BF5436C, 0x0075B64F, 0xB68875B0, 0x68B69C2A, 0xB3C80263,
-  0x00406FB2, 0x00000000
+  0x122C0C17, 0x00158004, 0x30021A47, 0x800AA002, 0x60980022, 0x23608004, 0x2D148944,
+  0x902958CA, 0x0A8441A0, 0x397C3A19, 0x9A0CE2F1, 0x5C266F1B, 0x45279228, 0x627E0018,
+  0x20F41084, 0xC2003B00, 0x94336000, 0x0885488C, 0x800196AD, 0x8D866567, 0x956C0072,
+  0x1A00063A, 0x72A26D91, 0x0EB69A1D, 0xCB0EB480, 0xB6A3854A, 0x79004E6C, 0x080DEA56,
+  0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -101,11 +101,11 @@ static const XRect _Const000D = {{ 0, 102 }, { 480, 129 }};
 static const XRect _Const000E = {{ 50, 45 }, { 419, 184 }};
 static const XRect _Const000F = {{ 56, 45 }, { 425, 184 }};
 static const XStringRes _Const0010 = { _StringsDefault0, 0x001A };
-static const XStringRes _Const0011 = { _StringsDefault0, 0x0027 };
+static const XStringRes _Const0011 = { _StringsDefault0, 0x0022 };
 static const XRect _Const0012 = {{ 0, 38 }, { 480, 272 }};
 static const XRect _Const0013 = {{ 17, 51 }, { 67, 101 }};
 static const XRect _Const0014 = {{ 78, 40 }, { 480, 268 }};
-static const XStringRes _Const0015 = { _StringsDefault0, 0x0034 };
+static const XStringRes _Const0015 = { _StringsDefault0, 0x002F };
 static const XRect _Const0016 = {{ 0, 0 }, { 402, 228 }};
 static const XRect _Const0017 = {{ 0, 70 }, { 359, 77 }};
 static const XRect _Const0018 = {{ 0, 146 }, { 359, 153 }};
@@ -120,12 +120,12 @@ static const XRect _Const0020 = {{ 232, 7 }, { 282, 64 }};
 static const XRect _Const0021 = {{ 147, 7 }, { 197, 64 }};
 static const XRect _Const0022 = {{ 204, 15 }, { 231, 57 }};
 static const XRect _Const0023 = {{ 0, 0 }, { 369, 156 }};
-static const XStringRes _Const0024 = { _StringsDefault0, 0x0041 };
+static const XStringRes _Const0024 = { _StringsDefault0, 0x003C };
 static const XRect _Const0025 = {{ 0, 0 }, { 6, 118 }};
 static const XRect _Const0026 = {{ 0, 3 }, { 6, 118 }};
 static const XColor _Const0027 = { 0x71, 0x9E, 0x0D, 0xFF };
 static const XRect _Const0028 = {{ 0, 0 }, { 6, 6 }};
-static const XStringRes _Const0029 = { _StringsDefault0, 0x0051 };
+static const XStringRes _Const0029 = { _StringsDefault0, 0x004C };
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.
@@ -448,16 +448,13 @@ void HomeHOM12_EcoVisualizer__Done( HomeHOM12_EcoVisualizer _this )
    statements. */
 void HomeHOM12_EcoVisualizer_Init( HomeHOM12_EcoVisualizer _this, XHandle aArg )
 {
-  DeviceInterfaceVehicleDataClass VehicleData;
-
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aArg );
 
   EwTrace( "%s", EwLoadString( &_Const0010 ));
-  VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
-  DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeTIMEOUT_ERROR2_DETECTED );
 
-  if ( !!VehicleData->DataUInt32 )
+  if ( DeviceInterfaceVehicleDeviceClass_OnGetIsTimeoutError2Detected( EwGetAutoObject( 
+      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )))
     HomeHOM12_EcoVisualizer_RemoveAllEcoRecord( _this );
   else
     EwSignal( EwNewSlot( _this, HomeHOM12_EcoVisualizer_OnEcoBarUpdateSlot ), ((XObject)_this ));
@@ -573,16 +570,16 @@ void HomeHOM12_EcoVisualizer_OnVehicleDataReceivedSlot( HomeHOM12_EcoVisualizer 
   if ( VehicleData != 0 )
     switch ( VehicleData->RxType )
     {
-      case EnumVehicleRxTypeTIMEOUT_ERROR2_DETECTED :
-      {
-        CoreTimer_OnSetEnabled( &_this->EcoBarUpdateTimer, 0 );
-        HomeHOM12_EcoVisualizer_RemoveAllEcoRecord( _this );
-        ViewsText_OnSetString( &_this->Average, EwLoadString( &StringsGEN_THREE_HYPHENS ));
-      }
-      break;
-
-      case EnumVehicleRxTypeTIMEOUT_ERROR2_RECOVERED :
-        CoreTimer_OnSetEnabled( &_this->EcoBarUpdateTimer, 1 );
+      case EnumVehicleRxTypeTIMEOUT_ERROR2_UPDATED :
+        if ( DeviceInterfaceVehicleDeviceClass_OnGetIsTimeoutError2Detected( EwGetAutoObject( 
+            &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )))
+        {
+          CoreTimer_OnSetEnabled( &_this->EcoBarUpdateTimer, 0 );
+          HomeHOM12_EcoVisualizer_RemoveAllEcoRecord( _this );
+          ViewsText_OnSetString( &_this->Average, EwLoadString( &StringsGEN_THREE_HYPHENS ));
+        }
+        else
+          CoreTimer_OnSetEnabled( &_this->EcoBarUpdateTimer, 1 );
       break;
 
       case EnumVehicleRxTypeFUEL_CONSUMPTION_UNIT :

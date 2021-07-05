@@ -269,7 +269,7 @@ typedef enum
   EnumVehicleRxTypeTIRE_SENSOR_EQUIPPED = 52,
   EnumVehicleRxTypeTFT_DUTY             = 53,
   EnumVehicleRxTypeTIMEOUT_ERROR2_DETECTED = 54,
-  EnumVehicleRxTypeTIMEOUT_ERROR2_RECOVERED = 55,
+  EnumVehicleRxTypeTIMEOUT_ERROR2_UPDATED = 55,
   EnumVehicleRxTypeTIMEOUT_ERROR1_UPDATED = 56,
   EnumVehicleRxTypeHEATER_STATUS_TIMEOUT_ERR1 = 57,
   EnumVehicleRxTypeRES_REPGROGRAM_INFO_TIMEOUT_ERR1 = 58,

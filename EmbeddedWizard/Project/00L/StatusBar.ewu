@@ -26,9 +26,7 @@ class Main : Core::Group
     postsignal OnUpdatePhoneIconSlot;
     postsignal OnNotificationListUpdatedSlot;
 
-    var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.TIMEOUT_ERROR2_DETECTED );
-    IsTimeoutError2Detected = (bool)VehicleData.DataUInt32;
-
+    IsTimeoutError2Detected = DeviceInterface::VehicleDevice.IsTimeoutError2Detected;
     NaviIcon.Visible = DeviceInterface::NavigationDevice.GetNaviConnectStatus();
   }
 
@@ -346,8 +344,7 @@ class Main : Core::Group
         {
           UpdateAirTemperature();
         }
-        case Enum::VehicleRxType.TIMEOUT_ERROR2_DETECTED: IsTimeoutError2Detected = true;
-        case Enum::VehicleRxType.TIMEOUT_ERROR2_RECOVERED: IsTimeoutError2Detected = false;
+        case Enum::VehicleRxType.TIMEOUT_ERROR2_UPDATED: IsTimeoutError2Detected = DeviceInterface::VehicleDevice.IsTimeoutError2Detected;
         default:;
       }
     }

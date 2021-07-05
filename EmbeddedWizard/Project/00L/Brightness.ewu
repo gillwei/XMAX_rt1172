@@ -108,11 +108,7 @@ class BRT01_BrightnessSettingMenu : Menu::BaseMenuView
     {
       switch( VehicleData.RxType )
       {
-        case Enum::VehicleRxType.TIMEOUT_ERROR2_DETECTED,
-             Enum::VehicleRxType.TIMEOUT_ERROR2_RECOVERED:
-        {
-          Menu.InvalidateItems( 1, 1 );
-        }
+        case Enum::VehicleRxType.TIMEOUT_ERROR2_UPDATED: Menu.InvalidateItems( 1, 1 );
         default:;
       }
     }
@@ -386,6 +382,8 @@ class BRT03_MeterBrightness : Components::BaseMainBG
       LevelBar.Bounds = LevelBarBounds[( int32 )BrightnessLevel - 1];
       LevelBar.Visible = true;
     }
+
+    UpdateLevelBarFrameNumber();
   }
 
   $rect <210,440,440,480>
@@ -449,13 +447,6 @@ class BRT03_MeterBrightness : Components::BaseMainBG
   $rect <0,390,200,430>
   inherited var SlideOutEffectEnabled = true;
 
-  // TODO
-  // 1. Gray out brightness bar when CAN timeout error happened.
-  note group Note2
-  {
-    attr Bounds = <510,100,970,220>;
-  }
-
   $rect <20,20,160,60>
   object Views::Image Base
   {
@@ -490,8 +481,7 @@ class BRT03_MeterBrightness : Components::BaseMainBG
       switch( VehicleData.RxType )
       {
         case Enum::VehicleRxType.METER_BRIGHTNESS_LEVEL: UpdateBrightnessLevel();
-        case Enum::VehicleRxType.TIMEOUT_ERROR2_DETECTED: LevelBar.FrameNumber = 0;
-        case Enum::VehicleRxType.TIMEOUT_ERROR2_RECOVERED: LevelBar.FrameNumber = 1;
+        case Enum::VehicleRxType.TIMEOUT_ERROR2_UPDATED: UpdateLevelBarFrameNumber();
         default:;
       }
     }
@@ -522,6 +512,19 @@ class BRT03_MeterBrightness : Components::BaseMainBG
     Default[4] = <173,93,307,112>;
     Default[5] = <173,65,307,84>;
   );
+
+  $rect <450,540,710,580>
+  method void UpdateLevelBarFrameNumber()
+  {
+    if( DeviceInterface::VehicleDevice.IsTimeoutError2Detected )
+    {
+      LevelBar.FrameNumber = 0;
+    }
+    else
+    {
+      LevelBar.FrameNumber = 1;
+    }
+  }
 }
 
 $rect <10,310,240,350>

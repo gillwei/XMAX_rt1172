@@ -247,10 +247,8 @@ XString MaintenanceMNT01_MaintenanceReset_LoadItemValue( MaintenanceMNT01_Mainte
 
   if ( 0 < _this->NoOfSupportedItem )
   {
-    VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
-    DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeTIMEOUT_ERROR2_DETECTED );
-
-    if ( 0 == VehicleData->DataUInt32 )
+    if ( DeviceInterfaceVehicleDeviceClass_OnGetIsTimeoutError2Detected( EwGetAutoObject( 
+        &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )))
     {
       switch ( aItemNo )
       {
@@ -413,8 +411,7 @@ void MaintenanceMNT01_MaintenanceReset_OnVehicleDataReceivedSlot( MaintenanceMNT
         MaintenanceMNT01_MaintenanceReset_ReloadItem( _this, 2 );
       break;
 
-      case EnumVehicleRxTypeTIMEOUT_ERROR2_DETECTED :
-      case EnumVehicleRxTypeTIMEOUT_ERROR2_RECOVERED :
+      case EnumVehicleRxTypeTIMEOUT_ERROR2_UPDATED :
         MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, _this->Super1.Menu.NoOfItems 
         - 1 );
       break;

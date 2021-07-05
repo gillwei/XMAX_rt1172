@@ -479,8 +479,7 @@ class LNC_Main : Components::BaseComponent
             LNC_RotaryPlate.SetItems( PreviousItem, CurrentItem, NextItem );
           }
         }
-        case Enum::VehicleRxType.TIMEOUT_ERROR2_DETECTED,
-             Enum::VehicleRxType.TIMEOUT_ERROR2_RECOVERED,
+        case Enum::VehicleRxType.TIMEOUT_ERROR2_UPDATED,
              Enum::VehicleRxType.TIMEOUT_ERROR1_UPDATED:
         {
           LNC_Base.SetItems( PreviousItem, CurrentItem, NextItem );

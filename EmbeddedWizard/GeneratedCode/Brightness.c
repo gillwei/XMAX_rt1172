@@ -257,8 +257,7 @@ void BrightnessBRT01_BrightnessSettingMenu_OnVehicleDataReceivedSlot( Brightness
   if ( VehicleData != 0 )
     switch ( VehicleData->RxType )
     {
-      case EnumVehicleRxTypeTIMEOUT_ERROR2_DETECTED :
-      case EnumVehicleRxTypeTIMEOUT_ERROR2_RECOVERED :
+      case EnumVehicleRxTypeTIMEOUT_ERROR2_UPDATED :
         MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 1, 1 );
       break;
 
@@ -745,6 +744,8 @@ void BrightnessBRT03_MeterBrightness_UpdateViewState( BrightnessBRT03_MeterBrigh
     - 1, 6 )]);
     ViewsImage_OnSetVisible( &_this->LevelBar, 1 );
   }
+
+  BrightnessBRT03_MeterBrightness_UpdateLevelBarFrameNumber( _this );
 }
 
 /* 'C' function for method : 'Brightness::BRT03_MeterBrightness.OnShortDownKeyActivated()' */
@@ -814,12 +815,8 @@ void BrightnessBRT03_MeterBrightness_OnVehicleDataReceivedSlot( BrightnessBRT03_
         BrightnessBRT03_MeterBrightness_UpdateBrightnessLevel( _this );
       break;
 
-      case EnumVehicleRxTypeTIMEOUT_ERROR2_DETECTED :
-        ViewsImage_OnSetFrameNumber( &_this->LevelBar, 0 );
-      break;
-
-      case EnumVehicleRxTypeTIMEOUT_ERROR2_RECOVERED :
-        ViewsImage_OnSetFrameNumber( &_this->LevelBar, 1 );
+      case EnumVehicleRxTypeTIMEOUT_ERROR2_UPDATED :
+        BrightnessBRT03_MeterBrightness_UpdateLevelBarFrameNumber( _this );
       break;
 
       default :; 
@@ -838,6 +835,16 @@ void BrightnessBRT03_MeterBrightness_UpdateBrightnessLevel( BrightnessBRT03_Mete
     _this->BrightnessLevel = VehicleData->DataUInt32;
     CoreGroup_InvalidateViewState((CoreGroup)_this );
   }
+}
+
+/* 'C' function for method : 'Brightness::BRT03_MeterBrightness.UpdateLevelBarFrameNumber()' */
+void BrightnessBRT03_MeterBrightness_UpdateLevelBarFrameNumber( BrightnessBRT03_MeterBrightness _this )
+{
+  if ( DeviceInterfaceVehicleDeviceClass_OnGetIsTimeoutError2Detected( EwGetAutoObject( 
+      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )))
+    ViewsImage_OnSetFrameNumber( &_this->LevelBar, 0 );
+  else
+    ViewsImage_OnSetFrameNumber( &_this->LevelBar, 1 );
 }
 
 /* Variants derived from the class : 'Brightness::BRT03_MeterBrightness' */

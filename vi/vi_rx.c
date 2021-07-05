@@ -1027,21 +1027,15 @@ switch( handle )
         break;
     }
 
-// notify UI if the stauts of timeout error2 changed
-if( 0 == last_timeout_err2_status &&
-    0 != timeout_err2_status )
+/* notify UI if the status of timeout error2 updated */
+if( last_timeout_err2_status != timeout_err2_status )
     {
-    EW_notify_vi_data_received( EnumVehicleRxTypeTIMEOUT_ERROR2_DETECTED );
+    EW_notify_vi_data_received( EnumVehicleRxTypeTIMEOUT_ERROR2_UPDATED );
     }
-else if( 0 != last_timeout_err2_status &&
-         0 == timeout_err2_status )
+
+if( 0 != last_timeout_err2_status && 0 == timeout_err2_status )
     {
-    EW_notify_vi_data_received( EnumVehicleRxTypeTIMEOUT_ERROR2_RECOVERED );
     vi_clock_timeout_err2_recovered();
-    }
-else
-    {
-    // empty
     }
 }
 

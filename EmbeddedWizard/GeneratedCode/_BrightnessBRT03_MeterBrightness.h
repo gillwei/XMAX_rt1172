@@ -212,6 +212,9 @@ void BrightnessBRT03_MeterBrightness_OnVehicleDataReceivedSlot( BrightnessBRT03_
 /* 'C' function for method : 'Brightness::BRT03_MeterBrightness.UpdateBrightnessLevel()' */
 void BrightnessBRT03_MeterBrightness_UpdateBrightnessLevel( BrightnessBRT03_MeterBrightness _this );
 
+/* 'C' function for method : 'Brightness::BRT03_MeterBrightness.UpdateLevelBarFrameNumber()' */
+void BrightnessBRT03_MeterBrightness_UpdateLevelBarFrameNumber( BrightnessBRT03_MeterBrightness _this );
+
 #ifdef __cplusplus
   }
 #endif

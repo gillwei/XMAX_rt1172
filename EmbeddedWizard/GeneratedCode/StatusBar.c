@@ -283,8 +283,6 @@ void StatusBarMain__Done( StatusBarMain _this )
    statements. */
 void StatusBarMain_Init( StatusBarMain _this, XHandle aArg )
 {
-  DeviceInterfaceVehicleDataClass VehicleData;
-
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aArg );
 
@@ -298,9 +296,8 @@ void StatusBarMain_Init( StatusBarMain _this, XHandle aArg )
   EwPostSignal( EwNewSlot( _this, StatusBarMain_OnUpdatePhoneIconSlot ), ((XObject)_this ));
   EwPostSignal( EwNewSlot( _this, StatusBarMain_OnNotificationListUpdatedSlot ), 
     ((XObject)_this ));
-  VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
-  DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeTIMEOUT_ERROR2_DETECTED );
-  _this->IsTimeoutError2Detected = !!VehicleData->DataUInt32;
+  _this->IsTimeoutError2Detected = DeviceInterfaceVehicleDeviceClass_OnGetIsTimeoutError2Detected( 
+  EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ));
   ViewsImage_OnSetVisible( &_this->NaviIcon, DeviceInterfaceNavigationDeviceClass_GetNaviConnectStatus( 
   EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )));
 }
@@ -500,12 +497,9 @@ void StatusBarMain_OnVehicleDataReceivedSlot( StatusBarMain _this, XObject sende
         StatusBarMain_UpdateAirTemperature( _this );
       break;
 
-      case EnumVehicleRxTypeTIMEOUT_ERROR2_DETECTED :
-        _this->IsTimeoutError2Detected = 1;
-      break;
-
-      case EnumVehicleRxTypeTIMEOUT_ERROR2_RECOVERED :
-        _this->IsTimeoutError2Detected = 0;
+      case EnumVehicleRxTypeTIMEOUT_ERROR2_UPDATED :
+        _this->IsTimeoutError2Detected = DeviceInterfaceVehicleDeviceClass_OnGetIsTimeoutError2Detected( 
+        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ));
       break;
 
       default :; 
