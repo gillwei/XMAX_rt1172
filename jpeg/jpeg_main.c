@@ -22,11 +22,11 @@
 #include "jpeglib.h"
 #include "JPEG_pub.h"
 #include "jpeg_priv.h"
+#include "GRM_pub_prj.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
-#define JPEG_TASK_PRIORITY   ( tskIDLE_PRIORITY + 2 )
 #define JPEG_TASK_STACK_SIZE ( configMINIMAL_STACK_SIZE * 6 )
 #define JPEG_TASK_NAME       "jpeg_task"
 
@@ -249,7 +249,7 @@ static void create_task
     )
 {
 event_group = xEventGroupCreate();
-BaseType_t result = xTaskCreate( task_main, JPEG_TASK_NAME, JPEG_TASK_STACK_SIZE, NULL, JPEG_TASK_PRIORITY, NULL );
+BaseType_t result = xTaskCreate( task_main, JPEG_TASK_NAME, JPEG_TASK_STACK_SIZE, NULL, TASK_PRIO_JPEG, NULL );
 configASSERT( pdPASS == result );
 }
 

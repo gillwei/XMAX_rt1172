@@ -607,7 +607,7 @@ class BaseHome : Components::BaseMainBG
   object Core::Timer NaviConnectFailedTimer
   {
     preset OnTrigger = OnNaviConnectFailedSlot;
-    preset Period = 3000;
+    preset Period = 5000;
   }
 
   $rect <430,510,630,550>

@@ -904,7 +904,7 @@ void HomeBaseHome__Init( HomeBaseHome _this, XObject aLink, XHandle aArg )
   _this->_.VMT = EW_CLASS( HomeBaseHome );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreTimer_OnSetPeriod( &_this->NaviConnectFailedTimer, 3000 );
+  CoreTimer_OnSetPeriod( &_this->NaviConnectFailedTimer, 5000 );
   CoreRectView__OnSetBounds( &_this->LoadingAnimation, _Const0012 );
   CoreGroup__OnSetVisible( &_this->LoadingAnimation, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->LoadingAnimation ), 0 );
