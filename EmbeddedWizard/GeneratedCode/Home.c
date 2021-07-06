@@ -1057,9 +1057,13 @@ XEnum HomeBaseHome_GetNextHomeType( HomeBaseHome _this, XEnum aCurrentHomeType )
 /* 'C' function for method : 'Home::BaseHome.OnSetAccessNaviView()' */
 void HomeBaseHome_OnSetAccessNaviView( HomeBaseHome _this, XBool value )
 {
-  _this->AccessNaviView = value;
-  CoreTimer_OnSetEnabled( &_this->NaviConnectFailedTimer, value );
-  CoreGroup__OnSetVisible( &_this->LoadingAnimation, value );
+  if ( _this->AccessNaviView != value )
+  {
+    _this->AccessNaviView = value;
+    CoreTimer_OnSetEnabled( &_this->NaviConnectFailedTimer, value );
+    PopPOP16_NaviLoadingUI_OnSetAnimated( &_this->LoadingAnimation, value );
+    CoreGroup__OnSetVisible( &_this->LoadingAnimation, value );
+  }
 }
 
 /* 'C' function for method : 'Home::BaseHome.OnNaviConnectFailedSlot()' */

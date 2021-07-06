@@ -102,6 +102,7 @@ EW_DEFINE_FIELDS( PopPOP16_NaviLoadingUI, CoreGroup )
   EW_OBJECT  ( NaviLoadingBlackBG, ViewsRectangle )
   EW_OBJECT  ( NaviLoadingText, ViewsText )
   EW_OBJECT  ( NaviLoadingAnimation, ViewsImage )
+  EW_PROPERTY( Animated,        XBool )
 EW_END_OF_FIELDS( PopPOP16_NaviLoadingUI )
 
 /* Virtual Method Table (VMT) for the class : 'Pop::POP16_NaviLoadingUI' */
@@ -148,6 +149,9 @@ EW_DEFINE_METHODS( PopPOP16_NaviLoadingUI, CoreGroup )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
 EW_END_OF_METHODS( PopPOP16_NaviLoadingUI )
+
+/* 'C' function for method : 'Pop::POP16_NaviLoadingUI.OnSetAnimated()' */
+void PopPOP16_NaviLoadingUI_OnSetAnimated( PopPOP16_NaviLoadingUI _this, XBool value );
 
 #ifdef __cplusplus
   }

@@ -104,7 +104,7 @@ static const XRect _Const001F = {{ 0, 0 }, { 480, 234 }};
 static const XRect _Const0020 = {{ 0, 144 }, { 480, 234 }};
 static const XRect _Const0021 = {{ 0, 0 }, { 480, 144 }};
 static const XRect _Const0022 = {{ 10, 118 }, { 470, 149 }};
-static const XRect _Const0023 = {{ 193, 18 }, { 287, 110 }};
+static const XRect _Const0023 = {{ 193, 18 }, { 287, 112 }};
 
 /* Initializer for the class 'Pop::POP08_WeatherLoadingUI' */
 void PopPOP08_WeatherLoadingUI__Init( PopPOP08_WeatherLoadingUI _this, XObject aLink, XHandle aArg )
@@ -1586,7 +1586,7 @@ void PopPOP16_NaviLoadingUI__Init( PopPOP16_NaviLoadingUI _this, XObject aLink, 
   CoreRectView__OnSetBounds( &_this->NaviLoadingText, _Const0022 );
   ViewsText_OnSetString( &_this->NaviLoadingText, EwGetVariantOfString( &StringsGEN_PLEASE_WAIT ));
   CoreRectView__OnSetBounds( &_this->NaviLoadingAnimation, _Const0023 );
-  ViewsImage_OnSetAnimated( &_this->NaviLoadingAnimation, 1 );
+  ViewsImage_OnSetAnimated( &_this->NaviLoadingAnimation, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->NaviLoadingMainBottom ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->NaviLoadingBlackBG ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->NaviLoadingText ), 0 );
@@ -1628,13 +1628,24 @@ void PopPOP16_NaviLoadingUI__Done( PopPOP16_NaviLoadingUI _this )
   CoreGroup__Done( &_this->_.Super );
 }
 
+/* 'C' function for method : 'Pop::POP16_NaviLoadingUI.OnSetAnimated()' */
+void PopPOP16_NaviLoadingUI_OnSetAnimated( PopPOP16_NaviLoadingUI _this, XBool value )
+{
+  if ( _this->Animated != value )
+  {
+    _this->Animated = value;
+    ViewsImage_OnSetAnimated( &_this->NaviLoadingAnimation, value );
+  }
+}
+
 /* Variants derived from the class : 'Pop::POP16_NaviLoadingUI' */
 EW_DEFINE_CLASS_VARIANTS( PopPOP16_NaviLoadingUI )
 EW_END_OF_CLASS_VARIANTS( PopPOP16_NaviLoadingUI )
 
 /* Virtual Method Table (VMT) for the class : 'Pop::POP16_NaviLoadingUI' */
 EW_DEFINE_CLASS( PopPOP16_NaviLoadingUI, CoreGroup, NaviLoadingMainBottom, NaviLoadingMainBottom, 
-                 NaviLoadingMainBottom, NaviLoadingMainBottom, _.VMT, _.VMT, "Pop::POP16_NaviLoadingUI" )
+                 NaviLoadingMainBottom, NaviLoadingMainBottom, Animated, Animated, 
+                 "Pop::POP16_NaviLoadingUI" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,

@@ -593,11 +593,14 @@ class BaseHome : Components::BaseMainBG
   $rect <474,394,674,434>
   onset AccessNaviView
   {
-    // Remember the property's new value.
-    pure AccessNaviView = value;
+    if( pure AccessNaviView != value )
+    {
+      pure AccessNaviView = value;
 
-    NaviConnectFailedTimer.Enabled = value;
-    LoadingAnimation.Visible = value;
+      NaviConnectFailedTimer.Enabled = value;
+      LoadingAnimation.Animated = value;
+      LoadingAnimation.Visible = value;
+    }
   }
 
   $rect <430,470,630,510>

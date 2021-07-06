@@ -716,8 +716,21 @@ class POP16_NaviLoadingUI : Core::Group
   $rect <20,20,160,60>
   object Views::Image NaviLoadingAnimation
   {
-    preset Bounds = <193,18,287,110>;
-    preset Animated = true;
+    preset Bounds = <193,18,287,112>;
+    preset Animated = false;
     preset Bitmap = Resource::LoadingAnimation;
+  }
+
+  $rect <210,250,410,290>
+  property bool Animated;
+
+  $rect <210,290,410,330>
+  onset Animated
+  {
+    if( pure Animated != value )
+    {
+      pure Animated = value;
+      NaviLoadingAnimation.Animated = value;
+    }
   }
 }
