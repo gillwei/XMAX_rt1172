@@ -89,6 +89,26 @@ switch( device_type )
 }
 
 /*================================================================================================
+@brief   Convert the HCI role to string
+@details Convert the HCI role to string
+@return  None
+@retval  String of the HCI role
+================================================================================================*/
+const char* BT_util_get_hci_role_string
+    (
+    const BT_hci_role_e hci_role
+    )
+{
+switch( hci_role )
+    {
+    case BT_HCI_MASTER:       return "Master";
+    case BT_HCI_SLAVE:        return "Slave";
+    case BT_HCI_ROLE_INVALID:
+    default:                  return "Unknown";
+    }
+}
+
+/*================================================================================================
 @brief   Convert the hardware mode to string
 @details Convert the hardware mode to string
 @return  None
@@ -188,6 +208,88 @@ switch( connection_type )
     case BT_SPP_CONNECTION_IAP:          return "iAP";
     case BT_SPP_CONNECTION_TYPE_INVALID:
     default:                             return "Unknown";
+    }
+}
+
+// LE
+
+/*================================================================================================
+@brief   Convert the LE advertising mode to string
+@details Convert the LE advertising mode to string
+@return  None
+@retval  String of the LE advertising mode
+================================================================================================*/
+const char* BLE_util_get_advertising_mode_string
+    (
+    const BLE_advertising_mode_e advertising_mode
+    )
+{
+switch( advertising_mode )
+    {
+    case BLE_ADVERTISING_OFF:             return "Off";
+    case BLE_ADVERTISING_NON_CONNECTABLE: return "Non-Connectable Advertising";
+    case BLE_ADVERTISING_CONNECTABLE:     return "Connectable Advertising";
+    case BLE_ADVERTISING_MODE_INVALID:
+    default:                              return "Unknown";
+    }
+}
+
+/*================================================================================================
+@brief   Convert the LE BD address type to string
+@details Convert the LE BD address type to string
+@return  None
+@retval  String of the LE BD address type
+================================================================================================*/
+const char* BLE_util_get_bd_addr_type_string
+    (
+    const BLE_bd_addr_type_e bd_addr_type
+    )
+{
+switch( bd_addr_type )
+    {
+    case BLE_BD_ADDR_PUBLIC:       return "Public";
+    case BLE_BD_ADDR_RANDOM:       return "Random";
+    case BLE_BD_ADDR_TYPE_INVALID:
+    default:                       return "Unknown";
+    }
+}
+
+/*================================================================================================
+@brief   Convert the LE client type to string
+@details Convert the LE client type to string
+@return  None
+@retval  String of the LE client type
+================================================================================================*/
+const char* BLE_util_get_client_type_string
+    (
+    const BLE_client_type_e client_type
+    )
+{
+switch( client_type )
+    {
+    case BLE_CLIENT_ANCS:         return "ANCS";
+    case BLE_CLIENT_AMS:          return "AMS";
+    case BLE_CLIENT_TYPE_INVALID:
+    default:                      return "Unknown";
+    }
+}
+
+/*================================================================================================
+@brief   Convert the LE server type to string
+@details Convert the LE server type to string
+@return  None
+@retval  String of the LE server type
+================================================================================================*/
+const char* BLE_util_get_server_type_string
+    (
+    const BLE_server_type_e server_type
+    )
+{
+switch( server_type )
+    {
+    case BLE_SERVER_MOTOCON:      return "Motocon";
+    case BLE_SERVER_TYPE_INVALID:
+    default:                      return "Unknown";
     }
 }
 

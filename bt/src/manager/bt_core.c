@@ -26,6 +26,8 @@ extern "C"{
 #include "bt_tsk.h"
 #include "bt_update.h"
 #include "bt_utils.h"
+#include "ble_client_core.h"
+#include "ble_server_core.h"
 #include "hci_cmd.h"
 
 /*--------------------------------------------------------------------
@@ -540,6 +542,8 @@ BT_LOG_DEBUG( "Reset all data" );
 BT_tsk_clear_requests();
 BT_core_reset();
 BT_core_spp_reset();
+BLE_core_server_reset();
+BLE_core_client_reset();
 }
 
 /*================================================================================================

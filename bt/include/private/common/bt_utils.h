@@ -47,6 +47,9 @@ extern "C" {
 // This is used to expand 6-bytes BD address in printf() only, use carefully
 #define BD_ADDR_PRINT( x ) x[5],x[4],x[3],x[2],x[1],x[0]
 
+// This is used to expand 16-bytes UUID in printf() only, use carefully
+#define UUID_PRINT( x ) x[15],x[14],x[13],x[12],x[11],x[10],x[9],x[8],x[7],x[6],x[5],x[4],x[3],x[2],x[1],x[0]
+
 #define FUNC_ENTRY_PRINT( ... )    ( BT_LOG_VERBOSE( ">> "__VA_ARGS__ ) )
 #define FUNC_BUSY_PRINT()          ( BT_LOG_VERBOSE( ">> Error: Busy" ) )
 #define FUNC_INVALID_PARAM_PRINT() ( BT_LOG_VERBOSE( ">> Error: Invalid Parameter" ) )
@@ -95,6 +98,11 @@ const char* BT_util_get_device_type_string
     const BT_device_type_e device_type
     );
 
+const char* BT_util_get_hci_role_string
+    (
+    const BT_hci_role_e hci_role
+    );
+
 const char* BT_util_get_hw_mode_string
     (
     const BT_hw_mode_e hw_mode
@@ -118,6 +126,27 @@ const char* BT_util_get_spp_app_type_string
 const char* BT_util_get_spp_connection_type_string
     (
     const BT_spp_connection_type_e connection_type
+    );
+
+// LE
+const char* BLE_util_get_advertising_mode_string
+    (
+    const BLE_advertising_mode_e advertising_mode
+    );
+
+const char* BLE_util_get_bd_addr_type_string
+    (
+    const BLE_bd_addr_type_e bd_addr_type
+    );
+
+const char* BLE_util_get_client_type_string
+    (
+    const BLE_client_type_e client_type
+    );
+
+const char* BLE_util_get_server_type_string
+    (
+    const BLE_server_type_e server_type
     );
 
 #ifdef __cplusplus

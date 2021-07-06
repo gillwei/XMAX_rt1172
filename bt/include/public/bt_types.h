@@ -16,9 +16,7 @@ extern "C" {
 /*--------------------------------------------------------------------
                         GENERAL INCLUDES
 --------------------------------------------------------------------*/
-#include <stdbool.h>
-#include <stddef.h>
-#include <stdint.h>
+#include "ble_types.h"
 
 /*--------------------------------------------------------------------
                         LITERAL CONSTANTS
@@ -69,6 +67,16 @@ typedef enum BT_device_type
     BT_DEVICE_TYPE_CNT,
     BT_DEVICE_TYPE_INVALID = BT_DEVICE_TYPE_CNT
     } BT_device_type_e;
+
+// Note: This is a copy of HCI_ROLE_MASTER and HCI_ROLE_SLAVE defined by Cypress in hcidefs.h
+typedef enum BT_hci_role
+    {
+    BT_HCI_MASTER = 0,
+    BT_HCI_SLAVE,
+
+    BT_HCI_ROLE_CNT,
+    BT_HCI_ROLE_INVALID = BT_HCI_ROLE_CNT
+    } BT_hci_role_e;
 
 typedef enum BT_log_severity
     {

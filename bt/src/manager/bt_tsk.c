@@ -14,6 +14,7 @@ extern "C"{
 --------------------------------------------------------------------*/
 #include <FreeRTOS.h>
 #include <queue.h>
+#include <semphr.h>
 #include <task.h>
 #include <string.h>
 
@@ -26,6 +27,8 @@ extern "C"{
 #include "bt_spp_core.h"
 #include "bt_tsk.h"
 #include "bt_utils.h"
+#include "ble_client_core.h"
+#include "ble_server_core.h"
 #include "hci_tsk.h"
 
 /*--------------------------------------------------------------------
@@ -41,6 +44,8 @@ extern "C"{
 
 #define REQUEST_QUEUE_MAX_ITEMS    ( 10 )
 #define SYNC_EVENT_QUEUE_MAX_ITEMS ( 1 )
+
+#define GATT_SEND_COMPLETED_MS ( 3000 )
 
 /*--------------------------------------------------------------------
                         TYPES
@@ -59,6 +64,7 @@ extern "C"{
 --------------------------------------------------------------------*/
 static QueueHandle_t s_request_queue = NULL;
 static QueueHandle_t s_sync_event_queue = NULL;
+static SemaphoreHandle_t s_gatt_binary_semaphore = NULL;
 
 /*--------------------------------------------------------------------
                         PROTOTYPES
@@ -96,6 +102,8 @@ BT_db_init();
 BT_device_init();
 BT_core_init();
 BT_core_spp_init();
+BLE_core_server_init();
+BLE_core_client_init();
 
 // Init HCI task
 HCI_tsk_init();
@@ -106,6 +114,10 @@ configASSERT( NULL != s_request_queue );
 
 s_sync_event_queue = xQueueCreate( SYNC_EVENT_QUEUE_MAX_ITEMS, sizeof( BT_sync_event_t ) );
 configASSERT( NULL != s_sync_event_queue );
+
+// The binary semaphore created using vSemaphoreCreateBinary is created in Given state
+vSemaphoreCreateBinary( s_gatt_binary_semaphore );
+configASSERT( NULL != s_gatt_binary_semaphore );
 
 BaseType_t ret = xTaskCreate( BT_tsk_main, BT_TSK_NAME, BT_TSK_STACK_SIZE, NULL, BT_TSK_PRIORITY, NULL );
 configASSERT( pdPASS == ret );
@@ -210,17 +222,32 @@ while( 1 )
                                        request.param_u.spp_send_data.data,
                                        request.param_u.spp_send_data.data_len );
                 } break;
-            case BT_REQUEST_LE_GATT_NOTIFY:
+            // LE Client
+            case BT_REQUEST_LE_CLIENT_WRITE_REQUEST:
                 {
+                BLE_core_client_write_request( request.param_u.le_client_write_request.handle,
+                                               request.param_u.le_client_write_request.data,
+                                               request.param_u.le_client_write_request.data_len );
                 } break;
-            case BT_REQUEST_LE_GATT_READ_RESPONSE:
+            // LE Server
+            case BT_REQUEST_LE_SERVER_NOTIFY:
                 {
+                BLE_core_server_notify( request.param_u.le_server_notify.handle,
+                                        request.param_u.le_server_notify.data,
+                                        request.param_u.le_server_notify.data_len );
                 } break;
-            case BT_REQUEST_LE_GATT_WRITE_REQUEST:
+            case BT_REQUEST_LE_SERVER_READ_RESPONSE:
                 {
+                BLE_core_server_read_response( request.param_u.le_server_read_response.handle,
+                                               request.param_u.le_server_read_response.data,
+                                               request.param_u.le_server_read_response.data_len );
                 } break;
-            case BT_REQUEST_LE_SET_ADVERTISEMENT_STATE:
+            case BT_REQUEST_LE_SERVER_SET_ADVERTISING_MODE:
                 {
+                BLE_core_server_set_advertising_mode( request.param_u.le_server_set_advertising_mode.advertising_mode,
+                                                      request.param_u.le_server_set_advertising_mode.data_type,
+                                                      request.param_u.le_server_set_advertising_mode.data,
+                                                      request.param_u.le_server_set_advertising_mode.data_len );
                 } break;
             default:
                 {
@@ -256,6 +283,41 @@ if( pdTRUE != xQueueSend( s_request_queue, request, 0 ) )
 
 BT_LOG_VERBOSE( "Request sent: %d", request->type );
 return true;
+}
+
+/*================================================================================================
+@brief   The function is used by Bluetooth Manager HCI task to inform the last GATT send completed
+@details When the GATT write response received Bluetooth Manager HCI task uses this function to
+         inform the last GATT send is completed
+@return  None
+@retval  None
+================================================================================================*/
+void BT_tsk_sync_gatt_send_signal( void )
+{
+xSemaphoreGive( s_gatt_binary_semaphore );
+}
+
+/*================================================================================================
+@brief   The function is used by Bluetooth Manager Main task to wait for the last GATT send completed
+@details According to Wiced HCI protocol after issuing a GATT write/write request/notify/indicate,
+         we are not able to issue a new one until the GATT write response event is received as the
+         last GATT send is completed. Hence this function is for Bluetooth Manager Main task to
+         check and wait for the last GATT send completed then continue issuing the new GATT send
+@return  None
+@retval  Whether or not the last GATT send completed in the expected time period
+================================================================================================*/
+bool BT_tsk_sync_gatt_send_wait( void )
+{
+BaseType_t ret = xSemaphoreTake( s_gatt_binary_semaphore, pdMS_TO_TICKS( GATT_SEND_COMPLETED_MS ) );
+if( pdTRUE == ret )
+    {
+    BT_LOG_VERBOSE( "GATT send is OK to issue" );
+    }
+else
+    {
+    BT_LOG_ERROR( "Timeout on waiting last GATT send completed" );
+    }
+return ( pdTRUE == ret );
 }
 
 /*================================================================================================

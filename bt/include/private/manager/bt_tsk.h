@@ -42,11 +42,12 @@ typedef enum BT_request_type
     BT_REQUEST_SPP_DISCONNECT,
     BT_REQUEST_SPP_READ_MFI_AUTH_CHIP_INFO,
     BT_REQUEST_SPP_SEND_DATA,
-    // LE
-    BT_REQUEST_LE_GATT_NOTIFY,
-    BT_REQUEST_LE_GATT_READ_RESPONSE,
-    BT_REQUEST_LE_GATT_WRITE_REQUEST,
-    BT_REQUEST_LE_SET_ADVERTISEMENT_STATE,
+    // LE Client
+    BT_REQUEST_LE_CLIENT_WRITE_REQUEST,
+    // LE Server
+    BT_REQUEST_LE_SERVER_NOTIFY,
+    BT_REQUEST_LE_SERVER_READ_RESPONSE,
+    BT_REQUEST_LE_SERVER_SET_ADVERTISING_MODE,
 
     BT_REQUEST_TYPE_CNT,
     BT_REQUEST_TYPE_INVALID = BT_REQUEST_TYPE_CNT
@@ -116,55 +117,60 @@ typedef struct BT_spp_send_data_request
     uint8_t data_len;
     } BT_spp_send_data_request_t;
 
-// LE
-typedef struct BT_le_gatt_notify_request
+// LE Client
+typedef struct BLE_client_write_request_request
     {
-    uint16_t attr_handle;
+    uint16_t handle;
     uint8_t data[GATT_DATA_MAX_SIZE];
     uint8_t data_len;
-    } BT_le_gatt_notify_request_t;
+    } BLE_client_write_request_request_t;
 
-typedef struct BT_le_gatt_read_response_request
+// LE Server
+typedef struct BLE_server_notify_request
     {
-    uint16_t attr_handle;
+    uint16_t handle;
     uint8_t data[GATT_DATA_MAX_SIZE];
     uint8_t data_len;
-    } BT_le_gatt_read_response_request_t;
+    } BLE_server_notify_request_t;
 
-typedef struct BT_le_gatt_write_request_request
+typedef struct BLE_server_read_response_request
     {
-    uint16_t attr_handle;
+    uint16_t handle;
     uint8_t data[GATT_DATA_MAX_SIZE];
     uint8_t data_len;
-    } BT_le_gatt_write_request_request_t;
+    } BLE_server_read_response_request_t;
 
-typedef struct BT_le_set_advertisement_state_request
+typedef struct BLE_server_set_advertising_mode_request
     {
-    bool enable;
-    } BT_le_set_advertisement_state_request_t;
+    BLE_advertising_mode_e advertising_mode;
+    BLE_advertising_data_type_e data_type;
+    uint8_t data[BLE_ADVERTISING_DATA_MAX_SIZE];
+    uint8_t data_len;
+    } BLE_server_set_advertising_mode_request_t;
 
 typedef struct BT_request
     {
     BT_request_type_e type;
     union
         {
-        BT_accept_pairing_request_t             accept_pairing;
-        BT_delete_paired_device_request_t       delete_paired_device;
-        BT_send_standard_hci_command_request_t  send_standard_hci_command;
-        BT_set_discoverable_state_request_t     set_discoverable_state;
-        BT_set_enable_state_request_t           set_enable_state;
-        BT_set_local_device_address_request_t   set_local_device_address;
-        BT_set_test_mode_request_t              set_test_mode;
-        BT_set_tx_carrier_mode_request_t        set_tx_carrier_mode;
+        BT_accept_pairing_request_t               accept_pairing;
+        BT_delete_paired_device_request_t         delete_paired_device;
+        BT_send_standard_hci_command_request_t    send_standard_hci_command;
+        BT_set_discoverable_state_request_t       set_discoverable_state;
+        BT_set_enable_state_request_t             set_enable_state;
+        BT_set_local_device_address_request_t     set_local_device_address;
+        BT_set_test_mode_request_t                set_test_mode;
+        BT_set_tx_carrier_mode_request_t          set_tx_carrier_mode;
         // SPP
-        BT_spp_connect_request_t                spp_connect;
-        BT_spp_disconnect_request_t             spp_disconnect;
-        BT_spp_send_data_request_t              spp_send_data;
-        // LE
-        BT_le_gatt_notify_request_t             le_gatt_notify;
-        BT_le_gatt_read_response_request_t      le_gatt_read_response;
-        BT_le_gatt_write_request_request_t      le_gatt_write_request;
-        BT_le_set_advertisement_state_request_t le_set_advertisement_state;
+        BT_spp_connect_request_t                  spp_connect;
+        BT_spp_disconnect_request_t               spp_disconnect;
+        BT_spp_send_data_request_t                spp_send_data;
+        // LE Client
+        BLE_client_write_request_request_t        le_client_write_request;
+        // LE Server
+        BLE_server_notify_request_t               le_server_notify;
+        BLE_server_read_response_request_t        le_server_read_response;
+        BLE_server_set_advertising_mode_request_t le_server_set_advertising_mode;
         } param_u;
     } BT_request_t;
 
@@ -173,7 +179,6 @@ typedef enum BT_sync_event_type
     {
     BT_SYNC_EVENT_DEVICE_STARTED = 0,
     BT_SYNC_EVENT_PAIRED_DEVICE_DELETED,
-    BT_SYNC_EVENT_LE_GATT_WRITE_RESPONSE,
 
     BT_SYNC_EVENT_TYPE_CNT,
     BT_SYNC_EVENT_TYPE_INVALID = BT_SYNC_EVENT_TYPE_CNT
@@ -227,6 +232,10 @@ bool BT_tsk_send_request
     (
     const BT_request_t* request
     );
+
+void BT_tsk_sync_gatt_send_signal( void );
+
+bool BT_tsk_sync_gatt_send_wait( void );
 
 void BT_tsk_sync_signal
     (

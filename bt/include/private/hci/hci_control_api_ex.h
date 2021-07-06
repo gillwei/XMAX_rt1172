@@ -120,6 +120,18 @@ extern "C" {
 #define HCI_CONTROL_IAP2_COMMAND_DATA_GARMIN ( ( HCI_CONTROL_GROUP_IAP2 << 8 ) | 0xFD )
 
 /*--------------------------------------------------------------------
+                        LE COMMANDS
+--------------------------------------------------------------------*/
+/*====================================================================
+@type: NEW
+@data: Byte[0]: (1-byte) Advertising mode specified in BLE_advertising_mode_e
+       Byte[1]: (1-byte) Data type specified in BLE_advertising_data_type_e
+       Byte[2]: (1-byte) Data length
+       Byte[3]: (n-bytes) Advertising data, where n <= BLE_ADVERTISING_DATA_MAX_SIZE
+====================================================================*/
+#define HCI_CONTROL_LE_COMMAND_ADVERTISE_GARMIN ( ( HCI_CONTROL_GROUP_LE << 8 ) | 0xFF )
+
+/*--------------------------------------------------------------------
                         GENERAL EVENTS
 --------------------------------------------------------------------*/
 /*====================================================================

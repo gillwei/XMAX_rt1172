@@ -158,48 +158,50 @@ BT_status_e BT_spp_send_data
     const uint8_t data_len
     );
 
-#if 0
-// LE
-BT_status_e BT_le_gatt_notify
+// LE Client
+BT_status_e BLE_client_register_callback
     (
-    const uint16_t attr_handle,
+    const BLE_client_type_e client_type,
+    const BLE_client_callback_t* callbacks
+    );
+
+BT_status_e BLE_client_write_request
+    (
+    const uint16_t handle,
     const uint8_t* data,
     const uint8_t data_len
     );
 
-BT_status_e BT_le_gatt_read_response
+// LE Server
+BLE_advertising_mode_e BLE_server_get_advertising_mode( void );
+
+BT_status_e BLE_server_notify
     (
-    const uint16_t attr_handle,
+    const uint16_t handle,
     const uint8_t* data,
     const uint8_t data_len
     );
 
-BT_status_e BT_le_gatt_write_request
+BT_status_e BLE_server_read_response
     (
-    const uint16_t attr_handle,
+    const uint16_t handle,
     const uint8_t* data,
     const uint8_t data_len
     );
 
-bool BT_le_get_advertisement_state( void );
-
-BT_status_e BT_le_register_client_callback
+BT_status_e BLE_server_register_callback
     (
-    const BT_LE_client_type_e client_type,
-    const BT_LE_client_callback_t* callbacks
+    const BLE_server_type_e server_type,
+    const BLE_server_callback_t* callbacks
     );
 
-BT_status_e BT_le_register_server_callback
+BT_status_e BLE_server_set_advertising_mode
     (
-    const BT_LE_server_type_e server_type,
-    const BT_LE_server_callback_t* callbacks
+    const BLE_advertising_mode_e advertising_mode,
+    const BLE_advertising_data_type_e data_type,
+    const uint8_t* data,
+    const uint8_t data_len
     );
-
-BT_status_e BT_le_set_advertisement_state
-    (
-    const bool enable
-    );
-#endif
 
 #ifdef __cplusplus
 }

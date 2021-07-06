@@ -24,6 +24,7 @@ extern "C"{
 #include "bt_utils.h"
 #include "hci_control_api_ex.h"
 #include "hci_event.h"
+#include "hci_le_event.h"
 #include "hci_spp_event.h"
 #include "hci_tsk.h"
 
@@ -154,9 +155,11 @@ while( 1 )
                 } break;
             case HCI_CONTROL_GROUP_LE:
                 {
+                HCI_handle_le_event( group_code, event_code, &( hci_event.data[param_pos] ), param_len );
                 } break;
             case HCI_CONTROL_GROUP_GATT:
                 {
+                HCI_handle_gatt_event( group_code, event_code, &( hci_event.data[param_pos] ), param_len );
                 } break;
             default:
                 {
