@@ -14,6 +14,7 @@ extern "C"{
                         GENERAL INCLUDES
 --------------------------------------------------------------------*/
 #include "FreeRTOS.h"
+#include "event_groups.h"
 #include "task.h"
 #include "queue.h"
 #include "fsl_lpi2c.h"
@@ -28,6 +29,11 @@ extern "C"{
 #define LPI2C_BAUDRATE          ( 100000U )
 #define LPI2C_CLOCK             ( BOARD_BOOTCLOCKRUN_LPI2C1_CLK_ROOT )
 #define LPI2C_SIZE_OF_QUEUE     ( 16 )
+
+#define I2C_TASK_DELAY_TIME_MS  ( 5 )
+
+#define EVENT_OPERATION_ENQUEUED ( 1 << 0 )
+
 /*--------------------------------------------------------------------
                         LITERAL CONSTANTS
 --------------------------------------------------------------------*/
@@ -54,7 +60,9 @@ typedef struct
                         VARIABLES
 --------------------------------------------------------------------*/
 static QueueHandle_t            i2c_queue;
-static TickType_t               i2c_task_delay            = pdMS_TO_TICKS( 5 );
+static TickType_t               i2c_task_delay            = pdMS_TO_TICKS( I2C_TASK_DELAY_TIME_MS );
+static EventGroupHandle_t       i2c_event_group_handle    = NULL;
+
 /*--------------------------------------------------------------------
                         PROTOTYPES
 --------------------------------------------------------------------*/
@@ -103,7 +111,12 @@ xfer_data.masterXfer.dataSize = size;
 xfer_data.masterXfer.flags = kLPI2C_TransferDefaultFlag;
 xfer_data.callback_func_ptr = callback_func_ptr;
 
-return xQueueSend( i2c_queue, &xfer_data, 0 );
+BaseType_t result = xQueueSend( i2c_queue, &xfer_data, 0 );
+if( pdTRUE == result )
+    {
+    xEventGroupSetBits( i2c_event_group_handle, EVENT_OPERATION_ENQUEUED );
+    }
+return result;
 }
 
 /*================================================================================================*/
@@ -137,7 +150,12 @@ xfer_data.masterXfer.dataSize = size;
 xfer_data.masterXfer.flags = kLPI2C_TransferDefaultFlag;
 xfer_data.callback_func_ptr = callback_func_ptr;
 
-return xQueueSend( i2c_queue, &xfer_data, 0 );
+BaseType_t result = xQueueSend( i2c_queue, &xfer_data, 0 );
+if( pdTRUE == result )
+    {
+    xEventGroupSetBits( i2c_event_group_handle, EVENT_OPERATION_ENQUEUED );
+    }
+return result;
 }
 
 /*================================================================================================*/
@@ -179,6 +197,7 @@ static void i2c_create_task
     void
     )
 {
+i2c_event_group_handle = xEventGroupCreate();
 if( pdPASS == xTaskCreate( i2c_main, "i2c_main", ( configMINIMAL_STACK_SIZE * 4 ), NULL, TASK_PRIO_I2C, NULL ) )
     {
     PRINTF("%s ok\r\n", __FUNCTION__ );
@@ -203,16 +222,29 @@ static void i2c_main
     )
 {
 i2c_xfter_data_type xfer_data = {0};
-status_t rtn_val = kStatus_Fail;
+status_t            rtn_val = kStatus_Fail;
+EventBits_t         event_bits;
 
 while( true )
     {
-    if( pdPASS == xQueueReceive( i2c_queue, (void *)&xfer_data, 0 ) )
-       {
-        rtn_val = LPI2C_MasterTransferBlocking( LPI2C_MASTER_BASEADDR, &( xfer_data.masterXfer ) );
-        xfer_data.callback_func_ptr( rtn_val );
+    event_bits = xEventGroupWaitBits
+                    (
+                    i2c_event_group_handle,    /* The event group handle. */
+                    EVENT_OPERATION_ENQUEUED,
+                    pdTRUE,         /* clear on exit */
+                    pdFALSE,        /* Don't wait for both bits, either bit unblock task. */
+                    portMAX_DELAY   /* Block indefinitely to wait for the condition to be met. */
+                    );
+
+    if( EVENT_OPERATION_ENQUEUED == ( event_bits & EVENT_OPERATION_ENQUEUED ) )
+        {
+        while( pdPASS == xQueueReceive( i2c_queue, (void *)&xfer_data, 0 ) )
+            {
+            rtn_val = LPI2C_MasterTransferBlocking( LPI2C_MASTER_BASEADDR, &( xfer_data.masterXfer ) );
+            xfer_data.callback_func_ptr( rtn_val );
+            vTaskDelay( i2c_task_delay );
+            }
         }
-    vTaskDelay( i2c_task_delay );
     }
 vTaskDelete( NULL );
 }
