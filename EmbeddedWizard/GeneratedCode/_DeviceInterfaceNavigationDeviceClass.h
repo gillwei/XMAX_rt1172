@@ -349,6 +349,9 @@ XEnum DeviceInterfaceNavigationDeviceClass_GetNaviDialogDefaultButton( DeviceInt
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.OnGetNaviAppSppConnected()' */
 XBool DeviceInterfaceNavigationDeviceClass_OnGetNaviAppSppConnected( DeviceInterfaceNavigationDeviceClass _this );
 
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.IsJcvReceived()' */
+XBool DeviceInterfaceNavigationDeviceClass_IsJcvReceived( DeviceInterfaceNavigationDeviceClass _this );
+
 #ifdef __cplusplus
   }
 #endif

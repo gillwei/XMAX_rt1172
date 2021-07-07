@@ -5,7 +5,7 @@ $output false
 $multilingual true
 class NAV01_DefaultView : Home::BaseHome
 {
-  $rect <520,700,720,740>
+  $rect <520,760,720,800>
   inherited method Init()
   {
     trace "NAV01";
@@ -30,7 +30,7 @@ class NAV01_DefaultView : Home::BaseHome
     DeviceInterface::NavigationDevice.StartMapFrameRequest();
   }
 
-  $rect <950,700,1180,740>
+  $rect <950,760,1180,800>
   inherited method OnShortDownKeyActivated()
   {
     var Enum::NaviZoomInOutStatusType ZoomInOutStatus = DeviceInterface::NavigationDevice.GetZoomInOutStatus();
@@ -48,7 +48,7 @@ class NAV01_DefaultView : Home::BaseHome
     }
   }
 
-  $rect <720,700,950,740>
+  $rect <720,760,950,800>
   inherited method OnShortUpKeyActivated()
   {
     var Enum::NaviZoomInOutStatusType ZoomInOutStatus = DeviceInterface::NavigationDevice.GetZoomInOutStatus();
@@ -66,7 +66,7 @@ class NAV01_DefaultView : Home::BaseHome
     }
   }
 
-  $rect <720,740,940,780>
+  $rect <720,800,940,840>
   inherited method OnLongEnterKeyActivated()
   {
     if( !NaviConnectFailedTimer.Enabled &&
@@ -183,7 +183,7 @@ class NAV01_DefaultView : Home::BaseHome
   {
     preset Bounds = <411,164,473,226>;
     preset Bitmap = Resource::SpeedLimitIcon;
-    preset Visible = false;
+    preset Visible = true;
   }
 
   $rect <20,20,160,60>
@@ -193,7 +193,7 @@ class NAV01_DefaultView : Home::BaseHome
     preset String = "";
     preset Font = Fonts::NotoSansBold24pt;
     preset Color = #000000FF;
-    preset Visible = false;
+    preset Visible = true;
   }
 
   $rect <20,20,160,60>
@@ -218,7 +218,7 @@ class NAV01_DefaultView : Home::BaseHome
     preset Visible = false;
   }
 
-  $rect <520,930,720,970>
+  $rect <520,990,720,1030>
   inherited method ReturnToHome()
   {
     super();
@@ -238,7 +238,7 @@ class NAV01_DefaultView : Home::BaseHome
   $rect <520,50,720,90>
   var int32 MapFrameIdx = 0;
 
-  $rect <520,190,750,230>
+  $rect <520,250,750,290>
   object Core::SystemEventHandler MapUpdateEventHandler
   {
     preset OnEvent = OnMapUpdateSlot;
@@ -247,7 +247,7 @@ class NAV01_DefaultView : Home::BaseHome
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <750,190,990,230>
+  $rect <750,250,990,290>
   slot OnMapUpdateSlot
   {
     if( DeviceInterface::NavigationDevice.IsMapFrameReady() )
@@ -263,12 +263,34 @@ class NAV01_DefaultView : Home::BaseHome
         signal OnNaviDialogEventUpdateSlot;
       }
 
+      if( DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() )
+      {
+        IsJcvDisplayed = DeviceInterface::NavigationDevice.IsJcvReceived();
+      }
+      else
+      {
+        ZoomInButton.Visible = true;
+        ZoomOutButton.Visible = true;
+
+        var DeviceInterface::NaviDataClass NaviData = DeviceInterface::NavigationDevice.GetNaviData( Enum::NaviDataType.SPEED_LIMIT );
+        if( NaviData.SpeedLimit > 0 )
+        {
+          SpeedLimitIcon.Visible = true;
+          SpeedLimitText.Visible = true;
+        }
+        else
+        {
+          SpeedLimitIcon.Visible = false;
+          SpeedLimitText.Visible = false;
+        }
+      }
+
       MapFrameIdx = MapFrameIdx + 1;
       Resource::ExternBitmap.Name = "Map" + string( MapFrameIdx );
     }
   }
 
-  $rect <520,310,740,350>
+  $rect <520,370,740,410>
   object Core::SystemEventHandler CurRdUpdateEventHandler
   {
     preset OnEvent = OnCurRdUpdateSlot;
@@ -277,7 +299,7 @@ class NAV01_DefaultView : Home::BaseHome
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <750,310,980,350>
+  $rect <750,370,980,410>
   slot OnCurRdUpdateSlot
   {
     var DeviceInterface::NaviDataClass NaviData = DeviceInterface::NavigationDevice.GetNaviData( Enum::NaviDataType.CURRENT_ROAD );
@@ -288,7 +310,7 @@ class NAV01_DefaultView : Home::BaseHome
 
   }
 
-  $rect <520,230,740,270>
+  $rect <520,290,740,330>
   object Core::SystemEventHandler ETAUpdateEventHandler
   {
     preset OnEvent = OnETAUpdateSlot;
@@ -297,14 +319,14 @@ class NAV01_DefaultView : Home::BaseHome
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <750,230,980,270>
+  $rect <750,290,980,330>
   slot OnETAUpdateSlot
   {
     var DeviceInterface::NaviDataClass NaviData = DeviceInterface::NavigationDevice.GetNaviData( Enum::NaviDataType.ETA );
     ETAComponent.ETA = NaviData.ETA;
   }
 
-  $rect <520,270,740,310>
+  $rect <520,330,740,370>
   object Core::SystemEventHandler DayNightModeUpdateEventHandler
   {
     preset OnEvent = OnDayNightModeUpdateSlot;
@@ -313,7 +335,7 @@ class NAV01_DefaultView : Home::BaseHome
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <750,270,970,310>
+  $rect <750,330,970,370>
   slot OnDayNightModeUpdateSlot
   {
     var DeviceInterface::NaviDataClass NaviData = DeviceInterface::NavigationDevice.GetNaviData( Enum::NaviDataType.DAYNIGHT );
@@ -333,7 +355,7 @@ class NAV01_DefaultView : Home::BaseHome
     }
   }
 
-  $rect <720,790,920,830>
+  $rect <720,850,920,890>
   method void StartHighlight()
   {
     var DeviceInterface::NaviDataClass NaviData = DeviceInterface::NavigationDevice.GetNaviData( Enum::NaviDataType.DAYNIGHT );
@@ -370,7 +392,7 @@ class NAV01_DefaultView : Home::BaseHome
     HighlightTimer.Enabled = true;
   }
 
-  $rect <520,790,710,830>
+  $rect <520,850,710,890>
   object Core::Timer HighlightTimer
   {
     preset OnTrigger = OnHighlightEndSlot;
@@ -378,7 +400,7 @@ class NAV01_DefaultView : Home::BaseHome
     preset Enabled = false;
   }
 
-  $rect <930,790,1130,830>
+  $rect <930,850,1130,890>
   slot OnHighlightEndSlot
   {
     HighlightTimer.Enabled = false;
@@ -418,7 +440,7 @@ class NAV01_DefaultView : Home::BaseHome
   $rect <940,50,1140,90>
   var int32 ZoomButtonStatus;
 
-  $rect <520,350,730,390>
+  $rect <520,410,730,450>
   object Core::SystemEventHandler SpeedLimitUpdateEventHandler
   {
     preset OnEvent = OnSpeedLimitUpdateSlot;
@@ -427,12 +449,12 @@ class NAV01_DefaultView : Home::BaseHome
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <750,350,980,390>
+  $rect <750,410,980,450>
   slot OnSpeedLimitUpdateSlot
   {
     var DeviceInterface::NaviDataClass NaviData = DeviceInterface::NavigationDevice.GetNaviData( Enum::NaviDataType.SPEED_LIMIT );
 
-    if( NaviData.SpeedLimit > 0 )
+    if( NaviData.SpeedLimit > 0 && !DeviceInterface::NavigationDevice.IsJcvReceived() )
     {
       SpeedLimitIcon.Visible = true;
       SpeedLimitText.String = string( NaviData.SpeedLimit );
@@ -457,7 +479,7 @@ class NAV01_DefaultView : Home::BaseHome
     }
   }
 
-  $rect <520,390,730,430>
+  $rect <520,450,730,490>
   object Core::SystemEventHandler NaviIncidentUpdateEventHandler
   {
     preset OnEvent = OnNaviIncidentUpdateSlot;
@@ -466,7 +488,7 @@ class NAV01_DefaultView : Home::BaseHome
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <750,390,990,430>
+  $rect <750,450,990,490>
   slot OnNaviIncidentUpdateSlot
   {
     if( !IsEventDisplaying )
@@ -486,7 +508,7 @@ class NAV01_DefaultView : Home::BaseHome
     }
   }
 
-  $rect <1050,390,1250,430>
+  $rect <1050,450,1250,490>
   object Effects::RectEffect CurrentRoadShiftEffect
   {
     preset OnFinished = OnCurrentRoadShiftEffectFinishSlot;
@@ -497,7 +519,7 @@ class NAV01_DefaultView : Home::BaseHome
     preset Outlet = ^CurrentRoadWithGuide.Bounds;
   }
 
-  $rect <1050,430,1250,470>
+  $rect <1050,490,1250,530>
   slot OnCurrentRoadShiftEffectFinishSlot
   {
     CurrentRoadWithGuide.Bounds = Navigation::CURRENT_ROAD_W_NAVI_BOUNDS;
@@ -505,7 +527,7 @@ class NAV01_DefaultView : Home::BaseHome
     CurrentRoadShiftEffect.Enabled = false;
   }
 
-  $rect <1050,230,1250,270>
+  $rect <1050,290,1250,330>
   object Effects::RectEffect NaviEventEnLargeEffect
   {
     preset OnFinished = OnNaviEventEnlargeFinishSlot;
@@ -516,7 +538,7 @@ class NAV01_DefaultView : Home::BaseHome
     preset Outlet = ^NaviEventObject.Bounds;
   }
 
-  $rect <1050,270,1250,310>
+  $rect <1050,330,1250,370>
   slot OnNaviEventEnlargeFinishSlot
   {
     NaviEventEnLargeEffect.Enabled = false;
@@ -531,7 +553,7 @@ class NAV01_DefaultView : Home::BaseHome
 
   }
 
-  $rect <1050,310,1250,350>
+  $rect <1050,370,1250,410>
   object Effects::RectEffect NaviEventDismissEffect
   {
     preset OnFinished = OnNaviEventDismissFinishSlot;
@@ -542,7 +564,7 @@ class NAV01_DefaultView : Home::BaseHome
     preset Outlet = ^NaviEventObject.Bounds;
   }
 
-  $rect <1050,350,1250,390>
+  $rect <1050,410,1250,450>
   slot OnNaviEventDismissFinishSlot
   {
     NaviEventDismissEffect.Enabled = false;
@@ -551,7 +573,7 @@ class NAV01_DefaultView : Home::BaseHome
     IsEventDisplaying = false;
   }
 
-  $rect <1050,190,1250,230>
+  $rect <1050,250,1250,290>
   slot DismissAlert
   {
     // Need to adjust the position of CurrentRoadShiftEffect dynamically since the origin position of CurrentRoadObject content could be varied.
@@ -589,7 +611,7 @@ class NAV01_DefaultView : Home::BaseHome
     attr Bounds = <0,300,480,460>;
   }
 
-  $rect <520,430,730,470>
+  $rect <520,490,730,530>
   object Core::SystemEventHandler NavigatingStatusUpdateEventHandler
   {
     preset OnEvent = OnNavigatingStatusUpdateSlot;
@@ -598,7 +620,7 @@ class NAV01_DefaultView : Home::BaseHome
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <750,430,990,470>
+  $rect <750,490,990,530>
   slot OnNavigatingStatusUpdateSlot
   {
     // TODO: Handle the route calculation failed case.
@@ -607,14 +629,14 @@ class NAV01_DefaultView : Home::BaseHome
     signal OnETAUpdateSlot;
   }
 
-  $rect <520,850,710,890>
+  $rect <520,910,710,950>
   object Core::Timer SpeedLimitFlickeringTimer
   {
     preset OnTrigger = OnSpeedLimitFlickeringSlot;
     preset Period = 300;
   }
 
-  $rect <720,850,920,890>
+  $rect <720,910,920,950>
   slot OnSpeedLimitFlickeringSlot
   {
     SpeedLimitIcon.Visible = !SpeedLimitIcon.Visible;
@@ -624,28 +646,28 @@ class NAV01_DefaultView : Home::BaseHome
   // Variable
   note group Note6
   {
-    attr Bounds = <500,0,1380,140>;
+    attr Bounds = <500,0,1380,190>;
   }
 
   // System Event
   note group Note7
   {
-    attr Bounds = <500,150,1020,640>;
+    attr Bounds = <500,210,1020,700>;
   }
 
   // Rider Alert Animation
   note group Note8
   {
-    attr Bounds = <1030,150,1380,530>;
+    attr Bounds = <1030,210,1380,590>;
   }
 
   // Method
   note group Note9
   {
-    attr Bounds = <500,650,1380,1000>;
+    attr Bounds = <500,710,1380,1060>;
   }
 
-  $rect <520,480,720,520>
+  $rect <520,540,720,580>
   object Core::SystemEventHandler VehicleDataReceivedEventHandler
   {
     preset OnEvent = OnVehicleSpeedUpdateSlot;
@@ -654,7 +676,7 @@ class NAV01_DefaultView : Home::BaseHome
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <740,480,980,520>
+  $rect <740,540,980,580>
   slot OnVehicleSpeedUpdateSlot
   {
     var DeviceInterface::VehicleDataClass VehicleData = ( DeviceInterface::VehicleDataClass )VehicleDataReceivedEventHandler.Context;
@@ -665,7 +687,7 @@ class NAV01_DefaultView : Home::BaseHome
     }
   }
 
-  $rect <1140,850,1340,890>
+  $rect <1140,910,1340,950>
   method void SetItemBounds()
   {
     if( DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() )
@@ -693,7 +715,7 @@ class NAV01_DefaultView : Home::BaseHome
   $rect <1150,50,1350,90>
   var bool IsEventDisplaying = false;
 
-  $rect <520,530,720,570>
+  $rect <520,590,720,630>
   object Core::SystemEventHandler NaviDialogEventHandler
   {
     preset OnEvent = OnNaviDialogEventUpdateSlot;
@@ -702,7 +724,7 @@ class NAV01_DefaultView : Home::BaseHome
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <750,530,950,570>
+  $rect <750,590,950,630>
   slot OnNaviDialogEventUpdateSlot
   {
     if( IsCurrentDialog() )
@@ -737,14 +759,14 @@ class NAV01_DefaultView : Home::BaseHome
     }
   }
 
-  $rect <930,850,1130,890>
+  $rect <930,910,1130,950>
   slot OnNaviDialogDismissSlot
   {
     Mask.Visible = false;
 
   }
 
-  $rect <520,580,720,620>
+  $rect <520,640,720,680>
   object Core::SystemEventHandler NaviDisconnectEventHandler
   {
     preset OnEvent = OnNaviDisconnectUpdateSlot;
@@ -753,12 +775,30 @@ class NAV01_DefaultView : Home::BaseHome
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <730,580,930,620>
+  $rect <730,640,930,680>
   slot OnNaviDisconnectUpdateSlot
   {
     if( null != Owner && IsCurrentDialog() )
     {
       Owner.SwitchToDialog( new Pop::POP02_ConnectionError, null, null, null, null, null, null, null, null, null, false );
+    }
+  }
+
+  $rect <520,100,720,140>
+  property bool IsJcvDisplayed;
+
+  $rect <520,140,720,180>
+  onset IsJcvDisplayed
+  {
+    if( pure IsJcvDisplayed != value )
+    {
+      // Remember the property's new value.
+      pure IsJcvDisplayed = value;
+
+      SpeedLimitText.Visible = !value;
+      SpeedLimitIcon.Visible = !value;
+      ZoomInButton.Visible = !value;
+      ZoomOutButton.Visible = !value;
     }
   }
 

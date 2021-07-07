@@ -252,6 +252,7 @@ if( image_size > 0 && JPEG_is_valid( image_addr, image_size ) )
         {
         memcpy( jpeg_buf, image_addr, image_size );
         JPEG_notify_received( image_size, jpeg_buf, &NAVI_jpeg_decode_finished );
+        navi_data_obj.image_type = mode;
         }
     else
         {
@@ -805,6 +806,23 @@ switch( action )
         PRINTF( "%s: Unexpected type\r\n", __FUNCTION__ );
         break;
     }
+}
+
+/*********************************************************************
+*
+* @public
+* NAVI_is_Jcv_recevied
+*
+* Check if the received image frame is JCV or not.
+*
+*********************************************************************/
+bool NAVI_is_Jcv_recevied
+    (
+    void
+    )
+{
+PRINTF( "%s\r\n", __FUNCTION__ );
+return ( navi_data_obj.image_type == NAVILITE_IMAGE_JCV )? true : false;
 }
 
 /*********************************************************************

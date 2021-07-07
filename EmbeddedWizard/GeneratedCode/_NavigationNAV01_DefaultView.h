@@ -146,6 +146,7 @@ EW_DEFINE_FIELDS( NavigationNAV01_DefaultView, HomeBaseHome )
   EW_OBJECT  ( NaviDisconnectEventHandler, CoreSystemEventHandler )
   EW_VARIABLE( MapFrameIdx,     XInt32 )
   EW_VARIABLE( ZoomButtonStatus, XInt32 )
+  EW_PROPERTY( IsJcvDisplayed,  XBool )
   EW_VARIABLE( IsEventDisplaying, XBool )
 EW_END_OF_FIELDS( NavigationNAV01_DefaultView )
 
@@ -311,6 +312,10 @@ void NavigationNAV01_DefaultView_OnNaviDialogDismissSlot( NavigationNAV01_Defaul
    receives an event. */
 void NavigationNAV01_DefaultView_OnNaviDisconnectUpdateSlot( NavigationNAV01_DefaultView _this, 
   XObject sender );
+
+/* 'C' function for method : 'Navigation::NAV01_DefaultView.OnSetIsJcvDisplayed()' */
+void NavigationNAV01_DefaultView_OnSetIsJcvDisplayed( NavigationNAV01_DefaultView _this, 
+  XBool value );
 
 #ifdef __cplusplus
   }

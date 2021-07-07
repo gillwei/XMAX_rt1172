@@ -1555,6 +1555,21 @@ class NavigationDeviceClass : Templates::DeviceClass
       return pure NaviAppSppConnected;
     $endif
   }
+
+  $rect <410,980,610,1020>
+  method bool IsJcvReceived()
+  {
+    $if !$prototyper
+      var bool ShowJcv = false;
+      native( ShowJcv )
+      {
+        ShowJcv = NAVI_is_Jcv_recevied();
+      }
+      return ShowJcv;
+    $else
+      return false;
+    $endif
+  }
 }
 
 $rect <20,340,230,380>

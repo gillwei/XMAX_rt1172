@@ -300,11 +300,11 @@ void NavigationNAV01_DefaultView__Init( NavigationNAV01_DefaultView _this, XObje
   CoreRectView__OnSetBounds( &_this->ZoomOutButton, _Const000A );
   ViewsImage_OnSetVisible( &_this->ZoomOutButton, 1 );
   CoreRectView__OnSetBounds( &_this->SpeedLimitIcon, _Const000B );
-  ViewsImage_OnSetVisible( &_this->SpeedLimitIcon, 0 );
+  ViewsImage_OnSetVisible( &_this->SpeedLimitIcon, 1 );
   CoreRectView__OnSetBounds( &_this->SpeedLimitText, _Const000C );
   ViewsText_OnSetString( &_this->SpeedLimitText, 0 );
   ViewsText_OnSetColor( &_this->SpeedLimitText, _Const0001 );
-  ViewsText_OnSetVisible( &_this->SpeedLimitText, 0 );
+  ViewsText_OnSetVisible( &_this->SpeedLimitText, 1 );
   CoreRectView__OnSetBounds( &_this->NaviEventObject, _Const000D );
   CoreRectView__OnSetBounds( &_this->StatusBarShadowImage, _Const000E );
   CoreRectView__OnSetBounds( &_this->Mask, _Const0002 );
@@ -625,6 +625,31 @@ void NavigationNAV01_DefaultView_OnMapUpdateSlot( NavigationNAV01_DefaultView _t
         ((XObject)_this ));
     }
 
+    if ( DeviceInterfaceNavigationDeviceClass_IsRouteGuidanceStarted( EwGetAutoObject( 
+        &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )))
+      NavigationNAV01_DefaultView_OnSetIsJcvDisplayed( _this, DeviceInterfaceNavigationDeviceClass_IsJcvReceived( 
+      EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )));
+    else
+    {
+      DeviceInterfaceNaviDataClass NaviData;
+      ViewsImage_OnSetVisible( &_this->ZoomInButton, 1 );
+      ViewsImage_OnSetVisible( &_this->ZoomOutButton, 1 );
+      NaviData = DeviceInterfaceNavigationDeviceClass_GetNaviData( EwGetAutoObject( 
+      &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ), 
+      EnumNaviDataTypeSPEED_LIMIT );
+
+      if ( NaviData->SpeedLimit > 0 )
+      {
+        ViewsImage_OnSetVisible( &_this->SpeedLimitIcon, 1 );
+        ViewsText_OnSetVisible( &_this->SpeedLimitText, 1 );
+      }
+      else
+      {
+        ViewsImage_OnSetVisible( &_this->SpeedLimitIcon, 0 );
+        ViewsText_OnSetVisible( &_this->SpeedLimitText, 0 );
+      }
+    }
+
     _this->MapFrameIdx = _this->MapFrameIdx + 1;
     ResourcesExternBitmap_OnSetName( EwGetAutoObject( &ResourceExternBitmap, ResourcesExternBitmap ), 
     EwConcatString( EwLoadString( &_Const0015 ), EwNewStringInt( _this->MapFrameIdx, 
@@ -770,7 +795,8 @@ void NavigationNAV01_DefaultView_OnSpeedLimitUpdateSlot( NavigationNAV01_Default
   NaviData = DeviceInterfaceNavigationDeviceClass_GetNaviData( EwGetAutoObject( 
   &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ), EnumNaviDataTypeSPEED_LIMIT );
 
-  if ( NaviData->SpeedLimit > 0 )
+  if (( NaviData->SpeedLimit > 0 ) && !DeviceInterfaceNavigationDeviceClass_IsJcvReceived( 
+      EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )))
   {
     DeviceInterfaceVehicleDataClass VehicleData;
     ViewsImage_OnSetVisible( &_this->SpeedLimitIcon, 1 );
@@ -1032,6 +1058,20 @@ void NavigationNAV01_DefaultView_OnNaviDisconnectUpdateSlot( NavigationNAV01_Def
   if (( _this->Super6.Owner != 0 ) && CoreGroup__IsCurrentDialog( _this ))
     CoreGroup_SwitchToDialog( _this->Super6.Owner, ((CoreGroup)EwNewObject( PopPOP02_ConnectionError, 
     0 )), 0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+}
+
+/* 'C' function for method : 'Navigation::NAV01_DefaultView.OnSetIsJcvDisplayed()' */
+void NavigationNAV01_DefaultView_OnSetIsJcvDisplayed( NavigationNAV01_DefaultView _this, 
+  XBool value )
+{
+  if ( _this->IsJcvDisplayed != value )
+  {
+    _this->IsJcvDisplayed = value;
+    ViewsText_OnSetVisible( &_this->SpeedLimitText, (XBool)!value );
+    ViewsImage_OnSetVisible( &_this->SpeedLimitIcon, (XBool)!value );
+    ViewsImage_OnSetVisible( &_this->ZoomInButton, (XBool)!value );
+    ViewsImage_OnSetVisible( &_this->ZoomOutButton, (XBool)!value );
+  }
 }
 
 /* Variants derived from the class : 'Navigation::NAV01_DefaultView' */

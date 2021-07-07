@@ -90,6 +90,7 @@ typedef struct
     uint8_t is_office_set;
     uint8_t via_points;
     uint8_t route_cal_progress;
+    navilite_image_type image_type;
     } navi_data_type;
 
 typedef struct
@@ -139,6 +140,7 @@ void NAVI_reset_poi_buffer( void );
 bool NAVI_get_poi_item( const int poi_index, float* distance, char** dist_unit, char** description );
 uint16_t NAVI_get_poi_list_size( void );
 void NAVI_poi_list_request( EnumNaviPoiListType poi_list_type, bool is_enabled );
+bool NAVI_is_Jcv_recevied( void );
 
 #ifdef __cplusplus
 }

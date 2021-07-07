@@ -1719,6 +1719,19 @@ XBool DeviceInterfaceNavigationDeviceClass_OnGetNaviAppSppConnected( DeviceInter
   return IsNaviAppSppConnected;
 }
 
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.IsJcvReceived()' */
+XBool DeviceInterfaceNavigationDeviceClass_IsJcvReceived( DeviceInterfaceNavigationDeviceClass _this )
+{
+  XBool ShowJcv;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  ShowJcv = 0;
+  ShowJcv = NAVI_is_Jcv_recevied();
+  return ShowJcv;
+}
+
 /* Variants derived from the class : 'DeviceInterface::NavigationDeviceClass' */
 EW_DEFINE_CLASS_VARIANTS( DeviceInterfaceNavigationDeviceClass )
 EW_END_OF_CLASS_VARIANTS( DeviceInterfaceNavigationDeviceClass )
