@@ -190,6 +190,16 @@ void hci_gatt_receive_command_status
     uint8_t receive_command_status
     );
 
+void bt_update_set_update_static_section
+    (
+    bool set_bt_update_static_section
+    );
+
+void bt_update_timeout
+    (
+    void
+    );
+
 #ifdef __cplusplus
 }
 #endif

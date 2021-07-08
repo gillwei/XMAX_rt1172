@@ -75,6 +75,7 @@ AT_BOARDSDRAM_SECTION( uint8_t hci_tx_data[HCI_TX_BUFFER_SIZE] );
 #define RESPONSE_TIMER_FIVE_HUNDRED_MS  ( 500 / RESPONSE_TICK_PERIOD_MS )
 #define RESPONSE_TIMER_ONE_SECOND    ( 1000 / RESPONSE_TICK_PERIOD_MS )
 #define RESPONSE_TIMER_TWO_SECONDS   ( 2000 / RESPONSE_TICK_PERIOD_MS )
+#define RESPONSE_BT_UPDATE_TIMEOUT   RESPONSE_TIMER_ONE_SECOND
 #define AUTH_CHIP_RESULT_FAIL        0
 #define ORIGINAL_BAUD_RATE           3000000
 #define RECOVERY_MODE_BAUD_RATE      115200
@@ -1045,6 +1046,7 @@ if( ( UPDATE_TIMER_TWO_SECONDS == update_timer_count ) && ( INIT_STATE_REQUEST_V
 if( ( UPDATE_TIMER_THREE_SECONDS == update_timer_count ) && ( INIT_STATE_REQUEST_VERSION == init_update_state ) )
     {
     PRINTF( "No version feedback. Do BT update.\n\r" );
+    bt_update_set_update_static_section( true );
     BT_UPDATE_received();
     xTimerStop( xTimerHandle, 0 );
     }
@@ -1151,6 +1153,14 @@ switch( current_resp_event )
             }
         break;
 
+    case RESPONSE_UPDATE_TIMEOUT:
+        if( resp_timer_count >= RESPONSE_BT_UPDATE_TIMEOUT )
+            {
+            hci_wait_for_resp_stop();
+            bt_update_timeout();
+            }
+        break;
+
     default:
         break;
     }
@@ -1193,6 +1203,7 @@ void HCI_wait_for_resp_start
 if( RESPONSE_NO_EVENT == current_resp_event )
     {
     current_resp_event = input_resp_event;
+    resp_timer_count   = 0;
     xTimerStart( xRespTimer, 0 );
     }
 else
@@ -1283,7 +1294,6 @@ void hci_gatt_receive_command_status
     uint8_t receive_command_status
     )
 {
-hci_wait_for_resp_stop();
 if( HCI_CONTROL_STATUS_SUCCESS != receive_command_status )
     {
     PRINTF( "%s fail:%d\r\n", __FUNCTION__, receive_command_status );

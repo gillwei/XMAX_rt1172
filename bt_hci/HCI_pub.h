@@ -114,7 +114,8 @@ typedef enum HCI_RESPONSE_TYPE
     RESPONSE_RESET_RECONFIG_UART,
     RESPONSE_TX_CARRIER_CMD,
     RESPONSE_RESET_TX_CARRIER_CMD,
-    RESPONSE_CHECK_COMMAND_STATUS
+    RESPONSE_CHECK_COMMAND_STATUS,
+    RESPONSE_UPDATE_TIMEOUT
     } hci_resp_type_t;
 
 typedef void ( *spp_iap2_data_callback ) ( const uint8_t* data, const uint16_t length );

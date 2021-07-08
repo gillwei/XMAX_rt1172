@@ -54,10 +54,10 @@
 #define HCI_STANDARD_HEADER_LENGTH 4
 #define SW_VERSION_LENGTH          8
 #define BT_SW_VER_LENGTH           2
-#define ERASE_CONST_ADDR           0xFCBEEEEF
 #define ORIGINAL_BAUD_RATE         3000000
 #define UPDATE_BAUD_RATE           115200
 #define SCAN_ENABLE_DATA           3
+#define BT_UPDATE_RETRY_TIMES      3
 
 /*--------------------------------------------------------------------
                                 TYPES
@@ -136,6 +136,8 @@ static uint32_t           download_flash_addr;
 static bool               BT_DUT_mode_state = false;
 static bool               BT_update_status = false;
 static uint8_t            Read_BT_version[BT_SW_VER_LENGTH];
+static bool               bt_update_static_section = false;
+static uint8_t            bt_update_retry_times = 0;
 
 /*--------------------------------------------------------------------
                             PROCEDURES
@@ -162,18 +164,7 @@ static void download_flash
     void
     );
 
-static void verify_md
-    (
-    uint8_t*,
-    uint8_t
-    );
-
 static uint32_t check_flash_end
-    (
-    void
-    );
-
-static void erase_flash
     (
     void
     );
@@ -370,28 +361,15 @@ while( l_num_bytes > 0 )
 
             case UPDATE_STATE_INIT:
             case UPDATE_STATE_DOWNLOAD_MINIDRIVER:
-                // Do nothing for debug
-                break;
-
             case UPDATE_STATE_VERIFY_MINIDRIVER:
-                if( OPCODE_READRAM == l_p_pkt_store->opcode )
-                    {
-                    verify_md( l_p_pkt_store->data, l_p_pkt_store->length );
-                    }
+                // Do nothing, only for debug
                 break;
 
             case UPDATE_STATE_LAUNCH_MINIDRIVER:
                 if( OPCODE_LAUNCH == l_p_pkt_store->opcode )
                     {
-                    PRINTF( "Minidriver launched. Erase BT flash\n\r" );
-                    erase_flash();
-                    }
-                break;
-
-            case UPDATE_STATE_ERASE_BT_CHIP:
-                if( OPCODE_ERASE == l_p_pkt_store->opcode )
-                    {
-                    PRINTF( "Erase BT chip success. Start download BT flash\n\r" );
+                    hci_wait_for_resp_stop();
+                    PRINTF( "Launch minidriver success. Start download BT flash\n\r" );
                     download_flash();
                     }
                 break;
@@ -402,6 +380,7 @@ while( l_num_bytes > 0 )
             case UPDATE_STATE_VERIFY_FLASH:
                 if( OPCODE_READRAM == l_p_pkt_store->opcode )
                     {
+                    hci_wait_for_resp_stop();
                     verify_flash( l_p_pkt_store->data, l_p_pkt_store->length );
                     }
                 break;
@@ -409,6 +388,7 @@ while( l_num_bytes > 0 )
             case UPDATE_STATE_LAUNCH_FLASH:
                 if( OPCODE_LAUNCH == l_p_pkt_store->opcode )
                     {
+                    hci_wait_for_resp_stop();
                     PRINTF( "BT Flash launched and Download finished.\n\r" );
                     download_finish();
                     }
@@ -427,6 +407,32 @@ while( l_num_bytes > 0 )
 
 /*********************************************************************
 *
+*@private bt_update_timeout
+*
+* If the BT update process take too long, we assume something wrong on
+* the process, send lauch command and reset
+*
+*********************************************************************/
+void bt_update_timeout
+    (
+    void
+    )
+{
+bt_update_retry_times ++;
+PRINTF( "BT Update timeout retry times:%d\r\n", bt_update_retry_times );
+if( bt_update_retry_times < BT_UPDATE_RETRY_TIMES )
+    {
+    bt_update_init();
+    }
+else
+    {
+    PRINTF( "BT Update exceed retry times. Reset and keep run\r\n" );
+    download_finish();
+    }
+}
+
+/*********************************************************************
+*
 *@public BT_UPDATE_download_finish_after_reset
 *
 * After download finished and after BT reset pin pull up, get local
@@ -439,34 +445,24 @@ void BT_UPDATE_download_finish_after_reset
     )
 {
 char    sw_ver[SW_VERSION_LENGTH];
-uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN] = {0};
-bool    bd_addr_set = false;
 EnumOperationMode operation_mode = EnumOperationModeTOTAL;
+uint8_t pair_dev_index[1] = { 0 };
 
 EW_get_operation_mode( &operation_mode );
+
 sprintf( sw_ver, "%c.%c", Read_BT_version[BT_SW_MAJOR_VER_BYTE], Read_BT_version[BT_SW_MINOR_VER_BYTE] );
-
-// Read BT chip address, if not all 0xFF(means already commit address), do factory commit BD address
-BTM_get_local_device_address( &(bd_addr[0]) );
-
-for( uint8_t i = 0; i < BT_DEVICE_ADDRESS_LEN; i++ )
-    {
-    if( 0xff != bd_addr[i] )
-        {
-        bd_addr_set = true;
-        break;
-        }
-    }
-if( bd_addr_set )
-    {
-    BTM_IOP_set_local_device_address( bd_addr );
-    }
-
 // Notify UI BT update finished
-EW_notify_bt_fw_update_status( EnumBtFwStatusUPDATE_FINISH, sw_ver );
-
-// Notify BT update version to UI
-BTM_update_sw_version( Read_BT_version );
+if( bt_update_retry_times < BT_UPDATE_RETRY_TIMES )
+    {
+    EW_notify_bt_fw_update_status( EnumBtFwStatusUPDATE_FINISH, sw_ver );
+    // Notify BT update version to UI
+    BTM_update_sw_version( Read_BT_version );
+    }
+else
+    {
+    EW_notify_bt_fw_update_status( EnumBtFwStatusUPDATE_ABORT, sw_ver );
+    }
+bt_update_retry_times = 0;
 
 BT_update_status = false;
 update_state = UPDATE_STATE_SUSPEND;
@@ -477,6 +473,10 @@ if( EnumOperationModeNORMAL == operation_mode )
     {
     HCI_LE_send_advertising_cmd( BLE_ADV_NON_CONNECTABLE );
     }
+
+vTaskDelay( pdMS_TO_TICKS( 500 ) );
+// No erase BT module, start update paired device list
+HCI_wiced_send_command( HCI_CONTROL_MISC_COMMAND_READ_PAIR_DEV_LIST, pair_dev_index, sizeof( pair_dev_index ) );
 }
 
 
@@ -528,12 +528,14 @@ UINT32_to_UINT8_arry(  flash_buf_info.verify_addr, &( read_ram_cmd[0] ) );
 if( ( flash_verify_count < ( flash_buf_info.buffer_size / MAX_UPDATE_DATA_LENGTH ) ) && ( 0 == cmp_result ) )
     {
     read_ram_cmd[4] = MAX_UPDATE_DATA_LENGTH;
+    HCI_wait_for_resp_start( RESPONSE_UPDATE_TIMEOUT );
     BT_UPDATE_standard_send_command( OPCODE_READRAM, read_ram_cmd, sizeof( read_ram_cmd ) );
     vTaskDelay( pdMS_TO_TICKS( COMMON_CMD_WAIT_MS ) );
     }
 else if( 0 == cmp_result )
     {
     update_state = UPDATE_STATE_LAUNCH_FLASH;
+    HCI_wait_for_resp_start( RESPONSE_UPDATE_TIMEOUT );
     BT_UPDATE_standard_send_command( OPCODE_LAUNCH, launch_flash_cmd, sizeof( launch_flash_cmd ) );
     vTaskDelay( pdMS_TO_TICKS( COMMON_CMD_WAIT_MS ) );
     }
@@ -557,10 +559,14 @@ uint32_t           addr_val_uint32;
 uint8_t            write_ss[ sizeof( uint32_t ) + sizeof( static_section ) ] = {0};
 
 // Write static section
-UINT32_to_UINT8_arry(  BT_STATIC_SECTION_ADDR, &( write_ss[0] ) );
-memcpy( &(write_ss[4]), &(static_section[0]), sizeof( static_section ) );
-BT_UPDATE_standard_send_command( OPCODE_WRITERAM, write_ss, sizeof( write_ss ) );
-vTaskDelay( pdMS_TO_TICKS( COMMON_CMD_WAIT_MS ) );
+if( bt_update_static_section )
+    {
+    UINT32_to_UINT8_arry(  BT_STATIC_SECTION_ADDR, &( write_ss[0] ) );
+    memcpy( &(write_ss[4]), &(static_section[0]), sizeof( static_section ) );
+    BT_UPDATE_standard_send_command( OPCODE_WRITERAM, write_ss, sizeof( write_ss ) );
+    vTaskDelay( pdMS_TO_TICKS( COMMON_CMD_WAIT_MS ) );
+    bt_update_static_section = false;
+    }
 
 flash_write_count = 0;
 
@@ -588,70 +594,9 @@ UINT32_to_UINT8_arry( flash_buf_info.verify_addr, &( read_ram_cmd[0] ) );
 read_ram_cmd[4] = MAX_UPDATE_DATA_LENGTH;
 
 update_state = UPDATE_STATE_VERIFY_FLASH;
+HCI_wait_for_resp_start( RESPONSE_UPDATE_TIMEOUT );
 BT_UPDATE_standard_send_command( OPCODE_READRAM, read_ram_cmd, sizeof( read_ram_cmd ) );
 vTaskDelay( pdMS_TO_TICKS( COMMON_CMD_WAIT_MS ) );
-}
-
-static void erase_flash
-    (
-    void
-    )
-{
-uint8_t  erase_bt_cmd[ERASE_CMD_LENGTH] = { 0 };
-
-UINT32_to_UINT8_arry( ERASE_CONST_ADDR, &( erase_bt_cmd[0] ) );
-
-PRINTF("Start erase BT flash\n\r");
-update_state = UPDATE_STATE_ERASE_BT_CHIP;
-BT_UPDATE_standard_send_command( OPCODE_ERASE, erase_bt_cmd, sizeof( erase_bt_cmd ) );
-vTaskDelay( pdMS_TO_TICKS( COMMON_CMD_WAIT_MS ) );
-}
-
-
-/*********************************************************************
-*
-* Verify minidriver is correct
-*
-* Use read ram command, check the data on MCU minidriver address are
-* the same as BT minidriver address
-*
-*********************************************************************/
-static void verify_md
-    (
-    uint8_t* p_buffer,
-    uint8_t length
-    )
-{
-uint8_t      read_ram_cmd[READRAM_CMD_LENGTH] = { 0 };
-uint8_t      launch_md_cmd[LAUNCH_CMD_LENGTH] = { 0 };
-uint8_t      cmp_result;
-
-cmp_result = memcmp( &(p_buffer[0]), (uint32_t *)( MCU_MINIDRIVER_ADDR + md_verify_count * MAX_UPDATE_DATA_LENGTH ), length );
-
-md_verify_count++;
-md_buf_info.verify_addr += length;
-UINT32_to_UINT8_arry( md_buf_info.verify_addr, &( read_ram_cmd[0] ) );
-
-if( ( md_verify_count < ( md_buf_info.buffer_size / MAX_UPDATE_DATA_LENGTH ) ) && ( 0 == cmp_result ) )
-    {
-    read_ram_cmd[4] = MAX_UPDATE_DATA_LENGTH;
-    BT_UPDATE_standard_send_command( OPCODE_READRAM, read_ram_cmd, sizeof( read_ram_cmd ) );
-    vTaskDelay( pdMS_TO_TICKS( COMMON_CMD_WAIT_MS ) );
-    }
-else if( ( ( md_buf_info.buffer_size / MAX_UPDATE_DATA_LENGTH ) == md_verify_count ) && ( 0 == cmp_result ) )
-    {
-    read_ram_cmd[4] = md_buf_info.buffer_size - ( ( md_buf_info.buffer_size / MAX_UPDATE_DATA_LENGTH ) * MAX_UPDATE_DATA_LENGTH );
-    BT_UPDATE_standard_send_command( OPCODE_READRAM, read_ram_cmd, sizeof( read_ram_cmd ) );
-    vTaskDelay( pdMS_TO_TICKS( COMMON_CMD_WAIT_MS ) );
-    }
-else if( 0 == cmp_result )
-    {
-    update_state = UPDATE_STATE_LAUNCH_MINIDRIVER;
-    // Launch address is BT minidriver address
-    UINT32_to_UINT8_arry( BT_MINIDRIVER_ADDR, &( launch_md_cmd[0] ) );
-    BT_UPDATE_standard_send_command( OPCODE_LAUNCH, launch_md_cmd, sizeof( launch_md_cmd ) );
-    vTaskDelay( pdMS_TO_TICKS( COMMON_CMD_WAIT_MS ) );
-    }
 }
 
 /*********************************************************************
@@ -772,6 +717,7 @@ uint32_t     bt_md_addr = MCU_MINIDRIVER_ADDR;
 uint32_t     addr_val_uint32;
 uint32_t     md_last_sec_size;
 char         sw_ver[SW_VERSION_LENGTH] = { 0 };
+uint8_t      launch_md_cmd[LAUNCH_CMD_LENGTH] = { 0 };
 
 BT_update_status = true;
 bt_update_get_BT_SW_ver( Read_BT_version );
@@ -858,8 +804,11 @@ md_verify_count = 0;
 UINT32_to_UINT8_arry( md_buf_info.verify_addr, &( read_ram_cmd[0] ) );
 read_ram_cmd[4] = MAX_UPDATE_DATA_LENGTH;
 
-BT_UPDATE_standard_send_command( OPCODE_READRAM, read_ram_cmd, 5 );
-update_state = UPDATE_STATE_VERIFY_MINIDRIVER;
+HCI_wait_for_resp_start( RESPONSE_UPDATE_TIMEOUT );
+update_state = UPDATE_STATE_LAUNCH_MINIDRIVER;
+UINT32_to_UINT8_arry( BT_MINIDRIVER_ADDR, &( launch_md_cmd[0] ) );
+BT_UPDATE_standard_send_command( OPCODE_LAUNCH, launch_md_cmd, sizeof( launch_md_cmd ) );
+vTaskDelay( pdMS_TO_TICKS( COMMON_CMD_WAIT_MS ) );
 }
 
 /*********************************************************************
@@ -959,4 +908,21 @@ uint32_t   BT_FW_start_value = *(volatile uint32_t *)( FLASH_BT_FW_BASE_ADDR );
 
 read_bt_sw_ver[BT_SW_MAJOR_VER_BYTE] = (uint8_t)( BT_FW_start_value & 0xff );
 read_bt_sw_ver[BT_SW_MINOR_VER_BYTE] = (uint8_t)( ( BT_FW_start_value >> 8 ) & 0xff );
+}
+
+/*********************************************************************
+*
+* @private
+* Set BT update with static section
+*
+* For the first time update the empty BT module, we set the BT update
+* write BT module static section
+*
+*********************************************************************/
+void bt_update_set_update_static_section
+    (
+    bool set_bt_update_static_section
+    )
+{
+bt_update_static_section = set_bt_update_static_section;
 }

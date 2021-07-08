@@ -231,7 +231,6 @@ ble_conn_handle_arry[0] = (uint8_t)ble_connection_handle;
 ble_conn_handle_arry[1] = (uint8_t)( ble_connection_handle >> 8 );
 HCI_wiced_send_command( HCI_CONTROL_LE_COMMAND_DISCONNECT, ble_conn_handle_arry, sizeof( ble_conn_handle_arry ) );
 hci_set_wait_command_status( true );  // Wait for command status
-HCI_wait_for_resp_start( RESPONSE_CHECK_COMMAND_STATUS );
 }
 
 /*********************************************************************
