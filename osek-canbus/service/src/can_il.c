@@ -2658,7 +2658,6 @@ if( new_frame != FALSE )
             Notify the CAN app that timeout error2 has recoveried
             ------------------------------------------------------*/
             il_app_notify_rx_timeout2( frm_handle, FALSE );
-            VI_notify_timeout2_changed( frm_handle, FALSE );
             }
         }
     /*------------------------------------------------------
@@ -2753,7 +2752,6 @@ else
             Notify the can app
             ------------------------------------------------------*/
             il_app_notify_rx_timeout2( frm_handle, TRUE );
-            VI_notify_timeout2_changed( frm_handle, TRUE );
             }
         }
     /*------------------------------------------------------

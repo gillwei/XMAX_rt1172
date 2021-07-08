@@ -474,8 +474,12 @@ Notify Timeout error2 status
 ------------------------------------------------------*/
 if( timeout_trig == TRUE )
     {
-    //TBD TOE2 happens handler
+    /*------------------------------------------------------
+    Notify VI TOE2 happened in CAN bus
+    ------------------------------------------------------*/
+    VI_notify_timeout2_changed( rmh, TRUE );
     can_app_timeout_error2[CAN_CONTROLLER_2] = timeout_trig;
+
     }
 /*------------------------------------------------------
 Only the two TOE2 triggered conditions(harg key and ECU
@@ -492,7 +496,10 @@ else
         if( ( l_toe2_FUNCSW_status == FALSE ) &&
             ( l_toe2_ECU_indct_status == FALSE ) )
             {
-            //TBD TOE2 clears handler
+            /*------------------------------------------------------
+            Notify VI TOE2 have been cleared up by mid layer
+            ------------------------------------------------------*/
+            VI_notify_timeout2_changed( rmh, FALSE );
             can_app_timeout_error2[CAN_CONTROLLER_2] = timeout_trig;
 
             #if( DEBUG_RX_CAN_SUPPORT )
@@ -505,7 +512,10 @@ else
         if( ( l_toe2_FUNCSW_status == FALSE ) &&
             ( l_toe2_VH_eg_spd == FALSE ) )
             {
-            //TBD TOE2 clears handler
+            /*------------------------------------------------------
+            Notify VI TOE2 have been cleared up by mid layer
+            ------------------------------------------------------*/
+            VI_notify_timeout2_changed( rmh, FALSE );
             can_app_timeout_error2[CAN_CONTROLLER_2] = timeout_trig;
 
             #if( DEBUG_RX_CAN_SUPPORT )

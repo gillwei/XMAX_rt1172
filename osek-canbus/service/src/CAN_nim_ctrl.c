@@ -81,7 +81,7 @@ if( hw_inst < CAN_NUM_INSTANCES )
     Initialize the Network Management Layer which in turn
     initializes the remaining layers of the OSEK CAN Stack
     ------------------------------------------------------*/
-    nm_init( NM_INIT_MODE_POWER_ON, hw_inst );
+    nm_init( hw_inst , NM_INIT_MODE_POWER_ON );
     client_diag_init( CAN_CONTROLLER_2 );
     }
 }
