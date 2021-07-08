@@ -18,6 +18,7 @@
 #include "EW_pub.h"
 #include "TEST_pub.h"
 #include "test_priv.h"
+#include "navi_priv.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -38,7 +39,7 @@ typedef enum
     TEST_NAVI_ROUTE_GUIDANCE_STATUS,
     TEST_NAVI_DIALOG,
     TEST_NAVI_TBT_LIST,
-    TEST_NAVI_TBT_ACTIVE_TBT,
+    TEST_NAVI_BT_THROUGHPUT,
     TEST_NAVI_TOTAL_ITEM
     } navi_test_type;
 
@@ -58,18 +59,18 @@ typedef enum
     static uint8_t cur_rd[MAX_ROAD_NAME_SIZE] = "Jalan Kemang Raya Perumahan Kemang Swasta";
     static uint8_t eta[MAX_STR_SIZE] = "982";
     static uint8_t speed_limit[MAX_STR_SIZE] = "80";
-    static uint8_t navi_event_message[MAX_STR_SIZE] = "60km/h;100m";
+    static uint8_t navi_event_message[MAX_STR_SIZE] = "60 km/h;100 m";
     static int daynight_mode = 0;
     static int test_navi_tick = 0;
     static const int TEST_NAVI_TICK_COUNT = ( TEST_NAVI_PERIOD_MS / TEST_TICK_PERIOD_MS );
     static bool is_navi_event_sent = false;
     static navi_data_type navi_data_obj;
     static bool is_route_guidance_started = false;
-    static int active_tbt_item = 1;
     static navi_tbt_data_type tbt_list[MAX_TBT_LIST_SIZE];
     static int num_of_tbt_list_item = 0;
     static navi_dialog_type navi_dialog_obj;
     static uint8_t dialog_message[MAX_DIALOG_DESCRIPTION_SIZE] = "The toll on this route cannot be avoided.";
+    static EnumNaviBtThroughputUIMode navi_bt_throughput_ui_mode = EnumNaviBtThroughputUIModeTOTAL;
 #endif
 
 /*--------------------------------------------------------------------
@@ -201,95 +202,7 @@ typedef enum
         )
     {
     PRINTF( "TBT list update\r\n" );
-    if( num_of_tbt_list_item < MAX_TBT_LIST_SIZE )
-        {
-        EW_notify_tbt_list_update( num_of_tbt_list_item );
-        }
-    }
-
-    /*********************************************************************
-    *
-    * @private
-    * test_navi_active_tbt_item
-    *
-    * Test TBT active item.
-    *
-    *********************************************************************/
-    static void test_navi_active_tbt_item
-        (
-        uint32_t index
-        )
-    {
-    PRINTF( "Active Tbt item index: %d\r\n", index );
-    }
-
-    /*********************************************************************
-    *
-    * @private
-    * test_navi_event
-    *
-    * Test Navi event.
-    *
-    *********************************************************************/
-    static void test_navi_event
-        (
-        uint8_t* str,
-        uint8_t str_size,
-        navilite_navievent_type navi_event_type,
-        navilite_navievent_camera_extra_subtype navi_camera_type,
-        uint8_t visibility
-        )
-    {
-    if( MAX_STR_SIZE*2 > str_size )
-        {
-        int idx = 1;
-        int length = 0;
-        navi_event_stat event;
-        char* cur_str = ( char* )str;
-        char* next_str = strtok( cur_str, ";" );
-
-        if( NULL == next_str )
-            {
-            memset( event.dist, 0, MAX_STR_SIZE );
-            memcpy( event.dist, next_str, MAX_STR_SIZE );
-            event.dist[str_size] = '\0';
-            }
-        else
-            {
-            while( NULL != next_str )
-                {
-                if( idx == 1 )
-                    {
-                    length = strlen( next_str );
-                    memset( event.speed, 0, MAX_STR_SIZE );
-                    memcpy( event.speed, next_str, MAX_STR_SIZE );
-                    event.speed[length] = '\0';
-                    }
-                else
-                    {
-                    length = str_size - length;
-                    memset( event.dist, 0, MAX_STR_SIZE );
-                    memcpy( event.dist, next_str, MAX_STR_SIZE );
-                    event.dist[length] = '\0';
-                    }
-                next_str = strtok( NULL, ";" );
-                idx++;
-                }
-            }
-        event.event_type = navi_event_type;
-        event.camera_type = navi_camera_type;
-        event.visibility = visibility;
-        event.desc_size = str_size;
-
-        navi_data_obj.navi_event = event;
-
-        PRINTF( "Event update: %s, %d, %d, %d, %d\r\n", str, str_size, navi_event_type, navi_camera_type, visibility );
-        EW_notify_navi_event_update();
-        }
-    else
-        {
-        PRINTF( "Unexpected length of navi event message: %d\r\n", str_size );
-        }
+    // TODO: Rewrite unit test case.
     }
 
     /*********************************************************************
@@ -430,6 +343,22 @@ typedef enum
     /*********************************************************************
     *
     * @public
+    * TEST_get_bt_throughput_status
+    *
+    * Get navi bt throughput status
+    *
+    *********************************************************************/
+    EnumNaviBtThroughputUIMode TEST_get_bt_throughput_status
+        (
+        void
+        )
+    {
+    return navi_bt_throughput_ui_mode;
+    }
+
+    /*********************************************************************
+    *
+    * @public
     * TEST_get_navi_tbt_data
     *
     * Get navi tbt data.
@@ -504,19 +433,18 @@ typedef enum
                     {
                     is_navi_event_sent = true;
                     is_route_guidance_started = true;
-                    test_navi_event( navi_event_message, strlen( ( char* ) navi_event_message ), NAVILITE_NAVIEVENT_TYPE_CAMERA, NAVILITE_CAM_TYPE_USER, 1 );
+                    navi_send_event_to_queue( navi_event_message, strlen( ( char* ) navi_event_message ), NAVILITE_NAVIEVENT_TYPE_CAMERA, NAVILITE_CAM_TYPE_USER, 1 );
                     }
                 }
                 break;
             case TEST_NAVI_ROUTE_GUIDANCE_STATUS:
                 {
-                test_navi_navigating_status( is_route_guidance_started );
-                is_route_guidance_started = !is_route_guidance_started;
+                // TODO: Rewrite unit test case.
                 }
                 break;
             case TEST_NAVI_DIALOG:
                 {
-                test_navi_dialog( 0, NAVILITE_DIALOGTYPE_OK, dialog_message, strlen( ( char* ) dialog_message ) );
+                // TODO: Rewrite unit test case.
                 }
                 break;
             case TEST_NAVI_TBT_LIST:
@@ -524,9 +452,27 @@ typedef enum
                 test_navi_tbt_list();
                 }
                 break;
-            case TEST_NAVI_TBT_ACTIVE_TBT:
+            case TEST_NAVI_BT_THROUGHPUT:
                 {
-                test_navi_active_tbt_item( active_tbt_item );
+                PRINTF( "%s, %d\r\n", __FUNCTION__, navi_bt_throughput_ui_mode );
+                switch( navi_bt_throughput_ui_mode )
+                    {
+                    case EnumNaviBtThroughputUIModeTOTAL:
+                        navi_bt_throughput_ui_mode = EnumNaviBtThroughputUIModeBUSY;
+                        break;
+                    case EnumNaviBtThroughputUIModeTBT:
+                        navi_bt_throughput_ui_mode = EnumNaviBtThroughputUIModeMAP;
+                        break;
+                    case EnumNaviBtThroughputUIModeBUSY:
+                        navi_bt_throughput_ui_mode = EnumNaviBtThroughputUIModeTBT;
+                        break;
+                    case EnumNaviBtThroughputUIModeMAP:
+                        navi_bt_throughput_ui_mode = EnumNaviBtThroughputUIModeTOTAL;
+                        break;
+                    default:
+                        break;
+                    }
+                EW_notify_bt_throughput_status_update();
                 }
                 break;
             default:

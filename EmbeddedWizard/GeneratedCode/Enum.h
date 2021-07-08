@@ -872,6 +872,15 @@ typedef enum
   EnumTachoFullScaleRPM15000            = 1
 } EnumTachoFullScale;
 
+/* User defined enumeration: 'Enum::NaviBtThroughputUIMode' */
+typedef enum
+{
+  EnumNaviBtThroughputUIModeBUSY        = 0,
+  EnumNaviBtThroughputUIModeTBT         = 1,
+  EnumNaviBtThroughputUIModeMAP         = 2,
+  EnumNaviBtThroughputUIModeTOTAL       = 3
+} EnumNaviBtThroughputUIMode;
+
 /* User defined enumeration: 'Enum::NaviZoomActionType' */
 typedef enum
 {

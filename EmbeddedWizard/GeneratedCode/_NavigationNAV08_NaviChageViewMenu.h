@@ -115,6 +115,7 @@
 /* Deklaration of class : 'Navigation::NAV08_NaviChageViewMenu' */
 EW_DEFINE_FIELDS( NavigationNAV08_NaviChageViewMenu, MenuBaseMenuView )
   EW_OBJECT  ( CheckMarkUpdateTimer, CoreTimer )
+  EW_OBJECT  ( NaviBtThroughputUpdateEventHandler, CoreSystemEventHandler )
   EW_VARIABLE( NaviScreenIdx,   XInt32 )
 EW_END_OF_FIELDS( NavigationNAV08_NaviChageViewMenu )
 
@@ -181,7 +182,8 @@ EW_DEFINE_METHODS( NavigationNAV08_NaviChageViewMenu, MenuBaseMenuView )
     XInt32 aItemNo, MenuItemBase aMenuItem )
   EW_METHOD( LoadItemChecked,   XBool )( NavigationNAV08_NaviChageViewMenu _this, 
     XInt32 aItemNo )
-  EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemEnabled,   XBool )( NavigationNAV08_NaviChageViewMenu _this, 
+    XInt32 aItemNo )
   EW_METHOD( LoadItemBaseValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemMessage,   XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemReceivedTime, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
@@ -222,8 +224,17 @@ void NavigationNAV08_NaviChageViewMenu_OnItemActivate( NavigationNAV08_NaviChage
 XBool NavigationNAV08_NaviChageViewMenu_LoadItemChecked( NavigationNAV08_NaviChageViewMenu _this, 
   XInt32 aItemNo );
 
+/* 'C' function for method : 'Navigation::NAV08_NaviChageViewMenu.LoadItemEnabled()' */
+XBool NavigationNAV08_NaviChageViewMenu_LoadItemEnabled( NavigationNAV08_NaviChageViewMenu _this, 
+  XInt32 aItemNo );
+
 /* 'C' function for method : 'Navigation::NAV08_NaviChageViewMenu.OnCheckMarkUpdateSlot()' */
 void NavigationNAV08_NaviChageViewMenu_OnCheckMarkUpdateSlot( NavigationNAV08_NaviChageViewMenu _this, 
+  XObject sender );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void NavigationNAV08_NaviChageViewMenu_OnNaviBtThroughputStatusUpdateSlot( NavigationNAV08_NaviChageViewMenu _this, 
   XObject sender );
 
 #ifdef __cplusplus

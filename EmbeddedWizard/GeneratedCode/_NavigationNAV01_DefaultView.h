@@ -133,6 +133,7 @@ EW_DEFINE_FIELDS( NavigationNAV01_DefaultView, HomeBaseHome )
   EW_OBJECT  ( ReRouteObject,   NavigationReRoute )
   EW_OBJECT  ( StatusBarShadowImage, ViewsWallpaper )
   EW_OBJECT  ( Mask,            ViewsRectangle )
+  EW_OBJECT  ( BtLoadingAnimation, ViewsImage )
   EW_OBJECT  ( MapUpdateEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( CurRdUpdateEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( ETAUpdateEventHandler, CoreSystemEventHandler )
@@ -151,8 +152,10 @@ EW_DEFINE_FIELDS( NavigationNAV01_DefaultView, HomeBaseHome )
   EW_OBJECT  ( ZoomLevelUpdateEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( DisableFlickeringTimer, CoreTimer )
   EW_OBJECT  ( DisableReRouteAlertTimer, CoreTimer )
+  EW_OBJECT  ( NaviBtThroughputUpdateEventHandler, CoreSystemEventHandler )
   EW_VARIABLE( MapFrameIdx,     XInt32 )
   EW_PROPERTY( ZoomAction,      XEnum )
+  EW_PROPERTY( IsBtLoading,     XBool )
   EW_PROPERTY( ReRouteEventStatus, XBool )
   EW_PROPERTY( SpeedingEventStatus, XBool )
   EW_PROPERTY( IsJcvDisplayed,  XBool )
@@ -350,6 +353,15 @@ void NavigationNAV01_DefaultView_OnSetSpeedingEventStatus( NavigationNAV01_Defau
 
 /* 'C' function for method : 'Navigation::NAV01_DefaultView.OnSetReRouteEventStatus()' */
 void NavigationNAV01_DefaultView_OnSetReRouteEventStatus( NavigationNAV01_DefaultView _this, 
+  XBool value );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void NavigationNAV01_DefaultView_OnNaviBtThroughputStatusUpdateSlot( NavigationNAV01_DefaultView _this, 
+  XObject sender );
+
+/* 'C' function for method : 'Navigation::NAV01_DefaultView.OnSetIsBtLoading()' */
+void NavigationNAV01_DefaultView_OnSetIsBtLoading( NavigationNAV01_DefaultView _this, 
   XBool value );
 
 #ifdef __cplusplus

@@ -1033,6 +1033,7 @@ void DeviceInterfaceNavigationDeviceClass__Init( DeviceInterfaceNavigationDevice
   CoreSystemEvent__Init( &_this->ConnectStatusUpdateEvent, &_this->_.XObject, 0 );
   CoreSystemEvent__Init( &_this->DisconnectStatusUpdateEvent, &_this->_.XObject, 0 );
   CoreSystemEvent__Init( &_this->PoiListUpdateEvent, &_this->_.XObject, 0 );
+  CoreSystemEvent__Init( &_this->BtThroughputStatusUpdateEvent, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_.VMT = EW_CLASS( DeviceInterfaceNavigationDeviceClass );
@@ -1065,6 +1066,7 @@ void DeviceInterfaceNavigationDeviceClass__ReInit( DeviceInterfaceNavigationDevi
   CoreSystemEvent__ReInit( &_this->ConnectStatusUpdateEvent );
   CoreSystemEvent__ReInit( &_this->DisconnectStatusUpdateEvent );
   CoreSystemEvent__ReInit( &_this->PoiListUpdateEvent );
+  CoreSystemEvent__ReInit( &_this->BtThroughputStatusUpdateEvent );
 }
 
 /* Finalizer method for the class 'DeviceInterface::NavigationDeviceClass' */
@@ -1090,6 +1092,7 @@ void DeviceInterfaceNavigationDeviceClass__Done( DeviceInterfaceNavigationDevice
   CoreSystemEvent__Done( &_this->ConnectStatusUpdateEvent );
   CoreSystemEvent__Done( &_this->DisconnectStatusUpdateEvent );
   CoreSystemEvent__Done( &_this->PoiListUpdateEvent );
+  CoreSystemEvent__Done( &_this->BtThroughputStatusUpdateEvent );
 
   /* Don't forget to deinitialize the super class ... */
   TemplatesDeviceClass__Done( &_this->_.Super );
@@ -1270,7 +1273,7 @@ XBool DeviceInterfaceNavigationDeviceClass_IsRouteGuidanceStarted( DeviceInterfa
   EW_UNUSED_ARG( _this );
 
   IsNavigating = 0;
-  IsNavigating = ew_navi_is_route_guidance_started();
+  IsNavigating = NAVI_get_navigation_status();
   return IsNavigating;
 }
 
@@ -1723,26 +1726,67 @@ XBool DeviceInterfaceNavigationDeviceClass_OnGetNaviAppSppConnected( DeviceInter
   return IsNaviAppSppConnected;
 }
 
-/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.IsSpeedingAlertReceived()' */
-XBool DeviceInterfaceNavigationDeviceClass_IsSpeedingAlertReceived( DeviceInterfaceNavigationDeviceClass _this )
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceNavigationDeviceClass_NotifyBtThroughputStatusUpdate( DeviceInterfaceNavigationDeviceClass _this )
 {
-  XBool SpeedingEventStatus;
-
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( _this );
-
-  SpeedingEventStatus = 0;
-  SpeedingEventStatus = NAVI_is_specified_event_received( EnumNaviAlertTypeSPEED, EnumNaviCameraTypeTYPE_UNDEFINED );
-  return SpeedingEventStatus;
+  CoreSystemEvent_Trigger( &_this->BtThroughputStatusUpdateEvent, 0, 0 );
 }
 
-/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.RemoveSpeedingAlert()' */
-void DeviceInterfaceNavigationDeviceClass_RemoveSpeedingAlert( DeviceInterfaceNavigationDeviceClass _this )
+/* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyBtThroughputStatusUpdate()' */
+void DeviceInterfaceNavigationDeviceClass__NotifyBtThroughputStatusUpdate( void* _this )
+{
+  DeviceInterfaceNavigationDeviceClass_NotifyBtThroughputStatusUpdate((DeviceInterfaceNavigationDeviceClass)_this );
+}
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetBtThroughputUIMode()' */
+XEnum DeviceInterfaceNavigationDeviceClass_GetBtThroughputUIMode( DeviceInterfaceNavigationDeviceClass _this )
+{
+  XEnum BtThroughputUIMode;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  BtThroughputUIMode = EnumNaviBtThroughputUIModeBUSY;
+  {
+    #if( !UNIT_TEST_NAVI )
+      BtThroughputUIMode = NAVI_get_navi_bt_throughput_ui_mode();
+    #else
+      BtThroughputUIMode = TEST_get_bt_throughput_status();
+    #endif
+  }
+  return BtThroughputUIMode;
+}
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.StopContentRequest()' */
+void DeviceInterfaceNavigationDeviceClass_StopContentRequest( DeviceInterfaceNavigationDeviceClass _this )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
 
-  NAVI_remove_specified_event( EnumNaviAlertTypeSPEED, EnumNaviCameraTypeTYPE_UNDEFINED );
+  NAVI_stop_content_update();
+}
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.StartContentRequest()' */
+void DeviceInterfaceNavigationDeviceClass_StartContentRequest( DeviceInterfaceNavigationDeviceClass _this )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  NAVI_start_content_update();
+}
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.IsJcvReceived()' */
+XBool DeviceInterfaceNavigationDeviceClass_IsJcvReceived( DeviceInterfaceNavigationDeviceClass _this )
+{
+  XBool ShowJcv;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  ShowJcv = 0;
+  ShowJcv = NAVI_is_Jcv_recevied();
+  return ShowJcv;
 }
 
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.IsReRouteAlertReceived()' */
@@ -1767,17 +1811,17 @@ void DeviceInterfaceNavigationDeviceClass_RemoteReRouteAlert( DeviceInterfaceNav
   NAVI_remove_specified_event( EnumNaviAlertTypeTRAFFIC, EnumNaviCameraTypeTYPE_UNDEFINED );
 }
 
-/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.IsJcvReceived()' */
-XBool DeviceInterfaceNavigationDeviceClass_IsJcvReceived( DeviceInterfaceNavigationDeviceClass _this )
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.IsSpeedingAlertReceived()' */
+XBool DeviceInterfaceNavigationDeviceClass_IsSpeedingAlertReceived( DeviceInterfaceNavigationDeviceClass _this )
 {
-  XBool ShowJcv;
+  XBool SpeedingEventStatus;
 
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
 
-  ShowJcv = 0;
-  ShowJcv = NAVI_is_Jcv_recevied();
-  return ShowJcv;
+  SpeedingEventStatus = 0;
+  SpeedingEventStatus = NAVI_is_specified_event_received( EnumNaviAlertTypeSPEED, EnumNaviCameraTypeTYPE_UNDEFINED );
+  return SpeedingEventStatus;
 }
 
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetRerouteAlertMessage()' */
@@ -1817,6 +1861,15 @@ void DeviceInterfaceNavigationDeviceClass_EnableAlertDisplayFlag( DeviceInterfac
   EW_UNUSED_ARG( _this );
 
   NAVI_enable_alert_display_flag();
+}
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.RemoveSpeedingAlert()' */
+void DeviceInterfaceNavigationDeviceClass_RemoveSpeedingAlert( DeviceInterfaceNavigationDeviceClass _this )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  NAVI_remove_specified_event( EnumNaviAlertTypeSPEED, EnumNaviCameraTypeTYPE_UNDEFINED );
 }
 
 /* Variants derived from the class : 'DeviceInterface::NavigationDeviceClass' */

@@ -127,6 +127,9 @@ EW_DEFINE_FIELDS( NavigationNAV05_TBTView, HomeBaseHome )
   EW_OBJECT  ( ETAUpdateEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( CurRdUpdateEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( RecalculateMessage, ComponentsBaseText )
+  EW_OBJECT  ( Mask,            ViewsRectangle )
+  EW_OBJECT  ( BtLoadingAnimation, ViewsImage )
+  EW_OBJECT  ( BtLoadingIcon,   ViewsImage )
   EW_OBJECT  ( TbtListUpdateEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( SpeedLimitUpdateEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( SpeedLimitFlickeringTimer, CoreTimer )
@@ -134,6 +137,9 @@ EW_DEFINE_FIELDS( NavigationNAV05_TBTView, HomeBaseHome )
   EW_OBJECT  ( RouteCalProgressUpdateEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( NavigatingStatusUpdateEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( NaviDisconnectEventHandler, CoreSystemEventHandler )
+  EW_OBJECT  ( NaviBtThroughputUpdateEventHandler, CoreSystemEventHandler )
+  EW_PROPERTY( IsBtLoadingIconDisplayed, XBool )
+  EW_PROPERTY( IsBtLoading,     XBool )
 EW_END_OF_FIELDS( NavigationNAV05_TBTView )
 
 /* Virtual Method Table (VMT) for the class : 'Navigation::NAV05_TBTView' */
@@ -191,7 +197,7 @@ EW_DEFINE_METHODS( NavigationNAV05_TBTView, HomeBaseHome )
   EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
-  EW_METHOD( ReturnToHome,      void )( HomeBaseHome _this )
+  EW_METHOD( ReturnToHome,      void )( NavigationNAV05_TBTView _this )
 EW_END_OF_METHODS( NavigationNAV05_TBTView )
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -201,6 +207,9 @@ void NavigationNAV05_TBTView_Init( NavigationNAV05_TBTView _this, XHandle aArg )
 
 /* 'C' function for method : 'Navigation::NAV05_TBTView.OnLongEnterKeyActivated()' */
 void NavigationNAV05_TBTView_OnLongEnterKeyActivated( NavigationNAV05_TBTView _this );
+
+/* 'C' function for method : 'Navigation::NAV05_TBTView.ReturnToHome()' */
+void NavigationNAV05_TBTView_ReturnToHome( NavigationNAV05_TBTView _this );
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
    receives an event. */
@@ -259,6 +268,19 @@ void NavigationNAV05_TBTView_OnNaviDisconnectUpdateSlot( NavigationNAV05_TBTView
 
 /* 'C' function for method : 'Navigation::NAV05_TBTView.UpdateActiveTbtItem()' */
 void NavigationNAV05_TBTView_UpdateActiveTbtItem( NavigationNAV05_TBTView _this );
+
+/* 'C' function for method : 'Navigation::NAV05_TBTView.OnSetIsBtLoading()' */
+void NavigationNAV05_TBTView_OnSetIsBtLoading( NavigationNAV05_TBTView _this, XBool 
+  value );
+
+/* 'C' function for method : 'Navigation::NAV05_TBTView.OnSetIsBtLoadingIconDisplayed()' */
+void NavigationNAV05_TBTView_OnSetIsBtLoadingIconDisplayed( NavigationNAV05_TBTView _this, 
+  XBool value );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void NavigationNAV05_TBTView_OnNaviBtThroughputStatusUpdateSlot( NavigationNAV05_TBTView _this, 
+  XObject sender );
 
 #ifdef __cplusplus
   }

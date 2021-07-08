@@ -1938,7 +1938,24 @@ enum TachoFullScale
   item RPM15000;
 }
 
-$rect <730,570,930,610>
+$rect <500,990,700,1030>
+$output false
+enum NaviBtThroughputUIMode
+{
+  $rect <10,10,210,50>
+  item BUSY;
+
+  $rect <220,10,420,50>
+  item TBT;
+
+  $rect <430,10,630,50>
+  item MAP;
+
+  $rect <650,10,850,50>
+  item TOTAL;
+}
+
+$rect <720,870,920,910>
 $output false
 enum NaviZoomActionType
 {

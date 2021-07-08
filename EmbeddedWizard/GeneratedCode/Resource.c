@@ -1689,4 +1689,10 @@ EW_RES_WITHOUT_VARIANTS( ResourceSafeBorder )
 /* Table with links to derived variants of the bitmap resource : 'Resource::AlertRouteIcon' */
 EW_RES_WITHOUT_VARIANTS( ResourceAlertRouteIcon )
 
+/* Include a file containing the bitmap resource : 'Resource::BtLoadingIcon' */
+#include "_ResourceBtLoadingIcon.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Resource::BtLoadingIcon' */
+EW_RES_WITHOUT_VARIANTS( ResourceBtLoadingIcon )
+
 /* Embedded Wizard */

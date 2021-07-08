@@ -56,6 +56,7 @@ typedef enum
     NAVILITE_FUNC_TBT_LIST_UPDATE,
     NAVILITE_FUNC_FAV_LIST_UPDATE,
     NAVILITE_FUNC_GAS_LIST_UPDATE,
+    NAVILITE_FUNC_BT_THROUGHPUT_UPDATE,
     NAVILITE_FUNC_CNT
     } navilite_func;
 
@@ -150,6 +151,9 @@ void NAVI_remove_specified_event( EnumNaviAlertType alert_type, EnumNaviCameraTy
 bool NAVI_get_alert_display_status( void );
 void NAVI_enable_alert_display_flag( void );
 void NAVI_get_reroute_alert_message( char** alert_message );
+EnumNaviBtThroughputUIMode NAVI_get_navi_bt_throughput_ui_mode( void );
+void NAVI_start_content_update( void );
+void NAVI_stop_content_update( void );
 
 #ifdef __cplusplus
 }

@@ -47,6 +47,7 @@ void TEST_navi_get_dialog_message( char** message );
 void TEST_weather_location( char** wea_loc );
 int TEST_weather_weekday( void );
 bc_motocon_weather_info_t* TEST_get_weather_obj( const int index );
+EnumNaviBtThroughputUIMode TEST_get_bt_throughput_status( void );
 
 #ifdef __cplusplus
 }

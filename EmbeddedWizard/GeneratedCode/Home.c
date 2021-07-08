@@ -1115,7 +1115,15 @@ void HomeBaseHome_OnShortHomeKeyActivated( HomeBaseHome _this )
     if ( App != 0 )
     {
       if ( EnumHomeTypeNAVI_DEFAULT_VIEW == _this->HomeType )
+      {
         DeviceInterfaceNavigationDeviceClass_StopMapFrameRequest( EwGetAutoObject( 
+        &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ));
+        DeviceInterfaceNavigationDeviceClass_StopContentRequest( EwGetAutoObject( 
+        &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ));
+      }
+
+      if ( EnumHomeTypeNAVI_NEXT_TURN == _this->HomeType )
+        DeviceInterfaceNavigationDeviceClass_StopContentRequest( EwGetAutoObject( 
         &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ));
 
       switch ( NextHomeType )

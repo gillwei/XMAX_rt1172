@@ -19,11 +19,12 @@
 #include "fsl_debug_console.h"
 #include <TEST_pub.h>
 #include <test_priv.h>
+#include "GRM_pub_prj.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
-#define TEST_TASK_PRIORITY   ( tskIDLE_PRIORITY )
+#define TEST_TASK_PRIORITY   ( TASK_PRIO_VEHICLE_INFO_MNGR )
 #define TEST_TASK_STACK_SIZE ( configMINIMAL_STACK_SIZE * ( 2 + ( UNIT_TEST_NAVILITE ) * 7 ) )
 #define TEST_TASK_NAME       "test_task"
 

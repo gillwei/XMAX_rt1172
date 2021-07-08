@@ -736,6 +736,14 @@ class BaseHome : Components::BaseMainBG
         {
           // Leave navigation home screen so that stop map frame request.
           DeviceInterface::NavigationDevice.StopMapFrameRequest();
+          DeviceInterface::NavigationDevice.StopContentRequest();
+        }
+
+        if( Enum::HomeType.NAVI_NEXT_TURN == HomeType )
+        {
+          // Leaving Tbt screen, low bt throughput mode is not used, tell navi app start image transfer.
+          // If we don't send this, navi app will wait for our signal forever.
+          DeviceInterface::NavigationDevice.StopContentRequest();
         }
 
         switch( NextHomeType )

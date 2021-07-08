@@ -88,10 +88,12 @@ EW_DEFINE_FIELDS( DeviceInterfaceNavigationDeviceClass, TemplatesDeviceClass )
   EW_OBJECT  ( ConnectStatusUpdateEvent, CoreSystemEvent )
   EW_OBJECT  ( DisconnectStatusUpdateEvent, CoreSystemEvent )
   EW_OBJECT  ( PoiListUpdateEvent, CoreSystemEvent )
+  EW_OBJECT  ( BtThroughputStatusUpdateEvent, CoreSystemEvent )
   EW_VARIABLE( CurrentSelectPoiIdx, XInt32 )
   EW_VARIABLE( RouteOptionTriggerItem, XEnum )
   EW_VARIABLE( CurrentPoiListType, XEnum )
   EW_VARIABLE( CurrentHome,     XEnum )
+  EW_VARIABLE( IsBtThoughputModeActivateFromMap, XBool )
   EW_VARIABLE( IsNaviLoadingDialogDisplayed, XBool )
   EW_VARIABLE( IsZoomInOutStatusReceived, XBool )
 EW_END_OF_FIELDS( DeviceInterfaceNavigationDeviceClass )
@@ -349,11 +351,27 @@ XEnum DeviceInterfaceNavigationDeviceClass_GetNaviDialogDefaultButton( DeviceInt
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.OnGetNaviAppSppConnected()' */
 XBool DeviceInterfaceNavigationDeviceClass_OnGetNaviAppSppConnected( DeviceInterfaceNavigationDeviceClass _this );
 
-/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.IsSpeedingAlertReceived()' */
-XBool DeviceInterfaceNavigationDeviceClass_IsSpeedingAlertReceived( DeviceInterfaceNavigationDeviceClass _this );
+/* This method is intended to be called by the device to notify the GUI application 
+   about a particular system event. */
+void DeviceInterfaceNavigationDeviceClass_NotifyBtThroughputStatusUpdate( DeviceInterfaceNavigationDeviceClass _this );
 
-/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.RemoveSpeedingAlert()' */
-void DeviceInterfaceNavigationDeviceClass_RemoveSpeedingAlert( DeviceInterfaceNavigationDeviceClass _this );
+/* Wrapper function for the non virtual method : 'DeviceInterface::NavigationDeviceClass.NotifyBtThroughputStatusUpdate()' */
+void DeviceInterfaceNavigationDeviceClass__NotifyBtThroughputStatusUpdate( void* _this );
+
+/* The following define announces the presence of the method DeviceInterface::NavigationDeviceClass.NotifyBtThroughputStatusUpdate(). */
+#define _DeviceInterfaceNavigationDeviceClass__NotifyBtThroughputStatusUpdate_
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetBtThroughputUIMode()' */
+XEnum DeviceInterfaceNavigationDeviceClass_GetBtThroughputUIMode( DeviceInterfaceNavigationDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.StopContentRequest()' */
+void DeviceInterfaceNavigationDeviceClass_StopContentRequest( DeviceInterfaceNavigationDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.StartContentRequest()' */
+void DeviceInterfaceNavigationDeviceClass_StartContentRequest( DeviceInterfaceNavigationDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.IsJcvReceived()' */
+XBool DeviceInterfaceNavigationDeviceClass_IsJcvReceived( DeviceInterfaceNavigationDeviceClass _this );
 
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.IsReRouteAlertReceived()' */
 XBool DeviceInterfaceNavigationDeviceClass_IsReRouteAlertReceived( DeviceInterfaceNavigationDeviceClass _this );
@@ -361,8 +379,8 @@ XBool DeviceInterfaceNavigationDeviceClass_IsReRouteAlertReceived( DeviceInterfa
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.RemoteReRouteAlert()' */
 void DeviceInterfaceNavigationDeviceClass_RemoteReRouteAlert( DeviceInterfaceNavigationDeviceClass _this );
 
-/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.IsJcvReceived()' */
-XBool DeviceInterfaceNavigationDeviceClass_IsJcvReceived( DeviceInterfaceNavigationDeviceClass _this );
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.IsSpeedingAlertReceived()' */
+XBool DeviceInterfaceNavigationDeviceClass_IsSpeedingAlertReceived( DeviceInterfaceNavigationDeviceClass _this );
 
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetRerouteAlertMessage()' */
 XString DeviceInterfaceNavigationDeviceClass_GetRerouteAlertMessage( DeviceInterfaceNavigationDeviceClass _this );
@@ -372,6 +390,9 @@ XBool DeviceInterfaceNavigationDeviceClass_GetAlertDisplayStatus( DeviceInterfac
 
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.EnableAlertDisplayFlag()' */
 void DeviceInterfaceNavigationDeviceClass_EnableAlertDisplayFlag( DeviceInterfaceNavigationDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.RemoveSpeedingAlert()' */
+void DeviceInterfaceNavigationDeviceClass_RemoveSpeedingAlert( DeviceInterfaceNavigationDeviceClass _this );
 
 #ifdef __cplusplus
   }

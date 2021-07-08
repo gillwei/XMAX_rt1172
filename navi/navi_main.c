@@ -56,6 +56,7 @@ typedef bool ( *next_turn_dist_update )( navilite_callback_func_nextturndistance
 typedef bool ( *active_tbt_item_update )( navilite_callback_func_activetbtitem cb );
 typedef bool ( *tbt_list_update )( navilite_callback_func_nexttbtlist cb );
 typedef bool ( *poi_list_update )( navilite_callback_func_nexttpoilist cb );
+typedef bool ( *bt_throughput_update )( navilite_callback_func_content_mode_switch cb );
 
 /*--------------------------------------------------------------------
                            PROJECT INCLUDES
@@ -91,13 +92,15 @@ static generic_fc_ptr navi_funtion_table[NAVILITE_FUNC_CNT] =
     (generic_fc_ptr)NAVILITE_register_update_callback_activetbtlistitem,
     (generic_fc_ptr)NAVILITE_register_update_callback_tbtlist,
     (generic_fc_ptr)NAVILITE_register_update_callback_favlist,
-    (generic_fc_ptr)NAVILITE_register_update_callback_gaslist
+    (generic_fc_ptr)NAVILITE_register_update_callback_gaslist,
+    (generic_fc_ptr)NAVILITE_register_update_callback_content_mode_switch
     };
 
 static navi_data_type navi_data_obj;
 static navi_dialog_type navi_dialog_obj;
 static bool is_navi_app_connected;
 static EnumNaviZoomInOutStatusType zoom_inout_status = EnumNaviZoomInOutStatusTypeNORMAL;
+static EnumNaviBtThroughputUIMode navi_bt_throughput_ui_mode = EnumNaviBtThroughputUIModeTOTAL;
 static TimerHandle_t dialog_timer_handle;
 
 /*--------------------------------------------------------------------
@@ -825,6 +828,28 @@ switch( action )
 
 /*********************************************************************
 *
+* @private
+* navi_bt_throughput_update
+*
+* Notify navigation module that bt throughput is updated.
+*
+* @param mode                           Determine which UI should be displayed.
+* @param throughput_timeout             Timeout
+*
+*********************************************************************/
+static void navi_bt_throughput_update
+    (
+    navilite_content_mode_type mode,
+    uint8_t throughput_timeout
+    )
+{
+PRINTF( "%s, Mode: %d\r\n", __FUNCTION__, mode );
+navi_bt_throughput_ui_mode = (EnumNaviBtThroughputUIMode)mode;
+EW_notify_bt_throughput_status_update();
+}
+
+/*********************************************************************
+*
 * @public
 * NAVI_is_Jcv_recevied
 *
@@ -945,6 +970,40 @@ void NAVI_start_map_update
 {
 PRINTF( "%s\r\n", __FUNCTION__ );
 NAVILITE_request_app_start_imageframe_update();
+}
+
+/*********************************************************************
+*
+* @public
+* NAVI_start_content_update
+*
+* Start content update. This is called when low bt throughput.
+*
+*********************************************************************/
+void NAVI_start_content_update
+    (
+    void
+    )
+{
+PRINTF( "%s\r\n", __FUNCTION__ );
+NAVILITE_request_app_enable_content_update( NAVILITE_CONTENT_TYPE_NAVI_IMAGE_FOR_LOW_THROUGHPUT_MODE, true );
+}
+
+/*********************************************************************
+*
+* @public
+* NAVI_stop_content_update
+*
+* Stop content update. This is called when low bt throughput.
+*
+*********************************************************************/
+void NAVI_stop_content_update
+    (
+    void
+    )
+{
+PRINTF( "%s\r\n", __FUNCTION__ );
+NAVILITE_request_app_enable_content_update( NAVILITE_CONTENT_TYPE_NAVI_IMAGE_FOR_LOW_THROUGHPUT_MODE, false );
 }
 
 /*********************************************************************
@@ -1188,6 +1247,23 @@ switch( route_option_type )
 /*********************************************************************
 *
 * @public
+* NAVI_get_navi_bt_throughput_ui_mode
+*
+* Obtain the corresponding navi ui mode based on the current BT throughput
+*
+*********************************************************************/
+EnumNaviBtThroughputUIMode NAVI_get_navi_bt_throughput_ui_mode
+    (
+    void
+    )
+{
+PRINTF( "%s \r\n", __FUNCTION__ );
+return navi_bt_throughput_ui_mode;
+}
+
+/*********************************************************************
+*
+* @public
 * NAVI_init
 *
 * Initialize navigation module
@@ -1274,6 +1350,9 @@ for( int i = 0; i < NAVILITE_FUNC_CNT; i++ )
             break;
         case NAVILITE_FUNC_GAS_LIST_UPDATE:
             result = ( (poi_list_update)navi_funtion_table[i] )( navi_poi_list_update );
+            break;
+        case NAVILITE_FUNC_BT_THROUGHPUT_UPDATE:
+            result = ( (bt_throughput_update)navi_funtion_table[i] )( navi_bt_throughput_update );
             break;
         default:
             PRINTF( "Unexpected navilite function.\r\n" );

@@ -831,6 +831,9 @@ EW_DECLARE_BITMAP_RES( ResourceSafeBorder )
 /* Bitmap resource : 'Resource::AlertRouteIcon' */
 EW_DECLARE_BITMAP_RES( ResourceAlertRouteIcon )
 
+/* Bitmap resource : 'Resource::BtLoadingIcon' */
+EW_DECLARE_BITMAP_RES( ResourceBtLoadingIcon )
+
 /* Forward declaration of the class Resources::ExternBitmap */
 #ifndef _ResourcesExternBitmap_
   EW_DECLARE_CLASS( ResourcesExternBitmap )

@@ -3479,3 +3479,15 @@ resource Resources::Bitmap AlertRouteIcon
   attr bitmapdithering Dithering = Auto;
   attr bitmapmode Mode = Default;
 }
+
+$rect <870,2020,1070,2060>
+$output false
+resource Resources::Bitmap BtLoadingIcon
+{
+  attr bitmapfile FileName = .\Res\navi\bt_low_animation.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize = <40,40>;
+  attr framedelay FrameDelay = 42;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}

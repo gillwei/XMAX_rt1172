@@ -107,6 +107,7 @@ void EW_notify_via_point_update( void );
 void EW_notify_connect_status_update( void );
 void EW_notify_disconnect_status_update( void );
 void EW_notify_poi_list_update( void );
+void EW_notify_bt_throughput_status_update( void );
 
 void EW_notify_notification_list_updated( void );
 void EW_notify_phone_call_state_changed( void );
