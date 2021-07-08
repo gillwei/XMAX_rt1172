@@ -422,15 +422,19 @@
     *
     * @param current_level current zoom level
     * @param max_level max zoom level limit
+    * @param zoom_level_scale_str zoom level scale string
+    * @param zoom_level_scale_str_size string size of zoom level scale
     *
     *********************************************************************/
     static void hmi_update_callback_zoomlevel
         (
         uint8_t current_level,
-        uint8_t max_level
+        uint8_t max_level,
+        uint8_t* zoom_level_scale_str,
+        uint8_t zoom_level_str_size
         )
     {
-    NAVILITE_PRINTF( "\r\n[NAVILITE-CB] zoom level: current:%d, max(%d) ", current_level, max_level );
+    NAVILITE_PRINTF( "\r\n[NAVILITE-CB] zoom level: current:%d, max(%d), zoom_level_scale:%s, zoom_level_scale_size:%d ", current_level, max_level, zoom_level_scale_str, zoom_level_scale_str_size );
     }
 
     /*********************************************************************

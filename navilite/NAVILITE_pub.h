@@ -185,7 +185,7 @@ typedef void ( *navilite_callback_func_activetbtitem )( uint16_t active_tbt_inde
 typedef void ( *navilite_callback_func_navieventtext )( uint8_t* str, uint8_t str_size, navilite_navievent_type navi_event_type, navilite_navievent_camera_extra_subtype navi_extra_sub_type, uint8_t visibility );
 typedef void ( *navilite_callback_func_homelocationsetting )( uint8_t is_home_location );
 typedef void ( *navilite_callback_func_officelocationsetting )( uint8_t is_office_location );
-typedef void ( *navilite_callback_func_zoomlevel )( uint8_t current_level, uint8_t max_level );
+typedef void ( *navilite_callback_func_zoomlevel )( uint8_t current_level, uint8_t max_level, uint8_t* zoom_scale_str, uint8_t zoom_scale_str_size );
 typedef void ( *navilite_callback_func_routecalcprogress )( uint8_t progress ); // timeout:10s and automatically callback to
 typedef void ( *navilite_callback_func_daynightmode )( navilite_daynight_mode_type mode ); // daynight mode update
 typedef void ( *navilite_callback_func_speedlimit )( uint16_t speed_limit ); // speed limit

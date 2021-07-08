@@ -562,15 +562,19 @@ EW_notify_route_cal_progress_update();
 *
 * @param current_level  variable indicates the current zoom level.
 * @param max_level      variable indicates the maximum zoom level.
+* @param zoom_level_scale_str string of zoom level scale
+* @param zoom_level_scale_str_size string size of zoom level scale
 *
 *********************************************************************/
 static void navi_zoom_level_update
     (
     uint8_t current_level,
-    uint8_t max_level
+    uint8_t max_level,
+    uint8_t* zoom_level_scale_str,
+    uint8_t zoom_level_scale_str_size
     )
 {
-PRINTF( "%s: Zoom level is updated: %d, %d\r\n", __FUNCTION__, current_level, max_level );
+PRINTF( "%s: Zoom level is updated: %d, %d, %s\r\n", __FUNCTION__, current_level, max_level, zoom_level_scale_str );
 if( current_level == max_level )
     {
     zoom_inout_status = EnumNaviZoomInOutStatusTypeREACH_MAXIMUM;

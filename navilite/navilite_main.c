@@ -945,14 +945,23 @@ if( data_len >= 4 && strncmp( (char*)data, MAGIC_CODE, 4 ) == 0 )
         {
         uint8_t currentLevel = 0;
         uint8_t maxLevel = 0;
+        uint8_t zoom_scale_str_size = 0;
+        int i = 0;
 
         currentLevel = (uint8_t)data[idx++];
         maxLevel = (uint8_t)data[idx++];
+        zoom_scale_str_size = (uint8_t)data[idx++];
+        // read the str size bytes for zoom scale string
+        for( i = 0; i < zoom_scale_str_size; i++ )
+            {
+            navilite_buffer[i] = (uint8_t)data[idx++];
+            }
+        navilite_buffer[i++] = 0; // store the zoom scale string on navilite buffer
 
         if( navilite_content_update_callbacks.callback_func_zoomlevel )
             {
             // Callback API for zoom level update
-            navilite_content_update_callbacks.callback_func_zoomlevel( currentLevel, maxLevel );
+            navilite_content_update_callbacks.callback_func_zoomlevel( currentLevel, maxLevel, navilite_buffer, zoom_scale_str_size );
             }
         }
 
@@ -1026,7 +1035,7 @@ if( data_len >= 4 && strncmp( (char*)data, MAGIC_CODE, 4 ) == 0 )
         // read one byte for navi text string size
         event_str_size = (uint8_t)data[idx++];
         // read the str size bytes for navi text
-        for ( i = 0; i < event_str_size; i++ )
+        for( i = 0; i < event_str_size; i++ )
             {
             navilite_buffer[i] = (uint8_t)data[idx++];
             }
@@ -1056,7 +1065,7 @@ if( data_len >= 4 && strncmp( (char*)data, MAGIC_CODE, 4 ) == 0 )
         dist_unit_str_size = (uint8_t)data[idx++];
 
         // read the str bytes for distance
-        for ( i = 0; i < dist_unit_str_size; i++ )
+        for( i = 0; i < dist_unit_str_size; i++ )
             {
             navilite_buffer[i] = (uint8_t)data[idx++];
             }
@@ -1369,7 +1378,7 @@ if( data_len >= 4 && strncmp( (char*)data, MAGIC_CODE, 4 ) == 0 )
         timeout = (uint8_t)( data[idx++] );
         default_choice = (uint8_t)( data[idx++] );
         // read the str size bytes for dialog text
-        for ( i = 0; i < message_size; i++ )
+        for( i = 0; i < message_size; i++ )
             {
             navilite_buffer[i] = (uint8_t)data[idx++];
             }
@@ -1616,14 +1625,22 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
         {
         uint8_t currentLevel = 0;
         uint8_t maxLevel = 0;
+        uint8_t zoom_scale_str_size = 0;
+        int i = 0;
 
         currentLevel = (uint8_t)data[idx++];
         maxLevel = (uint8_t)data[idx++];
-
+        zoom_scale_str_size = (uint8_t)data[idx++];
+        // read the str size bytes for zoom scale string
+        for( i = 0; i < zoom_scale_str_size; i++ )
+            {
+            navilite_buffer[i] = (uint8_t)data[idx++];
+            }
+        navilite_buffer[i++] = 0; // store the zoom scale string on navilite buffer
         if( navilite_content_update_callbacks.callback_func_zoomlevel )
             {
             // Callback API for zoom level update
-            navilite_content_update_callbacks.callback_func_zoomlevel( currentLevel, maxLevel );
+            navilite_content_update_callbacks.callback_func_zoomlevel( currentLevel, maxLevel, navilite_buffer, zoom_scale_str_size );
             }
         }
 
@@ -1697,7 +1714,7 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
         // read one byte for navi text string size
         event_str_size = (uint8_t)data[idx++];
         // read the str size bytes for navi text
-        for ( i = 0; i < event_str_size; i++ )
+        for( i = 0; i < event_str_size; i++ )
             {
             navilite_buffer[i] = (uint8_t)data[idx++];
             }
@@ -1727,7 +1744,7 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
         dist_unit_str_size = (uint8_t)data[idx++];
 
         // read the str bytes for distance
-        for ( i = 0; i < dist_unit_str_size; i++ )
+        for( i = 0; i < dist_unit_str_size; i++ )
             {
             navilite_buffer[i] = (uint8_t)data[idx++];
             }
@@ -2043,7 +2060,7 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
         timeout = (uint8_t)( data[idx++] );
         default_choice = (uint8_t)( data[idx++] );
         // read the str size bytes for dialog text
-        for ( i = 0; i < message_size; i++ )
+        for( i = 0; i < message_size; i++ )
             {
             navilite_buffer[i] = (uint8_t)data[idx++];
             }
