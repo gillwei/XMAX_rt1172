@@ -9,9 +9,17 @@
 #include "pb_decode.h"
 #include "pb_encode.h"
 
+#define PB_ENCODE_DEBUG                                                             ( 1 )
+#define PB_MESSAGE_WHEN_SUCCESS                                                     ( 0 )
+#define MAX_MMCSERVERLISTRESPONSE_LIST_COUNT                                        ( 25 )
+#define MAX_MCMALFUNCTIONRESPONSE_LIST_COUNT                                        ( 25 )
+#define MAX_MCLOCALRECORDVEHICLEINFORMATIONSUPPORTIDLISTRESPONSE_ID_LIST_COUNT      ( 25 )
+#define MAX_MCFFDRESPONSE_DATA_LIST_BYTES_NUMBER                                    ( 100 )
+#define MAX_MCFFDRESPONSE_DATA_LIST_COUNT                                           ( 50 )
+#define MAX_IDDATA_BYTES_NUMBER                                                     ( 100 )
+#define MAX_IDDATA_COUNT                                                            ( 150 )
+#define MAX_ID_LIST_NUM                                                             ( 50 )
 
-
-#define MAX_ID_LIST_NUM    (50)
 
 typedef void (*appl_period_func_ptr)(void);
 typedef void (*appl_postive_response_dispatch_ptr)(uint8 * resp_data,uint16 resp_lenth,uint8 channel_id);
@@ -20,21 +28,7 @@ typedef void (*apppl_response_timeout_notify_ptr)(void);
 typedef void (*appl_RCPP_notify_ptr)(void);
 
 
-#define PB_ENCODE_DEBUG                         1
-#define PB_MESSAGE_WHEN_SUCCESS                 1
 
-#define MAX_MMCSERVERLISTRESPONSE_LIST_COUNT  25
-
-#define MAX_MCMALFUNCTIONRESPONSE_LIST_COUNT  25
-
-#define MAX_MCLOCALRECORDVEHICLEINFORMATIONSUPPORTIDLISTRESPONSE_ID_LIST_COUNT  25
-
-
-#define MAX_MCFFDRESPONSE_DATA_LIST_BYTES_NUMBER  100
-#define MAX_MCFFDRESPONSE_DATA_LIST_COUNT  50
-
-#define MAX_IDDATA_BYTES_NUMBER  100
-#define MAX_IDDATA_COUNT  150
 
 typedef struct
 {

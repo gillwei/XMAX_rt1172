@@ -25,9 +25,20 @@
 
 /*Micro switch for DEBUG*/
 #define APPL_DEBUG                                   (TRUE)
+#define SIMULATE_INPUT_DEBUG                         (FALSE)
+
+#ifdef APPL_DEBUG
+#define CONSOLE_PRINT                                 (TRUE)
+#define CLIENT_DEBUG(x)                              PRINTF("[%s-%s-%s]:%s\r\n",__FILE__,__TIME__,__func__, x)
+
+#else
+#define CONSOLE_PRINT                                 (FALSE)
+#define CLIENT_DEBUG(x)
+#endif
+
+
+
 #define APPL_PENDING                                 (TRUE )
-#define CLIENT_DEBUG(x)   PRINTF("[%s-%s-%s]:%s\r\n",__FILE__,__TIME__,__func__, x)
-#define SIMULATE_INPUT_DEBUG  FALSE
 
 
 /*--------------------------------------------------------------------
@@ -795,7 +806,7 @@ switch( client_process_flow_state )
     default:
     break;
     }
-PRINTF("Client Start new flow:%s\r\n",print_header[next_process_flow]);
+PRINTF("Enter new Process flow:%s\r\n",print_header[next_process_flow]);
 return TRUE;
 }
 
@@ -2665,8 +2676,18 @@ void client_appl_ble_req_command_dispatch
     uint8* data
     )
 {
-CLIENT_DEBUG("RX-BleRequestcommand\r\n");
+#if ( TRUE == CONSOLE_PRINT )
+    uint32 temp = 0;
+    PRINTF("RX-BleRequestcommand\r\n");
+    PRINTF("RX-CMD:%2x, RX-LEN %d \r\n",req_command, data_size);
+    PRINTF("RX-Data");
 
+    for( temp = 0; temp < data_size; temp++ )
+        {
+        PRINTF("%2x ",data[temp]);
+        }
+    PRINTF("\r\n");
+#endif
 /*Linkcard only handle BLE command after passed Authentication*/
 /*
 if( FALSE == client_appl_get_ble_connected_state() )
@@ -2675,120 +2696,116 @@ if( FALSE == client_appl_get_ble_connected_state() )
     return;
     }
 */
-uint32 temp = 0;
-PRINTF("Received cmd:%2x,Len %d\r\n",req_command, data_size);
-for(temp = 0; temp < data_size; temp++ )
-    {
-    PRINTF("%x ",data[temp]);
-    }
-PRINTF("\r\n");
+
 
 
 switch( req_command )
     {
     /*This is only for DEBUG*/
+#if ( TRUE == APPL_DEBUG )
     case BLE_REQ_CMD_AUTHENTICATION:
         client_appl_set_ble_connected_state( TRUE );
         break;
+#endif
 
     case BLE_REQ_CMD_SERVERLIST:
-        CLIENT_DEBUG("BleCmdReqServerList SUCCESS\r\n");
+        PRINTF("HandlerCMDResult-BleCmdReqServerList-SUCCESS\r\n");
         client_appl_ble_rsp_connect_server_list( client_appl_ble_req_connect_server_list());
         break;
 
     case BLE_REQ_CMD_MALFUNCTION:
         if( E_SUCCESS != client_appl_ble_req_malfunction( FALSE, data_size, data ) )
             {
-            CLIENT_DEBUG("HandlerCMDResult BleCmdMalFunction FAILED\r\n");
+            PRINTF("HandlerCMDResult-BleCmdMalFunction-FAILED\r\n");
             client_appl_response_can_related_data( BLE_RSP_CMD_MALFUNCTION, (uint32)BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL ,&client_appl_cmd_rsp_result_notify);
             }
         else
             {
-            CLIENT_DEBUG("BleCmdMalFunction SUCCESS\r\n");
+            PRINTF("HandlerCMDResult-BleCmdMalFunction-SUCCESS\r\n");
             }
         break;
 
     case BLE_REQ_CMD_MALFUNCTION_INTERVAL:
          if( E_SUCCESS != client_appl_ble_req_malfunction( TRUE, data_size, data ) )
             {
-            CLIENT_DEBUG("BleCmdMalFunctionInterval FAILED\r\n");
+            PRINTF("HandlerCMDResult-BleCmdMalFunctionInterval-FAILED\r\n");
             client_appl_response_can_related_data( BLE_RSP_CMD_MALFUNCTION, (uint32)BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL ,&client_appl_cmd_rsp_result_notify);
             }
          else
             {
-            CLIENT_DEBUG("BleCmdMalFunctionInterval SUCCESS\r\n");
+            PRINTF("HandlerCMDResult-BleCmdMalFunctionInterval-SUCCESS\r\n");
             }
         break;
 
     case BLE_REQ_CMD_VEHICLE_IDENTIFICATION:
         if( E_SUCCESS != client_appl_ble_req_vehicle_identification( data_size, data ) )
             {
-            CLIENT_DEBUG("BleCmdVehicleFucntion FAILED\r\n");
+            PRINTF("HandlerCMDResult-BleCmdVehicleIdentification-FAILED\r\n");
             client_appl_response_can_related_data( BLE_RSP_CMD_VEHICLE_IDENTIFICATION, (uint32)BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL ,&client_appl_cmd_rsp_result_notify);
             }
         else
             {
-            CLIENT_DEBUG("BleCmdMalFunctionInterval SUCCESS\r\n");
+            PRINTF("HandlerCMDResult-BleCmdVehicleIdentification-SUCCESS\r\n");
             }
         break;
 
     case BLE_REQ_CMD_MARKET_DATA:
         if( E_SUCCESS != client_appl_ble_req_market_data( data_size, data ) )
             {
-            CLIENT_DEBUG("BleCmdMarketData FAILED\r\n");
+            PRINTF("HandlerCMDResult-BleCmdMarketData-FAILED\r\n");
             client_appl_response_can_related_data( BLE_RSP_CMD_MARKET_DATA, (uint32)BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL ,&client_appl_cmd_rsp_result_notify);
             }
         else
             {
-            CLIENT_DEBUG("BleCmdMarketData SUCCESS\r\n");
+            PRINTF("HandlerCMDResult-BleCmdMarketData-SUCCESS\r\n");
             }
         break;
 
     case BLE_REQ_CMD_VEHICLE_INFORMATION:
         if( E_SUCCESS != client_appl_ble_req_vehicle_information( FALSE, data_size, data ) )
             {
-            CLIENT_DEBUG("BleCmdVehicleInformation FAILED\r\n");
+            PRINTF("HandlerCMDResult-BleCmdVehicleInfos-FAILED\r\n");
             client_appl_response_can_related_data( BLE_RSP_CMD_VEHICLE_INFORMATION, (uint32)BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL, &client_appl_cmd_rsp_result_notify );
             }
         else
             {
-            CLIENT_DEBUG("BleCmdVehicleInformation SUCCESS\r\n");
+            PRINTF("HandlerCMDResult-BleCmdVehicleInfos-SUCCESS\r\n");
             }
         break;
 
     case BLE_REQ_CMD_VEHIVLE_INFORMATION_SUPPORT_LIST:
         if( E_SUCCESS != client_appl_ble_req_vehicle_information_supproted_list( data_size, data ) )
             {
-            CLIENT_DEBUG("BleCmdVehicleFucntionSupportList FAILED\r\n");
+            PRINTF("HandlerCMDResult-BleCmdVehicleInfosSupportList-FAILED\r\n");
             client_appl_response_can_related_data( BLE_RSP_CMD_VEHIVLE_INFORMATION_SUPPORT_LIST, (uint32)BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL, &client_appl_cmd_rsp_result_notify );
             }
         else
             {
-            CLIENT_DEBUG("BleCmdVehicleFucntionSupportList SUCCESS\r\n");
+            PRINTF("HandlerCMDResult-BleCmdVehicleInfosSupportList-SUCCESS\r\n");
             }
         break;
 
     case BLE_REQ_CMD_VEHICLE_INFORMATION_INTERVAL:
         if( E_SUCCESS != client_appl_ble_req_vehicle_information( TRUE, data_size, data ) )
             {
-            CLIENT_DEBUG("BleCmdVehicleInterval  FAILED\r\n");
+            PRINTF("HandlerCMDResult-BleCmdVehicleInfosInterval-FAILED\r\n");
             client_appl_response_can_related_data( BLE_RSP_CMD_VEHICLE_INFORMATION, (uint32)BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL ,&client_appl_cmd_rsp_result_notify );
             }
         else
             {
-            CLIENT_DEBUG("BleCmdVehicleInterval  SUCCESS\r\n");
+            PRINTF("HandlerCMDResult-BleCmdVehicleInfosInterval-SUCCESS\r\n");
             }
         break;
 
     case BLE_REQ_CMD_FFD:
         if( E_SUCCESS != client_app_ble_req_freeze_frame_data( data_size, data ) )
             {
-            CLIENT_DEBUG("BleCmdFFD  FAILED\r\n");
+            PRINTF("HandlerCMDResult-BleCmdFFD-FAILED\r\n");
             client_appl_response_can_related_data( BLE_RSP_CMD_FFD, (uint32)BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL ,&client_appl_cmd_rsp_result_notify );
             }
         else
             {
-            CLIENT_DEBUG("BleCmdFFD  SUCCESS\r\n");
+            PRINTF("HandlerCMDResult-BleCmdFFD-SUCCESS\r\n");
             }
         break;
 
@@ -4318,16 +4335,16 @@ if( PROCESS_RESULT_INIT != read_loacl_market_infos.process_result )
                 resp_data_len = Gen_McVehicleIdentificationResponse( server_code, &g_IdDataList,McVehicleIdentificationResponse_protobuf,sizeof( McVehicleIdentificationResponse_protobuf ) );
                 if( 0 == resp_data_len )
                     {
-                    client_appl_send_protobuf_failed_data( PROCESS_FLOW_RDBCID );
+                    client_appl_send_protobuf_failed_data( PROCESS_FLOW_MARKET );
                     }
                 else
                     {
-                    client_appl_response_can_related_data( BLE_RSP_CMD_VEHICLE_IDENTIFICATION, resp_data_len, McVehicleIdentificationResponse_protobuf , &client_appl_cmd_rsp_result_notify );
+                    client_appl_response_can_related_data( BLE_RSP_CMD_MARKET_DATA, resp_data_len, McVehicleIdentificationResponse_protobuf , &client_appl_cmd_rsp_result_notify );
                     }
                 }
             else
                 {
-                client_appl_send_protobuf_failed_data( PROCESS_FLOW_RDBCID );
+                client_appl_send_protobuf_failed_data( PROCESS_FLOW_MARKET );
                 }
             }
         else if( is_client_app_cmd_rsp_state( CMD_RSP_DONE ) )

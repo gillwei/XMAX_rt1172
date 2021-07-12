@@ -390,6 +390,7 @@ if( FALSE == is_client_diag_state( CLIENT_DIAG_STATE_IDLE ) )
 set_client_diag_state( CLIENT_DIAG_STATE_REQUEST );
 client_diag_msg_context.req_channel = channel_id;
 tp_transmit(client_diag_msg_context.req_data, client_diag_msg_context.req_data_len, channel_id, CAN_CONTROLLER_2 );/*turan*/
+return FALSE;
 }
 
 /*!******************************************************************************

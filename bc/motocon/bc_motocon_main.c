@@ -457,7 +457,10 @@ bc_motocon_send_result_t BC_motocon_send_can_related_data
 {
 #ifndef BC_DEBUG
 uint32_t index = 0;
-BC_MOTOCON_PRINTF( "%s, command: %02xd, size: %d\r\n", __FUNCTION__, command, size );
+BC_MOTOCON_PRINTF( "Response to APP-RSPCMD: %02x \r\n", command );
+BC_MOTOCON_PRINTF( "Rseposne to APP-Datalen: %d \r\n", size );
+BC_MOTOCON_PRINTF("Response to APP-data:");
+
 for(; index < size; index++)
     {
     BC_MOTOCON_PRINTF( " %02x", data[index]);
@@ -468,6 +471,7 @@ for(; index < size; index++)
     }
     BC_MOTOCON_PRINTF( " \r\n");
 #endif
+
 if( command == BC_MOTOCON_COMMAND_CODE_AUTHENTICATION_V2_RESPONSE )
     {
     uint8_t data[3];
