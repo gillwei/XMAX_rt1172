@@ -112,6 +112,27 @@ if( ( music_meta_data->duration_time - media_player->duration_sec ) >= 0.5 )
     media_player->duration_sec++;
     }
 
+media_player->current_elapsed_time_sec = music_meta_data->elapsed_time;
+media_player->start_elapsed_time_ms = music_meta_data->elapsed_time * 1000;
+media_player->start_elapsed_time_tick = xTaskGetTickCount();
+PRINTF( "Elapsed time: %d ms (at %d)\r\n", media_player->start_elapsed_time_ms, media_player->start_elapsed_time_tick );
+
+media_player->playback_rate = music_meta_data->rate;
+
+media_player->playback_state = music_meta_data->state;
+PRINTF( "Playback state: %d\r\n", music_meta_data->state );
+
+if( music_meta_data->state == BC_MOTOCON_PLAYBACK_PLAYING ||
+    music_meta_data->state == BC_MOTOCON_PLAYBACK_FAST_FORWARDING ||
+    music_meta_data->state == BC_MOTOCON_PLAYBACK_REWINDING )
+    {
+    mm_start_elapsed_timer();
+    }
+else
+    {
+    mm_stop_elapsed_timer();
+    }
+
 EW_notify_motocon_music_info_changed();
 }
 

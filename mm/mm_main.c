@@ -293,12 +293,6 @@ while( true )
                         }
                     else if( BC_motocon_is_connected() )
                         {
-                        // TODO: Because MotoCon SDK is not completed yet, I can only set playback state here in order to make UI reflect the play/pause status when
-                        // sending play/pause remote command from LC. Once Yamaha updates MotoCon SDK regarding playback state. We have to remove below setting.
-                        media_player.playback_state = MP_PLAYBACK_STATUS_PLAYING;
-                        media_player.playback_rate = 1.0;
-                        media_player.start_elapsed_time_tick = xTaskGetTickCount();
-                        mm_start_elapsed_timer();
                         BC_motocon_send_bt_music_control( BC_MOTOCON_MUSIC_PLAY );
                         }
                     else
@@ -313,10 +307,6 @@ while( true )
                         }
                     else if( BC_motocon_is_connected() )
                         {
-                        // TODO: Because MotoCon SDK is not completed yet, I can only set playback state here in order to make UI reflect the play/pause status when
-                        // sending play/pause remote command from LC. Once Yamaha updates MotoCon SDK regarding playback state. We have to remove below setting.
-                        media_player.playback_state = MP_PLAYBACK_STATUS_PAUSED;
-                        mm_stop_elapsed_timer();
                         BC_motocon_send_bt_music_control( BC_MOTOCON_MUSIC_PAUSE );
                         }
                     else
