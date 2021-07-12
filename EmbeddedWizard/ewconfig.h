@@ -224,7 +224,7 @@
    EW_EXTRA_POOL_SECTION, EW_EXTRA_POOL_ADDR and EW_EXTRA_POOL_SIZE - These
    macros are used to define a second (additional) memory pool.
    **************************************************************************** */
-#define EW_MEMORY_POOL_SIZE      ( 10*1024*1024 )
+#define EW_MEMORY_POOL_SIZE      ( 11*1024*1024 )
 
 #define EW_EXTRA_POOL_ADDR       0
 #define EW_EXTRA_POOL_SIZE       0

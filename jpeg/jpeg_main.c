@@ -37,7 +37,9 @@
 
 #define JPEG_BUFFER_SIZE_BYTE ( 64 * 1024 )
 #define JPEG_BUFFER_NUM       ( 2 )
-#define RGB_BUFFER_SIZE_BYTE  ( EW_FRAME_BUFFER_WIDTH * EW_FRAME_BUFFER_HEIGHT * BYTE_PER_PIXEL )
+#define JPEG_WIDTH_MAX        ( 480 )
+#define JPEG_HEIGHT_MAX       ( 234 )
+#define RGB_BUFFER_SIZE_BYTE  ( JPEG_WIDTH_MAX * JPEG_HEIGHT_MAX * BYTE_PER_PIXEL )
 #define RGB_BUF_TAKE_SEMAPHORE_TIMEOUT_MS ( 1000 )
 
 /*--------------------------------------------------------------------
@@ -68,8 +70,8 @@ static SemaphoreHandle_t rgb_buf_semaphore;
 static int writing_buffer_idx = 0;
 static QueueHandle_t queue_written_buffer;
 
-AT_BOARDSDRAM_SECTION( uint8_t jpeg_buffer[JPEG_BUFFER_NUM * JPEG_BUFFER_SIZE_BYTE] );
-AT_BOARDSDRAM_SECTION( uint8_t rgb_buffer[RGB_BUFFER_SIZE_BYTE] );
+AT_NONCACHEABLE_SECTION_ALIGN( uint8_t jpeg_buffer[JPEG_BUFFER_NUM * JPEG_BUFFER_SIZE_BYTE], 32 );
+AT_NONCACHEABLE_SECTION_ALIGN( uint8_t rgb_buffer[RGB_BUFFER_SIZE_BYTE], 32 );
 
 /*--------------------------------------------------------------------
                                 MACROS
@@ -111,8 +113,8 @@ jpg_buffer_aligned = ( uint8_t* ) jpeg_obj->buf_info.addr;
 jpeg_mem_src( &cinfo, jpg_buffer_aligned, jpeg_obj->size_byte );
 
 jpeg_read_header( &cinfo, true );
-if( EW_FRAME_BUFFER_WIDTH  >= cinfo.image_width  && 0 < cinfo.image_width &&
-    EW_FRAME_BUFFER_HEIGHT >= cinfo.image_height && 0 < cinfo.image_height )
+if( JPEG_WIDTH_MAX  >= cinfo.image_width  && 0 < cinfo.image_width &&
+    JPEG_HEIGHT_MAX >= cinfo.image_height && 0 < cinfo.image_height )
     {
     jpeg_obj->buf_info.image_width  = cinfo.image_width;
     jpeg_obj->buf_info.image_height = cinfo.image_height;
