@@ -3792,15 +3792,24 @@ void HomeHOM11_TachoVisualizer_OnUpdateSlot( HomeHOM11_TachoVisualizer _this, XO
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
+  ApsAngle = 0;
+
   if ( CoreGroup__IsCurrentDialog( _this ))
   {
-    DeviceInterfaceVehicleDataClass VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( 
-      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
-      EnumVehicleRxTypeENGINE_SPEED );
-    EngineSpeed = VehicleData->DataUInt32;
-    VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
-    DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeAPS_ANGLE );
-    ApsAngle = VehicleData->DataUInt32;
+    if ( DeviceInterfaceVehicleDeviceClass_OnGetIsTimeoutError2Detected( EwGetAutoObject( 
+        &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )))
+      EngineSpeed = 0;
+    else
+    {
+      DeviceInterfaceVehicleDataClass VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( 
+        EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+        EnumVehicleRxTypeENGINE_SPEED );
+      EngineSpeed = VehicleData->DataUInt32;
+      VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
+      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeAPS_ANGLE );
+      ApsAngle = VehicleData->DataUInt32;
+    }
+
     HomeTachoColor_SetEngineData( &_this->CircularSector, (XInt32)EngineSpeed, (XInt32)ApsAngle );
     HomeTachoScale_OnSetCurrentEngineSpeed( &_this->TachoScale, EngineSpeed );
   }

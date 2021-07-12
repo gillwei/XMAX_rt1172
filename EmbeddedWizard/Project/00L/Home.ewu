@@ -2607,11 +2607,18 @@ class HOM11_TachoVisualizer : Home::BaseHome
     if( IsCurrentDialog() )
     {
       $if !$prototyper
-        var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.ENGINE_SPEED );
-        EngineSpeed = VehicleData.DataUInt32; /* 0 - 25600 */
+        if( DeviceInterface::VehicleDevice.IsTimeoutError2Detected )
+        {
+          EngineSpeed = 0;
+        }
+        else
+        {
+          var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.ENGINE_SPEED );
+          EngineSpeed = VehicleData.DataUInt32; /* 0 - 25600 */
 
-        VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.APS_ANGLE );
-        ApsAngle = VehicleData.DataUInt32; /* 0 - 125 */
+          VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.APS_ANGLE );
+          ApsAngle = VehicleData.DataUInt32; /* 0 - 125 */
+        }
       $else
         EngineSpeed = GetTestEngineSpeed();
         ApsAngle = GetTestApsAngle();
