@@ -34,6 +34,7 @@ extern "C" {
 /*====================================================================
 @type: REDECLARED
 ====================================================================*/
+#define HCI_SUCCESS                   ( 0x00 )
 #define HCI_ERR_PEER_USER             ( 0x13 )
 #define HCI_ERR_CONN_CAUSE_LOCAL_HOST ( 0x16 )
 
@@ -64,12 +65,14 @@ extern "C" {
 /*====================================================================
 @type: REDECLARED
 ====================================================================*/
-#define HCI_STANDARD_COMMAND_DUT_MODE   ( 0x1803 )
-#define HCI_STANDARD_COMMAND_TX_CARRIER ( 0xFC14 )
-#define HCI_STANDARD_COMMAND_WRITE_RAM  ( 0xFC4C )
-#define HCI_STANDARD_COMMAND_READ_RAM   ( 0xFC4D )
-#define HCI_STANDARD_COMMAND_LAUNCH_RAM ( 0xFC4E )
-#define HCI_STANDARD_COMMAND_CHIP_ERASE ( 0xFFCE )
+#define HCI_STANDARD_COMMAND_RESET           ( 0x0C03 )
+#define HCI_STANDARD_COMMAND_DUT_MODE        ( 0x1803 )
+#define HCI_STANDARD_COMMAND_TX_CARRIER      ( 0xFC14 )
+#define HCI_STANDARD_COMMAND_UPDATE_BAUDRATE ( 0xFC18 )
+#define HCI_STANDARD_COMMAND_WRITE_RAM       ( 0xFC4C )
+#define HCI_STANDARD_COMMAND_READ_RAM        ( 0xFC4D )
+#define HCI_STANDARD_COMMAND_LAUNCH_RAM      ( 0xFC4E )
+#define HCI_STANDARD_COMMAND_CHIP_ERASE      ( 0xFFCE )
 
 /*--------------------------------------------------------------------
                         SPP COMMANDS

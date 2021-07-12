@@ -175,19 +175,57 @@ switch( event_code )
 
         switch( op_code )
             {
+            case HCI_STANDARD_COMMAND_RESET:
+                {
+                uint8_t error_code = param[3];
+
+                BT_LOG_DEBUG( "Reset complete event: error_code=0x%02x", error_code );
+
+                BT_core_handle_standard_event_reset_complete( error_code );
+                } break;
+            case HCI_STANDARD_COMMAND_DUT_MODE:
+                {
+                uint8_t error_code = param[3];
+
+                BT_LOG_DEBUG( "DUT mode complete event: error_code=0x%02x", error_code );
+                } break;
+            case HCI_STANDARD_COMMAND_TX_CARRIER:
+                {
+                uint8_t error_code = param[3];
+
+                BT_LOG_DEBUG( "Tx carrier complete event: error_code=0x%02x", error_code );
+                } break;
+            case HCI_STANDARD_COMMAND_UPDATE_BAUDRATE:
+                {
+                uint8_t error_code = param[3];
+
+                BT_LOG_DEBUG( "Update baudrate complete event: error_code=0x%02x", error_code );
+
+                BT_core_handle_standard_event_update_baudrate_complete( error_code );
+                } break;
             case HCI_STANDARD_COMMAND_WRITE_RAM:
                 {
                 uint8_t error_code = param[3];
 
-                BT_LOG_DEBUG( "Write RAM complete event: error_code=%u", error_code );
+                BT_LOG_DEBUG( "Write RAM complete event: error_code=0x%02x", error_code );
 
                 BT_core_handle_standard_event_write_ram_complete( error_code );
+                } break;
+            case HCI_STANDARD_COMMAND_READ_RAM:
+                {
+                uint8_t error_code = param[3];
+                uint8_t* data = &( param[4] );
+                uint8_t data_len = param_len - 4;
+
+                BT_LOG_DEBUG( "Read RAM complete event: error_code=0x%02x, data_len=%u", error_code, data_len );
+
+                BT_core_handle_standard_event_read_ram_complete( error_code, data, data_len );
                 } break;
             case HCI_STANDARD_COMMAND_LAUNCH_RAM:
                 {
                 uint8_t error_code = param[3];
 
-                BT_LOG_DEBUG( "Launch RAM complete event: error_code=%u", error_code );
+                BT_LOG_DEBUG( "Launch RAM complete event: error_code=0x%02x", error_code );
 
                 BT_core_handle_standard_event_launch_ram_complete( error_code );
                 } break;
@@ -195,7 +233,7 @@ switch( event_code )
                 {
                 uint8_t error_code = param[3];
 
-                BT_LOG_DEBUG( "Chip erase complete event: error_code=%u", error_code );
+                BT_LOG_DEBUG( "Chip erase complete event: error_code=0x%02x", error_code );
 
                 BT_core_handle_standard_event_chip_erase_complete( error_code );
                 } break;

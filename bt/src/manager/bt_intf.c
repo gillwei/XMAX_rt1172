@@ -286,14 +286,31 @@ return BT_STATUS_OK;
 /*================================================================================================
 @brief   Get Bluetooth Manager's software version
 @details Directly get the info of Bluetooth Manager's software version
-@return  None
-@retval  2-bytes software version: byte[0]=major_version, byte[1]=minor_version
+@return  major_version: The major version
+         minor_version: The minor version
+@retval  The error code specified in BT_status_e
 ================================================================================================*/
-const uint8_t* BT_get_sw_version( void )
+BT_status_e BT_get_sw_version
+    (
+    uint8_t* major_version,
+    uint8_t* minor_version
+    )
 {
 FUNC_ENTRY_PRINT();
 
-return BT_core_get_sw_version();
+if( ( NULL == major_version ) || ( NULL == minor_version ) )
+    {
+    FUNC_INVALID_PARAM_PRINT();
+    return BT_STATUS_INVALID_PARAMETER;
+    }
+
+if( false == BT_core_get_sw_version( major_version, minor_version ) )
+    {
+    FUNC_NOT_ALLOWED_PRINT();
+    return BT_STATUS_NOT_ALLOWED;
+    }
+
+return BT_STATUS_OK;
 }
 
 /*================================================================================================

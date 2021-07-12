@@ -177,31 +177,68 @@ typedef struct BT_request
 // Sync event
 typedef enum BT_sync_event_type
     {
-    BT_SYNC_EVENT_DEVICE_STARTED = 0,
+    BT_SYNC_EVENT_CHIP_ERASE_COMPLETED = 0,
+    BT_SYNC_EVENT_DEVICE_STARTED,
+    BT_SYNC_EVENT_LAUNCH_RAM_COMPLETED,
     BT_SYNC_EVENT_PAIRED_DEVICE_DELETED,
+    BT_SYNC_EVENT_READ_RAM_COMPLETED,
+    BT_SYNC_EVENT_RESET_COMPLETED,
+    BT_SYNC_EVENT_UPDATE_BAUDRATE_COMPLETED,
+    BT_SYNC_EVENT_WRITE_RAM_COMPLETED,
 
     BT_SYNC_EVENT_TYPE_CNT,
     BT_SYNC_EVENT_TYPE_INVALID = BT_SYNC_EVENT_TYPE_CNT
     } BT_sync_event_type_e;
 
-typedef struct BT_sync_device_started_event
+typedef struct BT_sync_chip_erase_completed_event
     {
-    uint8_t major_ver;
-    uint8_t minor_ver;
-    } BT_sync_device_started_event_t;
+    uint8_t error_code;
+    } BT_sync_chip_erase_completed_event_t;
+
+typedef struct BT_sync_launch_ram_completed_event
+    {
+    uint8_t error_code;
+    } BT_sync_launch_ram_completed_event_t;
 
 typedef struct BT_sync_paired_device_deleted_event
     {
     uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN];
     } BT_sync_paired_device_deleted_event_t;
 
+typedef struct BT_sync_read_ram_completed_event
+    {
+    uint8_t error_code;
+    uint8_t data[BT_READ_RAM_MAX_SIZE];
+    uint8_t data_len;
+    } BT_sync_read_ram_completed_event_t;
+
+typedef struct BT_sync_reset_completed_event
+    {
+    uint8_t error_code;
+    } BT_sync_reset_completed_event_t;
+
+typedef struct BT_sync_update_baudrate_completed_event
+    {
+    uint8_t error_code;
+    } BT_sync_update_baudrate_completed_event_t;
+
+typedef struct BT_sync_write_ram_completed_event
+    {
+    uint8_t error_code;
+    } BT_sync_write_ram_completed_event_t;
+
 typedef struct BT_sync_event
     {
     BT_sync_event_type_e type;
     union
         {
-        BT_sync_device_started_event_t        device_started;
-        BT_sync_paired_device_deleted_event_t paired_device_deleted;
+        BT_sync_chip_erase_completed_event_t      chip_erase_completed;
+        BT_sync_launch_ram_completed_event_t      launch_ram_completed;
+        BT_sync_paired_device_deleted_event_t     paired_device_deleted;
+        BT_sync_read_ram_completed_event_t        read_ram_completed;
+        BT_sync_reset_completed_event_t           reset_completed;
+        BT_sync_update_baudrate_completed_event_t update_baudrate_completed;
+        BT_sync_write_ram_completed_event_t       write_ram_completed;
         } param_u;
     } BT_sync_event_t;
 

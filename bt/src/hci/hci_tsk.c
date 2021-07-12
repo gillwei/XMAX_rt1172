@@ -110,11 +110,11 @@ static void HCI_tsk_main
     void* data
     )
 {
-HCI_event_t hci_event = { 0 };
 uint8_t group_code = 0;
 uint8_t event_code = 0;
 uint8_t param_pos = 0;
 uint16_t param_len = 0;
+HCI_event_t hci_event = { 0 };
 
 BT_LOG_INFO( "HCI task started" );
 
@@ -208,25 +208,6 @@ if( ( NULL == hci_event  ) || ( NULL == hci_event->data ) || ( 0 == hci_event->d
 if( HCI_WICED_PKT == hci_event->data[cur_pos] )
     {
     header_len = 5;
-    }
-else if( HCI_STANDARD_EVENT_PKT == hci_event->data[cur_pos] )
-    {
-    header_len = 3;
-    }
-else
-    {
-    BT_LOG_DEBUG( "Unhandled HCI packet type: 0x%02x", hci_event->data[cur_pos] );
-    return false;
-    }
-
-if( hci_event->data_len < header_len )
-    {
-    BT_LOG_ERROR( "Insufficient HCI event length" );
-    return false;
-    }
-
-if( HCI_WICED_PKT == hci_event->data[cur_pos] )
-    {
     ++cur_pos;
     *event_code = hci_event->data[cur_pos++];
     *group_code = hci_event->data[cur_pos++];
@@ -236,11 +217,17 @@ if( HCI_WICED_PKT == hci_event->data[cur_pos] )
     }
 else if( HCI_STANDARD_EVENT_PKT == hci_event->data[cur_pos] )
     {
+    header_len = 3;
     ++cur_pos;
     *event_code = hci_event->data[cur_pos++];
     *group_code = HCI_CONTROL_GROUP_STANDARD_GARMIN;
     *param_len = hci_event->data[cur_pos++];
     *param_pos = cur_pos;
+    }
+else
+    {
+    BT_LOG_DEBUG( "Unhandled HCI packet type: 0x%02x", hci_event->data[cur_pos] );
+    return false;
     }
 
 if( hci_event->data_len != ( header_len + *param_len ) )

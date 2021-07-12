@@ -15,15 +15,11 @@ extern "C" {
 /*--------------------------------------------------------------------
                         GENERAL INCLUDES
 --------------------------------------------------------------------*/
-extern uint32_t __base_BOARD_FLASH_BTFW;
+#include "bt_types.h"
 
 /*--------------------------------------------------------------------
                         LITERAL CONSTANTS
 --------------------------------------------------------------------*/
-#define MCU_FLASH_BT_FW_ADDR      ( (uint32_t)( &__base_BOARD_FLASH_BTFW ) )
-#define MCU_FLASH_BT_MD_ADDR      ( FLASH_BT_FW_ADDR + 0x00000100 )
-#define MCU_FLASH_BT_MD_END_ADDR  ( FLASH_BT_FW_ADDR + 0x00003ac0 )
-#define MCU_FLASH_BT_FW_DATA_ADDR ( FLASH_BT_FW_ADDR + 0x00010000 )
 
 /*--------------------------------------------------------------------
                         TYPES
@@ -48,6 +44,19 @@ extern uint32_t __base_BOARD_FLASH_BTFW;
 /*--------------------------------------------------------------------
                         PROCEDURES
 --------------------------------------------------------------------*/
+bool BT_update_get_sw_version
+    (
+    uint8_t* major_version,
+    uint8_t* minor_version
+    );
+
+bool BT_update_has_newer_firmware
+    (
+    const uint8_t cyw_major_version,
+    const uint8_t cyw_minor_version
+    );
+
+bool BT_update_start( void );
 
 #ifdef __cplusplus
 }

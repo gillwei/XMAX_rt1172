@@ -38,6 +38,7 @@ extern "C"{
                         LITERAL CONSTANTS
 --------------------------------------------------------------------*/
 #define MUTEX_LOCK_MS            ( 5000 )
+#define DEVICE_STARTED_MS        ( 3000 )
 #define PAIRED_DEVICE_DELETED_MS ( 3000 )
 
 /*--------------------------------------------------------------------
@@ -59,7 +60,6 @@ typedef struct BT_pairing_request
 typedef struct BT_core
     {
     bool initialized;
-    uint8_t sw_version[BT_SW_VERSION_LEN];
     bool discoverable_state;
     bool test_mode;
     BT_power_setting_t power_setting;
@@ -162,7 +162,7 @@ bool BT_core_delete_paired_device
 {
 bool ret = false;
 uint8_t param[BT_DEVICE_ADDRESS_LEN] = { 0 };
-BT_sync_event_t sync_event = { 0 };
+BT_sync_event_t sync_event = { BT_SYNC_EVENT_PAIRED_DEVICE_DELETED, { { 0 } } };
 
 if( ( NULL == bd_addr ) || ( strlen( (const char*)bd_addr ) != BT_DEVICE_ADDRESS_LEN ) )
     {
@@ -182,7 +182,6 @@ else
         {
         ret = false;
 
-        sync_event.type = BT_SYNC_EVENT_PAIRED_DEVICE_DELETED;
         if( false == BT_tsk_sync_wait( &sync_event, PAIRED_DEVICE_DELETED_MS ) )
             {
             BT_LOG_ERROR( "Timeout on waiting paired device deleted event" );
@@ -404,12 +403,27 @@ return power_status;
 /*================================================================================================
 @brief   Get Bluetooth Manager's software version
 @details Get Bluetooth Manager's software version
-@return  None
-@retval  2-bytes software version: byte[0]=major_version, byte[1]=minor_version
+@return  major_version: The major version
+         minor_version: The minor version
+@retval  Whether or not the operation is successful
 ================================================================================================*/
-const uint8_t* BT_core_get_sw_version( void )
+bool BT_core_get_sw_version
+    (
+    uint8_t* major_version,
+    uint8_t* minor_version
+    )
 {
-return s_core.sw_version;
+bool ret = false;
+
+if( ( NULL == major_version ) || ( NULL == minor_version ) )
+    {
+    BT_LOG_DEBUG( "NULL version" );
+    }
+else
+    {
+    ret = BT_update_get_sw_version( major_version, minor_version );
+    }
+return ret;
 }
 
 /*================================================================================================
@@ -445,8 +459,6 @@ return BT_device_is_existed( bd_addr );
 ================================================================================================*/
 void BT_core_init( void )
 {
-uint32_t bt_fw_addr_value = *(volatile uint32_t*)( MCU_FLASH_BT_FW_ADDR );
-
 if( false == s_core.initialized )
     {
     s_core.power_setting.mutex = xSemaphoreCreateMutex();
@@ -454,9 +466,6 @@ if( false == s_core.initialized )
 
     s_core.pairing_request.mutex = xSemaphoreCreateMutex();
     configASSERT( NULL != s_core.pairing_request.mutex );
-
-    s_core.sw_version[0] = (uint8_t)( ( bt_fw_addr_value >> 0 ) & 0xff ); // Major version
-    s_core.sw_version[1] = (uint8_t)( ( bt_fw_addr_value >> 8 ) & 0xff ); // Minor version
 
     BT_core_reset();
 
@@ -609,31 +618,55 @@ bool BT_core_set_enable_state
 {
 bool ret = false;
 BT_power_status_e power_status = BT_core_get_power_status();
+BT_sync_event_t sync_event = { BT_SYNC_EVENT_DEVICE_STARTED, { { 0 } } };
 
 if( enable && ( BT_POWER_OFF == power_status ) )
     {
-    BT_core_set_power_status( BT_POWER_ON );
-    if( store )
-        {
-        BT_db_set_enable_state( true );
-        }
-    ret = BT_hw_on( BT_HW_MODE_NORMAL );
+    ret = true;
     }
 else if( ( false == enable ) && ( ( BT_POWER_ON == power_status ) || ( BT_POWER_ON_READY == power_status ) ) )
     {
-    BT_core_set_power_status( BT_POWER_OFF );
-    BT_core_reset_all(); // Cypress module is going to be powered off, reset all data
-    if( store )
-        {
-        BT_db_set_enable_state( false );
-        }
-    ret = BT_hw_off();
+    ret = true;
     }
 else
     {
-    BT_LOG_DEBUG( "Not allowed: power_status=%s, enable=%d",
-                  BT_util_get_power_status_string( power_status ),
-                  enable );
+    BT_LOG_DEBUG( "Not allowed: power_status=%s, enable=%d", BT_util_get_power_status_string( power_status ), enable );
+    }
+
+if( ret )
+    {
+    if( enable )
+        {
+        BT_core_set_power_status( BT_POWER_ON );
+        if( store )
+            {
+            BT_db_set_enable_state( true );
+            }
+
+        ret = BT_hw_on( BT_HW_MODE_NORMAL );
+        if( ret )
+            {
+            if( false == BT_tsk_sync_wait( &sync_event, DEVICE_STARTED_MS ) )
+                {
+                BT_LOG_ERROR( "Timeout on waiting device started event" );
+                BT_core_set_power_status( BT_POWER_ON_UPDATING );
+                BT_core_update_firmware();
+                }
+            }
+        }
+    else
+        {
+        BT_core_set_power_status( BT_POWER_OFF );
+        if( store )
+            {
+            BT_db_set_enable_state( false );
+            }
+
+        // Cypress module is going to be powered off, reset all data
+        BT_core_reset_all();
+
+        ret = BT_hw_off();
+        }
     }
 return ret;
 }
@@ -861,8 +894,19 @@ return ret;
 ================================================================================================*/
 bool BT_core_update_firmware( void )
 {
-// TODO: Implement firmware update feature
-return false;
+bool ret = BT_update_start();
+
+if( ret )
+    {
+    if( BT_POWER_ON_UPDATING == BT_core_get_power_status() )
+        {
+        BT_core_set_power_status( BT_POWER_ON );
+        }
+
+    BT_core_set_enable_state( false, false );
+    BT_core_set_enable_state( true, false );
+    }
+return ret;
 }
 
 // HCI event handler
@@ -897,22 +941,14 @@ void BT_core_handle_device_event_device_started
     )
 {
 BT_request_t request = { 0 };
-bool firmware_update_required = false;
+BT_sync_event_t sync_event = { BT_SYNC_EVENT_DEVICE_STARTED, { { 0 } } };
 
 // Cypress module started, reset all data
 BT_core_reset_all();
 
-if( ( ( s_core.sw_version[0] << 8 ) + s_core.sw_version[1] ) > ( ( major_version << 8 ) + minor_version ) )
-    {
-    BT_LOG_INFO( "Firmware update required: MCU=v%u.%02u is newer than CYP=v%u.%02u",
-                 s_core.sw_version[0],
-                 s_core.sw_version[1],
-                 major_version,
-                 minor_version );
-    firmware_update_required = true;
-    }
+BT_tsk_sync_signal( &sync_event );
 
-if( firmware_update_required )
+if( BT_update_has_newer_firmware( major_version, minor_version ) )
     {
     BT_core_set_power_status( BT_POWER_ON_UPDATING );
     request.type = BT_REQUEST_UPDATE_FIRMWARE;
@@ -935,9 +971,8 @@ void BT_core_handle_device_event_paired_device_deleted
     const uint8_t* bd_addr
     )
 {
-BT_sync_event_t sync_event = { 0 };
+BT_sync_event_t sync_event = { BT_SYNC_EVENT_PAIRED_DEVICE_DELETED, { { 0 } } };
 
-sync_event.type = BT_SYNC_EVENT_PAIRED_DEVICE_DELETED;
 memcpy( sync_event.param_u.paired_device_deleted.bd_addr, bd_addr, BT_DEVICE_ADDRESS_LEN );
 BT_tsk_sync_signal( &sync_event );
 
@@ -992,8 +1027,8 @@ BT_core_set_pairing_status( BT_PAIRING_USER_CONFIRMING, bd_addr );
 }
 
 /*================================================================================================
-@brief   Handle the standard event that the operation of chip erase is completed
-@details Handle the standard event that the operation of chip erase is completed
+@brief   Handle the standard event that the chip erase command is completed
+@details Handle the standard event that the chip erase command is completed
 @return  None
 @retval  None
 ================================================================================================*/
@@ -1002,12 +1037,18 @@ void BT_core_handle_standard_event_chip_erase_complete
     const uint8_t error_code
     )
 {
-// TODO: Implement firmware update feature
+BT_sync_event_t sync_event =
+    {
+    .type = BT_SYNC_EVENT_CHIP_ERASE_COMPLETED,
+    .param_u.chip_erase_completed.error_code = error_code
+    };
+
+BT_tsk_sync_signal( &sync_event );
 }
 
 /*================================================================================================
-@brief   Handle the standard event that the operation of launching ram is completed
-@details Handle the standard event that the operation of launching ram is completed
+@brief   Handle the standard event that the launch RAM command is completed
+@details Handle the standard event that the launch RAM command is completed
 @return  None
 @retval  None
 ================================================================================================*/
@@ -1016,12 +1057,83 @@ void BT_core_handle_standard_event_launch_ram_complete
     const uint8_t error_code
     )
 {
-// TODO: Implement firmware update feature
+BT_sync_event_t sync_event =
+    {
+    .type = BT_SYNC_EVENT_LAUNCH_RAM_COMPLETED,
+    .param_u.launch_ram_completed.error_code = error_code
+    };
+
+BT_tsk_sync_signal( &sync_event );
 }
 
 /*================================================================================================
-@brief   Handle the standard event that the operation of writing ram is completed
-@details Handle the standard event that the operation of writing ram is completed
+@brief   Handle the standard event that the read RAM command is completed
+@details Handle the standard event that the read RAM command is completed
+@return  None
+@retval  None
+================================================================================================*/
+void BT_core_handle_standard_event_read_ram_complete
+    (
+    const uint8_t error_code,
+    const uint8_t* data,
+    const uint8_t data_len
+    )
+{
+BT_sync_event_t sync_event =
+    {
+    .type = BT_SYNC_EVENT_READ_RAM_COMPLETED,
+    .param_u.read_ram_completed.error_code = error_code,
+    .param_u.read_ram_completed.data = { 0 },
+    .param_u.read_ram_completed.data_len = data_len
+    };
+
+memcpy( sync_event.param_u.read_ram_completed.data, data, data_len );
+BT_tsk_sync_signal( &sync_event );
+}
+
+/*================================================================================================
+@brief   Handle the standard event that the reset command is completed
+@details Handle the standard event that the reset command is completed
+@return  None
+@retval  None
+================================================================================================*/
+void BT_core_handle_standard_event_reset_complete
+    (
+    const uint8_t error_code
+    )
+{
+BT_sync_event_t sync_event =
+    {
+    .type = BT_SYNC_EVENT_RESET_COMPLETED,
+    .param_u.reset_completed.error_code = error_code
+    };
+
+BT_tsk_sync_signal( &sync_event );
+}
+
+/*================================================================================================
+@brief   Handle the standard event that the update baudrate command is completed
+@details Handle the standard event that the update baudrate command is completed
+@return  None
+@retval  None
+================================================================================================*/
+void BT_core_handle_standard_event_update_baudrate_complete
+    (
+    const uint8_t error_code
+    )
+{
+BT_sync_event_t sync_event =
+    {
+    .type = BT_SYNC_EVENT_UPDATE_BAUDRATE_COMPLETED,
+    .param_u.update_baudrate_completed.error_code = error_code
+    };
+
+BT_tsk_sync_signal( &sync_event );
+}
+
+/*================================================================================================
+@brief   Handle the standard event that the write RAM command is completed
+@details Handle the standard event that the write RAM command is completed
 @return  None
 @retval  None
 ================================================================================================*/
@@ -1030,7 +1142,13 @@ void BT_core_handle_standard_event_write_ram_complete
     const uint8_t error_code
     )
 {
-// TODO: Implement firmware update feature
+BT_sync_event_t sync_event =
+    {
+    .type = BT_SYNC_EVENT_WRITE_RAM_COMPLETED,
+    .param_u.write_ram_completed.error_code = error_code
+    };
+
+BT_tsk_sync_signal( &sync_event );
 }
 
 #ifdef __cplusplus

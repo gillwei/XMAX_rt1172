@@ -75,7 +75,11 @@ BT_status_e BT_get_paired_device_info
     BT_device_info_t* device_info
     );
 
-const uint8_t* BT_get_sw_version( void );
+BT_status_e BT_get_sw_version
+    (
+    uint8_t* major_version,
+    uint8_t* minor_version
+    );
 
 bool BT_get_test_mode( void );
 

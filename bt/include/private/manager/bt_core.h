@@ -93,7 +93,11 @@ BT_pairing_status_e BT_core_get_pairing_status( void );
 
 BT_power_status_e BT_core_get_power_status( void );
 
-const uint8_t* BT_core_get_sw_version( void );
+bool BT_core_get_sw_version
+    (
+    uint8_t* major_version,
+    uint8_t* minor_version
+    );
 
 bool BT_core_get_test_mode( void );
 
@@ -196,6 +200,23 @@ void BT_core_handle_standard_event_chip_erase_complete
     );
 
 void BT_core_handle_standard_event_launch_ram_complete
+    (
+    const uint8_t error_code
+    );
+
+void BT_core_handle_standard_event_read_ram_complete
+    (
+    const uint8_t error_code,
+    const uint8_t* data,
+    const uint8_t data_len
+    );
+
+void BT_core_handle_standard_event_reset_complete
+    (
+    const uint8_t error_code
+    );
+
+void BT_core_handle_standard_event_update_baudrate_complete
     (
     const uint8_t error_code
     );

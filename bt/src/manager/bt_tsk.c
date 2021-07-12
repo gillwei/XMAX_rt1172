@@ -137,14 +137,16 @@ static void BT_tsk_main
 {
 const uint8_t* local_device_name = BT_db_get_local_device_name();
 const uint8_t* local_bd_addr = BT_db_get_local_device_address();
-const uint8_t* sw_version = BT_core_get_sw_version();
 bool enable_state = BT_db_get_enable_state();
+uint8_t sw_major_version = 0;
+uint8_t sw_minor_version = 0;
 BT_request_t request = { BT_REQUEST_TYPE_INVALID, { { 0 } } };
 
+BT_core_get_sw_version( &sw_major_version, &sw_minor_version );
 BT_LOG_INFO( "BT task started" );
 BT_LOG_INFO( "Local device name: %s", local_device_name );
 BT_LOG_INFO( "Local device address: %02x:%02x:%02x:%02x:%02x:%02x", BD_ADDR_PRINT( local_bd_addr ) );
-BT_LOG_INFO( "SW version: %u.%02u", sw_version[0], sw_version[1] );
+BT_LOG_INFO( "SW version: %u.%02u", sw_major_version, sw_minor_version );
 BT_LOG_INFO( "Enable state: %d", enable_state );
 
 if( enable_state )

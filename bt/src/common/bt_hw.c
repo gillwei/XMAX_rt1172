@@ -164,6 +164,11 @@ else
     }
 vTaskDelay( pdMS_TO_TICKS( HW_ON_OFF_OPERATION_MS ) );
 
+if( BT_HW_MODE_DOWNLOAD == mode )
+    {
+    GPIO_PinWrite( GPIO9, 2, 1 );
+    }
+
 // Configure GPIO_AD_03 to UART RTS
 IOMUXC_SetPinMux( IOMUXC_GPIO_AD_03_LPUART7_RTS_B, 0 );
 

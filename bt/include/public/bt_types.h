@@ -38,6 +38,9 @@ extern "C" {
 #define SPP_APP_CONNECTION_STATUS_CB_MAX_NUM ( 3 ) // For each SPP app
 #define SPP_APP_DATA_RECEIVED_CB_MAX_NUM     ( 3 ) // For each SPP app
 
+#define BT_READ_RAM_MAX_SIZE  ( HCI_PAYLOAD_MAX_SIZE - 4 ) // 4 = 1-byte number of hci command packets + 2-bytes op code + 1-byte error code
+#define BT_WRITE_RAM_MAX_SIZE ( HCI_PAYLOAD_MAX_SIZE - 4 ) // 4 = 1-byte number of hci command packets + 2-bytes op code + 1-byte error code
+
 /*--------------------------------------------------------------------
                         TYPES
 --------------------------------------------------------------------*/
