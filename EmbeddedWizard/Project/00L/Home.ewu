@@ -508,6 +508,12 @@ class BaseHome : Components::BaseMainBG
       var Application::Application App = ( Application::Application )GetRoot();
       if( null != App )
       {
+        if( Enum::HomeType.NAVI_DEFAULT_VIEW == HomeType )
+        {
+          // Leave navigation home screen so that stop map frame request.
+          DeviceInterface::NavigationDevice.StopMapFrameRequest();
+        }
+
         switch( NextHomeType )
         {
           case Enum::HomeType.TACHO_VISUALIZER,
@@ -568,8 +574,6 @@ class BaseHome : Components::BaseMainBG
       }
       case Enum::HomeType.NAVI_DEFAULT_VIEW, Enum::HomeType.NAVI_NEXT_TURN, Enum::HomeType.NAVI_TURN_BY_TURN:
       {
-        // Leave navigation home screen so that stop map frame request.
-        DeviceInterface::NavigationDevice.StopMapFrameRequest();
         NextHomeType = Enum::HomeType.VEHICLE_INFO;
       }
       case Enum::HomeType.VEHICLE_INFO:

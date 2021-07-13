@@ -580,6 +580,13 @@ void NavigationNAV01_DefaultView_OnLongEnterKeyActivated( NavigationNAV01_Defaul
   }
 }
 
+/* 'C' function for method : 'Navigation::NAV01_DefaultView.OnLongHomeKeyActivated()' */
+void NavigationNAV01_DefaultView_OnLongHomeKeyActivated( NavigationNAV01_DefaultView _this )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+}
+
 /* 'C' function for method : 'Navigation::NAV01_DefaultView.ReturnToHome()' */
 void NavigationNAV01_DefaultView_ReturnToHome( NavigationNAV01_DefaultView _this )
 {
@@ -603,7 +610,13 @@ void NavigationNAV01_DefaultView_OnMapUpdateSlot( NavigationNAV01_DefaultView _t
     if ( !ViewsImage_OnGetVisible( &_this->Shadow ))
       ViewsImage_OnSetVisible( &_this->Shadow, 1 );
 
-    HomeBaseHome_OnSetAccessNaviView((HomeBaseHome)_this, 0 );
+    if ( _this->Super1.AccessNaviView )
+    {
+      HomeBaseHome_OnSetAccessNaviView((HomeBaseHome)_this, 0 );
+      EwSignal( EwNewSlot( _this, NavigationNAV01_DefaultView_OnNaviDialogEventUpdateSlot ), 
+        ((XObject)_this ));
+    }
+
     _this->MapFrameIdx = _this->MapFrameIdx + 1;
     ResourcesExternBitmap_OnSetName( EwGetAutoObject( &ResourceExternBitmap, ResourcesExternBitmap ), 
     EwConcatString( EwLoadString( &_Const0015 ), EwNewStringInt( _this->MapFrameIdx, 
@@ -946,47 +959,47 @@ void NavigationNAV01_DefaultView_SetItemBounds( NavigationNAV01_DefaultView _thi
 void NavigationNAV01_DefaultView_OnNaviDialogEventUpdateSlot( NavigationNAV01_DefaultView _this, 
   XObject sender )
 {
-  XEnum NaviDialogType;
-  XString NaviDialogMessage;
-
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  NaviDialogType = DeviceInterfaceNavigationDeviceClass_GetNaviDialogType( EwGetAutoObject( 
-  &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ));
-  NaviDialogMessage = DeviceInterfaceNavigationDeviceClass_GetNaviDialogMessage( 
-  EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ));
-
-  switch ( NaviDialogType )
+  if ( CoreGroup__IsCurrentDialog( _this ))
   {
-    case EnumNaviDialogTypeDIALOG_YES_NO :
-    {
-      NavigationNaviDialog Dialog = EwNewObject( NavigationNaviDialog, 0 );
-      NavigationNaviDialog_OnSetDialogType( Dialog, EnumNaviDialogTypeDIALOG_YES_NO );
-      NavigationNaviDialog_OnSetDialogButton( Dialog, EW_CLASS( MenuUpDownPushButtonSet ));
-      NavigationNaviDialog_OnSetDialogMessage( Dialog, NaviDialogMessage );
-      Dialog->OnDialogDismiss = EwNewSlot( _this, NavigationNAV01_DefaultView_OnNaviDialogDismissSlot );
-      CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)Dialog ), 0, 0, 0, 0, 
-      0, 0, EwNullSlot, EwNullSlot, 0 );
-      CoreTimer_OnSetEnabled( &Dialog->CountDownTimer, 1 );
-      ViewsRectangle_OnSetVisible( &_this->Mask, 1 );
-    }
-    break;
+    XEnum NaviDialogType = DeviceInterfaceNavigationDeviceClass_GetNaviDialogType( 
+      EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ));
+    XString NaviDialogMessage = DeviceInterfaceNavigationDeviceClass_GetNaviDialogMessage( 
+      EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ));
 
-    case EnumNaviDialogTypeDIALOG_OK :
+    switch ( NaviDialogType )
     {
-      NavigationNaviDialog Dialog = EwNewObject( NavigationNaviDialog, 0 );
-      NavigationNaviDialog_OnSetDialogType( Dialog, EnumNaviDialogTypeDIALOG_OK );
-      NavigationNaviDialog_OnSetDialogButton( Dialog, EW_CLASS( MenuPushButton ));
-      NavigationNaviDialog_OnSetDialogMessage( Dialog, NaviDialogMessage );
-      Dialog->OnDialogDismiss = EwNewSlot( _this, NavigationNAV01_DefaultView_OnNaviDialogDismissSlot );
-      CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)Dialog ), 0, 0, 0, 0, 
-      0, 0, EwNullSlot, EwNullSlot, 0 );
-      ViewsRectangle_OnSetVisible( &_this->Mask, 1 );
-    }
-    break;
+      case EnumNaviDialogTypeDIALOG_YES_NO :
+      {
+        NavigationNaviDialog Dialog = EwNewObject( NavigationNaviDialog, 0 );
+        NavigationNaviDialog_OnSetDialogType( Dialog, EnumNaviDialogTypeDIALOG_YES_NO );
+        NavigationNaviDialog_OnSetDialogButton( Dialog, EW_CLASS( MenuUpDownPushButtonSet ));
+        NavigationNaviDialog_OnSetDialogMessage( Dialog, NaviDialogMessage );
+        Dialog->OnDialogDismiss = EwNewSlot( _this, NavigationNAV01_DefaultView_OnNaviDialogDismissSlot );
+        CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)Dialog ), 0, 0, 0, 
+        0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+        CoreTimer_OnSetEnabled( &Dialog->CountDownTimer, 1 );
+        ViewsRectangle_OnSetVisible( &_this->Mask, 1 );
+      }
+      break;
 
-    default :; 
+      case EnumNaviDialogTypeDIALOG_OK :
+      {
+        NavigationNaviDialog Dialog = EwNewObject( NavigationNaviDialog, 0 );
+        NavigationNaviDialog_OnSetDialogType( Dialog, EnumNaviDialogTypeDIALOG_OK );
+        NavigationNaviDialog_OnSetDialogButton( Dialog, EW_CLASS( MenuPushButton ));
+        NavigationNaviDialog_OnSetDialogMessage( Dialog, NaviDialogMessage );
+        Dialog->OnDialogDismiss = EwNewSlot( _this, NavigationNAV01_DefaultView_OnNaviDialogDismissSlot );
+        CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)Dialog ), 0, 0, 0, 
+        0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+        ViewsRectangle_OnSetVisible( &_this->Mask, 1 );
+      }
+      break;
+
+      default :; 
+    }
   }
 }
 
@@ -1058,7 +1071,7 @@ EW_DEFINE_CLASS( NavigationNAV01_DefaultView, HomeBaseHome, Background, Backgrou
   ComponentsBaseComponent_OnLongDownKeyActivated,
   ComponentsBaseComponent_OnLongUpKeyActivated,
   NavigationNAV01_DefaultView_OnLongEnterKeyActivated,
-  ComponentsBaseComponent_OnLongHomeKeyActivated,
+  NavigationNAV01_DefaultView_OnLongHomeKeyActivated,
   ComponentsBaseComponent_OnShortMagicKeyActivated,
   ComponentsBaseMainBG_OnSetDDModeEnabled,
   ComponentsBaseComponent_OnDownKeyReleased,
@@ -5044,6 +5057,7 @@ void NavigationNAV09_NAV10_PoiList_OnPoiListLoadingFailedSlot( NavigationNAV09_N
 
   CoreTimer_OnSetEnabled( &_this->PoiListLoadingTimer, 0 );
   CoreGroup__OnSetVisible( &_this->LoadingAnimation, 0 );
+  PopPOP16_NaviLoadingUI_OnSetAnimated( &_this->LoadingAnimation, 0 );
   ViewsImage_OnSetVisible( &_this->Divider, 0 );
   ViewsText_OnSetVisible( &_this->DataErrorText, 1 );
   CoreTimer_OnSetEnabled( &_this->CountDownTimer, 1 );

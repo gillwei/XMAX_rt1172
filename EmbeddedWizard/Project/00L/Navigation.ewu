@@ -88,6 +88,12 @@ class NAV01_DefaultView : Home::BaseHome
     }
   }
 
+  $rect <950,740,1150,780>
+  inherited method OnLongHomeKeyActivated()
+  {
+    // neglect long press home key.
+  }
+
   $rect <20,20,160,60>
   inherited object MainBottomBG;
 
@@ -249,7 +255,12 @@ class NAV01_DefaultView : Home::BaseHome
       {
         Shadow.Visible = true;
       }
-      AccessNaviView = false;
+
+      if( AccessNaviView )
+      {
+        AccessNaviView = false;
+        signal OnNaviDialogEventUpdateSlot;
+      }
 
       MapFrameIdx = MapFrameIdx + 1;
       Resource::ExternBitmap.Name = "Map" + string( MapFrameIdx );
@@ -693,32 +704,35 @@ class NAV01_DefaultView : Home::BaseHome
   $rect <750,530,950,570>
   slot OnNaviDialogEventUpdateSlot
   {
-    var Enum::NaviDialogType NaviDialogType = DeviceInterface::NavigationDevice.GetNaviDialogType();
-    var string NaviDialogMessage = DeviceInterface::NavigationDevice.GetNaviDialogMessage();
-    switch( NaviDialogType )
+    if( IsCurrentDialog() )
     {
-      case Enum::NaviDialogType.DIALOG_YES_NO:
+      var Enum::NaviDialogType NaviDialogType = DeviceInterface::NavigationDevice.GetNaviDialogType();
+      var string NaviDialogMessage = DeviceInterface::NavigationDevice.GetNaviDialogMessage();
+      switch( NaviDialogType )
       {
-        var Navigation::NaviDialog Dialog = new Navigation::NaviDialog;
-        Dialog.DialogType = Enum::NaviDialogType.DIALOG_YES_NO;
-        Dialog.DialogButton = Menu::UpDownPushButtonSet;
-        Dialog.DialogMessage = NaviDialogMessage;
-        Dialog.OnDialogDismiss = OnNaviDialogDismissSlot;
-        PresentDialog( Dialog, null, null, null, null, null, null, null, null, false );
-        Dialog.CountDownTimer.Enabled = true;
-        Mask.Visible = true;
+        case Enum::NaviDialogType.DIALOG_YES_NO:
+        {
+          var Navigation::NaviDialog Dialog = new Navigation::NaviDialog;
+          Dialog.DialogType = Enum::NaviDialogType.DIALOG_YES_NO;
+          Dialog.DialogButton = Menu::UpDownPushButtonSet;
+          Dialog.DialogMessage = NaviDialogMessage;
+          Dialog.OnDialogDismiss = OnNaviDialogDismissSlot;
+          PresentDialog( Dialog, null, null, null, null, null, null, null, null, false );
+          Dialog.CountDownTimer.Enabled = true;
+          Mask.Visible = true;
+        }
+        case Enum::NaviDialogType.DIALOG_OK:
+        {
+          var Navigation::NaviDialog Dialog = new Navigation::NaviDialog;
+          Dialog.DialogType = Enum::NaviDialogType.DIALOG_OK;
+          Dialog.DialogButton = Menu::PushButton;
+          Dialog.DialogMessage = NaviDialogMessage;
+          Dialog.OnDialogDismiss = OnNaviDialogDismissSlot;
+          PresentDialog( Dialog, null, null, null, null, null, null, null, null, false );
+          Mask.Visible = true;
+        }
+        default:;
       }
-      case Enum::NaviDialogType.DIALOG_OK:
-      {
-        var Navigation::NaviDialog Dialog = new Navigation::NaviDialog;
-        Dialog.DialogType = Enum::NaviDialogType.DIALOG_OK;
-        Dialog.DialogButton = Menu::PushButton;
-        Dialog.DialogMessage = NaviDialogMessage;
-        Dialog.OnDialogDismiss = OnNaviDialogDismissSlot;
-        PresentDialog( Dialog, null, null, null, null, null, null, null, null, false );
-        Mask.Visible = true;
-      }
-      default:;
     }
   }
 
@@ -2864,7 +2878,6 @@ class NaviDialog : Core::Group
   $rect <660,50,860,90>
   onset DialogMessage
   {
-    // The value doesn't change - nothing to do.
     if( pure DialogMessage != value )
     {
       // Remember the property's new value.
@@ -2888,25 +2901,10 @@ class NaviDialog : Core::Group
   $rect <440,170,640,210>
   onset DialogType
   {
-    // The value doesn't change - nothing to do.
     if( pure DialogType != value )
     {
       // Remember the property's new value.
       pure DialogType = value;
-      /*switch( DialogType )
-      {
-        case Enum::NaviDialogType.DIALOG_YES_NO:;
-        //{
-          //DialogContent.Bounds = <15,13,325,144>;
-          //DialogButton.Bounds = <69,154,271,240>;
-        //}
-        case Enum::NaviDialogType.DIALOG_OK:
-        {
-          DialogContent.Bounds = <15,13,325,190>;
-          DialogButton.Bounds = <69,200,271,240>;
-        }
-        default:;
-      }*/
     }
   }
 
@@ -3534,6 +3532,7 @@ class NAV09_NAV10_PoiList : Menu::BaseMenuView
   {
     PoiListLoadingTimer.Enabled = false;
     LoadingAnimation.Visible = false;
+    LoadingAnimation.Animated = false;
     Divider.Visible = false;
     DataErrorText.Visible = true;
     CountDownTimer.Enabled = true;

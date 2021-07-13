@@ -28,6 +28,7 @@
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
+#define DIALOG_TIME_DURATION_MS     ( 1000 )
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -97,6 +98,7 @@ static navi_data_type navi_data_obj;
 static navi_dialog_type navi_dialog_obj;
 static bool is_navi_app_connected;
 static EnumNaviZoomInOutStatusType zoom_inout_status = EnumNaviZoomInOutStatusTypeNORMAL;
+static TimerHandle_t dialog_timer_handle;
 
 /*--------------------------------------------------------------------
                                 MACROS
@@ -159,6 +161,67 @@ navi_dialog_type* NAVI_get_navi_dialog_obj
     )
 {
 return &navi_dialog_obj;
+}
+
+/*********************************************************************
+*
+* @private
+* navi_start_dialog_timer
+*
+* Start timer to update dialog time.
+*
+*********************************************************************/
+static void navi_start_dialog_timer
+    (
+    void
+    )
+{
+PRINTF( "%s\r\n", __FUNCTION__ );
+BaseType_t result = xTimerStart( dialog_timer_handle, 0 );
+configASSERT( result == pdPASS );
+}
+
+/*********************************************************************
+*
+* @private
+* navi_stop_dialog_timer
+*
+* Stop timer to stop the update of dialog time.
+*
+*********************************************************************/
+static void navi_stop_dialog_timer
+    (
+    void
+    )
+{
+PRINTF( "%s\r\n", __FUNCTION__ );
+BaseType_t result = xTimerStop( dialog_timer_handle, 0 );
+configASSERT( result == pdPASS );
+}
+
+/*********************************************************************
+*
+* @private
+* dialog_timer_callback
+*
+* A timer callback function which calls time update function.
+*
+* @param timer_handle The handle of dialog timer.
+*
+*********************************************************************/
+static void dialog_timer_callback
+    (
+    TimerHandle_t timer_handle
+    )
+{
+if( navi_dialog_obj.timeout > 0 )
+    {
+    navi_dialog_obj.timeout--;
+    }
+else
+    {
+    navi_stop_dialog_timer();
+    }
 }
 
 /*********************************************************************
@@ -580,6 +643,11 @@ switch( default_choice )
         PRINTF( "%s: Unknown button type\r\n", __FUNCTION__ );
         break;
     }
+if( NAVILITE_DIALOGTYPE_YES_NO == dialog_type )
+    {
+    navi_start_dialog_timer();
+    }
+
 EW_notify_dialog_event_update();
 }
 
@@ -1101,6 +1169,8 @@ bool result;
 navi_event_init();
 navi_tbt_init();
 navi_poi_init();
+dialog_timer_handle = xTimerCreate( "elapsed_timer", pdMS_TO_TICKS( DIALOG_TIME_DURATION_MS ), pdTRUE, ( void * ) 0, dialog_timer_callback );
+configASSERT( NULL != dialog_timer_handle );
 
 for( int i = 0; i < NAVILITE_FUNC_CNT; i++ )
     {

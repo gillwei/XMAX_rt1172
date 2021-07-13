@@ -953,6 +953,11 @@ void HomeBaseHome_OnShortHomeKeyActivated( HomeBaseHome _this )
     ApplicationApplication App = EwCastObject( CoreView__GetRoot( _this ), ApplicationApplication );
 
     if ( App != 0 )
+    {
+      if ( EnumHomeTypeNAVI_DEFAULT_VIEW == _this->HomeType )
+        DeviceInterfaceNavigationDeviceClass_StopMapFrameRequest( EwGetAutoObject( 
+        &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ));
+
       switch ( NextHomeType )
       {
         case EnumHomeTypeTACHO_VISUALIZER :
@@ -973,6 +978,7 @@ void HomeBaseHome_OnShortHomeKeyActivated( HomeBaseHome _this )
 
         default :; 
       }
+    }
   }
 }
 
@@ -1022,11 +1028,7 @@ XEnum HomeBaseHome_GetNextHomeType( HomeBaseHome _this, XEnum aCurrentHomeType )
     case EnumHomeTypeNAVI_DEFAULT_VIEW :
     case EnumHomeTypeNAVI_NEXT_TURN :
     case EnumHomeTypeNAVI_TURN_BY_TURN :
-    {
-      DeviceInterfaceNavigationDeviceClass_StopMapFrameRequest( EwGetAutoObject( 
-      &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ));
       NextHomeType = EnumHomeTypeVEHICLE_INFO;
-    }
     break;
 
     case EnumHomeTypeVEHICLE_INFO :
