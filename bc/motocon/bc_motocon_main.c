@@ -509,6 +509,10 @@ bc_motocon_send_result_t BC_motocon_send_can_response
     void ( *result_callback ) ( const bc_motocon_send_result_t )
     )
 {
+if( !bc_motocon_connected )
+    {
+    return BC_MOTOCON_SEND_RESULT_BLE_ERROR;
+    }
 BC_MOTOCON_PRINTF( "%s, size: %d\r\n", __FUNCTION__, size );
 return bc_motocon_ddt_send_ddt_to_phone_data( BC_MOTOCON_COMMAND_CODE_CAN_RESPONSE, data, size, result_callback );
 }
