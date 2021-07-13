@@ -1726,6 +1726,16 @@ void HomeVehicleInfoMenu_InitItems( HomeVehicleInfoMenu _this )
         }
       break;
 
+      case EnumVehicleInfoMenuItemCRUISE :
+        if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
+            &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+            EnumVehicleSupportedFunctionCRUISE ))
+        {
+          _this->Items[ EwCheckIndex( NoOfItems, 14 )] = MenuItem;
+          NoOfItems++;
+        }
+      break;
+
       default : 
       {
         _this->Items[ EwCheckIndex( NoOfItems, 14 )] = MenuItem;

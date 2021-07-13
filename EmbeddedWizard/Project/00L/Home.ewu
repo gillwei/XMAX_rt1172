@@ -1094,6 +1094,14 @@ class VehicleInfoMenu : Core::Group
             NoOfItems++;
           }
         }
+        case Enum::VehicleInfoMenuItem.CRUISE:
+        {
+          if( DeviceInterface::VehicleDevice.IsVehicleFunctionSupported( Enum::VehicleSupportedFunction.CRUISE ) )
+          {
+            Items[NoOfItems] = MenuItem;
+            NoOfItems++;
+          }
+        }
         default:
         {
           Items[NoOfItems] = MenuItem;
