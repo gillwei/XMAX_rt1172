@@ -123,6 +123,7 @@ EW_DEFINE_FIELDS( NavigationNAV09_NAV10_PoiList, MenuBaseMenuView )
   EW_OBJECT  ( NoDataText,      ViewsText )
   EW_OBJECT  ( LoadingAnimation, PopPOP16_NaviLoadingUI )
   EW_OBJECT  ( Divider,         ViewsImage )
+  EW_OBJECT  ( ReturnToFirstRowTestTimer, CoreTimer )
 EW_END_OF_FIELDS( NavigationNAV09_NAV10_PoiList )
 
 /* Virtual Method Table (VMT) for the class : 'Navigation::NAV09_NAV10_PoiList' */
@@ -252,6 +253,10 @@ void NavigationNAV09_NAV10_PoiList_OnListDismissSlot( NavigationNAV09_NAV10_PoiL
 
 /* 'C' function for method : 'Navigation::NAV09_NAV10_PoiList.ReturnToNaviMapView()' */
 void NavigationNAV09_NAV10_PoiList_ReturnToNaviMapView( NavigationNAV09_NAV10_PoiList _this, 
+  XObject sender );
+
+/* 'C' function for method : 'Navigation::NAV09_NAV10_PoiList.OnReturnToFirstRowTestSlot()' */
+void NavigationNAV09_NAV10_PoiList_OnReturnToFirstRowTestSlot( NavigationNAV09_NAV10_PoiList _this, 
   XObject sender );
 
 #ifdef __cplusplus

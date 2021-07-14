@@ -3464,10 +3464,12 @@ class NAV09_NAV10_PoiList : Menu::BaseMenuView
     {
       PoiListLoadingTimer.Enabled = false;
       LoadingAnimation.Visible = false;
+      LoadingAnimation.Animated = false;
       Divider.Visible = false;
     }
 
     Menu.NoOfItems = DeviceInterface::NavigationDevice.GetPoiListSize();
+    Menu.SelectedItem = 0;
     if( Menu.NoOfItems == 0 )
     {
       switch( DeviceInterface::NavigationDevice.CurrentPoiListType )
@@ -3588,6 +3590,7 @@ class NAV09_NAV10_PoiList : Menu::BaseMenuView
   object Pop::POP16_NaviLoadingUI LoadingAnimation
   {
     preset Bounds = <0,38,480,272>;
+    preset Animated = true;
   }
 
   // Method
@@ -3614,6 +3617,26 @@ class NAV09_NAV10_PoiList : Menu::BaseMenuView
     preset Bounds = <0,36,480,38>;
     preset Alignment = Views::ImageAlignment[AlignVertBottom, ScaleToFit];
     preset Bitmap = Resource::StatusBarDivider;
+  }
+
+  $rect <86,362,286,402>
+  object Core::Timer ReturnToFirstRowTestTimer
+  {
+    preset OnTrigger = OnReturnToFirstRowTestSlot;
+    preset Period = 10000;
+  }
+
+  $rect <90,400,290,440>
+  slot OnReturnToFirstRowTestSlot
+  {
+    ReturnToFirstRowTestTimer.Enabled = false;
+    signal OnPoiListUpdateSlot;
+  }
+
+  // Test case: Return to first row
+  note group Note3
+  {
+    attr Bounds = <40,310,330,470>;
   }
 }
 

@@ -4754,6 +4754,7 @@ void NavigationNAV09_NAV10_PoiList__Init( NavigationNAV09_NAV10_PoiList _this, X
   ViewsText__Init( &_this->NoDataText, &_this->_.XObject, 0 );
   PopPOP16_NaviLoadingUI__Init( &_this->LoadingAnimation, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->Divider, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->ReturnToFirstRowTestTimer, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_.VMT = EW_CLASS( NavigationNAV09_NAV10_PoiList );
@@ -4773,9 +4774,11 @@ void NavigationNAV09_NAV10_PoiList__Init( NavigationNAV09_NAV10_PoiList _this, X
   ViewsText_OnSetString( &_this->NoDataText, 0 );
   ViewsText_OnSetVisible( &_this->NoDataText, 0 );
   CoreRectView__OnSetBounds( &_this->LoadingAnimation, _Const0000 );
+  PopPOP16_NaviLoadingUI_OnSetAnimated( &_this->LoadingAnimation, 1 );
   CoreRectView__OnSetBounds( &_this->Divider, _Const0046 );
   ViewsImage_OnSetAlignment( &_this->Divider, ViewsImageAlignmentAlignVertBottom 
   | ViewsImageAlignmentScaleToFit );
+  CoreTimer_OnSetPeriod( &_this->ReturnToFirstRowTestTimer, 10000 );
   CoreGroup__Add( _this, ((CoreView)&_this->DataErrorText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->NoDataText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->LoadingAnimation ), 0 );
@@ -4791,6 +4794,7 @@ void NavigationNAV09_NAV10_PoiList__Init( NavigationNAV09_NAV10_PoiList _this, X
   ResourcesFont ));
   ViewsImage_OnSetBitmap( &_this->Divider, EwLoadResource( &ResourceStatusBarDivider, 
   ResourcesBitmap ));
+  _this->ReturnToFirstRowTestTimer.OnTrigger = EwNewSlot( _this, NavigationNAV09_NAV10_PoiList_OnReturnToFirstRowTestSlot );
 
   /* Call the user defined constructor */
   NavigationNAV09_NAV10_PoiList_Init( _this, aArg );
@@ -4810,6 +4814,7 @@ void NavigationNAV09_NAV10_PoiList__ReInit( NavigationNAV09_NAV10_PoiList _this 
   ViewsText__ReInit( &_this->NoDataText );
   PopPOP16_NaviLoadingUI__ReInit( &_this->LoadingAnimation );
   ViewsImage__ReInit( &_this->Divider );
+  CoreTimer__ReInit( &_this->ReturnToFirstRowTestTimer );
 }
 
 /* Finalizer method for the class 'Navigation::NAV09_NAV10_PoiList' */
@@ -4826,6 +4831,7 @@ void NavigationNAV09_NAV10_PoiList__Done( NavigationNAV09_NAV10_PoiList _this )
   ViewsText__Done( &_this->NoDataText );
   PopPOP16_NaviLoadingUI__Done( &_this->LoadingAnimation );
   ViewsImage__Done( &_this->Divider );
+  CoreTimer__Done( &_this->ReturnToFirstRowTestTimer );
 
   /* Don't forget to deinitialize the super class ... */
   MenuBaseMenuView__Done( &_this->_.Super );
@@ -5016,11 +5022,13 @@ void NavigationNAV09_NAV10_PoiList_OnPoiListUpdateSlot( NavigationNAV09_NAV10_Po
   {
     CoreTimer_OnSetEnabled( &_this->PoiListLoadingTimer, 0 );
     CoreGroup__OnSetVisible( &_this->LoadingAnimation, 0 );
+    PopPOP16_NaviLoadingUI_OnSetAnimated( &_this->LoadingAnimation, 0 );
     ViewsImage_OnSetVisible( &_this->Divider, 0 );
   }
 
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, DeviceInterfaceNavigationDeviceClass_GetPoiListSize( 
   EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )));
+  MenuVerticalMenu_OnSetSelectedItem( &_this->Super1.Menu, 0 );
 
   if ( _this->Super1.Menu.NoOfItems == 0 )
     switch ( EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )->CurrentPoiListType )
@@ -5092,6 +5100,18 @@ void NavigationNAV09_NAV10_PoiList_ReturnToNaviMapView( NavigationNAV09_NAV10_Po
     ApplicationApplication_SwitchToHome( App, EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
     DeviceInterfaceNavigationDeviceClass )->CurrentHome );
   }
+}
+
+/* 'C' function for method : 'Navigation::NAV09_NAV10_PoiList.OnReturnToFirstRowTestSlot()' */
+void NavigationNAV09_NAV10_PoiList_OnReturnToFirstRowTestSlot( NavigationNAV09_NAV10_PoiList _this, 
+  XObject sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  CoreTimer_OnSetEnabled( &_this->ReturnToFirstRowTestTimer, 0 );
+  EwSignal( EwNewSlot( _this, NavigationNAV09_NAV10_PoiList_OnPoiListUpdateSlot ), 
+    ((XObject)_this ));
 }
 
 /* Variants derived from the class : 'Navigation::NAV09_NAV10_PoiList' */
