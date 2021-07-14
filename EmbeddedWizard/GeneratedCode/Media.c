@@ -329,6 +329,7 @@ void MediaMED01_MediaUI_Init( MediaMED01_MediaUI _this, XHandle aArg )
   DeviceInterfaceMediaManagerDeviceClass ));
   DeviceInterfaceMediaManagerDeviceClass_GetTrackInfo( EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
   DeviceInterfaceMediaManagerDeviceClass ));
+  EwSignal( EwNewSlot( _this, MediaMED01_MediaUI_OnVolumeUpdateSlot ), ((XObject)_this ));
   EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )->IsInit 
   = 0;
 

@@ -16,6 +16,7 @@ class MED01_MediaUI : Components::BaseMainBG
     DeviceInterface::MediaManagerDevice.IsInit = true;
     DeviceInterface::MediaManagerDevice.GetPlaybackInfo();
     DeviceInterface::MediaManagerDevice.GetTrackInfo();
+    signal OnVolumeUpdateSlot;
     DeviceInterface::MediaManagerDevice.IsInit = false;
 
     if( "" != DeviceInterface::MediaManagerDevice.Title &&
