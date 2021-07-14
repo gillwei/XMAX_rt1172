@@ -2,6 +2,7 @@
 
 $rect <20,20,260,60>
 $output false
+$multilingual true
 class NAV01_DefaultView : Home::BaseHome
 {
   $rect <520,700,720,740>
@@ -785,6 +786,7 @@ class NAV06_NaviSettingMenu : Menu::BaseMenuView
   $rect <10,360,210,400>
   inherited method Init()
   {
+    trace "NAV06";
     SetNaviSettingMenuItem();
   }
 
@@ -1113,6 +1115,12 @@ $rect <20,140,260,180>
 $output false
 class NAV08_NaviChageViewMenu : Menu::BaseMenuView
 {
+  $rect <210,310,390,350>
+  inherited method Init()
+  {
+    trace "NAV08";
+  }
+
   $rect <0,310,200,350>
   inherited property Bounds = <0,0,480,272>;
 
@@ -1243,7 +1251,7 @@ class NaviCurrentRoad : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text RoadNameText
+  object Components::BaseText RoadNameText
   {
     preset Bounds = <24,0,330,31>;
     preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertCenter];
@@ -1654,7 +1662,7 @@ class NaviAlertMessage : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text EventType
+  object Components::BaseText EventType
   {
     preset Bounds = <34,2,315,33>;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
@@ -1697,7 +1705,7 @@ class NaviETA : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text TimeText
+  object Components::BaseText TimeText
   {
     preset Bounds = <41,2,92,33>;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
@@ -1801,7 +1809,7 @@ class NAV05_TBTView : Home::BaseHome
   $rect <520,530,720,570>
   inherited method Init()
   {
-    trace "NAV05 init";
+    trace "NAV05";
     signal OnNavigatingStatusUpdateSlot;
     signal OnSpeedLimitUpdateSlot;
 
@@ -1918,7 +1926,7 @@ class NAV05_TBTView : Home::BaseHome
   }
 
   $rect <20,20,160,60>
-  object Views::Text NextTurnDistUnit
+  object Components::BaseText NextTurnDistUnit
   {
     preset Bounds = <270,82,318,112>;
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
@@ -1926,7 +1934,7 @@ class NAV05_TBTView : Home::BaseHome
   }
 
   $rect <20,20,160,60>
-  object Views::Text NextTurnDescription
+  object Components::BaseText NextTurnDescription
   {
     preset Bounds = <186,117,408,210>;
     preset Ellipsis = true;
@@ -1994,7 +2002,7 @@ class NAV05_TBTView : Home::BaseHome
   }
 
   $rect <20,20,160,60>
-  object Views::Text RecalculateMessage
+  object Components::BaseText RecalculateMessage
   {
     preset Bounds = <104,75,376,199>;
     preset Ellipsis = true;
@@ -2365,7 +2373,7 @@ class NAV03_TBTListView : Home::BaseHome
   $rect <530,240,730,280>
   inherited method Init()
   {
-    trace "NAV03 init";
+    trace "NAV03";
 
     // If there is no route guidance, LC will not receive tbt data. Therefore, we don't need loading animation.
     if( DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() )
@@ -2603,7 +2611,7 @@ class TbtInfoItem : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text NextTurnDistUnit
+  object Components::BaseText NextTurnDistUnit
   {
     preset Bounds = <76,61,108,95>;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
@@ -2612,7 +2620,7 @@ class TbtInfoItem : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text NextTurnDescription
+  object Components::BaseText NextTurnDescription
   {
     preset Bounds = <114,8,417,109>;
     preset Ellipsis = true;
@@ -2702,7 +2710,7 @@ class TbtInfoItem : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text LoadingText
+  object Components::BaseText LoadingText
   {
     preset Bounds = <0,0,480,111>;
     preset String = "Loading";
@@ -2887,7 +2895,7 @@ class NaviDialog : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text DialogContent
+  object Components::BaseText DialogContent
   {
     preset Bounds = <15,13,325,190>;
     preset WrapText = true;
@@ -3298,6 +3306,7 @@ class NAV09_NAV10_PoiList : Menu::BaseMenuView
   $rect <1010,640,1210,680>
   inherited method Init()
   {
+    trace "NAV09_10";
     PoiListLoadingTimer.Enabled = true;
     $if $prototyper
       Menu.NoOfItems = TestPoiListTitleArray.size;
@@ -3541,7 +3550,7 @@ class NAV09_NAV10_PoiList : Menu::BaseMenuView
   }
 
   $rect <20,20,160,60>
-  object Views::Text DataErrorText
+  object Components::BaseText DataErrorText
   {
     preset Bounds = <10,50,470,236>;
     preset WrapText = true;
@@ -3566,7 +3575,7 @@ class NAV09_NAV10_PoiList : Menu::BaseMenuView
   }
 
   $rect <20,20,160,60>
-  object Views::Text NoDataText
+  object Components::BaseText NoDataText
   {
     preset Bounds = <10,50,470,236>;
     preset WrapText = true;
@@ -3644,6 +3653,12 @@ $rect <290,200,490,240>
 $output false
 class NAV11_RouteOptionMenu : Menu::BaseMenuView
 {
+  $rect <11,284,191,324>
+  inherited method Init()
+  {
+    trace "NAV11";
+  }
+
   $rect <510,50,710,90>
   inherited method LoadItemClass()
   {

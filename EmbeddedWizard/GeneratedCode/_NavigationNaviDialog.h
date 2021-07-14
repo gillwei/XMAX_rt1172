@@ -42,11 +42,11 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
+#include "_ComponentsBaseText.h"
 #include "_CoreGroup.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
 #include "_ViewsFrame.h"
-#include "_ViewsText.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -108,7 +108,7 @@ EW_DEFINE_FIELDS( NavigationNaviDialog, CoreGroup )
   EW_VARIABLE( ButtonSet,       MenuUpDownPushButtonSet )
   EW_PROPERTY( OnDialogDismiss, XSlot )
   EW_OBJECT  ( DialogBackground, ViewsFrame )
-  EW_OBJECT  ( DialogContent,   ViewsText )
+  EW_OBJECT  ( DialogContent,   ComponentsBaseText )
   EW_OBJECT  ( CountDownTimer,  CoreTimer )
   EW_OBJECT  ( NaviDialogEventHandler, CoreSystemEventHandler )
   EW_PROPERTY( DialogMessage,   XString )

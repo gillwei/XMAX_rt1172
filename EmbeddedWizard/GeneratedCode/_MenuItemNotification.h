@@ -42,6 +42,7 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
+#include "_ComponentsBaseText.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreTimer.h"
 #include "_MenuItemBase.h"
@@ -100,7 +101,7 @@
 
 /* Deklaration of class : 'Menu::ItemNotification' */
 EW_DEFINE_FIELDS( MenuItemNotification, MenuItemBase )
-  EW_OBJECT  ( MessageText,     ViewsText )
+  EW_OBJECT  ( MessageText,     ComponentsBaseText )
   EW_OBJECT  ( ReceivedTimeText, ViewsText )
   EW_OBJECT  ( CategoryIcon,    ViewsImage )
   EW_PROPERTY( Message,         XString )

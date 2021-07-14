@@ -43,6 +43,7 @@
 #endif
 
 #include "_ComponentsBaseMainBG.h"
+#include "_ComponentsBaseText.h"
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
@@ -50,7 +51,6 @@
 #include "_MenuPushButton.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
-#include "_ViewsText.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -103,9 +103,9 @@
 
 /* Deklaration of class : 'Settings::SET06_BtcDiscovarable' */
 EW_DEFINE_FIELDS( SettingsSET06_BtcDiscovarable, ComponentsBaseMainBG )
-  EW_OBJECT  ( DiscoverableText, ViewsText )
-  EW_OBJECT  ( TimeLeftText,    ViewsText )
-  EW_OBJECT  ( NameText,        ViewsText )
+  EW_OBJECT  ( DiscoverableText, ComponentsBaseText )
+  EW_OBJECT  ( TimeLeftText,    ComponentsBaseText )
+  EW_OBJECT  ( NameText,        ComponentsBaseText )
   EW_OBJECT  ( CountDownTimer,  CoreTimer )
   EW_OBJECT  ( PushButton,      MenuPushButton )
   EW_OBJECT  ( BtcPairingStateChangeEventHandler, CoreSystemEventHandler )
@@ -168,9 +168,6 @@ EW_DEFINE_METHODS( SettingsSET06_BtcDiscovarable, ComponentsBaseMainBG )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( SettingsSET06_BtcDiscovarable )
-
-/* 'C' function for method : 'Settings::SET06_BtcDiscovarable.ReInit()' */
-void SettingsSET06_BtcDiscovarable_ReInit( SettingsSET06_BtcDiscovarable _this );
 
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 

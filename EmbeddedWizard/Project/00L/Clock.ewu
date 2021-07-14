@@ -103,6 +103,7 @@ class CLK02_ClockManualAdjustment : Components::BaseMainBG
   $rect <530,30,730,70>
   inherited method Init()
   {
+    trace "CLK02";
     var DeviceInterface::RtcTime CurrentTime = DeviceInterface::SystemDevice.GetLocalTime();
     DeviceInterface::SystemDevice.CurrentAdjustTime = new DeviceInterface::RtcTime;
     SetClockComponent = new Clock::CLK03_SetClock;
@@ -563,8 +564,7 @@ class CLK01_ClockSettingMenu : Menu::BaseMenuView
   $rect <250,310,450,350>
   inherited method Init()
   {
-    trace "Init CLK01";
-
+    trace "CLK01";
   }
 
   $rect <20,310,220,350>
@@ -685,14 +685,13 @@ class CLK01_ClockSettingMenu : Menu::BaseMenuView
 
 $rect <270,80,470,120>
 $output false
+$multilingual true
 class CLK03_SetClock : Components::BaseMainBG
 {
-  $rect <500,240,700,280>
-  inherited method ReInit()
+  $rect <0,450,180,490>
+  inherited method Init()
   {
-    Title.String = Strings::CLK03_SET_CLOCK;
-    UpDownPushButtonSet.UpButtonTitle = Strings::GEN_CANCEL;
-    UpDownPushButtonSet.DownButtonTitle = Strings::GEN_OK;
+    trace "CLK03";
   }
 
   $rect <490,300,690,340>
@@ -706,7 +705,7 @@ class CLK03_SetClock : Components::BaseMainBG
   inherited property DDModeEnabled = true;
 
   $rect <20,20,160,60>
-  object Views::Text Title
+  object Components::BaseText Title
   {
     preset Bounds = <16,60,465,91>;
     preset String = Strings::CLK03_SET_CLOCK;
@@ -723,7 +722,7 @@ class CLK03_SetClock : Components::BaseMainBG
   }
 
   $rect <20,20,160,60>
-  object Views::Text MonthText
+  object Components::BaseText MonthText
   {
     preset Bounds = <120,111,158,145>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
@@ -750,7 +749,7 @@ class CLK03_SetClock : Components::BaseMainBG
   }
 
   $rect <20,20,160,60>
-  object Views::Text YearText
+  object Components::BaseText YearText
   {
     preset Bounds = <171,111,245,145>;
     preset String = "";
@@ -758,7 +757,7 @@ class CLK03_SetClock : Components::BaseMainBG
   }
 
   $rect <20,20,160,60>
-  object Views::Text TimeFormat
+  object Components::BaseText TimeFormat
   {
     preset Bounds = <267,111,318,145>;
     preset String = "";
@@ -766,7 +765,7 @@ class CLK03_SetClock : Components::BaseMainBG
   }
 
   $rect <20,20,160,60>
-  object Views::Text HourText
+  object Components::BaseText HourText
   {
     preset Bounds = <321,111,359,145>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
@@ -775,7 +774,7 @@ class CLK03_SetClock : Components::BaseMainBG
   }
 
   $rect <20,20,160,60>
-  object Views::Text MinuteText
+  object Components::BaseText MinuteText
   {
     preset Bounds = <372,111,410,145>;
     preset String = "";

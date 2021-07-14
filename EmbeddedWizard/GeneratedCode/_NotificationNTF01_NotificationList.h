@@ -42,6 +42,7 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
+#include "_ComponentsBaseText.h"
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
@@ -50,7 +51,6 @@
 #include "_MenuVerticalMenu.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
-#include "_ViewsText.h"
 
 /* Forward declaration of the class Components::BaseMainBG */
 #ifndef _ComponentsBaseMainBG_
@@ -123,7 +123,7 @@
 EW_DEFINE_FIELDS( NotificationNTF01_NotificationList, MenuBaseMenuView )
   EW_VARIABLE( NotificationData, DeviceInterfaceNotificationContext )
   EW_OBJECT  ( NotificationListUpdatedSystemEventHandler, CoreSystemEventHandler )
-  EW_OBJECT  ( NoDataText,      ViewsText )
+  EW_OBJECT  ( NoDataText,      ComponentsBaseText )
   EW_OBJECT  ( NoDataTimeoutTimer, CoreTimer )
   EW_VARIABLE( IsInitialized,   XBool )
 EW_END_OF_FIELDS( NotificationNTF01_NotificationList )

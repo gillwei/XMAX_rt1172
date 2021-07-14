@@ -25,6 +25,7 @@
 *******************************************************************************/
 
 #include "ewlocale.h"
+#include "_ComponentsBaseText.h"
 #include "_CoreGroup.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreTimer.h"
@@ -70,10 +71,9 @@
 /* Compressed strings for the language 'Default'. */
 EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
-  0x00000040, /* ratio 93.75 % */
-  0xB8001100, 0x800A8452, 0x00E80034, 0x0CA00360, 0x06098780, 0x20021916, 0x0037000C,
-  0xF85C34C6, 0x89014010, 0xE92C004F, 0x0C209028, 0xA0752700, 0x63B1D95C, 0x00000040,
-  0x00000000
+  0x00000024, /* ratio 100.00 % */
+  0xB8001100, 0x800A8452, 0x00E80034, 0x0CA00360, 0x09028780, 0x513000C2, 0x0F8BC507,
+  0x08080233, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -81,7 +81,7 @@ static const XRect _Const0000 = {{ 0, 0 }, { 480, 74 }};
 static const XRect _Const0001 = {{ 18, 0 }, { 435, 74 }};
 static const XColor _Const0002 = { 0xFF, 0xFF, 0xFF, 0xFF };
 static const XRect _Const0003 = {{ 0, 72 }, { 480, 74 }};
-static const XRect _Const0004 = {{ 37, 1 }, { 417, 66 }};
+static const XRect _Const0004 = {{ 37, 1 }, { 435, 72 }};
 static const XRect _Const0005 = {{ 37, 3 }, { 417, 45 }};
 static const XRect _Const0006 = {{ 18, 0 }, { 435, 54 }};
 static const XRect _Const0007 = {{ 0, 54 }, { 480, 56 }};
@@ -110,39 +110,37 @@ static const XColor _Const001D = { 0xFF, 0xFF, 0xFF, 0xCD };
 static const XColor _Const001E = { 0x72, 0x71, 0x71, 0xFF };
 static const XColor _Const001F = { 0x64, 0x64, 0x64, 0xFF };
 static const XRect _Const0020 = {{ 0, 0 }, { 150, 83 }};
-static const XStringRes _Const0021 = { _StringsDefault0, 0x000A };
-static const XRect _Const0022 = {{ 0, 43 }, { 150, 83 }};
-static const XStringRes _Const0023 = { _StringsDefault0, 0x0013 };
-static const XRect _Const0024 = {{ 37, 1 }, { 364, 66 }};
-static const XRect _Const0025 = {{ 371, 9 }, { 421, 59 }};
-static const XRect _Const0026 = {{ 0, 0 }, { 32, 216 }};
-static const XRect _Const0027 = {{ 0, 0 }, { 32, 32 }};
-static const XRect _Const0028 = {{ 0, 184 }, { 32, 216 }};
-static const XRect _Const0029 = {{ 37, 0 }, { 193, 67 }};
-static const XRect _Const002A = {{ 384, 0 }, { 417, 51 }};
-static const XRect _Const002B = {{ 290, 7 }, { 417, 43 }};
-static const XRect _Const002C = {{ 384, 0 }, { 417, 67 }};
-static const XRect _Const002D = {{ 10, 0 }, { 444, 74 }};
-static const XRect _Const002E = {{ 68, 5 }, { 367, 35 }};
-static const XRect _Const002F = {{ 68, 32 }, { 439, 62 }};
-static const XRect _Const0030 = {{ 377, 5 }, { 440, 35 }};
-static const XStringRes _Const0031 = { _StringsDefault0, 0x0018 };
-static const XRect _Const0032 = {{ 13, 11 }, { 63, 61 }};
-static const XRect _Const0033 = {{ 145, 7 }, { 300, 41 }};
-static const XRect _Const0034 = {{ 306, 7 }, { 366, 41 }};
-static const XRect _Const0035 = {{ 200, 0 }, { 351, 67 }};
-static const XRect _Const0036 = {{ 357, 0 }, { 417, 67 }};
-static const XRect _Const0037 = {{ 212, 0 }, { 286, 67 }};
-static const XRect _Const0038 = {{ 326, 0 }, { 360, 67 }};
-static const XRect _Const0039 = {{ 290, 0 }, { 321, 67 }};
-static const XRect _Const003A = {{ 362, 0 }, { 416, 67 }};
-static const XRect _Const003B = {{ 290, 0 }, { 417, 67 }};
-static const XRect _Const003C = {{ 37, 1 }, { 233, 78 }};
-static const XRect _Const003D = {{ 253, 18 }, { 351, 52 }};
-static const XRect _Const003E = {{ 357, 18 }, { 417, 52 }};
-static const XRect _Const003F = {{ 37, 7 }, { 343, 43 }};
-static const XRect _Const0040 = {{ 354, 10 }, { 388, 44 }};
-static const XRect _Const0041 = {{ 387, 10 }, { 421, 44 }};
+static const XRect _Const0021 = {{ 0, 43 }, { 150, 83 }};
+static const XRect _Const0022 = {{ 37, 1 }, { 364, 66 }};
+static const XRect _Const0023 = {{ 371, 9 }, { 421, 59 }};
+static const XRect _Const0024 = {{ 0, 0 }, { 32, 216 }};
+static const XRect _Const0025 = {{ 0, 0 }, { 32, 32 }};
+static const XRect _Const0026 = {{ 0, 184 }, { 32, 216 }};
+static const XRect _Const0027 = {{ 37, 0 }, { 193, 67 }};
+static const XRect _Const0028 = {{ 384, 0 }, { 417, 51 }};
+static const XRect _Const0029 = {{ 290, 7 }, { 417, 43 }};
+static const XRect _Const002A = {{ 384, 0 }, { 417, 67 }};
+static const XRect _Const002B = {{ 10, 0 }, { 444, 74 }};
+static const XRect _Const002C = {{ 68, 5 }, { 367, 35 }};
+static const XRect _Const002D = {{ 68, 32 }, { 439, 62 }};
+static const XRect _Const002E = {{ 377, 5 }, { 440, 35 }};
+static const XStringRes _Const002F = { _StringsDefault0, 0x000A };
+static const XRect _Const0030 = {{ 13, 11 }, { 63, 61 }};
+static const XRect _Const0031 = {{ 145, 7 }, { 300, 41 }};
+static const XRect _Const0032 = {{ 306, 7 }, { 366, 41 }};
+static const XRect _Const0033 = {{ 200, 0 }, { 351, 67 }};
+static const XRect _Const0034 = {{ 357, 0 }, { 417, 67 }};
+static const XRect _Const0035 = {{ 212, 0 }, { 286, 67 }};
+static const XRect _Const0036 = {{ 326, 0 }, { 360, 67 }};
+static const XRect _Const0037 = {{ 290, 0 }, { 321, 67 }};
+static const XRect _Const0038 = {{ 362, 0 }, { 416, 67 }};
+static const XRect _Const0039 = {{ 290, 0 }, { 417, 67 }};
+static const XRect _Const003A = {{ 37, 1 }, { 233, 78 }};
+static const XRect _Const003B = {{ 253, 18 }, { 351, 52 }};
+static const XRect _Const003C = {{ 357, 18 }, { 417, 52 }};
+static const XRect _Const003D = {{ 37, 7 }, { 343, 43 }};
+static const XRect _Const003E = {{ 354, 10 }, { 388, 44 }};
+static const XRect _Const003F = {{ 387, 10 }, { 421, 44 }};
 
 /* Initializer for the class 'Menu::ItemBase' */
 void MenuItemBase__Init( MenuItemBase _this, XObject aLink, XHandle aArg )
@@ -157,7 +155,7 @@ void MenuItemBase__Init( MenuItemBase _this, XObject aLink, XHandle aArg )
   ViewsRectangle__Init( &_this->HighlightRect, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->ListDivider, &_this->_.XObject, 0 );
   CoreTimer__Init( &_this->FocusFrameFlashTimer, &_this->_.XObject, 0 );
-  ViewsText__Init( &_this->Title, &_this->_.XObject, 0 );
+  ComponentsBaseText__Init( &_this->Title, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_.VMT = EW_CLASS( MenuItemBase );
@@ -176,10 +174,10 @@ void MenuItemBase__Init( MenuItemBase _this, XObject aLink, XHandle aArg )
   CoreTimer_OnSetBegin( &_this->FocusFrameFlashTimer, 100 );
   CoreView_OnSetLayout((CoreView)&_this->Title, CoreLayoutAlignToLeft | CoreLayoutAlignToTop );
   CoreRectView__OnSetBounds( &_this->Title, _Const0004 );
-  ViewsText_OnSetEllipsis( &_this->Title, 1 );
-  ViewsText_OnSetAlignment( &_this->Title, ViewsTextAlignmentAlignHorzLeft | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->Title, 0 );
-  ViewsText_OnSetColor( &_this->Title, _Const0002 );
+  ViewsText_OnSetEllipsis((ViewsText)&_this->Title, 1 );
+  ViewsText_OnSetAlignment((ViewsText)&_this->Title, ViewsTextAlignmentAlignHorzLeft 
+  | ViewsTextAlignmentAlignVertCenter );
+  ViewsText_OnSetColor((ViewsText)&_this->Title, _Const0002 );
   _this->Focusable = 1;
   _this->Height = 74;
   CoreGroup__Add( _this, ((CoreView)&_this->HighlightRect ), 0 );
@@ -188,7 +186,7 @@ void MenuItemBase__Init( MenuItemBase _this, XObject aLink, XHandle aArg )
   ViewsImage_OnSetBitmap( &_this->ListDivider, EwLoadResource( &ResourceListDivider3, 
   ResourcesBitmap ));
   _this->FocusFrameFlashTimer.OnTrigger = EwNewSlot( _this, MenuItemBase_OnFocusFrameFlashTimer );
-  ViewsText_OnSetFont( &_this->Title, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ViewsText_OnSetFont((ViewsText)&_this->Title, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
   ResourcesFont ));
 }
 
@@ -202,7 +200,11 @@ void MenuItemBase__ReInit( MenuItemBase _this )
   ViewsRectangle__ReInit( &_this->HighlightRect );
   ViewsImage__ReInit( &_this->ListDivider );
   CoreTimer__ReInit( &_this->FocusFrameFlashTimer );
-  ViewsText__ReInit( &_this->Title );
+  ComponentsBaseText__ReInit( &_this->Title );
+
+  /* ... and re-initialize objects, variables, properties, etc. */
+  ViewsText_OnSetFont((ViewsText)&_this->Title, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ResourcesFont ));
 }
 
 /* Finalizer method for the class 'Menu::ItemBase' */
@@ -215,7 +217,7 @@ void MenuItemBase__Done( MenuItemBase _this )
   ViewsRectangle__Done( &_this->HighlightRect );
   ViewsImage__Done( &_this->ListDivider );
   CoreTimer__Done( &_this->FocusFrameFlashTimer );
-  ViewsText__Done( &_this->Title );
+  ComponentsBaseText__Done( &_this->Title );
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseComponent__Done( &_this->_.Super );
@@ -227,9 +229,9 @@ void MenuItemBase_OnSetEnabled( MenuItemBase _this, XBool value )
   CoreGroup_OnSetEnabled((CoreGroup)_this, value );
 
   if ( value )
-    ViewsText_OnSetColor( &_this->Title, ColorWHITE );
+    ViewsText_OnSetColor((ViewsText)&_this->Title, ColorWHITE );
   else
-    ViewsText_OnSetColor( &_this->Title, ColorGRAY_FOR_DISABLED );
+    ViewsText_OnSetColor((ViewsText)&_this->Title, ColorGRAY_FOR_DISABLED );
 }
 
 /* The method UpdateLayout() is invoked automatically after the size of the component 
@@ -318,8 +320,8 @@ void MenuItemBase_OnFocusFrameFlashTimer( MenuItemBase _this, XObject sender )
 /* 'C' function for method : 'Menu::ItemBase.SetTitle()' */
 void MenuItemBase_SetTitle( MenuItemBase _this, XString aTitle )
 {
-  if ( EwCompString( _this->Title.String, aTitle ) != 0 )
-    ViewsText_OnSetString( &_this->Title, aTitle );
+  if ( EwCompString( _this->Title.Super1.String, aTitle ) != 0 )
+    ViewsText_OnSetString((ViewsText)&_this->Title, aTitle );
 }
 
 /* 'C' function for method : 'Menu::ItemBase.OnSetFocusable()' */
@@ -2214,7 +2216,7 @@ void MenuPushButton__Init( MenuPushButton _this, XObject aLink, XHandle aArg )
 
   /* ... then construct all embedded objects */
   ViewsRectangle__Init( &_this->Background, &_this->_.XObject, 0 );
-  ViewsText__Init( &_this->TitleText, &_this->_.XObject, 0 );
+  ComponentsBaseText__Init( &_this->TitleText, &_this->_.XObject, 0 );
   CoreTimer__Init( &_this->FocusFrameFlashTimer, &_this->_.XObject, 0 );
   ViewsBorder__Init( &_this->FocusBorder, &_this->_.XObject, 0 );
 
@@ -2231,7 +2233,6 @@ void MenuPushButton__Init( MenuPushButton _this, XObject aLink, XHandle aArg )
   ViewsRectangle_OnSetColor( &_this->Background, _Const001B );
   CoreView_OnSetLayout((CoreView)&_this->TitleText, CoreLayoutResizeHorz | CoreLayoutResizeVert );
   CoreRectView__OnSetBounds( &_this->TitleText, _Const001C );
-  ViewsText_OnSetString( &_this->TitleText, 0 );
   CoreTimer_OnSetPeriod( &_this->FocusFrameFlashTimer, 0 );
   CoreTimer_OnSetBegin( &_this->FocusFrameFlashTimer, 100 );
   CoreView_OnSetLayout((CoreView)&_this->FocusBorder, CoreLayoutResizeHorz | CoreLayoutResizeVert );
@@ -2242,7 +2243,7 @@ void MenuPushButton__Init( MenuPushButton _this, XObject aLink, XHandle aArg )
   CoreGroup__Add( _this, ((CoreView)&_this->Background ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->TitleText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->FocusBorder ), 0 );
-  ViewsText_OnSetFont( &_this->TitleText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ViewsText_OnSetFont((ViewsText)&_this->TitleText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
   ResourcesFont ));
   _this->FocusFrameFlashTimer.OnTrigger = EwNewSlot( _this, MenuPushButton_OnFocusFrameFlashTimer );
 }
@@ -2255,9 +2256,13 @@ void MenuPushButton__ReInit( MenuPushButton _this )
 
   /* ... then re-construct all embedded objects */
   ViewsRectangle__ReInit( &_this->Background );
-  ViewsText__ReInit( &_this->TitleText );
+  ComponentsBaseText__ReInit( &_this->TitleText );
   CoreTimer__ReInit( &_this->FocusFrameFlashTimer );
   ViewsBorder__ReInit( &_this->FocusBorder );
+
+  /* ... and re-initialize objects, variables, properties, etc. */
+  ViewsText_OnSetFont((ViewsText)&_this->TitleText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ResourcesFont ));
 }
 
 /* Finalizer method for the class 'Menu::PushButton' */
@@ -2268,7 +2273,7 @@ void MenuPushButton__Done( MenuPushButton _this )
 
   /* Finalize all embedded objects */
   ViewsRectangle__Done( &_this->Background );
-  ViewsText__Done( &_this->TitleText );
+  ComponentsBaseText__Done( &_this->TitleText );
   CoreTimer__Done( &_this->FocusFrameFlashTimer );
   ViewsBorder__Done( &_this->FocusBorder );
 
@@ -2336,7 +2341,7 @@ void MenuPushButton_OnSetTitle( MenuPushButton _this, XString value )
   if ( EwCompString( _this->Title, value ) != 0 )
   {
     _this->Title = EwShareString( value );
-    ViewsText_OnSetString( &_this->TitleText, value );
+    ViewsText_OnSetString((ViewsText)&_this->TitleText, value );
   }
 }
 
@@ -2359,9 +2364,9 @@ void MenuPushButton_OnSetButtonEnabled( MenuPushButton _this, XBool value )
     _this->ButtonEnabled = value;
 
     if ( value )
-      ViewsText_OnSetColor( &_this->TitleText, _Const0002 );
+      ViewsText_OnSetColor((ViewsText)&_this->TitleText, _Const0002 );
     else
-      ViewsText_OnSetColor( &_this->TitleText, _Const001F );
+      ViewsText_OnSetColor((ViewsText)&_this->TitleText, _Const001F );
   }
 }
 
@@ -2439,13 +2444,11 @@ void MenuUpDownPushButtonSet__Init( MenuUpDownPushButtonSet _this, XObject aLink
   | CoreLayoutResizeHorz );
   CoreRectView__OnSetBounds( &_this->UpButton, _Const001A );
   _this->UpButton.Super1.PassMagicKey = 1;
-  MenuPushButton_OnSetTitle( &_this->UpButton, EwLoadString( &_Const0021 ));
+  MenuPushButton_OnSetTitle( &_this->UpButton, 0 );
   CoreView_OnSetLayout((CoreView)&_this->DownButton, CoreLayoutAlignToBottom | CoreLayoutResizeHorz );
-  CoreRectView__OnSetBounds( &_this->DownButton, _Const0022 );
+  CoreRectView__OnSetBounds( &_this->DownButton, _Const0021 );
   _this->DownButton.Super1.PassMagicKey = 1;
-  MenuPushButton_OnSetTitle( &_this->DownButton, EwLoadString( &_Const0023 ));
-  _this->UpButtonTitle = EwShareString( EwGetVariantOfString( &StringsGEN_CANCEL ));
-  _this->DownButtonTitle = EwShareString( EwGetVariantOfString( &StringsGEN_OK ));
+  MenuPushButton_OnSetTitle( &_this->DownButton, 0 );
   _this->DownButtonEnabled = 1;
   CoreGroup__Add( _this, ((CoreView)&_this->UpButton ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->DownButton ), 0 );
@@ -2520,7 +2523,7 @@ void MenuUpDownPushButtonSet_OnSetUpButtonTitle( MenuUpDownPushButtonSet _this,
   if ( EwCompString( _this->UpButtonTitle, value ) != 0 )
   {
     _this->UpButtonTitle = EwShareString( value );
-    ViewsText_OnSetString( &_this->UpButton.TitleText, value );
+    ViewsText_OnSetString((ViewsText)&_this->UpButton.TitleText, value );
   }
 }
 
@@ -2531,7 +2534,7 @@ void MenuUpDownPushButtonSet_OnSetDownButtonTitle( MenuUpDownPushButtonSet _this
   if ( EwCompString( _this->DownButtonTitle, value ) != 0 )
   {
     _this->DownButtonTitle = EwShareString( value );
-    ViewsText_OnSetString( &_this->DownButton.TitleText, value );
+    ViewsText_OnSetString((ViewsText)&_this->DownButton.TitleText, value );
   }
 }
 
@@ -2615,8 +2618,8 @@ void MenuItemCheckMark__Init( MenuItemCheckMark _this, XObject aLink, XHandle aA
   _this->_.VMT = EW_CLASS( MenuItemCheckMark );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( &_this->Super1.Title, _Const0024 );
-  CoreRectView__OnSetBounds( &_this->CheckMark, _Const0025 );
+  CoreRectView__OnSetBounds( &_this->Super1.Title, _Const0022 );
+  CoreRectView__OnSetBounds( &_this->CheckMark, _Const0023 );
   ViewsImage_OnSetFrameNumber( &_this->CheckMark, 1 );
   ViewsImage_OnSetVisible( &_this->CheckMark, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->CheckMark ), 0 );
@@ -2750,9 +2753,9 @@ void MenuArrowScrollBar__Init( MenuArrowScrollBar _this, XObject aLink, XHandle 
   _this->_.VMT = EW_CLASS( MenuArrowScrollBar );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const0026 );
-  CoreRectView__OnSetBounds( &_this->UpArrowIcon, _Const0027 );
-  CoreRectView__OnSetBounds( &_this->DownArrowIcon, _Const0028 );
+  CoreRectView__OnSetBounds( _this, _Const0024 );
+  CoreRectView__OnSetBounds( &_this->UpArrowIcon, _Const0025 );
+  CoreRectView__OnSetBounds( &_this->DownArrowIcon, _Const0026 );
   ViewsImage_OnSetFrameNumber( &_this->DownArrowIcon, 1 );
   CoreGroup__Add( _this, ((CoreView)&_this->UpArrowIcon ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->DownArrowIcon ), 0 );
@@ -2900,11 +2903,10 @@ void MenuItemBaseValue__Init( MenuItemBaseValue _this, XObject aLink, XHandle aA
   _this->_.VMT = EW_CLASS( MenuItemBaseValue );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( &_this->Super1.Title, _Const0029 );
-  CoreRectView__OnSetBounds( &_this->ValueText, _Const002A );
+  CoreRectView__OnSetBounds( &_this->Super1.Title, _Const0027 );
+  CoreRectView__OnSetBounds( &_this->ValueText, _Const0028 );
   ViewsText_OnSetAlignment( &_this->ValueText, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->ValueText, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ValueText ), 0 );
   ViewsText_OnSetFont( &_this->ValueText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
   ResourcesFont ));
@@ -2918,6 +2920,10 @@ void MenuItemBaseValue__ReInit( MenuItemBaseValue _this )
 
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->ValueText );
+
+  /* ... and re-initialize objects, variables, properties, etc. */
+  ViewsText_OnSetFont( &_this->ValueText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ResourcesFont ));
 }
 
 /* Finalizer method for the class 'Menu::ItemBaseValue' */
@@ -2962,13 +2968,13 @@ void MenuItemBaseValue_UpdateLayout( MenuItemBaseValue _this, XPoint aSize )
   switch ( _this->Super1.Height )
   {
     case 56 :
-      CoreRectView__OnSetBounds( &_this->ValueText, _Const002B );
+      CoreRectView__OnSetBounds( &_this->ValueText, _Const0029 );
     break;
 
     case 74 :
     {
-      CoreRectView__OnSetBounds( &_this->Super1.Title, _Const0029 );
-      CoreRectView__OnSetBounds( &_this->ValueText, _Const002C );
+      CoreRectView__OnSetBounds( &_this->Super1.Title, _Const0027 );
+      CoreRectView__OnSetBounds( &_this->ValueText, _Const002A );
     }
     break;
 
@@ -3048,7 +3054,7 @@ void MenuItemNotification__Init( MenuItemNotification _this, XObject aLink, XHan
   _this->_.XObject._.GCT = EW_CLASS_GCT( MenuItemNotification );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->MessageText, &_this->_.XObject, 0 );
+  ComponentsBaseText__Init( &_this->MessageText, &_this->_.XObject, 0 );
   ViewsText__Init( &_this->ReceivedTimeText, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->CategoryIcon, &_this->_.XObject, 0 );
 
@@ -3056,32 +3062,33 @@ void MenuItemNotification__Init( MenuItemNotification _this, XObject aLink, XHan
   _this->_.VMT = EW_CLASS( MenuItemNotification );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( &_this->Super1.HighlightRect, _Const002D );
+  CoreRectView__OnSetBounds( &_this->Super1.HighlightRect, _Const002B );
   ViewsRectangle_OnSetVisible( &_this->Super1.HighlightRect, 1 );
-  CoreRectView__OnSetBounds( &_this->Super1.Title, _Const002E );
+  CoreRectView__OnSetBounds( &_this->Super1.Title, _Const002C );
+  ViewsText_OnSetString((ViewsText)&_this->Super1.Title, 0 );
   CoreView_OnSetLayout((CoreView)&_this->MessageText, CoreLayoutAlignToLeft | CoreLayoutAlignToTop );
-  CoreRectView__OnSetBounds( &_this->MessageText, _Const002F );
-  ViewsText_OnSetEllipsis( &_this->MessageText, 1 );
-  ViewsText_OnSetAlignment( &_this->MessageText, ViewsTextAlignmentAlignHorzLeft 
-  | ViewsTextAlignmentAlignVertTop );
-  ViewsText_OnSetString( &_this->MessageText, 0 );
-  ViewsText_OnSetColor( &_this->MessageText, _Const0002 );
+  CoreRectView__OnSetBounds( &_this->MessageText, _Const002D );
+  ViewsText_OnSetEllipsis((ViewsText)&_this->MessageText, 1 );
+  ViewsText_OnSetAlignment((ViewsText)&_this->MessageText, ViewsTextAlignmentAlignHorzLeft 
+  | ViewsTextAlignmentAlignVertCenter );
+  ViewsText_OnSetString((ViewsText)&_this->MessageText, 0 );
+  ViewsText_OnSetColor((ViewsText)&_this->MessageText, _Const0002 );
   CoreView_OnSetLayout((CoreView)&_this->ReceivedTimeText, CoreLayoutAlignToLeft 
   | CoreLayoutAlignToTop );
-  CoreRectView__OnSetBounds( &_this->ReceivedTimeText, _Const0030 );
+  CoreRectView__OnSetBounds( &_this->ReceivedTimeText, _Const002E );
   ViewsText_OnSetAlignment( &_this->ReceivedTimeText, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->ReceivedTimeText, EwLoadString( &_Const0031 ));
+  ViewsText_OnSetString( &_this->ReceivedTimeText, EwLoadString( &_Const002F ));
   ViewsText_OnSetColor( &_this->ReceivedTimeText, _Const0002 );
   _this->Category = EnumNotificationCategoryTOTAL;
-  CoreRectView__OnSetBounds( &_this->CategoryIcon, _Const0032 );
+  CoreRectView__OnSetBounds( &_this->CategoryIcon, _Const0030 );
   ViewsImage_OnSetVisible( &_this->CategoryIcon, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->MessageText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ReceivedTimeText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->CategoryIcon ), 0 );
-  ViewsText_OnSetFont( &_this->Super1.Title, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ViewsText_OnSetFont((ViewsText)&_this->Super1.Title, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
-  ViewsText_OnSetFont( &_this->MessageText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ViewsText_OnSetFont((ViewsText)&_this->MessageText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
   ViewsText_OnSetFont( &_this->ReceivedTimeText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
@@ -3096,9 +3103,17 @@ void MenuItemNotification__ReInit( MenuItemNotification _this )
   MenuItemBase__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
-  ViewsText__ReInit( &_this->MessageText );
+  ComponentsBaseText__ReInit( &_this->MessageText );
   ViewsText__ReInit( &_this->ReceivedTimeText );
   ViewsImage__ReInit( &_this->CategoryIcon );
+
+  /* ... and re-initialize objects, variables, properties, etc. */
+  ViewsText_OnSetFont((ViewsText)&_this->Super1.Title, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ResourcesFont ));
+  ViewsText_OnSetFont((ViewsText)&_this->MessageText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ResourcesFont ));
+  ViewsText_OnSetFont( &_this->ReceivedTimeText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ResourcesFont ));
 }
 
 /* Finalizer method for the class 'Menu::ItemNotification' */
@@ -3108,7 +3123,7 @@ void MenuItemNotification__Done( MenuItemNotification _this )
   _this->_.Super._.VMT = EW_CLASS( MenuItemBase );
 
   /* Finalize all embedded objects */
-  ViewsText__Done( &_this->MessageText );
+  ComponentsBaseText__Done( &_this->MessageText );
   ViewsText__Done( &_this->ReceivedTimeText );
   ViewsImage__Done( &_this->CategoryIcon );
 
@@ -3122,7 +3137,7 @@ void MenuItemNotification_OnSetMessage( MenuItemNotification _this, XString valu
   if ( EwCompString( _this->Message, value ) != 0 )
   {
     _this->Message = EwShareString( value );
-    ViewsText_OnSetString( &_this->MessageText, value );
+    ViewsText_OnSetString((ViewsText)&_this->MessageText, value );
   }
 }
 
@@ -3229,14 +3244,12 @@ void MenuItemValueUnitCheckmark__Init( MenuItemValueUnitCheckmark _this, XObject
   _this->_.VMT = EW_CLASS( MenuItemValueUnitCheckmark );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( &_this->ValueText, _Const0033 );
+  CoreRectView__OnSetBounds( &_this->ValueText, _Const0031 );
   ViewsText_OnSetAlignment( &_this->ValueText, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->ValueText, 0 );
-  CoreRectView__OnSetBounds( &_this->UnitText, _Const0034 );
+  CoreRectView__OnSetBounds( &_this->UnitText, _Const0032 );
   ViewsText_OnSetAlignment( &_this->UnitText, ViewsTextAlignmentAlignHorzLeft | 
   ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->UnitText, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ValueText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->UnitText ), 0 );
   ViewsText_OnSetFont( &_this->ValueText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
@@ -3254,6 +3267,12 @@ void MenuItemValueUnitCheckmark__ReInit( MenuItemValueUnitCheckmark _this )
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->ValueText );
   ViewsText__ReInit( &_this->UnitText );
+
+  /* ... and re-initialize objects, variables, properties, etc. */
+  ViewsText_OnSetFont( &_this->ValueText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ResourcesFont ));
+  ViewsText_OnSetFont( &_this->UnitText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ResourcesFont ));
 }
 
 /* Finalizer method for the class 'Menu::ItemValueUnitCheckmark' */
@@ -3381,14 +3400,12 @@ void MenuItemValueUnit__Init( MenuItemValueUnit _this, XObject aLink, XHandle aA
   _this->_.VMT = EW_CLASS( MenuItemValueUnit );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( &_this->ValueText, _Const0035 );
+  CoreRectView__OnSetBounds( &_this->ValueText, _Const0033 );
   ViewsText_OnSetAlignment( &_this->ValueText, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->ValueText, 0 );
-  CoreRectView__OnSetBounds( &_this->UnitText, _Const0036 );
+  CoreRectView__OnSetBounds( &_this->UnitText, _Const0034 );
   ViewsText_OnSetAlignment( &_this->UnitText, ViewsTextAlignmentAlignHorzLeft | 
   ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->UnitText, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ValueText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->UnitText ), 0 );
   ViewsText_OnSetFont( &_this->ValueText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
@@ -3406,6 +3423,12 @@ void MenuItemValueUnit__ReInit( MenuItemValueUnit _this )
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->ValueText );
   ViewsText__ReInit( &_this->UnitText );
+
+  /* ... and re-initialize objects, variables, properties, etc. */
+  ViewsText_OnSetFont( &_this->ValueText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ResourcesFont ));
+  ViewsText_OnSetFont( &_this->UnitText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ResourcesFont ));
 }
 
 /* Finalizer method for the class 'Menu::ItemValueUnit' */
@@ -3530,19 +3553,17 @@ void MenuItemTimeHourMinute__Init( MenuItemTimeHourMinute _this, XObject aLink, 
   _this->_.VMT = EW_CLASS( MenuItemTimeHourMinute );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( &_this->HourValueText, _Const0037 );
+  CoreRectView__OnSetBounds( &_this->HourValueText, _Const0035 );
   ViewsText_OnSetAlignment( &_this->HourValueText, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->HourValueText, 0 );
-  CoreRectView__OnSetBounds( &_this->MinuteValueText, _Const0038 );
+  CoreRectView__OnSetBounds( &_this->MinuteValueText, _Const0036 );
   ViewsText_OnSetAlignment( &_this->MinuteValueText, ViewsTextAlignmentAlignHorzCenter 
   | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->MinuteValueText, 0 );
-  CoreRectView__OnSetBounds( &_this->HourText, _Const0039 );
+  CoreRectView__OnSetBounds( &_this->HourText, _Const0037 );
   ViewsText_OnSetAlignment( &_this->HourText, ViewsTextAlignmentAlignHorzLeft | 
   ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->HourText, EwLoadString( &StringsGEN_HOUR_ABBREVIATION ));
-  CoreRectView__OnSetBounds( &_this->MinuteText, _Const003A );
+  CoreRectView__OnSetBounds( &_this->MinuteText, _Const0038 );
   ViewsText_OnSetAlignment( &_this->MinuteText, ViewsTextAlignmentAlignHorzCenter 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->MinuteText, EwLoadString( &StringsGEN_MINUTE_ABBREVIATION ));
@@ -3674,8 +3695,8 @@ void MenuItemValueUnit2__Init( MenuItemValueUnit2 _this, XObject aLink, XHandle 
   _this->_.VMT = EW_CLASS( MenuItemValueUnit2 );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( &_this->Super1.ValueText, _Const0037 );
-  CoreRectView__OnSetBounds( &_this->Super1.UnitText, _Const003B );
+  CoreRectView__OnSetBounds( &_this->Super1.ValueText, _Const0035 );
+  CoreRectView__OnSetBounds( &_this->Super1.UnitText, _Const0039 );
 }
 
 /* Re-Initializer for the class 'Menu::ItemValueUnit2' */
@@ -3758,31 +3779,28 @@ void MenuItemPoiList__Init( MenuItemPoiList _this, XObject aLink, XHandle aArg )
 
   /* ... then construct all embedded objects */
   ViewsText__Init( &_this->ValueText, &_this->_.XObject, 0 );
-  ViewsText__Init( &_this->UnitText, &_this->_.XObject, 0 );
+  ComponentsBaseText__Init( &_this->UnitText, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_.VMT = EW_CLASS( MenuItemPoiList );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( &_this->Super1.Title, _Const003C );
-  ViewsText_OnSetEllipsis( &_this->Super1.Title, 1 );
-  ViewsText_OnSetWrapText( &_this->Super1.Title, 1 );
-  ViewsText_OnSetAlignment( &_this->Super1.Title, ViewsTextAlignmentAlignHorzLeft 
+  CoreRectView__OnSetBounds( &_this->Super1.Title, _Const003A );
+  ViewsText_OnSetEllipsis((ViewsText)&_this->Super1.Title, 1 );
+  ViewsText_OnSetWrapText((ViewsText)&_this->Super1.Title, 1 );
+  ViewsText_OnSetAlignment((ViewsText)&_this->Super1.Title, ViewsTextAlignmentAlignHorzLeft 
   | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->Super1.Title, 0 );
-  CoreRectView__OnSetBounds( &_this->ValueText, _Const003D );
+  CoreRectView__OnSetBounds( &_this->ValueText, _Const003B );
   ViewsText_OnSetAlignment( &_this->ValueText, ViewsTextAlignmentAlignHorzRight 
   | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->ValueText, 0 );
-  CoreRectView__OnSetBounds( &_this->UnitText, _Const003E );
-  ViewsText_OnSetAlignment( &_this->UnitText, ViewsTextAlignmentAlignHorzLeft | 
-  ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->UnitText, 0 );
+  CoreRectView__OnSetBounds( &_this->UnitText, _Const003C );
+  ViewsText_OnSetAlignment((ViewsText)&_this->UnitText, ViewsTextAlignmentAlignHorzLeft 
+  | ViewsTextAlignmentAlignVertCenter );
   CoreGroup__Add( _this, ((CoreView)&_this->ValueText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->UnitText ), 0 );
   ViewsText_OnSetFont( &_this->ValueText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
   ResourcesFont ));
-  ViewsText_OnSetFont( &_this->UnitText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ViewsText_OnSetFont((ViewsText)&_this->UnitText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
   ResourcesFont ));
 }
 
@@ -3794,7 +3812,13 @@ void MenuItemPoiList__ReInit( MenuItemPoiList _this )
 
   /* ... then re-construct all embedded objects */
   ViewsText__ReInit( &_this->ValueText );
-  ViewsText__ReInit( &_this->UnitText );
+  ComponentsBaseText__ReInit( &_this->UnitText );
+
+  /* ... and re-initialize objects, variables, properties, etc. */
+  ViewsText_OnSetFont( &_this->ValueText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ResourcesFont ));
+  ViewsText_OnSetFont((ViewsText)&_this->UnitText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ResourcesFont ));
 }
 
 /* Finalizer method for the class 'Menu::ItemPoiList' */
@@ -3805,7 +3829,7 @@ void MenuItemPoiList__Done( MenuItemPoiList _this )
 
   /* Finalize all embedded objects */
   ViewsText__Done( &_this->ValueText );
-  ViewsText__Done( &_this->UnitText );
+  ComponentsBaseText__Done( &_this->UnitText );
 
   /* Don't forget to deinitialize the super class ... */
   MenuItemBase__Done( &_this->_.Super );
@@ -3827,7 +3851,7 @@ void MenuItemPoiList_OnSetUnit( MenuItemPoiList _this, XString value )
   if ( EwCompString( _this->Unit, value ) != 0 )
   {
     _this->Unit = EwShareString( value );
-    ViewsText_OnSetString( &_this->UnitText, _this->Unit );
+    ViewsText_OnSetString((ViewsText)&_this->UnitText, _this->Unit );
   }
 }
 
@@ -3900,16 +3924,16 @@ void MenuItemBtPairedDevice__Init( MenuItemBtPairedDevice _this, XObject aLink, 
   _this->_.VMT = EW_CLASS( MenuItemBtPairedDevice );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( &_this->Super1.HighlightRect, _Const002D );
+  CoreRectView__OnSetBounds( &_this->Super1.HighlightRect, _Const002B );
   ViewsRectangle_OnSetVisible( &_this->Super1.HighlightRect, 1 );
-  CoreRectView__OnSetBounds( &_this->Super1.Title, _Const003F );
-  CoreRectView__OnSetBounds( &_this->NaviAppIcon, _Const0040 );
+  CoreRectView__OnSetBounds( &_this->Super1.Title, _Const003D );
+  CoreRectView__OnSetBounds( &_this->NaviAppIcon, _Const003E );
   ViewsImage_OnSetVisible( &_this->NaviAppIcon, 0 );
-  CoreRectView__OnSetBounds( &_this->YAppIcon, _Const0041 );
+  CoreRectView__OnSetBounds( &_this->YAppIcon, _Const003F );
   ViewsImage_OnSetVisible( &_this->YAppIcon, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->NaviAppIcon ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->YAppIcon ), 0 );
-  ViewsText_OnSetFont( &_this->Super1.Title, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ViewsText_OnSetFont((ViewsText)&_this->Super1.Title, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
   ResourcesFont ));
   ViewsImage_OnSetBitmap( &_this->NaviAppIcon, EwLoadResource( &ResourceNaviAppIcon, 
   ResourcesBitmap ));
@@ -3925,6 +3949,10 @@ void MenuItemBtPairedDevice__ReInit( MenuItemBtPairedDevice _this )
   /* ... then re-construct all embedded objects */
   ViewsImage__ReInit( &_this->NaviAppIcon );
   ViewsImage__ReInit( &_this->YAppIcon );
+
+  /* ... and re-initialize objects, variables, properties, etc. */
+  ViewsText_OnSetFont((ViewsText)&_this->Super1.Title, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ResourcesFont ));
 }
 
 /* Finalizer method for the class 'Menu::ItemBtPairedDevice' */

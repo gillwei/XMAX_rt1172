@@ -2,14 +2,9 @@
 
 $rect <30,20,270,60>
 $output false
+$multilingual true
 class MED01_MediaUI : Components::BaseMainBG
 {
-  $rect <750,220,950,260>
-  inherited method ReInit()
-  {
-    ErrorMessage.String = Strings::MED02_DEV_UNAVAILABLE;
-  }
-
   $rect <540,220,740,260>
   inherited method Init()
   {
@@ -78,7 +73,7 @@ class MED01_MediaUI : Components::BaseMainBG
   }
 
   $rect <20,20,160,60>
-  object Views::Text Title
+  object Components::BaseText Title
   {
     preset Bounds = <127,65,457,103>;
     preset Ellipsis = true;
@@ -89,7 +84,7 @@ class MED01_MediaUI : Components::BaseMainBG
   }
 
   $rect <20,20,160,60>
-  object Views::Text Artist
+  object Components::BaseText Artist
   {
     preset Bounds = <127,110,457,148>;
     preset Ellipsis = true;
@@ -100,7 +95,7 @@ class MED01_MediaUI : Components::BaseMainBG
   }
 
   $rect <20,20,160,60>
-  object Views::Text Album
+  object Components::BaseText Album
   {
     preset Bounds = <127,149,457,187>;
     preset Ellipsis = true;
@@ -442,7 +437,7 @@ class MED01_MediaUI : Components::BaseMainBG
   }
 
   $rect <20,20,160,60>
-  object Views::Text ErrorMessage
+  object Components::BaseText ErrorMessage
   {
     preset Bounds = <117,105,447,173>;
     preset String = Strings::MED02_DEV_UNAVAILABLE;

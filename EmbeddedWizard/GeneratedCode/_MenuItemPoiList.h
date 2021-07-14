@@ -42,6 +42,7 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
+#include "_ComponentsBaseText.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreTimer.h"
 #include "_MenuItemBase.h"
@@ -101,7 +102,7 @@
 /* Deklaration of class : 'Menu::ItemPoiList' */
 EW_DEFINE_FIELDS( MenuItemPoiList, MenuItemBase )
   EW_OBJECT  ( ValueText,       ViewsText )
-  EW_OBJECT  ( UnitText,        ViewsText )
+  EW_OBJECT  ( UnitText,        ComponentsBaseText )
   EW_PROPERTY( Value,           XString )
   EW_PROPERTY( Unit,            XString )
 EW_END_OF_FIELDS( MenuItemPoiList )

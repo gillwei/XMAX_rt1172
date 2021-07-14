@@ -42,6 +42,7 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
+#include "_ComponentsBaseText.h"
 #include "_CoreGroup.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
@@ -100,7 +101,7 @@
 EW_DEFINE_FIELDS( NavigationNaviAlertMessage, CoreGroup )
   EW_OBJECT  ( NaviEventBg,     ViewsRectangle )
   EW_OBJECT  ( NaviAlertIcon,   ViewsImage )
-  EW_OBJECT  ( EventType,       ViewsText )
+  EW_OBJECT  ( EventType,       ComponentsBaseText )
   EW_OBJECT  ( NaviSpeed,       ViewsText )
   EW_OBJECT  ( NaviSpeedUnit,   ViewsText )
 EW_END_OF_FIELDS( NavigationNaviAlertMessage )

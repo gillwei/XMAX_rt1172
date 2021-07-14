@@ -650,4 +650,31 @@ class Application : Core::Root
   {
     attr Bounds = <820,0,1120,350>;
   }
+
+  $rect <1170,50,1370,90>
+  object Core::Timer TestFontTimer
+  {
+    preset OnTrigger = OnTestFontSlot;
+    preset Period = 3000;
+    preset Enabled = false;
+  }
+
+  $rect <1170,100,1370,140>
+  slot OnTestFontSlot
+  {
+    if( Default == language )
+    {
+      DeviceInterface::SystemDevice.ChangeLanguage( Enum::Language.TRADITIONAL_CHINESE );
+    }
+    else
+    {
+      DeviceInterface::SystemDevice.ChangeLanguage( Enum::Language.ENGLISH );
+    }
+  }
+
+  // Test multi-language
+  note group Note10
+  {
+    attr Bounds = <1140,0,1390,350>;
+  }
 }

@@ -43,11 +43,11 @@
 #endif
 
 #include "_ComponentsBaseComponent.h"
+#include "_ComponentsBaseText.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreTimer.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
-#include "_ViewsText.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -105,7 +105,7 @@ EW_DEFINE_FIELDS( MenuItemBase, ComponentsBaseComponent )
   EW_OBJECT  ( HighlightRect,   ViewsRectangle )
   EW_OBJECT  ( ListDivider,     ViewsImage )
   EW_OBJECT  ( FocusFrameFlashTimer, CoreTimer )
-  EW_OBJECT  ( Title,           ViewsText )
+  EW_OBJECT  ( Title,           ComponentsBaseText )
   EW_PROPERTY( Height,          XInt32 )
   EW_PROPERTY( Focusable,       XBool )
 EW_END_OF_FIELDS( MenuItemBase )

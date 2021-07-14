@@ -39,11 +39,11 @@ EW_RES_WITHOUT_VARIANTS( FontsNotoSansCjkJpMedium24pt )
 /* Table with links to derived variants of the font resource : 'Fonts::NotoSansCjkJpMedium28pt' */
 EW_RES_WITHOUT_VARIANTS( FontsNotoSansCjkJpMedium28pt )
 
-/* Include a file containing the font resource : 'Fonts::NotoSansCjkJpMedium80pt' */
-#include "_FontsNotoSansCjkJpMedium80pt.h"
+/* Include a file containing the font resource : 'Fonts::NotoSansMedium80pt' */
+#include "_FontsNotoSansMedium80pt.h"
 
-/* Table with links to derived variants of the font resource : 'Fonts::NotoSansCjkJpMedium80pt' */
-EW_RES_WITHOUT_VARIANTS( FontsNotoSansCjkJpMedium80pt )
+/* Table with links to derived variants of the font resource : 'Fonts::NotoSansMedium80pt' */
+EW_RES_WITHOUT_VARIANTS( FontsNotoSansMedium80pt )
 
 /* Include a file containing the font resource : 'Fonts::NotoSansMedium22pt' */
 #include "_FontsNotoSansMedium22pt.h"
@@ -92,5 +92,17 @@ EW_RES_WITHOUT_VARIANTS( FontsNotoSansBold20pt )
 
 /* Table with links to derived variants of the font resource : 'Fonts::NotoSansMedium42pt' */
 EW_RES_WITHOUT_VARIANTS( FontsNotoSansMedium42pt )
+
+/* Include a file containing the font resource : 'Fonts::NotoSansCjkTcMedium24pt' */
+#include "_FontsNotoSansCjkTcMedium24pt.h"
+
+/* Table with links to derived variants of the font resource : 'Fonts::NotoSansCjkTcMedium24pt' */
+EW_RES_WITHOUT_VARIANTS( FontsNotoSansCjkTcMedium24pt )
+
+/* Include a file containing the font resource : 'Fonts::NotoSansCjkTcMedium28pt' */
+#include "_FontsNotoSansCjkTcMedium28pt.h"
+
+/* Table with links to derived variants of the font resource : 'Fonts::NotoSansCjkTcMedium28pt' */
+EW_RES_WITHOUT_VARIANTS( FontsNotoSansCjkTcMedium28pt )
 
 /* Embedded Wizard */

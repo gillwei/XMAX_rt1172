@@ -43,6 +43,7 @@
 #endif
 
 #include "_ComponentsBaseMainBG.h"
+#include "_ComponentsBaseText.h"
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
@@ -50,7 +51,6 @@
 #include "_MenuUpDownPushButtonSet.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
-#include "_ViewsText.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -103,8 +103,8 @@
 
 /* Deklaration of class : 'Settings::SET08_BtcPairDevice' */
 EW_DEFINE_FIELDS( SettingsSET08_BtcPairDevice, ComponentsBaseMainBG )
-  EW_OBJECT  ( PairText,        ViewsText )
-  EW_OBJECT  ( PasskeyText,     ViewsText )
+  EW_OBJECT  ( PairText,        ComponentsBaseText )
+  EW_OBJECT  ( PasskeyText,     ComponentsBaseText )
   EW_OBJECT  ( UpDownPushButtonSet, MenuUpDownPushButtonSet )
 EW_END_OF_FIELDS( SettingsSET08_BtcPairDevice )
 

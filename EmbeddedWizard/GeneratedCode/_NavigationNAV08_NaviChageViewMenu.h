@@ -200,6 +200,12 @@ EW_DEFINE_METHODS( NavigationNAV08_NaviChageViewMenu, MenuBaseMenuView )
   EW_METHOD( LoadItemIcon2Visible, XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( NavigationNAV08_NaviChageViewMenu )
 
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void NavigationNAV08_NaviChageViewMenu_Init( NavigationNAV08_NaviChageViewMenu _this, 
+  XHandle aArg );
+
 /* 'C' function for method : 'Navigation::NAV08_NaviChageViewMenu.LoadItemClass()' */
 XClass NavigationNAV08_NaviChageViewMenu_LoadItemClass( NavigationNAV08_NaviChageViewMenu _this, 
   XInt32 aItemNo );

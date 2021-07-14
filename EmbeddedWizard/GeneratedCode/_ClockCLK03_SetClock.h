@@ -43,6 +43,7 @@
 #endif
 
 #include "_ComponentsBaseMainBG.h"
+#include "_ComponentsBaseText.h"
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
@@ -105,15 +106,15 @@
 EW_DEFINE_FIELDS( ClockCLK03_SetClock, ComponentsBaseMainBG )
   EW_PROPERTY( OnTimeUpdateSignal, XSlot )
   EW_PROPERTY( OnTimeCancelSignal, XSlot )
-  EW_OBJECT  ( Title,           ViewsText )
+  EW_OBJECT  ( Title,           ComponentsBaseText )
   EW_OBJECT  ( DayText,         ViewsText )
-  EW_OBJECT  ( MonthText,       ViewsText )
+  EW_OBJECT  ( MonthText,       ComponentsBaseText )
   EW_OBJECT  ( SlashDay,        ViewsText )
   EW_OBJECT  ( SlashMonth,      ViewsText )
-  EW_OBJECT  ( YearText,        ViewsText )
-  EW_OBJECT  ( TimeFormat,      ViewsText )
-  EW_OBJECT  ( HourText,        ViewsText )
-  EW_OBJECT  ( MinuteText,      ViewsText )
+  EW_OBJECT  ( YearText,        ComponentsBaseText )
+  EW_OBJECT  ( TimeFormat,      ComponentsBaseText )
+  EW_OBJECT  ( HourText,        ComponentsBaseText )
+  EW_OBJECT  ( MinuteText,      ComponentsBaseText )
   EW_OBJECT  ( Colon,           ViewsText )
   EW_OBJECT  ( UpDownPushButtonSet, MenuUpDownPushButtonSet )
 EW_END_OF_FIELDS( ClockCLK03_SetClock )
@@ -175,8 +176,10 @@ EW_DEFINE_METHODS( ClockCLK03_SetClock, ComponentsBaseMainBG )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( ClockCLK03_SetClock )
 
-/* 'C' function for method : 'Clock::CLK03_SetClock.ReInit()' */
-void ClockCLK03_SetClock_ReInit( ClockCLK03_SetClock _this );
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void ClockCLK03_SetClock_Init( ClockCLK03_SetClock _this, XHandle aArg );
 
 /* 'C' function for method : 'Clock::CLK03_SetClock.OnShortHomeKeyActivated()' */
 void ClockCLK03_SetClock_OnShortHomeKeyActivated( ClockCLK03_SetClock _this );

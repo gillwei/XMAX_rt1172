@@ -42,6 +42,7 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
+#include "_ComponentsBaseText.h"
 #include "_CoreGroup.h"
 #include "_ViewsImage.h"
 #include "_ViewsText.h"
@@ -98,7 +99,7 @@
 /* Deklaration of class : 'Navigation::NaviETA' */
 EW_DEFINE_FIELDS( NavigationNaviETA, CoreGroup )
   EW_OBJECT  ( NaviIconFlag,    ViewsImage )
-  EW_OBJECT  ( TimeText,        ViewsText )
+  EW_OBJECT  ( TimeText,        ComponentsBaseText )
   EW_OBJECT  ( AmPmText,        ViewsText )
   EW_PROPERTY( ETA,             XInt32 )
 EW_END_OF_FIELDS( NavigationNaviETA )

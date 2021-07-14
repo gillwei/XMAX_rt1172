@@ -4,7 +4,7 @@ $rect <20,20,220,60>
 $output false
 class BaseComponent : Core::Group
 {
-  $rect <40,60,220,100>
+  $rect <30,30,210,70>
   inherited method Init()
   {
     DeviceInterface::SystemDevice.SetKeyTriggerMode( Core::KeyCode.Up, UpKeyTriggerMode );
@@ -14,7 +14,7 @@ class BaseComponent : Core::Group
     DeviceInterface::SystemDevice.SetMagicKeyEnabled( MagicKeyEnabled );
   }
 
-  $rect <40,110,240,150>
+  $rect <40,210,240,250>
   object Core::KeyPressHandler KeyHandler
   {
     preset OnRelease = OnKeyReleaseSlot;
@@ -22,7 +22,7 @@ class BaseComponent : Core::Group
     preset OnHold = OnKeyHoldSlot;
   }
 
-  $rect <40,160,240,200>
+  $rect <40,260,240,300>
   slot OnKeyPressSlot
   {
     $if $prototyper
@@ -102,7 +102,7 @@ class BaseComponent : Core::Group
     }
   }
 
-  $rect <40,210,240,250>
+  $rect <40,310,240,350>
   slot OnKeyHoldSlot
   {
     if( !IsDDModeEffected() )
@@ -118,7 +118,7 @@ class BaseComponent : Core::Group
     }
   }
 
-  $rect <40,260,240,300>
+  $rect <40,360,240,400>
   slot OnKeyReleaseSlot
   {
     if( !KeyHandler.Repetition )
@@ -175,17 +175,17 @@ class BaseComponent : Core::Group
     }
   }
 
-  $rect <255,110,485,150>
+  $rect <255,210,485,250>
   method void OnShortDownKeyActivated()
   {
   }
 
-  $rect <255,60,485,100>
+  $rect <255,160,485,200>
   method void OnShortUpKeyActivated()
   {
   }
 
-  $rect <255,160,485,200>
+  $rect <255,260,485,300>
   method void OnShortEnterKeyActivated()
   {
   }
@@ -193,42 +193,42 @@ class BaseComponent : Core::Group
   // Key Handle
   note group Note5
   {
-    attr Bounds = <20,10,1380,360>;
+    attr Bounds = <20,110,1380,460>;
   }
 
-  $rect <255,210,485,250>
+  $rect <255,310,485,350>
   method void OnShortHomeKeyActivated()
   {
   }
 
-  $rect <950,60,1150,100>
+  $rect <950,160,1150,200>
   property Enum::KeyTriggerMode UpKeyTriggerMode = Enum::KeyTriggerMode.ON;
 
-  $rect <950,110,1150,150>
+  $rect <950,210,1150,250>
   property Enum::KeyTriggerMode DownKeyTriggerMode = Enum::KeyTriggerMode.ON;
 
-  $rect <950,160,1150,200>
+  $rect <950,260,1150,300>
   property Enum::KeyTriggerMode EnterKeyTriggerMode = Enum::KeyTriggerMode.OFF;
 
-  $rect <950,210,1150,250>
+  $rect <950,310,1150,350>
   property Enum::KeyTriggerMode HomeKeyTriggerMode = Enum::KeyTriggerMode.OFF;
 
-  $rect <495,110,725,150>
+  $rect <495,210,725,250>
   method void OnLongDownKeyActivated()
   {
   }
 
-  $rect <495,60,725,100>
+  $rect <495,160,725,200>
   method void OnLongUpKeyActivated()
   {
   }
 
-  $rect <495,160,725,200>
+  $rect <495,260,725,300>
   method void OnLongEnterKeyActivated()
   {
   }
 
-  $rect <495,210,725,250>
+  $rect <495,310,725,350>
   method void OnLongHomeKeyActivated()
   {
     if( Components::ACTIVATE_LONG_PRESS_REPETITION_COUNT == KeyHandler.RepetitionCount )
@@ -241,30 +241,30 @@ class BaseComponent : Core::Group
     }
   }
 
-  $rect <1160,60,1360,100>
+  $rect <1160,160,1360,200>
   property bool PassUpKey = false;
 
-  $rect <1160,110,1360,150>
+  $rect <1160,210,1360,250>
   property bool PassDownKey = false;
 
-  $rect <1161,160,1361,200>
+  $rect <1161,260,1361,300>
   property bool PassHomeKey = false;
 
-  $rect <1160,210,1360,250>
+  $rect <1160,310,1360,350>
   property bool PassEnterKey = false;
 
-  $rect <255,260,485,300>
+  $rect <255,360,485,400>
   method void OnShortMagicKeyActivated()
   {
   }
 
-  $rect <1160,260,1360,300>
+  $rect <1160,360,1360,400>
   property bool PassMagicKey = false;
 
-  $rect <40,420,240,460>
+  $rect <40,520,240,560>
   property bool DDModeEnabled = false;
 
-  $rect <40,520,240,560>
+  $rect <40,620,240,660>
   method bool IsDDModeEffected()
   {
     return ( DDModeEnabled && DeviceInterface::VehicleDevice.DDModeActivated );
@@ -273,10 +273,10 @@ class BaseComponent : Core::Group
   // Driver Distraction Mode
   note group Note7
   {
-    attr Bounds = <20,370,260,580>;
+    attr Bounds = <20,470,260,680>;
   }
 
-  $rect <40,470,240,510>
+  $rect <40,570,240,610>
   onset DDModeEnabled
   {
     if( pure DDModeEnabled != value )
@@ -286,21 +286,21 @@ class BaseComponent : Core::Group
   }
 
   // Callback when down key of on trigger mode is released
-  $rect <734,110,944,150>
+  $rect <734,210,944,250>
   method void OnDownKeyReleased()
   {
   }
 
   // Callback when up key of on trigger mode is released
-  $rect <734,160,944,200>
+  $rect <734,260,944,300>
   method void OnUpKeyReleased()
   {
   }
 
-  $rect <950,260,1150,300>
+  $rect <950,360,1150,400>
   property bool MagicKeyEnabled = false;
 
-  $rect <950,310,1160,350>
+  $rect <950,410,1160,450>
   onset MagicKeyEnabled
   {
     if( pure MagicKeyEnabled != value )
@@ -624,3 +624,61 @@ class DDModeMask : Core::Group
 $rect <250,20,610,60>
 $output false
 const int32 ACTIVATE_LONG_PRESS_REPETITION_COUNT = 1;
+
+$rect <250,70,450,110>
+$output false
+class BaseText : Views::Text
+{
+  $rect <10,60,210,100>
+  inherited method ReInit()
+  {
+    postsignal UpdateFontSlot;
+  }
+
+  $rect <13,14,213,54>
+  inherited method Init()
+  {
+    postsignal UpdateFontSlot;
+  }
+
+  $rect <10,110,210,150>
+  slot UpdateFontSlot
+  {
+    if( Fonts::NotoSansCjkJpMedium24pt == Font )
+    {
+      switch( language )
+      {
+        case TraditionalChinese: Font = Fonts::NotoSansCjkTcMedium24pt;
+        default:;
+      }
+    }
+    else if( Fonts::NotoSansCjkJpMedium28pt == Font )
+    {
+      switch( language )
+      {
+        case TraditionalChinese: Font = Fonts::NotoSansCjkTcMedium28pt;
+        default:;
+      }
+    }
+    else if( Fonts::NotoSansCjkTcMedium24pt == Font )
+    {
+      switch( language )
+      {
+        case TraditionalChinese:;
+        default: Font = Fonts::NotoSansCjkJpMedium24pt;
+      }
+    }
+    else if( Fonts::NotoSansCjkTcMedium28pt == Font )
+    {
+      switch( language )
+      {
+        case TraditionalChinese:;
+        default: Font = Fonts::NotoSansCjkJpMedium28pt;
+      }
+    }
+    else
+    {
+      /* empty */
+    }
+  }
+}

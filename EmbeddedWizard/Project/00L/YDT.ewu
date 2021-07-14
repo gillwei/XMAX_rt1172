@@ -2,22 +2,15 @@
 
 $rect <20,20,220,60>
 $output false
+$multilingual true
 class YDT01_Main : Components::BaseMainBG
 {
-  $rect <10,340,210,380>
-  inherited method ReInit()
-  {
-    Text.String = Strings::YDT01_MESSAGE;
-    PushButton.Title = Strings::GEN_OK;
-  }
-
   $rect <10,290,210,330>
   inherited method Init()
   {
-    trace "Init YDT01";
+    trace "YDT01";
     PushButton.PassEnterKey = true;
     DisableTimer.Enabled = true;
-
   }
 
   $rect <520,190,720,230>
@@ -52,7 +45,7 @@ class YDT01_Main : Components::BaseMainBG
   }
 
   $rect <20,20,160,60>
-  object Views::Text Text
+  object Components::BaseText Text
   {
     preset Bounds = <10,46,470,201>;
     preset WrapText = true;

@@ -43,13 +43,13 @@
 #endif
 
 #include "_ComponentsBaseMainBG.h"
+#include "_ComponentsBaseText.h"
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
-#include "_ViewsText.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -103,7 +103,7 @@
 /* Deklaration of class : 'Pop::POP01_PleaseWait' */
 EW_DEFINE_FIELDS( PopPOP01_PleaseWait, ComponentsBaseMainBG )
   EW_PROPERTY( NaviAppConnectedSlot, XSlot )
-  EW_OBJECT  ( LoadingText,     ViewsText )
+  EW_OBJECT  ( LoadingText,     ComponentsBaseText )
   EW_OBJECT  ( LoadingAnimation, ViewsImage )
   EW_OBJECT  ( ConnectionFailedTimer, CoreTimer )
   EW_OBJECT  ( NaviConnectUpdateEventHandler, CoreSystemEventHandler )
@@ -165,9 +165,6 @@ EW_DEFINE_METHODS( PopPOP01_PleaseWait, ComponentsBaseMainBG )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( PopPOP01_PleaseWait )
-
-/* 'C' function for method : 'Pop::POP01_PleaseWait.ReInit()' */
-void PopPOP01_PleaseWait_ReInit( PopPOP01_PleaseWait _this );
 
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 

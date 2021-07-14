@@ -42,6 +42,7 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
+#include "_ComponentsBaseText.h"
 #include "_CoreGroup.h"
 #include "_ViewsImage.h"
 #include "_ViewsLine.h"
@@ -98,11 +99,11 @@
 
 /* Deklaration of class : 'Weather::WeatherDayViewUI' */
 EW_DEFINE_FIELDS( WeatherWeatherDayViewUI, CoreGroup )
-  EW_OBJECT  ( CurrentLocationText, ViewsText )
-  EW_OBJECT  ( ChanceOfRainText, ViewsText )
+  EW_OBJECT  ( CurrentLocationText, ComponentsBaseText )
+  EW_OBJECT  ( ChanceOfRainText, ComponentsBaseText )
   EW_OBJECT  ( PerOfRainIcon,   ViewsImage )
   EW_OBJECT  ( TempUnitIcon,    ViewsImage )
-  EW_OBJECT  ( WeekDayText,     ViewsText )
+  EW_OBJECT  ( WeekDayText,     ComponentsBaseText )
   EW_OBJECT  ( WeatherIcon,     ViewsImage )
   EW_OBJECT  ( WeatherHorizLine, ViewsImage )
   EW_OBJECT  ( DivideLineLeft,  ViewsLine )
@@ -113,9 +114,9 @@ EW_DEFINE_FIELDS( WeatherWeatherDayViewUI, CoreGroup )
   EW_OBJECT  ( Weather1h,       ViewsImage )
   EW_OBJECT  ( Weather2h,       ViewsImage )
   EW_OBJECT  ( Weather3h,       ViewsImage )
-  EW_OBJECT  ( ChanceOfRain1h,  ViewsText )
-  EW_OBJECT  ( ChanceOfRain2h,  ViewsText )
-  EW_OBJECT  ( ChanceOfRain3h,  ViewsText )
+  EW_OBJECT  ( ChanceOfRain1h,  ComponentsBaseText )
+  EW_OBJECT  ( ChanceOfRain2h,  ComponentsBaseText )
+  EW_OBJECT  ( ChanceOfRain3h,  ComponentsBaseText )
   EW_OBJECT  ( WeaPerIcon1h,    ViewsImage )
   EW_OBJECT  ( WeaPerIcon2h,    ViewsImage )
   EW_OBJECT  ( WeaPerIcon3h,    ViewsImage )
@@ -125,9 +126,9 @@ EW_DEFINE_FIELDS( WeatherWeatherDayViewUI, CoreGroup )
   EW_OBJECT  ( TempUnit1h,      ViewsImage )
   EW_OBJECT  ( TempUnit2h,      ViewsImage )
   EW_OBJECT  ( TempUnit3h,      ViewsImage )
-  EW_OBJECT  ( MinTempText,     ViewsText )
+  EW_OBJECT  ( MinTempText,     ComponentsBaseText )
   EW_OBJECT  ( TempTextSlash,   ViewsText )
-  EW_OBJECT  ( MaxTempText,     ViewsText )
+  EW_OBJECT  ( MaxTempText,     ComponentsBaseText )
   EW_ARRAY   ( WeekDayTextArray, XString, [7])
   EW_ARRAY   ( WeaItemIdxArray, XEnum, [4])
 EW_END_OF_FIELDS( WeatherWeatherDayViewUI )

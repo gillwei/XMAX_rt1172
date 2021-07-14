@@ -28,6 +28,7 @@
 #include "_ApplicationApplication.h"
 #include "_ComponentsBaseComponent.h"
 #include "_ComponentsBaseMainBG.h"
+#include "_ComponentsBaseText.h"
 #include "_ComponentsDDModeMask.h"
 #include "_CoreGroup.h"
 #include "_CoreKeyPressHandler.h"
@@ -940,5 +941,126 @@ EW_DEFINE_CLASS( ComponentsDDModeMask, CoreGroup, DDModeBG, DDModeBG, DDModeBG,
   CoreGroup_Remove,
   CoreGroup_Add,
 EW_END_OF_CLASS( ComponentsDDModeMask )
+
+/* Initializer for the class 'Components::BaseText' */
+void ComponentsBaseText__Init( ComponentsBaseText _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  ViewsText__Init( &_this->_.Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_.XObject._.GCT = EW_CLASS_GCT( ComponentsBaseText );
+
+  /* Setup the VMT pointer */
+  _this->_.VMT = EW_CLASS( ComponentsBaseText );
+
+  /* Call the user defined constructor */
+  ComponentsBaseText_Init( _this, aArg );
+}
+
+/* Re-Initializer for the class 'Components::BaseText' */
+void ComponentsBaseText__ReInit( ComponentsBaseText _this )
+{
+  /* At first re-initialize the super class ... */
+  ViewsText__ReInit( &_this->_.Super );
+
+  /* Call the user defined re-constructor of the class */
+  ComponentsBaseText_ReInit( _this );
+}
+
+/* Finalizer method for the class 'Components::BaseText' */
+void ComponentsBaseText__Done( ComponentsBaseText _this )
+{
+  /* Finalize this class */
+  _this->_.Super._.VMT = EW_CLASS( ViewsText );
+
+  /* Don't forget to deinitialize the super class ... */
+  ViewsText__Done( &_this->_.Super );
+}
+
+/* 'C' function for method : 'Components::BaseText.ReInit()' */
+void ComponentsBaseText_ReInit( ComponentsBaseText _this )
+{
+  EwPostSignal( EwNewSlot( _this, ComponentsBaseText_UpdateFontSlot ), ((XObject)_this ));
+}
+
+/* 'C' function for method : 'Components::BaseText.Init()' */
+void ComponentsBaseText_Init( ComponentsBaseText _this, XHandle aArg )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( aArg );
+
+  EwPostSignal( EwNewSlot( _this, ComponentsBaseText_UpdateFontSlot ), ((XObject)_this ));
+}
+
+/* 'C' function for method : 'Components::BaseText.UpdateFontSlot()' */
+void ComponentsBaseText_UpdateFontSlot( ComponentsBaseText _this, XObject sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  if ( EwLoadResource( &FontsNotoSansCjkJpMedium24pt, ResourcesFont ) == _this->Super1.Font )
+    switch ( EwGetLanguage())
+    {
+      case TraditionalChinese :
+        ViewsText_OnSetFont((ViewsText)_this, EwLoadResource( &FontsNotoSansCjkTcMedium24pt, 
+        ResourcesFont ));
+      break;
+
+      default :; 
+    }
+  else
+    if ( EwLoadResource( &FontsNotoSansCjkJpMedium28pt, ResourcesFont ) == _this->Super1.Font )
+      switch ( EwGetLanguage())
+      {
+        case TraditionalChinese :
+          ViewsText_OnSetFont((ViewsText)_this, EwLoadResource( &FontsNotoSansCjkTcMedium28pt, 
+          ResourcesFont ));
+        break;
+
+        default :; 
+      }
+    else
+      if ( EwLoadResource( &FontsNotoSansCjkTcMedium24pt, ResourcesFont ) == _this->Super1.Font )
+        switch ( EwGetLanguage())
+        {
+          case TraditionalChinese :
+          break;
+
+          default : 
+            ViewsText_OnSetFont((ViewsText)_this, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+            ResourcesFont ));
+        }
+      else
+        if ( EwLoadResource( &FontsNotoSansCjkTcMedium28pt, ResourcesFont ) == _this->Super1.Font )
+          switch ( EwGetLanguage())
+          {
+            case TraditionalChinese :
+            break;
+
+            default : 
+              ViewsText_OnSetFont((ViewsText)_this, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+              ResourcesFont ));
+          }
+}
+
+/* Variants derived from the class : 'Components::BaseText' */
+EW_DEFINE_CLASS_VARIANTS( ComponentsBaseText )
+EW_END_OF_CLASS_VARIANTS( ComponentsBaseText )
+
+/* Virtual Method Table (VMT) for the class : 'Components::BaseText' */
+EW_DEFINE_CLASS( ComponentsBaseText, ViewsText, _.VMT, _.VMT, _.VMT, _.VMT, _.VMT, 
+                 _.VMT, "Components::BaseText" )
+  CoreRectView_initLayoutContext,
+  CoreView_GetRoot,
+  ViewsText_Draw,
+  CoreView_HandleEvent,
+  CoreView_CursorHitTest,
+  CoreRectView_ArrangeView,
+  CoreRectView_MoveView,
+  CoreRectView_GetExtent,
+  CoreView_ChangeViewState,
+  ViewsText_OnSetBounds,
+EW_END_OF_CLASS( ComponentsBaseText )
 
 /* Embedded Wizard */

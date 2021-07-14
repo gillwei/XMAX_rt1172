@@ -42,10 +42,10 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
+#include "_ComponentsBaseText.h"
 #include "_CoreGroup.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
-#include "_ViewsText.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -100,7 +100,7 @@
 EW_DEFINE_FIELDS( PopPOP16_NaviLoadingUI, CoreGroup )
   EW_OBJECT  ( NaviLoadingMainBottom, ViewsImage )
   EW_OBJECT  ( NaviLoadingBlackBG, ViewsRectangle )
-  EW_OBJECT  ( NaviLoadingText, ViewsText )
+  EW_OBJECT  ( NaviLoadingText, ComponentsBaseText )
   EW_OBJECT  ( NaviLoadingAnimation, ViewsImage )
   EW_PROPERTY( Animated,        XBool )
 EW_END_OF_FIELDS( PopPOP16_NaviLoadingUI )

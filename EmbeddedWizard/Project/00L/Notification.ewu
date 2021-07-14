@@ -7,8 +7,7 @@ class NTF01_NotificationList : Menu::BaseMenuView
   $rect <0,290,180,330>
   inherited method Init()
   {
-    trace "Init NTF01";
-
+    trace "NTF01";
     postsignal OnNotificationListUpdatedSlot;
   }
 
@@ -213,7 +212,7 @@ class NTF01_NotificationList : Menu::BaseMenuView
   }
 
   $rect <20,20,160,60>
-  object Views::Text NoDataText
+  object Components::BaseText NoDataText
   {
     preset Bounds = <10,50,470,236>;
     preset String = "No data";
@@ -271,7 +270,7 @@ class NTF02_NotificationDetail : Components::BaseMainBG
   $rect <10,300,190,340>
   inherited method Init()
   {
-    trace "Init NTF02";
+    trace "NTF02";
   }
 
   $rect <250,350,480,390>
@@ -367,7 +366,7 @@ class NotificationDetailText : Core::Group
   inherited property Bounds = <0,0,406,212>;
 
   $rect <20,20,160,60>
-  object Views::Text TitleText
+  object Components::BaseText TitleText
   {
     preset Layout = Core::Layout[AlignToLeft, AlignToTop];
     preset Bounds = <0,0,332,29>;
@@ -390,7 +389,7 @@ class NotificationDetailText : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text MessageText
+  object Components::BaseText MessageText
   {
     preset Layout = Core::Layout[AlignToLeft, AlignToTop];
     preset Bounds = <0,26,406,1256>;

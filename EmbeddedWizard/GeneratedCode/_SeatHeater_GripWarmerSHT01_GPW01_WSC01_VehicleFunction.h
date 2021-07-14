@@ -43,13 +43,13 @@
 #endif
 
 #include "_ComponentsBaseMainBG.h"
+#include "_ComponentsBaseText.h"
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
-#include "_ViewsText.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -104,7 +104,7 @@
 EW_DEFINE_FIELDS( SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction, ComponentsBaseMainBG )
   EW_PROPERTY( HighlightBG,     ViewsImage )
   EW_OBJECT  ( ImgLCBlueline,   ViewsImage )
-  EW_OBJECT  ( CurrentItemTitleText, ViewsText )
+  EW_OBJECT  ( CurrentItemTitleText, ComponentsBaseText )
   EW_OBJECT  ( ControlUpBg,     ViewsImage )
   EW_OBJECT  ( ControlDownBg,   ViewsImage )
   EW_OBJECT  ( ControlDownButton, ViewsImage )

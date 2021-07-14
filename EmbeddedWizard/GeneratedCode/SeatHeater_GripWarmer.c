@@ -25,6 +25,7 @@
 *******************************************************************************/
 
 #include "ewlocale.h"
+#include "_ComponentsBaseText.h"
 #include "_CoreGroup.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
@@ -40,7 +41,6 @@
 #include "_SeatHeater_GripWarmerScaleIndicator.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
-#include "_ViewsText.h"
 #include "DeviceInterface.h"
 #include "Enum.h"
 #include "Fonts.h"
@@ -739,7 +739,7 @@ void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction__Init( SeatHeater_Gr
 
   /* ... then construct all embedded objects */
   ViewsImage__Init( &_this->ImgLCBlueline, &_this->_.XObject, 0 );
-  ViewsText__Init( &_this->CurrentItemTitleText, &_this->_.XObject, 0 );
+  ComponentsBaseText__Init( &_this->CurrentItemTitleText, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->ControlUpBg, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->ControlDownBg, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->ControlDownButton, &_this->_.XObject, 0 );
@@ -754,9 +754,9 @@ void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction__Init( SeatHeater_Gr
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( &_this->ImgLCBlueline, _Const0004 );
   CoreRectView__OnSetBounds( &_this->CurrentItemTitleText, _Const0005 );
-  ViewsText_OnSetAlignment( &_this->CurrentItemTitleText, ViewsTextAlignmentAlignHorzLeft 
+  ViewsText_OnSetAlignment((ViewsText)&_this->CurrentItemTitleText, ViewsTextAlignmentAlignHorzLeft 
   | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->CurrentItemTitleText, 0 );
+  ViewsText_OnSetString((ViewsText)&_this->CurrentItemTitleText, 0 );
   CoreRectView__OnSetBounds( &_this->ControlUpBg, _Const0006 );
   CoreRectView__OnSetBounds( &_this->ControlDownBg, _Const0007 );
   CoreRectView__OnSetBounds( &_this->ControlDownButton, _Const0007 );
@@ -775,7 +775,7 @@ void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction__Init( SeatHeater_Gr
   CoreGroup__Add( _this, ((CoreView)&_this->VehicleFunctionIcon ), 0 );
   ViewsImage_OnSetBitmap( &_this->ImgLCBlueline, EwLoadResource( &ResourceLCBlueline, 
   ResourcesBitmap ));
-  ViewsText_OnSetFont( &_this->CurrentItemTitleText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ViewsText_OnSetFont((ViewsText)&_this->CurrentItemTitleText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
   ResourcesFont ));
   ViewsImage_OnSetBitmap( &_this->ControlUpBg, EwLoadResource( &ResourceControlButtonBackground, 
   ResourcesBitmap ));
@@ -802,7 +802,7 @@ void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction__ReInit( SeatHeater_
 
   /* ... then re-construct all embedded objects */
   ViewsImage__ReInit( &_this->ImgLCBlueline );
-  ViewsText__ReInit( &_this->CurrentItemTitleText );
+  ComponentsBaseText__ReInit( &_this->CurrentItemTitleText );
   ViewsImage__ReInit( &_this->ControlUpBg );
   ViewsImage__ReInit( &_this->ControlDownBg );
   ViewsImage__ReInit( &_this->ControlDownButton );
@@ -820,7 +820,7 @@ void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction__Done( SeatHeater_Gr
 
   /* Finalize all embedded objects */
   ViewsImage__Done( &_this->ImgLCBlueline );
-  ViewsText__Done( &_this->CurrentItemTitleText );
+  ComponentsBaseText__Done( &_this->CurrentItemTitleText );
   ViewsImage__Done( &_this->ControlUpBg );
   ViewsImage__Done( &_this->ControlDownBg );
   ViewsImage__Done( &_this->ControlDownButton );
@@ -845,7 +845,8 @@ void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_Init( SeatHeater_Gri
   if ( EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentVehicleFunction 
       == EnumVehicleSupportedFunctionSEAT_HEATER )
   {
-    ViewsText_OnSetString( &_this->CurrentItemTitleText, EwGetVariantOfString( &StringsLNC_SEAT_HEATER ));
+    ViewsText_OnSetString((ViewsText)&_this->CurrentItemTitleText, EwGetVariantOfString( 
+    &StringsLNC_SEAT_HEATER ));
     SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_UpdateHeaterLevel( _this, 
     EnumVehicleRxTypeSEAT_HEATER_STATUS );
   }
@@ -853,7 +854,7 @@ void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_Init( SeatHeater_Gri
     if ( EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentVehicleFunction 
         == EnumVehicleSupportedFunctionGRIP_WARMER )
     {
-      ViewsText_OnSetString( &_this->CurrentItemTitleText, EwGetVariantOfString( 
+      ViewsText_OnSetString((ViewsText)&_this->CurrentItemTitleText, EwGetVariantOfString( 
       &StringsGPW01_GRIP_WARMER ));
       SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_UpdateHeaterLevel( 
       _this, EnumVehicleRxTypeGRIP_WARMER_STATUS );
@@ -862,7 +863,7 @@ void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_Init( SeatHeater_Gri
       if ( EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentVehicleFunction 
           == EnumVehicleSupportedFunctionWIND_SCREEN )
       {
-        ViewsText_OnSetString( &_this->CurrentItemTitleText, EwGetVariantOfString( 
+        ViewsText_OnSetString((ViewsText)&_this->CurrentItemTitleText, EwGetVariantOfString( 
         &StringsWSC01_WIND_SCREEN ));
         ViewsImage_OnSetBitmap( &_this->ControlUpButton, EwLoadResource( &ResourceControlUpButtonArrow, 
         ResourcesBitmap ));

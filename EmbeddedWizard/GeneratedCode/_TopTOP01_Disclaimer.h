@@ -43,11 +43,11 @@
 #endif
 
 #include "_ComponentsBaseComponent.h"
+#include "_ComponentsBaseText.h"
 #include "_CoreKeyPressHandler.h"
 #include "_MenuPushButton.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
-#include "_ViewsText.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -102,10 +102,10 @@
 EW_DEFINE_FIELDS( TopTOP01_Disclaimer, ComponentsBaseComponent )
   EW_PROPERTY( OnAcceptButtonClicked, XSlot )
   EW_OBJECT  ( BlackBackground, ViewsRectangle )
-  EW_OBJECT  ( DisclaimerText,  ViewsText )
+  EW_OBJECT  ( DisclaimerText,  ComponentsBaseText )
   EW_OBJECT  ( TopBar,          ViewsRectangle )
   EW_OBJECT  ( IconWarning,     ViewsImage )
-  EW_OBJECT  ( WarningText,     ViewsText )
+  EW_OBJECT  ( WarningText,     ComponentsBaseText )
   EW_OBJECT  ( AcceptButton,    MenuPushButton )
 EW_END_OF_FIELDS( TopTOP01_Disclaimer )
 

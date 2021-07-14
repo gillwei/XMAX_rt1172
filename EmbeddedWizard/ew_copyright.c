@@ -59,7 +59,7 @@ static const char license_content[NUM_OF_LICENSE][LEN_OF_LICENSE_CONTENT] =
     {
     "Copyright © 2020 Amazon.com, Inc. or its affiliates.",
     "Copyright © 2020 JPEG Reference",
-    "Copyright © 2017 Richard Moore     (https://github.com/ricmoo/QRCode)\nCopyright © 2017 Project Nayuki    (https://www.nayuki.io/page/qr-code-generator-library)",
+    "Copyright © 2017 Richard Moore\n(https://github.com/ricmoo/QRCode)\nCopyright © 2017 Project Nayuki\n(https://www.nayuki.io/page/qr-code-generator-library)",
     "Copyright © 2011 Petteri Aimonen <jpa at nanopb.mail.kapsi.fi>",
     "SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007",
     "SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007",

@@ -43,11 +43,11 @@
 #endif
 
 #include "_ComponentsBaseComponent.h"
+#include "_ComponentsBaseText.h"
 #include "_CoreKeyPressHandler.h"
 #include "_MenuUpDownPushButtonSet.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
-#include "_ViewsText.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -101,10 +101,10 @@
 /* Deklaration of class : 'Pop::POP02_ConnectionError' */
 EW_DEFINE_FIELDS( PopPOP02_ConnectionError, ComponentsBaseComponent )
   EW_OBJECT  ( BlackBackground, ViewsRectangle )
-  EW_OBJECT  ( CheckText,       ViewsText )
+  EW_OBJECT  ( CheckText,       ComponentsBaseText )
   EW_OBJECT  ( TopBar,          ViewsRectangle )
   EW_OBJECT  ( ErrorIcon,       ViewsImage )
-  EW_OBJECT  ( ConnectionErrText, ViewsText )
+  EW_OBJECT  ( ConnectionErrText, ComponentsBaseText )
   EW_OBJECT  ( ErrorBTIcon,     ViewsImage )
   EW_OBJECT  ( ErrorNavigationIcon, ViewsImage )
   EW_OBJECT  ( ErrorPhoneLockIcon, ViewsImage )

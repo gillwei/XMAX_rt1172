@@ -107,6 +107,7 @@ void ApplicationApplication__Init( ApplicationApplication _this, XObject aLink, 
   CoreSystemEventHandler__Init( &_this->InspectionModeEventHandler, &_this->_.XObject, 0 );
   CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_.XObject, 0 );
   CoreSystemEventHandler__Init( &_this->ReceivedSystemEventHandler, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->TestFontTimer, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_.VMT = EW_CLASS( ApplicationApplication );
@@ -121,6 +122,8 @@ void ApplicationApplication__Init( ApplicationApplication _this, XObject aLink, 
   CoreTimer_OnSetPeriod( &_this->CheckOpeningTimer, 200 );
   CoreTimer_OnSetBegin( &_this->CheckOpeningTimer, 500 );
   CoreTimer_OnSetEnabled( &_this->CheckOpeningTimer, 1 );
+  CoreTimer_OnSetPeriod( &_this->TestFontTimer, 3000 );
+  CoreTimer_OnSetEnabled( &_this->TestFontTimer, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->StatusBar ), 0 );
   _this->FactoryTestEventHandler.OnEvent = EwNewSlot( _this, ApplicationApplication_OnFactoryTestEventSlot );
   CoreSystemEventHandler_OnSetEvent( &_this->FactoryTestEventHandler, &EwGetAutoObject( 
@@ -146,6 +149,7 @@ void ApplicationApplication__Init( ApplicationApplication _this, XObject aLink, 
   _this->ReceivedSystemEventHandler.OnEvent = EwNewSlot( _this, ApplicationApplication_OnSystemEventReceived );
   CoreSystemEventHandler_OnSetEvent( &_this->ReceivedSystemEventHandler, &EwGetAutoObject( 
   &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->SystemDataReceivedSystemEvent );
+  _this->TestFontTimer.OnTrigger = EwNewSlot( _this, ApplicationApplication_OnTestFontSlot );
 
   /* Call the user defined constructor */
   ApplicationApplication_Init( _this, aArg );
@@ -168,6 +172,7 @@ void ApplicationApplication__ReInit( ApplicationApplication _this )
   CoreSystemEventHandler__ReInit( &_this->InspectionModeEventHandler );
   CoreSystemEventHandler__ReInit( &_this->VehicleDataReceivedEventHandler );
   CoreSystemEventHandler__ReInit( &_this->ReceivedSystemEventHandler );
+  CoreTimer__ReInit( &_this->TestFontTimer );
 }
 
 /* Finalizer method for the class 'Application::Application' */
@@ -187,6 +192,7 @@ void ApplicationApplication__Done( ApplicationApplication _this )
   CoreSystemEventHandler__Done( &_this->InspectionModeEventHandler );
   CoreSystemEventHandler__Done( &_this->VehicleDataReceivedEventHandler );
   CoreSystemEventHandler__Done( &_this->ReceivedSystemEventHandler );
+  CoreTimer__Done( &_this->TestFontTimer );
 
   /* Don't forget to deinitialize the super class ... */
   CoreRoot__Done( &_this->_.Super );
@@ -860,6 +866,22 @@ void ApplicationApplication_OnSystemEventReceived( ApplicationApplication _this,
 
       default :; 
     }
+}
+
+/* 'C' function for method : 'Application::Application.OnTestFontSlot()' */
+void ApplicationApplication_OnTestFontSlot( ApplicationApplication _this, XObject 
+  sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+  EW_UNUSED_ARG( sender );
+
+  if ( Default == EwGetLanguage())
+    DeviceInterfaceSystemDeviceClass_ChangeLanguage( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+    DeviceInterfaceSystemDeviceClass ), EnumLanguageTRADITIONAL_CHINESE );
+  else
+    DeviceInterfaceSystemDeviceClass_ChangeLanguage( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+    DeviceInterfaceSystemDeviceClass ), EnumLanguageENGLISH );
 }
 
 /* Variants derived from the class : 'Application::Application' */

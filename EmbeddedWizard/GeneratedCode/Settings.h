@@ -50,6 +50,7 @@
 #include "_SettingsSET05_BtcMaxPairedDevice.h"
 #include "_SettingsSET06_BtcDiscovarable.h"
 #include "_SettingsSET08_BtcPairDevice.h"
+#include "_SettingsSET10_11_12_BtConnectionResult.h"
 #include "_SettingsSET17_BtcPairedDeviceList.h"
 #include "_SettingsSET19_BtcPairedDeviceOperation.h"
 #include "_SettingsSET22_WaitingConnection.h"
@@ -73,7 +74,6 @@
 #include "_SettingsSET49_OnlyNaviAppConnected.h"
 #include "_SettingsSET50_OnlyYahamaAppConnected.h"
 #include "_SettingsSET51_BothAppConnected.h"
-#include "_SettingsSET9_10_11_BtConnectionResult.h"
 #include "_SettingsTimeoutDialog.h"
 
 #ifdef __cplusplus

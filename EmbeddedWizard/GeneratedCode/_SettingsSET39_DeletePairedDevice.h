@@ -43,6 +43,7 @@
 #endif
 
 #include "_ComponentsBaseMainBG.h"
+#include "_ComponentsBaseText.h"
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
@@ -50,7 +51,6 @@
 #include "_MenuPushButton.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
-#include "_ViewsText.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -104,7 +104,7 @@
 /* Deklaration of class : 'Settings::SET39_DeletePairedDevice' */
 EW_DEFINE_FIELDS( SettingsSET39_DeletePairedDevice, ComponentsBaseMainBG )
   EW_OBJECT  ( PushButton,      MenuPushButton )
-  EW_OBJECT  ( Text,            ViewsText )
+  EW_OBJECT  ( Text,            ComponentsBaseText )
 EW_END_OF_FIELDS( SettingsSET39_DeletePairedDevice )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET39_DeletePairedDevice' */

@@ -42,6 +42,7 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
+#include "_ComponentsBaseText.h"
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CorePropertyObserver.h"
@@ -51,7 +52,6 @@
 #include "_MenuVerticalMenu.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
-#include "_ViewsText.h"
 
 /* Forward declaration of the class Components::BaseMainBG */
 #ifndef _ComponentsBaseMainBG_
@@ -117,7 +117,7 @@
 /* Deklaration of class : 'Settings::SET17_BtcPairedDeviceList' */
 EW_DEFINE_FIELDS( SettingsSET17_BtcPairedDeviceList, MenuBaseMenuView )
   EW_OBJECT  ( RefreshListObserver, CorePropertyObserver )
-  EW_OBJECT  ( NoDataText,      ViewsText )
+  EW_OBJECT  ( NoDataText,      ComponentsBaseText )
   EW_OBJECT  ( NoDataTimeoutTimer, CoreTimer )
   EW_VARIABLE( PairedDeviceNum, XInt32 )
 EW_END_OF_FIELDS( SettingsSET17_BtcPairedDeviceList )

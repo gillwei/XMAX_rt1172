@@ -2,6 +2,7 @@
 
 $rect <10,10,250,50>
 $output false
+$multilingual true
 class LNC_Main : Components::BaseComponent
 {
   $rect <250,330,450,370>
@@ -13,7 +14,7 @@ class LNC_Main : Components::BaseComponent
   $rect <250,290,450,330>
   inherited method Init()
   {
-    trace "LauncherInit";
+    trace "LNC";
 
     GetVehicleSupportedFeature();
 
@@ -117,7 +118,7 @@ class LNC_Main : Components::BaseComponent
 
   // 1. The initial selected item should be "Phone" if there is an active call.
   //    Otherwise, "Music" is the initial selected item.
-  // 2. Rotary Menu shows following items in sequence:
+  // 2. Rotary Menu displays following items in sequence:
   // Phone
   // -> Music
   // -> ODO/Trip
@@ -126,7 +127,6 @@ class LNC_Main : Components::BaseComponent
   // -> Notification
   // -> Weather
   // -> Settings
-  // -> Traction Control (depends on vehicle)
   // -> Seat Heater (depends on vehicle)
   // -> Grip Warmer (depends on vehicle)
   // -> Wind Screen (depends on vehicle)
@@ -952,6 +952,26 @@ $rect <10,60,250,100>
 $output false
 class LNC_Base : Core::Group
 {
+  $rect <240,250,440,290>
+  inherited method ReInit()
+  {
+    switch( language )
+    {
+      case TraditionalChinese:
+      {
+        PreviousItemTitleText.Font = Fonts::NotoSansCjkTcMedium24pt;
+        CurrentItemTitleText.Font = Fonts::NotoSansCjkTcMedium28pt;
+        NextItemTitleText.Font = Fonts::NotoSansCjkTcMedium24pt;
+      }
+      default:
+      {
+        PreviousItemTitleText.Font = Fonts::NotoSansCjkJpMedium24pt;
+        CurrentItemTitleText.Font = Fonts::NotoSansCjkJpMedium28pt;
+        NextItemTitleText.Font = Fonts::NotoSansCjkJpMedium24pt;
+      }
+    }
+  }
+
   $rect <0,250,200,290>
   inherited property Bounds = <0,38,480,272>;
 

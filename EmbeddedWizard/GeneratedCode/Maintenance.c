@@ -41,9 +41,8 @@
 /* Compressed strings for the language 'Default'. */
 EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
-  0x0000001E, /* ratio 133.33 % */
-  0xB8001B00, 0x00092452, 0x00D20037, 0x040003A0, 0x9C002680, 0x0002A000, 0x00188006,
-  0x10046A32, 0x00000010, 0x00000000
+  0x00000014, /* ratio 140.00 % */
+  0xB8001100, 0x0009A452, 0x00A80027, 0x06200180, 0x01108780, 0x00000404, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */

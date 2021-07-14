@@ -42,9 +42,9 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
+#include "_ComponentsBaseText.h"
 #include "_CoreGroup.h"
 #include "_ViewsImage.h"
-#include "_ViewsText.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -98,7 +98,7 @@
 /* Deklaration of class : 'Navigation::NaviCurrentRoad' */
 EW_DEFINE_FIELDS( NavigationNaviCurrentRoad, CoreGroup )
   EW_OBJECT  ( NaviIconCurRd,   ViewsImage )
-  EW_OBJECT  ( RoadNameText,    ViewsText )
+  EW_OBJECT  ( RoadNameText,    ComponentsBaseText )
   EW_PROPERTY( RoadName,        XString )
   EW_VARIABLE( NaviIconX1Pos,   XInt32 )
   EW_PROPERTY( RoadNameTextBounds, XRect )

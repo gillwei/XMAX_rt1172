@@ -43,6 +43,7 @@
 #endif
 
 #include "_ComponentsBaseMainBG.h"
+#include "_ComponentsBaseText.h"
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
@@ -106,7 +107,7 @@ EW_DEFINE_FIELDS( TelephoneTEL02_ActiveCall, ComponentsBaseMainBG )
   EW_OBJECT  ( VolumeUpButton,  TelephoneImageButton )
   EW_OBJECT  ( VolumeDownButton, TelephoneImageButton )
   EW_OBJECT  ( ForegroundImage, ViewsImage )
-  EW_OBJECT  ( CallerText,      ViewsText )
+  EW_OBJECT  ( CallerText,      ComponentsBaseText )
   EW_OBJECT  ( DurationText,    ViewsText )
   EW_OBJECT  ( PhoneCallStateChangedEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( UpdateDurationTimer, CoreTimer )

@@ -45,17 +45,28 @@
 #include "Resource.h"
 #include "Strings.h"
 
+/* Compressed strings for the language 'Default'. */
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
+{
+  0x00000034, /* ratio 84.62 % */
+  0xB8001100, 0x00084452, 0x00A80029, 0x06200180, 0x09028780, 0x90A8441A, 0x00878CA1,
+  0x983C1622, 0x19802170, 0x04064318, 0x00000000
+};
+
 /* Constant values used in this 'C' module only. */
 static const XRect _Const0000 = {{ 0, 0 }, { 480, 272 }};
-static const XRect _Const0001 = {{ 45, 60 }, { 435, 231 }};
-static const XRect _Const0002 = {{ 173, 205 }, { 307, 224 }};
-static const XRect _Const0003 = {{ 173, 135 }, { 307, 154 }};
-static const XRect _Const0004 = {{ 173, 65 }, { 307, 84 }};
-static const XRect _Const0005 = {{ 179, 83 }, { 301, 205 }};
-static const XRect _Const0006 = {{ 173, 177 }, { 307, 193 }};
-static const XRect _Const0007 = {{ 173, 149 }, { 307, 168 }};
-static const XRect _Const0008 = {{ 173, 121 }, { 307, 141 }};
-static const XRect _Const0009 = {{ 173, 93 }, { 307, 112 }};
+static const XStringRes _Const0001 = { _StringsDefault0, 0x0002 };
+static const XRect _Const0002 = {{ 45, 60 }, { 435, 231 }};
+static const XRect _Const0003 = {{ 173, 205 }, { 307, 224 }};
+static const XRect _Const0004 = {{ 173, 135 }, { 307, 154 }};
+static const XRect _Const0005 = {{ 173, 65 }, { 307, 84 }};
+static const XRect _Const0006 = {{ 179, 83 }, { 301, 205 }};
+static const XStringRes _Const0007 = { _StringsDefault0, 0x000A };
+static const XRect _Const0008 = {{ 173, 177 }, { 307, 193 }};
+static const XRect _Const0009 = {{ 173, 149 }, { 307, 168 }};
+static const XRect _Const000A = {{ 173, 121 }, { 307, 141 }};
+static const XRect _Const000B = {{ 173, 93 }, { 307, 112 }};
+static const XStringRes _Const000C = { _StringsDefault0, 0x0012 };
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.
@@ -142,6 +153,7 @@ void BrightnessBRT01_BrightnessSettingMenu_Init( BrightnessBRT01_BrightnessSetti
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aArg );
 
+  EwTrace( "%s", EwLoadString( &_Const0001 ));
   NoOfItems = 1;
 
   if ( DeviceInterfaceVehicleDeviceClass_IsVehicleFunctionSupported( EwGetAutoObject( 
@@ -361,14 +373,14 @@ void BrightnessBRT02_TFTBrightness__Init( BrightnessBRT02_TFTBrightness _this, X
   CoreRectView__OnSetBounds( _this, _Const0000 );
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
   _this->Super1.SlideOutEffectEnabled = 1;
-  CoreRectView__OnSetBounds( &_this->Base, _Const0001 );
-  _this->LevelBarBounds[ 0 ] = _Const0002;
-  _this->LevelBarBounds[ 1 ] = _Const0003;
-  _this->LevelBarBounds[ 2 ] = _Const0004;
-  CoreRectView__OnSetBounds( &_this->LevelBar, _Const0004 );
+  CoreRectView__OnSetBounds( &_this->Base, _Const0002 );
+  _this->LevelBarBounds[ 0 ] = _Const0003;
+  _this->LevelBarBounds[ 1 ] = _Const0004;
+  _this->LevelBarBounds[ 2 ] = _Const0005;
+  CoreRectView__OnSetBounds( &_this->LevelBar, _Const0005 );
   ViewsImage_OnSetFrameNumber( &_this->LevelBar, 1 );
   ViewsImage_OnSetVisible( &_this->LevelBar, 0 );
-  CoreRectView__OnSetBounds( &_this->HighTempImage, _Const0005 );
+  CoreRectView__OnSetBounds( &_this->HighTempImage, _Const0006 );
   ViewsImage_OnSetVisible( &_this->HighTempImage, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Base ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->LevelBar ), 0 );
@@ -430,6 +442,7 @@ void BrightnessBRT02_TFTBrightness_Init( BrightnessBRT02_TFTBrightness _this, XH
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aArg );
 
+  EwTrace( "%s", EwLoadString( &_Const0007 ));
   BrightnessBRT02_TFTBrightness_UpdateBrightnessLevel( _this );
   BrightnessBRT02_TFTBrightness_OnSetIsDeratingOn( _this, !!DeviceInterfaceSystemDeviceClass_GetSystemStatus( 
   EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass ), 
@@ -656,16 +669,16 @@ void BrightnessBRT03_MeterBrightness__Init( BrightnessBRT03_MeterBrightness _thi
   CoreRectView__OnSetBounds( _this, _Const0000 );
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
   _this->Super1.SlideOutEffectEnabled = 1;
-  CoreRectView__OnSetBounds( &_this->Base, _Const0001 );
-  CoreRectView__OnSetBounds( &_this->LevelBar, _Const0002 );
+  CoreRectView__OnSetBounds( &_this->Base, _Const0002 );
+  CoreRectView__OnSetBounds( &_this->LevelBar, _Const0003 );
   ViewsImage_OnSetFrameNumber( &_this->LevelBar, 1 );
   ViewsImage_OnSetVisible( &_this->LevelBar, 0 );
-  _this->LevelBarBounds[ 0 ] = _Const0002;
-  _this->LevelBarBounds[ 1 ] = _Const0006;
-  _this->LevelBarBounds[ 2 ] = _Const0007;
-  _this->LevelBarBounds[ 3 ] = _Const0008;
-  _this->LevelBarBounds[ 4 ] = _Const0009;
-  _this->LevelBarBounds[ 5 ] = _Const0004;
+  _this->LevelBarBounds[ 0 ] = _Const0003;
+  _this->LevelBarBounds[ 1 ] = _Const0008;
+  _this->LevelBarBounds[ 2 ] = _Const0009;
+  _this->LevelBarBounds[ 3 ] = _Const000A;
+  _this->LevelBarBounds[ 4 ] = _Const000B;
+  _this->LevelBarBounds[ 5 ] = _Const0005;
   CoreGroup__Add( _this, ((CoreView)&_this->Base ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->LevelBar ), 0 );
   ViewsImage_OnSetBitmap( &_this->Base, EwLoadResource( &ResourceMeterBrightnessBase, 
@@ -716,6 +729,7 @@ void BrightnessBRT03_MeterBrightness_Init( BrightnessBRT03_MeterBrightness _this
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aArg );
 
+  EwTrace( "%s", EwLoadString( &_Const000C ));
   BrightnessBRT03_MeterBrightness_UpdateBrightnessLevel( _this );
 }
 

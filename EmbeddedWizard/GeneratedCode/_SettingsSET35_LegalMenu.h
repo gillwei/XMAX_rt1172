@@ -197,6 +197,11 @@ EW_DEFINE_METHODS( SettingsSET35_LegalMenu, MenuBaseMenuView )
   EW_METHOD( LoadItemIcon2Visible, XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( SettingsSET35_LegalMenu )
 
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void SettingsSET35_LegalMenu_Init( SettingsSET35_LegalMenu _this, XHandle aArg );
+
 /* 'C' function for method : 'Settings::SET35_LegalMenu.LoadItemClass()' */
 XClass SettingsSET35_LegalMenu_LoadItemClass( SettingsSET35_LegalMenu _this, XInt32 
   aItemNo );

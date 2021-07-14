@@ -48,10 +48,8 @@ class UNT01_UnitSettingMenu : Menu::BaseMenuView
   inherited method LoadItemClass()
   {
     // suppress warning
-    if( aItemNo )
-    {
-      // empty body
-    }
+    aItemNo;
+
     return Menu::ItemBaseValue;
   }
 

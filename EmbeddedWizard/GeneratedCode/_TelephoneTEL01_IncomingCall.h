@@ -43,6 +43,7 @@
 #endif
 
 #include "_ComponentsBaseMainBG.h"
+#include "_ComponentsBaseText.h"
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
@@ -50,7 +51,6 @@
 #include "_TelephoneImageButton.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
-#include "_ViewsText.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -106,7 +106,7 @@ EW_DEFINE_FIELDS( TelephoneTEL01_IncomingCall, ComponentsBaseMainBG )
   EW_OBJECT  ( AnswerButton,    TelephoneImageButton )
   EW_OBJECT  ( DeclineButton,   TelephoneImageButton )
   EW_OBJECT  ( ForegroundImage, ViewsImage )
-  EW_OBJECT  ( CallerText,      ViewsText )
+  EW_OBJECT  ( CallerText,      ComponentsBaseText )
   EW_OBJECT  ( PhoneCallStateChangedEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( DismissTimer,    CoreTimer )
   EW_OBJECT  ( KeyEnableTimer,  CoreTimer )

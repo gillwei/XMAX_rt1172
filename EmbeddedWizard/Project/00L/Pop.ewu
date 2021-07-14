@@ -1,31 +1,27 @@
 ﻿$version 11.00
 
-$rect <10,210,250,250>
+$rect <10,260,270,300>
 $output false
+$multilingual true
 class POP08_WeatherLoadingUI : Components::BaseMainBG
 {
-  $rect <510,60,710,100>
-  inherited method ReInit()
-  {
-    LoadingText.String = Strings::GEN_PLEASE_WAIT;
-  }
-
   $rect <510,20,710,60>
   inherited method Init()
   {
+    trace "POP08";
     DeviceInterface::WeatherDevice.SendWeatherInfoRequest();
     DeviceInterface::WeatherDevice.SendVehicleSettingRequest();
   }
 
   $rect <20,20,160,60>
-  object Views::Text LoadingText
+  object Components::BaseText LoadingText
   {
     preset Bounds = <10,156,470,187>;
     preset String = Strings::GEN_PLEASE_WAIT;
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
-  $rect <510,110,710,150>
+  $rect <510,110,760,150>
   object Core::PropertyObserver WeatherLoadingObserver
   {
     preset OnEvent = OnWeatherLoadingUpdateSlot;
@@ -34,7 +30,7 @@ class POP08_WeatherLoadingUI : Components::BaseMainBG
 
   // This slot method is executed when the associated property observer 'PropertyObserver' \
   // is notified.
-  $rect <510,150,710,190>
+  $rect <510,150,760,190>
   slot OnWeatherLoadingUpdateSlot
   {
     if( DeviceInterface::WeatherDevice.IsWeatherInfoReceived )
@@ -52,7 +48,7 @@ class POP08_WeatherLoadingUI : Components::BaseMainBG
     preset Bitmap = Resource::LoadingAnimation;
   }
 
-  $rect <520,210,710,250>
+  $rect <510,210,780,250>
   object Core::Timer ConnectionFailedTimer
   {
     preset OnTrigger = OnConnectionFailedUpdateSlot;
@@ -60,14 +56,14 @@ class POP08_WeatherLoadingUI : Components::BaseMainBG
     preset Enabled = true;
   }
 
-  $rect <520,250,720,290>
+  $rect <510,250,790,290>
   slot OnConnectionFailedUpdateSlot
   {
     ConnectionFailedTimer.Enabled = false;
     PresentDialog( new Pop::POP09_POP14_BleConnectionErrorUI, null, null, null, null, null, null, null, null, false );
   }
 
-  $rect <520,300,720,340>
+  $rect <510,300,790,340>
   object Core::SystemEventHandler MotoConConnectionEventHandler
   {
     preset OnEvent = OnMotoConConnectionUpdateEvent;
@@ -76,7 +72,7 @@ class POP08_WeatherLoadingUI : Components::BaseMainBG
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <520,340,720,380>
+  $rect <510,340,790,380>
   slot OnMotoConConnectionUpdateEvent
   {
     var DeviceInterface::MotoConContext MotoConContext = ( DeviceInterface::MotoConContext )MotoConConnectionEventHandler.Context;
@@ -90,25 +86,27 @@ class POP08_WeatherLoadingUI : Components::BaseMainBG
   }
 }
 
-$rect <10,260,210,300>
+$rect <330,10,610,50>
 $output false
+$multilingual true
 class POP09_POP14_BleConnectionErrorUI : Components::BaseMainBG
 {
-  $rect <520,30,720,70>
-  inherited method ReInit()
+  $rect <520,30,700,70>
+  inherited method Init()
   {
-    ConnectionFailedMessage.String = Strings::POP09_CONNECTION_FAILED;
+    trace "POP09/14";
   }
 
   $rect <20,20,160,60>
-  object Views::Text ConnectionFailedMessage
+  object Components::BaseText ConnectionFailedMessage
   {
     preset Bounds = <10,49,470,235>;
+    preset WrapText = true;
     preset String = Strings::POP09_CONNECTION_FAILED;
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
-  $rect <520,80,710,120>
+  $rect <520,130,710,170>
   object Core::Timer CountDownTimer
   {
     preset OnTrigger = OnCountDownTimeoutSlot;
@@ -116,7 +114,7 @@ class POP09_POP14_BleConnectionErrorUI : Components::BaseMainBG
     preset Enabled = true;
   }
 
-  $rect <520,130,750,170>
+  $rect <520,180,750,220>
   slot OnCountDownTimeoutSlot
   {
     CountDownTimer.Enabled = false;
@@ -128,24 +126,21 @@ class POP09_POP14_BleConnectionErrorUI : Components::BaseMainBG
   }
 }
 
-$rect <10,60,250,100>
+$rect <10,60,270,100>
 $output false
+$multilingual true
 class POP02_ConnectionError : Components::BaseComponent
 {
   $rect <10,390,190,430>
   inherited method ReInit()
   {
-    ConnectionErrText.String = Strings::POP02_CONNECTION_ERR;
-    CheckText.String = Strings::POP02_PLEASE_CHECK;
-    UpDownPushButtonSet.UpButtonTitle = Strings::GEN_OK;
-    UpDownPushButtonSet.DownButtonTitle = Strings::POP02_DETAILS;
     InvalidateLayout();
   }
 
   $rect <10,340,190,380>
   inherited method Init()
   {
-    trace "Init POP02";
+    trace "POP02";
   }
 
   $rect <10,290,190,330>
@@ -196,7 +191,7 @@ class POP02_ConnectionError : Components::BaseComponent
   }
 
   $rect <20,20,160,60>
-  object Views::Text CheckText
+  object Components::BaseText CheckText
   {
     preset Bounds = <10,55,470,89>;
     preset WrapText = false;
@@ -221,7 +216,7 @@ class POP02_ConnectionError : Components::BaseComponent
   }
 
   $rect <20,20,160,60>
-  object Views::Text ConnectionErrText
+  object Components::BaseText ConnectionErrText
   {
     preset Bounds = <144,2,375,43>;
     preset AutoSize = true;
@@ -290,17 +285,15 @@ class POP02_ConnectionError : Components::BaseComponent
   }
 }
 
-$rect <10,160,260,200>
+$rect <10,210,270,250>
 $output false
+$multilingual true
 class POP07_TROUBLE_SHOOTING : Components::BaseMainBG
 {
-  $rect <10,290,210,330>
-  inherited method ReInit()
+  $rect <10,290,190,330>
+  inherited method Init()
   {
-    TroubleShootingTitle.String = Strings::POP07_TROUBLE_SHOOTING;
-    TroubleShootingText1.String = Strings::POP07_UNLOCK_PHONE;
-    TroubleShootingText2.String = Strings::POP07_TURN_ON_BT;
-    TroubleShootingText3.String = Strings::POP07_LAUNCH_APP;
+    trace "POP07";
   }
 
   $rect <10,390,240,430>
@@ -365,7 +358,7 @@ class POP07_TROUBLE_SHOOTING : Components::BaseMainBG
   }
 
   $rect <20,20,160,60>
-  object Views::Text TroubleShootingTitle
+  object Components::BaseText TroubleShootingTitle
   {
     preset Bounds = <10,4,470,41>;
     preset AutoSize = true;
@@ -377,7 +370,7 @@ class POP07_TROUBLE_SHOOTING : Components::BaseMainBG
   }
 
   $rect <20,20,160,60>
-  object Views::Text TroubleShootingText1
+  object Components::BaseText TroubleShootingText1
   {
     preset Bounds = <68,49,440,111>;
     preset AutoSize = false;
@@ -389,7 +382,7 @@ class POP07_TROUBLE_SHOOTING : Components::BaseMainBG
   }
 
   $rect <20,20,160,60>
-  object Views::Text TroubleShootingText2
+  object Components::BaseText TroubleShootingText2
   {
     preset Bounds = <68,120,440,182>;
     preset AutoSize = false;
@@ -401,7 +394,7 @@ class POP07_TROUBLE_SHOOTING : Components::BaseMainBG
   }
 
   $rect <20,20,160,60>
-  object Views::Text TroubleShootingText3
+  object Components::BaseText TroubleShootingText3
   {
     preset Bounds = <68,191,440,253>;
     preset AutoSize = false;
@@ -437,24 +430,18 @@ class POP07_TROUBLE_SHOOTING : Components::BaseMainBG
   }
 }
 
-$rect <10,10,250,50>
+$rect <10,10,270,50>
 $output false
+$multilingual true
 class POP01_PleaseWait : Components::BaseMainBG
 {
-  $rect <530,110,730,150>
-  inherited method ReInit()
-  {
-    LoadingText.String = Strings::GEN_PLEASE_WAIT; 
-  }
-
   $rect <530,60,730,100>
   inherited method Init()
   {
-    trace "Init POP01";
-
+    trace "POP01";
   }
 
-  $rect <530,340,760,380>
+  $rect <532,290,762,330>
   inherited method OnShortHomeKeyActivated()
   {
     var Application::Application App = (Application::Application)GetRoot();
@@ -464,7 +451,7 @@ class POP01_PleaseWait : Components::BaseMainBG
     }
   }
 
-  $rect <528,298,758,338>
+  $rect <530,248,760,288>
   inherited method OnLongHomeKeyActivated()
   {
     var Application::Application App = (Application::Application)GetRoot();
@@ -482,7 +469,7 @@ class POP01_PleaseWait : Components::BaseMainBG
   }
 
   $rect <20,20,160,60>
-  object Views::Text LoadingText
+  object Components::BaseText LoadingText
   {
     preset Bounds = <10,156,470,187>;
     preset String = Strings::GEN_PLEASE_WAIT;
@@ -497,7 +484,7 @@ class POP01_PleaseWait : Components::BaseMainBG
     preset Bitmap = Resource::LoadingAnimation;
   }
 
-  $rect <530,170,750,210>
+  $rect <532,120,792,160>
   object Core::Timer ConnectionFailedTimer
   {
     preset OnTrigger = OnConnectionFailedUpdateSlot;
@@ -506,7 +493,7 @@ class POP01_PleaseWait : Components::BaseMainBG
     preset Enabled = true;
   }
 
-  $rect <530,220,750,260>
+  $rect <532,170,792,210>
   slot OnConnectionFailedUpdateSlot
   {
     ConnectionFailedTimer.Enabled = false;
@@ -516,7 +503,7 @@ class POP01_PleaseWait : Components::BaseMainBG
     }
   }
 
-  $rect <780,170,980,210>
+  $rect <822,120,1092,160>
   object Core::SystemEventHandler NaviConnectUpdateEventHandler
   {
     preset OnEvent = OnNaviConnectUpdateSlot;
@@ -525,34 +512,33 @@ class POP01_PleaseWait : Components::BaseMainBG
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <980,170,1180,210>
+  $rect <822,170,1092,210>
   slot OnNaviConnectUpdateSlot
   {
     ConnectionFailedTimer.Enabled = false;
     signal NaviAppConnectedSlot;
   }
 
-  $rect <780,300,980,340>
+  $rect <782,250,982,290>
   property slot NaviAppConnectedSlot;
 
-  $reorder LoadingText 2
-  $reorder LoadingAnimation 2
+  $reorder LoadingText 1
+  $reorder LoadingAnimation 1
 }
 
-$rect <10,110,210,150>
+$rect <10,160,270,200>
 $output false
+$multilingual true
 class POP04_Reset : Components::BaseMainBG
 {
-  $rect <510,90,710,130>
-  inherited method ReInit()
+  $rect <510,40,690,80>
+  inherited method Init()
   {
-    ResetText.String = Strings::GEN_RESET_QUESTION_MARK;
-    UpDownPushButtonSet.UpButtonTitle = Strings::GEN_CANCEL;
-    UpDownPushButtonSet.DownButtonTitle = Strings::GEN_OK; 
+    trace "POP04";
   }
 
   $rect <20,20,160,60>
-  object Views::Text ResetText
+  object Components::BaseText ResetText
   {
     preset Bounds = <10,46,470,170>;
     preset String = Strings::GEN_RESET_QUESTION_MARK;
@@ -597,12 +583,19 @@ class POP04_Reset : Components::BaseMainBG
   }
 }
 
-$rect <10,310,210,350>
+$rect <330,110,570,150>
 $output false
+$multilingual true
 class POP17_AppInitSettingError : Components::BaseMainBG
 {
+  $rect <20,290,200,330>
+  inherited method Init()
+  {
+    trace "POP17";
+  }
+
   $rect <20,20,160,60>
-  object Views::Text AppInitSettingFailedMessage
+  object Components::BaseText AppInitSettingFailedMessage
   {
     preset Bounds = <10,50,470,236>;
     preset WrapText = true;
@@ -630,12 +623,19 @@ class POP17_AppInitSettingError : Components::BaseMainBG
   }
 }
 
-$rect <280,10,480,50>
+$rect <10,110,270,150>
 $output false
+$multilingual true
 class POP03_HomeOfficeSettingError : Components::BaseMainBG
 {
+  $rect <510,30,690,70>
+  inherited method Init()
+  {
+    trace "POP03";
+  }
+
   $rect <20,20,160,60>
-  object Views::Text HomeOfficeSettingFailedMessage
+  object Components::BaseText HomeOfficeSettingFailedMessage
   {
     preset Bounds = <10,50,470,236>;
     preset WrapText = true;
@@ -643,7 +643,7 @@ class POP03_HomeOfficeSettingError : Components::BaseMainBG
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
-  $rect <570,80,760,120>
+  $rect <510,130,700,170>
   object Core::Timer CountDownTimer
   {
     preset OnTrigger = OnLauncherScreenUpdateSlot;
@@ -651,22 +651,21 @@ class POP03_HomeOfficeSettingError : Components::BaseMainBG
     preset Enabled = true;
   }
 
-  $rect <760,80,960,120>
+  $rect <700,130,900,170>
   slot OnLauncherScreenUpdateSlot
   {
     CountDownTimer.Enabled = false;
     signal ReturnToNaviHomeSlot;
   }
 
-  $rect <570,150,770,190>
+  $rect <510,200,710,240>
   property string ErrorMessage;
 
-  $rect <570,190,770,230>
+  $rect <510,240,710,280>
   onset ErrorMessage
   {
     if( pure ErrorMessage != value )
     {
-      // Remember the property's new value.
       pure ErrorMessage = value;
       HomeOfficeSettingFailedMessage.String = ErrorMessage;
     }
@@ -680,12 +679,13 @@ class POP03_HomeOfficeSettingError : Components::BaseMainBG
     preset Bitmap = Resource::StatusBarDivider;
   }
 
-  $rect <570,250,770,290>
+  $rect <510,300,710,340>
   property slot ReturnToNaviHomeSlot;
 }
 
-$rect <280,60,480,100>
+$rect <330,60,570,100>
 $output false
+$multilingual true
 class POP16_NaviLoadingUI : Core::Group
 {
   $rect <0,250,200,290>
@@ -706,7 +706,7 @@ class POP16_NaviLoadingUI : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text NaviLoadingText
+  object Components::BaseText NaviLoadingText
   {
     preset Bounds = <10,118,470,149>;
     preset String = Strings::GEN_PLEASE_WAIT;

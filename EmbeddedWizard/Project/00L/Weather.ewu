@@ -24,7 +24,7 @@ class WeatherDayViewUI : Core::Group
   inherited property Bounds = <0,0,480,224>;
 
   $rect <20,20,160,60>
-  object Views::Text CurrentLocationText
+  object Components::BaseText CurrentLocationText
   {
     preset Bounds = <127,15,351,49>;
     preset Ellipsis = true;
@@ -33,7 +33,7 @@ class WeatherDayViewUI : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text ChanceOfRainText
+  object Components::BaseText ChanceOfRainText
   {
     preset Bounds = <142,59,197,93>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
@@ -56,7 +56,7 @@ class WeatherDayViewUI : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text WeekDayText
+  object Components::BaseText WeekDayText
   {
     preset Bounds = <360,15,428,49>;
     preset String = "";
@@ -146,7 +146,7 @@ class WeatherDayViewUI : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text ChanceOfRain1h
+  object Components::BaseText ChanceOfRain1h
   {
     preset Bounds = <84,164,126,195>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
@@ -155,7 +155,7 @@ class WeatherDayViewUI : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text ChanceOfRain2h
+  object Components::BaseText ChanceOfRain2h
   {
     preset Bounds = <228,164,270,195>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
@@ -164,7 +164,7 @@ class WeatherDayViewUI : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text ChanceOfRain3h
+  object Components::BaseText ChanceOfRain3h
   {
     preset Bounds = <372,164,414,195>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
@@ -340,7 +340,7 @@ class WeatherDayViewUI : Core::Group
   );
 
   $rect <20,20,160,60>
-  object Views::Text MinTempText
+  object Components::BaseText MinTempText
   {
     preset Bounds = <280,59,336,93>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
@@ -360,7 +360,7 @@ class WeatherDayViewUI : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text MaxTempText
+  object Components::BaseText MaxTempText
   {
     preset Bounds = <347,59,392,93>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
@@ -391,6 +391,12 @@ $rect <30,20,230,60>
 $output false
 class WEA01_Main : Components::BaseMainBG
 {
+  $rect <10,340,190,380>
+  inherited method Init()
+  {
+    trace "WEA01";
+  }
+
   $rect <10,290,210,330>
   inherited property Bounds = <0,0,480,272>;
 
@@ -442,7 +448,7 @@ class WeatherWeekViewUI : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text DayOneText
+  object Components::BaseText DayOneText
   {
     preset Bounds = <85,7,146,38>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
@@ -451,7 +457,7 @@ class WeatherWeekViewUI : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text DayOneChanceOfRain
+  object Components::BaseText DayOneChanceOfRain
   {
     preset Bounds = <85,49,127,80>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
@@ -460,7 +466,7 @@ class WeatherWeekViewUI : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text DayOneMinTemp
+  object Components::BaseText DayOneMinTemp
   {
     preset Bounds = <30,76,75,107>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
@@ -502,7 +508,7 @@ class WeatherWeekViewUI : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text DayTwoText
+  object Components::BaseText DayTwoText
   {
     preset Bounds = <229,7,290,38>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
@@ -511,7 +517,7 @@ class WeatherWeekViewUI : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text DayTwoChanceOfRain
+  object Components::BaseText DayTwoChanceOfRain
   {
     preset Bounds = <229,49,271,80>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
@@ -527,7 +533,7 @@ class WeatherWeekViewUI : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text DayTwoMinTemp
+  object Components::BaseText DayTwoMinTemp
   {
     preset Bounds = <174,76,219,107>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
@@ -544,7 +550,7 @@ class WeatherWeekViewUI : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text DayThreeText
+  object Components::BaseText DayThreeText
   {
     preset Bounds = <373,7,434,38>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
@@ -553,7 +559,7 @@ class WeatherWeekViewUI : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text DayThreeChanceOfRain
+  object Components::BaseText DayThreeChanceOfRain
   {
     preset Bounds = <373,49,415,80>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
@@ -569,7 +575,7 @@ class WeatherWeekViewUI : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text DayThreeMinTemp
+  object Components::BaseText DayThreeMinTemp
   {
     preset Bounds = <318,76,363,107>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
@@ -614,7 +620,7 @@ class WeatherWeekViewUI : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text DayFourText
+  object Components::BaseText DayFourText
   {
     preset Bounds = <85,122,146,153>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
@@ -623,7 +629,7 @@ class WeatherWeekViewUI : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text DayFiveText
+  object Components::BaseText DayFiveText
   {
     preset Bounds = <229,122,290,153>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
@@ -632,7 +638,7 @@ class WeatherWeekViewUI : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text DaySixText
+  object Components::BaseText DaySixText
   {
     preset Bounds = <373,122,434,153>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
@@ -659,7 +665,7 @@ class WeatherWeekViewUI : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text DayFourChanceOfRain
+  object Components::BaseText DayFourChanceOfRain
   {
     preset Bounds = <85,164,127,195>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
@@ -668,7 +674,7 @@ class WeatherWeekViewUI : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text DayFiveChanceOfRain
+  object Components::BaseText DayFiveChanceOfRain
   {
     preset Bounds = <229,164,271,195>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
@@ -677,7 +683,7 @@ class WeatherWeekViewUI : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text DaySixChanceOfRain
+  object Components::BaseText DaySixChanceOfRain
   {
     preset Bounds = <373,164,415,195>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
@@ -707,7 +713,7 @@ class WeatherWeekViewUI : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text DayFourMinTemp
+  object Components::BaseText DayFourMinTemp
   {
     preset Bounds = <30,191,75,222>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
@@ -717,7 +723,7 @@ class WeatherWeekViewUI : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text DayFiveMinTemp
+  object Components::BaseText DayFiveMinTemp
   {
     preset Bounds = <174,191,219,222>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
@@ -727,7 +733,7 @@ class WeatherWeekViewUI : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text DaySixMinTemp
+  object Components::BaseText DaySixMinTemp
   {
     preset Bounds = <318,191,363,222>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
@@ -954,7 +960,7 @@ class WeatherWeekViewUI : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text DayOneMaxTemp
+  object Components::BaseText DayOneMaxTemp
   {
     preset Bounds = <85,76,127,107>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
@@ -974,7 +980,7 @@ class WeatherWeekViewUI : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text DayTwoMaxTemp
+  object Components::BaseText DayTwoMaxTemp
   {
     preset Bounds = <229,76,271,107>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
@@ -994,7 +1000,7 @@ class WeatherWeekViewUI : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text DayThreeMaxTemp
+  object Components::BaseText DayThreeMaxTemp
   {
     preset Bounds = <373,76,415,107>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
@@ -1014,7 +1020,7 @@ class WeatherWeekViewUI : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text DayFourMaxTemp
+  object Components::BaseText DayFourMaxTemp
   {
     preset Bounds = <85,191,127,222>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
@@ -1034,7 +1040,7 @@ class WeatherWeekViewUI : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text DayFiveMaxTemp
+  object Components::BaseText DayFiveMaxTemp
   {
     preset Bounds = <229,191,271,222>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];
@@ -1054,7 +1060,7 @@ class WeatherWeekViewUI : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text DaySixMaxTemp
+  object Components::BaseText DaySixMaxTemp
   {
     preset Bounds = <373,191,415,222>;
     preset Alignment = Views::TextAlignment[AlignHorzRight, AlignVertCenter];

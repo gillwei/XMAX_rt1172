@@ -49,9 +49,9 @@
 /* Compressed strings for the language 'Default'. */
 EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
-  0x0000002E, /* ratio 104.35 % */
-  0xB8001B00, 0x00092452, 0x00D20037, 0x040003A0, 0xA0002780, 0x00027000, 0x00188006,
-  0x58182232, 0x8A44A204, 0x1C646516, 0x00203199, 0x00000000
+  0x00000024, /* ratio 100.00 % */
+  0xB8001100, 0x0009E452, 0x009C0028, 0x06200180, 0x09028780, 0x90A8441A, 0x18878CA1,
+  0x0004061F, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -64,7 +64,7 @@ static const XColor _Const0005 = { 0xFF, 0xFF, 0xFF, 0xFF };
 static const XRect _Const0006 = {{ 10, 2 }, { 470, 40 }};
 static const XRect _Const0007 = {{ 0, 44 }, { 480, 46 }};
 static const XRect _Const0008 = {{ 174, 71 }, { 306, 203 }};
-static const XStringRes _Const0009 = { _StringsDefault0, 0x000F };
+static const XStringRes _Const0009 = { _StringsDefault0, 0x000A };
 
 /* Initializer for the class 'Open::OPN01_BootupAnimation' */
 void OpenOPN01_BootupAnimation__Init( OpenOPN01_BootupAnimation _this, XObject aLink, XHandle aArg )

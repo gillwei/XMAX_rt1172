@@ -44,6 +44,7 @@
 
 #include "_ComponentsBaseComponent.h"
 #include "_ComponentsBaseMainBG.h"
+#include "_ComponentsBaseText.h"
 #include "_ComponentsDDModeMask.h"
 
 #ifdef __cplusplus

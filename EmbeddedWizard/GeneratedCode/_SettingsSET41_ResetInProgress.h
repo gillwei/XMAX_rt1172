@@ -43,13 +43,13 @@
 #endif
 
 #include "_ComponentsBaseMainBG.h"
+#include "_ComponentsBaseText.h"
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
-#include "_ViewsText.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -103,7 +103,7 @@
 /* Deklaration of class : 'Settings::SET41_ResetInProgress' */
 EW_DEFINE_FIELDS( SettingsSET41_ResetInProgress, ComponentsBaseMainBG )
   EW_OBJECT  ( LoadingAnimation, ViewsImage )
-  EW_OBJECT  ( LoadingText,     ViewsText )
+  EW_OBJECT  ( LoadingText,     ComponentsBaseText )
   EW_OBJECT  ( ReceivedSystemEventHandler, CoreSystemEventHandler )
 EW_END_OF_FIELDS( SettingsSET41_ResetInProgress )
 
@@ -163,9 +163,6 @@ EW_DEFINE_METHODS( SettingsSET41_ResetInProgress, ComponentsBaseMainBG )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( SettingsSET41_ResetInProgress )
-
-/* 'C' function for method : 'Settings::SET41_ResetInProgress.ReInit()' */
-void SettingsSET41_ResetInProgress_ReInit( SettingsSET41_ResetInProgress _this );
 
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 

@@ -154,9 +154,9 @@ void FactoryDisplayAutoRun__Init( FactoryDisplayAutoRun _this, XObject aLink, XH
   _this->TimerNextPattern.OnTrigger = EwNewSlot( _this, FactoryDisplayAutoRun_OnTimerNextPatternSlot );
   ViewsImage_OnSetBitmap( &_this->ImagePattern, EwLoadResource( &ResourceDisplayTest, 
   ResourcesBitmap ));
-  ViewsText_OnSetFont( &_this->BurnInTimeText, EwLoadResource( &FontsNotoSansCjkJpMedium80pt, 
+  ViewsText_OnSetFont( &_this->BurnInTimeText, EwLoadResource( &FontsNotoSansMedium80pt, 
   ResourcesFont ));
-  ViewsText_OnSetFont( &_this->BurnInResultText, EwLoadResource( &FontsNotoSansCjkJpMedium80pt, 
+  ViewsText_OnSetFont( &_this->BurnInResultText, EwLoadResource( &FontsNotoSansMedium80pt, 
   ResourcesFont ));
   _this->FactoryTestEventHandler.OnEvent = EwNewSlot( _this, FactoryDisplayAutoRun_OnFactoryTestEventReceivedSlot );
   CoreSystemEventHandler_OnSetEvent( &_this->FactoryTestEventHandler, &EwGetAutoObject( 

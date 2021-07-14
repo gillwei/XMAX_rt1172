@@ -969,7 +969,7 @@ class SHT01_GPW01_WSC01_VehicleFunction : Components::BaseMainBG
   }
 
   $rect <20,20,160,60>
-  object Views::Text CurrentItemTitleText
+  object Components::BaseText CurrentItemTitleText
   {
     preset Bounds = <138,130,469,173>;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];

@@ -43,13 +43,13 @@
 #endif
 
 #include "_ComponentsBaseMainBG.h"
+#include "_ComponentsBaseText.h"
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
-#include "_ViewsText.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -103,7 +103,7 @@
 /* Deklaration of class : 'Pop::POP03_HomeOfficeSettingError' */
 EW_DEFINE_FIELDS( PopPOP03_HomeOfficeSettingError, ComponentsBaseMainBG )
   EW_PROPERTY( ReturnToNaviHomeSlot, XSlot )
-  EW_OBJECT  ( HomeOfficeSettingFailedMessage, ViewsText )
+  EW_OBJECT  ( HomeOfficeSettingFailedMessage, ComponentsBaseText )
   EW_OBJECT  ( CountDownTimer,  CoreTimer )
   EW_OBJECT  ( Divider,         ViewsImage )
   EW_PROPERTY( ErrorMessage,    XString )
@@ -165,6 +165,12 @@ EW_DEFINE_METHODS( PopPOP03_HomeOfficeSettingError, ComponentsBaseMainBG )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( PopPOP03_HomeOfficeSettingError )
+
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void PopPOP03_HomeOfficeSettingError_Init( PopPOP03_HomeOfficeSettingError _this, 
+  XHandle aArg );
 
 /* 'C' function for method : 'Pop::POP03_HomeOfficeSettingError.OnLauncherScreenUpdateSlot()' */
 void PopPOP03_HomeOfficeSettingError_OnLauncherScreenUpdateSlot( PopPOP03_HomeOfficeSettingError _this, 

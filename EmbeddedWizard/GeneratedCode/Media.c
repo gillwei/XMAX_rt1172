@@ -25,6 +25,7 @@
 *******************************************************************************/
 
 #include "ewlocale.h"
+#include "_ComponentsBaseText.h"
 #include "_CorePropertyObserver.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
@@ -80,9 +81,9 @@ void MediaMED01_MediaUI__Init( MediaMED01_MediaUI _this, XObject aLink, XHandle 
   _this->_.XObject._.GCT = EW_CLASS_GCT( MediaMED01_MediaUI );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->Title, &_this->_.XObject, 0 );
-  ViewsText__Init( &_this->Artist, &_this->_.XObject, 0 );
-  ViewsText__Init( &_this->Album, &_this->_.XObject, 0 );
+  ComponentsBaseText__Init( &_this->Title, &_this->_.XObject, 0 );
+  ComponentsBaseText__Init( &_this->Artist, &_this->_.XObject, 0 );
+  ComponentsBaseText__Init( &_this->Album, &_this->_.XObject, 0 );
   ViewsText__Init( &_this->ElapsedTimeSec, &_this->_.XObject, 0 );
   ViewsText__Init( &_this->TotalTimeSec, &_this->_.XObject, 0 );
   CoreSystemEventHandler__Init( &_this->PlaybackTimeEventHandler, &_this->_.XObject, 0 );
@@ -100,7 +101,7 @@ void MediaMED01_MediaUI__Init( MediaMED01_MediaUI _this, XObject aLink, XHandle 
   CorePropertyObserver__Init( &_this->ArtistObserver, &_this->_.XObject, 0 );
   WidgetSetHorizontalSlider__Init( &_this->SeekBar, &_this->_.XObject, 0 );
   CoreSystemEventHandler__Init( &_this->MotoConMusicInfoEventHandler, &_this->_.XObject, 0 );
-  ViewsText__Init( &_this->ErrorMessage, &_this->_.XObject, 0 );
+  ComponentsBaseText__Init( &_this->ErrorMessage, &_this->_.XObject, 0 );
   CoreSystemEventHandler__Init( &_this->MotoConEventHandler, &_this->_.XObject, 0 );
   CoreTimer__Init( &_this->BleConnectionRecoveryTimer, &_this->_.XObject, 0 );
   CoreSystemEventHandler__Init( &_this->AmsBleConnectionEventHandler, &_this->_.XObject, 0 );
@@ -114,20 +115,23 @@ void MediaMED01_MediaUI__Init( MediaMED01_MediaUI _this, XObject aLink, XHandle 
   _this->Super2.UpKeyTriggerMode = EnumKeyTriggerModeOFF;
   _this->Super2.DownKeyTriggerMode = EnumKeyTriggerModeOFF;
   CoreRectView__OnSetBounds( &_this->Title, _Const0001 );
-  ViewsText_OnSetEllipsis( &_this->Title, 1 );
-  ViewsText_OnSetAlignment( &_this->Title, ViewsTextAlignmentAlignHorzLeft | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->Title, 0 );
-  ViewsText_OnSetVisible( &_this->Title, 1 );
+  ViewsText_OnSetEllipsis((ViewsText)&_this->Title, 1 );
+  ViewsText_OnSetAlignment((ViewsText)&_this->Title, ViewsTextAlignmentAlignHorzLeft 
+  | ViewsTextAlignmentAlignVertCenter );
+  ViewsText_OnSetString((ViewsText)&_this->Title, 0 );
+  ViewsText_OnSetVisible((ViewsText)&_this->Title, 1 );
   CoreRectView__OnSetBounds( &_this->Artist, _Const0002 );
-  ViewsText_OnSetEllipsis( &_this->Artist, 1 );
-  ViewsText_OnSetAlignment( &_this->Artist, ViewsTextAlignmentAlignHorzLeft | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->Artist, 0 );
-  ViewsText_OnSetVisible( &_this->Artist, 1 );
+  ViewsText_OnSetEllipsis((ViewsText)&_this->Artist, 1 );
+  ViewsText_OnSetAlignment((ViewsText)&_this->Artist, ViewsTextAlignmentAlignHorzLeft 
+  | ViewsTextAlignmentAlignVertCenter );
+  ViewsText_OnSetString((ViewsText)&_this->Artist, 0 );
+  ViewsText_OnSetVisible((ViewsText)&_this->Artist, 1 );
   CoreRectView__OnSetBounds( &_this->Album, _Const0003 );
-  ViewsText_OnSetEllipsis( &_this->Album, 1 );
-  ViewsText_OnSetAlignment( &_this->Album, ViewsTextAlignmentAlignHorzLeft | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->Album, 0 );
-  ViewsText_OnSetVisible( &_this->Album, 0 );
+  ViewsText_OnSetEllipsis((ViewsText)&_this->Album, 1 );
+  ViewsText_OnSetAlignment((ViewsText)&_this->Album, ViewsTextAlignmentAlignHorzLeft 
+  | ViewsTextAlignmentAlignVertCenter );
+  ViewsText_OnSetString((ViewsText)&_this->Album, 0 );
+  ViewsText_OnSetVisible((ViewsText)&_this->Album, 0 );
   CoreRectView__OnSetBounds( &_this->ElapsedTimeSec, _Const0004 );
   ViewsText_OnSetAlignment( &_this->ElapsedTimeSec, ViewsTextAlignmentAlignHorzLeft 
   | ViewsTextAlignmentAlignVertCenter );
@@ -153,8 +157,8 @@ void MediaMED01_MediaUI__Init( MediaMED01_MediaUI _this, XObject aLink, XHandle 
   CoreGroup__OnSetVisible( &_this->SeekBar, 0 );
   WidgetSetHorizontalSlider_OnSetCurrentValue( &_this->SeekBar, 0 );
   CoreRectView__OnSetBounds( &_this->ErrorMessage, _Const000A );
-  ViewsText_OnSetString( &_this->ErrorMessage, EwGetVariantOfString( &StringsMED02_DEV_UNAVAILABLE ));
-  ViewsText_OnSetVisible( &_this->ErrorMessage, 0 );
+  ViewsText_OnSetString((ViewsText)&_this->ErrorMessage, EwGetVariantOfString( &StringsMED02_DEV_UNAVAILABLE ));
+  ViewsText_OnSetVisible((ViewsText)&_this->ErrorMessage, 0 );
   CoreTimer_OnSetPeriod( &_this->BleConnectionRecoveryTimer, 5000 );
   CoreGroup__Add( _this, ((CoreView)&_this->Title ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Artist ), 0 );
@@ -171,11 +175,11 @@ void MediaMED01_MediaUI__Init( MediaMED01_MediaUI _this, XObject aLink, XHandle 
   CoreGroup__Add( _this, ((CoreView)&_this->VolumeUpButton ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->SeekBar ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ErrorMessage ), 0 );
-  ViewsText_OnSetFont( &_this->Title, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ViewsText_OnSetFont((ViewsText)&_this->Title, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
   ResourcesFont ));
-  ViewsText_OnSetFont( &_this->Artist, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ViewsText_OnSetFont((ViewsText)&_this->Artist, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
   ResourcesFont ));
-  ViewsText_OnSetFont( &_this->Album, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ViewsText_OnSetFont((ViewsText)&_this->Album, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
   ResourcesFont ));
   ViewsText_OnSetFont( &_this->ElapsedTimeSec, EwLoadResource( &FontsNotoSansMedium22pt, 
   ResourcesFont ));
@@ -218,7 +222,7 @@ void MediaMED01_MediaUI__Init( MediaMED01_MediaUI _this, XObject aLink, XHandle 
   _this->MotoConMusicInfoEventHandler.OnEvent = EwNewSlot( _this, MediaMED01_MediaUI_OnMotoConMusicInfoUpdateSlot );
   CoreSystemEventHandler_OnSetEvent( &_this->MotoConMusicInfoEventHandler, &EwGetAutoObject( 
   &DeviceInterfaceMediaManagerDevice, DeviceInterfaceMediaManagerDeviceClass )->NotifyMotoConMusicUpdatedSystemEvent );
-  ViewsText_OnSetFont( &_this->ErrorMessage, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ViewsText_OnSetFont((ViewsText)&_this->ErrorMessage, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
   ResourcesFont ));
   _this->MotoConEventHandler.OnEvent = EwNewSlot( _this, MediaMED01_MediaUI_OnMotoConEventReceived );
   CoreSystemEventHandler_OnSetEvent( &_this->MotoConEventHandler, &EwGetAutoObject( 
@@ -242,9 +246,9 @@ void MediaMED01_MediaUI__ReInit( MediaMED01_MediaUI _this )
   ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
-  ViewsText__ReInit( &_this->Title );
-  ViewsText__ReInit( &_this->Artist );
-  ViewsText__ReInit( &_this->Album );
+  ComponentsBaseText__ReInit( &_this->Title );
+  ComponentsBaseText__ReInit( &_this->Artist );
+  ComponentsBaseText__ReInit( &_this->Album );
   ViewsText__ReInit( &_this->ElapsedTimeSec );
   ViewsText__ReInit( &_this->TotalTimeSec );
   CoreSystemEventHandler__ReInit( &_this->PlaybackTimeEventHandler );
@@ -262,14 +266,26 @@ void MediaMED01_MediaUI__ReInit( MediaMED01_MediaUI _this )
   CorePropertyObserver__ReInit( &_this->ArtistObserver );
   WidgetSetHorizontalSlider__ReInit( &_this->SeekBar );
   CoreSystemEventHandler__ReInit( &_this->MotoConMusicInfoEventHandler );
-  ViewsText__ReInit( &_this->ErrorMessage );
+  ComponentsBaseText__ReInit( &_this->ErrorMessage );
   CoreSystemEventHandler__ReInit( &_this->MotoConEventHandler );
   CoreTimer__ReInit( &_this->BleConnectionRecoveryTimer );
   CoreSystemEventHandler__ReInit( &_this->AmsBleConnectionEventHandler );
   CoreSystemEventHandler__ReInit( &_this->MediaVolumeUpdateEventHandler );
 
-  /* Call the user defined re-constructor of the class */
-  MediaMED01_MediaUI_ReInit( _this );
+  /* ... and re-initialize objects, variables, properties, etc. */
+  ViewsText_OnSetString((ViewsText)&_this->ErrorMessage, EwGetVariantOfString( &StringsMED02_DEV_UNAVAILABLE ));
+  ViewsText_OnSetFont((ViewsText)&_this->Title, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ResourcesFont ));
+  ViewsText_OnSetFont((ViewsText)&_this->Artist, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ResourcesFont ));
+  ViewsText_OnSetFont((ViewsText)&_this->Album, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ResourcesFont ));
+  ViewsText_OnSetFont( &_this->ElapsedTimeSec, EwLoadResource( &FontsNotoSansMedium22pt, 
+  ResourcesFont ));
+  ViewsText_OnSetFont( &_this->TotalTimeSec, EwLoadResource( &FontsNotoSansMedium22pt, 
+  ResourcesFont ));
+  ViewsText_OnSetFont((ViewsText)&_this->ErrorMessage, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ResourcesFont ));
 }
 
 /* Finalizer method for the class 'Media::MED01_MediaUI' */
@@ -279,9 +295,9 @@ void MediaMED01_MediaUI__Done( MediaMED01_MediaUI _this )
   _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
-  ViewsText__Done( &_this->Title );
-  ViewsText__Done( &_this->Artist );
-  ViewsText__Done( &_this->Album );
+  ComponentsBaseText__Done( &_this->Title );
+  ComponentsBaseText__Done( &_this->Artist );
+  ComponentsBaseText__Done( &_this->Album );
   ViewsText__Done( &_this->ElapsedTimeSec );
   ViewsText__Done( &_this->TotalTimeSec );
   CoreSystemEventHandler__Done( &_this->PlaybackTimeEventHandler );
@@ -299,7 +315,7 @@ void MediaMED01_MediaUI__Done( MediaMED01_MediaUI _this )
   CorePropertyObserver__Done( &_this->ArtistObserver );
   WidgetSetHorizontalSlider__Done( &_this->SeekBar );
   CoreSystemEventHandler__Done( &_this->MotoConMusicInfoEventHandler );
-  ViewsText__Done( &_this->ErrorMessage );
+  ComponentsBaseText__Done( &_this->ErrorMessage );
   CoreSystemEventHandler__Done( &_this->MotoConEventHandler );
   CoreTimer__Done( &_this->BleConnectionRecoveryTimer );
   CoreSystemEventHandler__Done( &_this->AmsBleConnectionEventHandler );
@@ -307,12 +323,6 @@ void MediaMED01_MediaUI__Done( MediaMED01_MediaUI _this )
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseMainBG__Done( &_this->_.Super );
-}
-
-/* 'C' function for method : 'Media::MED01_MediaUI.ReInit()' */
-void MediaMED01_MediaUI_ReInit( MediaMED01_MediaUI _this )
-{
-  ViewsText_OnSetString( &_this->ErrorMessage, EwGetVariantOfString( &StringsMED02_DEV_UNAVAILABLE ));
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -526,40 +536,40 @@ void MediaMED01_MediaUI_OnTrackInfoUpdateSlot( MediaMED01_MediaUI _this, XObject
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  if ( !ViewsText_OnGetVisible( &_this->Title ))
-    ViewsText_OnSetVisible( &_this->Title, 1 );
+  if ( !ViewsText_OnGetVisible((ViewsText)&_this->Title ))
+    ViewsText_OnSetVisible((ViewsText)&_this->Title, 1 );
 
-  ViewsText_OnSetString( &_this->Title, EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
+  ViewsText_OnSetString((ViewsText)&_this->Title, EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
   DeviceInterfaceMediaManagerDeviceClass )->Title );
 
-  if ( !EwCompString( _this->Title.String, 0 ))
-    ViewsText_OnSetString( &_this->Title, EwLoadString( &StringsGEN_THREE_HYPHENS ));
+  if ( !EwCompString( _this->Title.Super1.String, 0 ))
+    ViewsText_OnSetString((ViewsText)&_this->Title, EwLoadString( &StringsGEN_THREE_HYPHENS ));
 
-  if ( !ViewsText_OnGetVisible( &_this->Album ))
-    ViewsText_OnSetVisible( &_this->Album, 1 );
+  if ( !ViewsText_OnGetVisible((ViewsText)&_this->Album ))
+    ViewsText_OnSetVisible((ViewsText)&_this->Album, 1 );
 
-  ViewsText_OnSetString( &_this->Album, EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
+  ViewsText_OnSetString((ViewsText)&_this->Album, EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
   DeviceInterfaceMediaManagerDeviceClass )->Album );
 
-  if ( !EwCompString( _this->Album.String, 0 ))
-    ViewsText_OnSetString( &_this->Album, EwLoadString( &StringsGEN_THREE_HYPHENS ));
+  if ( !EwCompString( _this->Album.Super1.String, 0 ))
+    ViewsText_OnSetString((ViewsText)&_this->Album, EwLoadString( &StringsGEN_THREE_HYPHENS ));
 
-  if ( !ViewsText_OnGetVisible( &_this->Artist ))
-    ViewsText_OnSetVisible( &_this->Artist, 1 );
+  if ( !ViewsText_OnGetVisible((ViewsText)&_this->Artist ))
+    ViewsText_OnSetVisible((ViewsText)&_this->Artist, 1 );
 
-  ViewsText_OnSetString( &_this->Artist, EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
+  ViewsText_OnSetString((ViewsText)&_this->Artist, EwGetAutoObject( &DeviceInterfaceMediaManagerDevice, 
   DeviceInterfaceMediaManagerDeviceClass )->Artist );
 
-  if ( !EwCompString( _this->Artist.String, 0 ))
-    ViewsText_OnSetString( &_this->Artist, EwLoadString( &StringsGEN_THREE_HYPHENS ));
+  if ( !EwCompString( _this->Artist.Super1.String, 0 ))
+    ViewsText_OnSetString((ViewsText)&_this->Artist, EwLoadString( &StringsGEN_THREE_HYPHENS ));
 
-  if (( !EwCompString( _this->Title.String, EwLoadString( &StringsGEN_THREE_HYPHENS )) 
-      && !EwCompString( _this->Album.String, EwLoadString( &StringsGEN_THREE_HYPHENS ))) 
-      && !EwCompString( _this->Artist.String, EwLoadString( &StringsGEN_THREE_HYPHENS )))
+  if (( !EwCompString( _this->Title.Super1.String, EwLoadString( &StringsGEN_THREE_HYPHENS )) 
+      && !EwCompString( _this->Album.Super1.String, EwLoadString( &StringsGEN_THREE_HYPHENS ))) 
+      && !EwCompString( _this->Artist.Super1.String, EwLoadString( &StringsGEN_THREE_HYPHENS )))
     MediaMED01_MediaUI_UpdateMediaInfoItem( _this, EnumReceptionStatusERROR );
   else
-    if ( ViewsText_OnGetVisible( &_this->ErrorMessage ))
-      ViewsText_OnSetVisible( &_this->ErrorMessage, 0 );
+    if ( ViewsText_OnGetVisible((ViewsText)&_this->ErrorMessage ))
+      ViewsText_OnSetVisible((ViewsText)&_this->ErrorMessage, 0 );
 }
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
@@ -637,25 +647,25 @@ void MediaMED01_MediaUI_UpdateMediaInfoItem( MediaMED01_MediaUI _this, XEnum aNe
   {
     case EnumReceptionStatusSUCCESS :
     {
-      ViewsText_OnSetVisible( &_this->Title, 1 );
-      ViewsText_OnSetVisible( &_this->Album, 1 );
-      ViewsText_OnSetVisible( &_this->Artist, 1 );
+      ViewsText_OnSetVisible((ViewsText)&_this->Title, 1 );
+      ViewsText_OnSetVisible((ViewsText)&_this->Album, 1 );
+      ViewsText_OnSetVisible((ViewsText)&_this->Artist, 1 );
       ViewsText_OnSetVisible( &_this->ElapsedTimeSec, 1 );
       ViewsText_OnSetVisible( &_this->TotalTimeSec, 1 );
       CoreGroup__OnSetVisible( &_this->SeekBar, 1 );
-      ViewsText_OnSetVisible( &_this->ErrorMessage, 0 );
+      ViewsText_OnSetVisible((ViewsText)&_this->ErrorMessage, 0 );
     }
     break;
 
     case EnumReceptionStatusERROR :
     {
-      ViewsText_OnSetVisible( &_this->Title, 0 );
-      ViewsText_OnSetVisible( &_this->Album, 0 );
-      ViewsText_OnSetVisible( &_this->Artist, 0 );
+      ViewsText_OnSetVisible((ViewsText)&_this->Title, 0 );
+      ViewsText_OnSetVisible((ViewsText)&_this->Album, 0 );
+      ViewsText_OnSetVisible((ViewsText)&_this->Artist, 0 );
       ViewsText_OnSetVisible( &_this->ElapsedTimeSec, 0 );
       ViewsText_OnSetVisible( &_this->TotalTimeSec, 0 );
       CoreGroup__OnSetVisible( &_this->SeekBar, 0 );
-      ViewsText_OnSetVisible( &_this->ErrorMessage, 1 );
+      ViewsText_OnSetVisible((ViewsText)&_this->ErrorMessage, 1 );
     }
     break;
 

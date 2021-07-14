@@ -43,6 +43,7 @@
 #endif
 
 #include "_ComponentsBaseMainBG.h"
+#include "_ComponentsBaseText.h"
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
@@ -50,7 +51,6 @@
 #include "_MenuUpDownPushButtonSet.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
-#include "_ViewsText.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -103,7 +103,7 @@
 
 /* Deklaration of class : 'Pop::POP04_Reset' */
 EW_DEFINE_FIELDS( PopPOP04_Reset, ComponentsBaseMainBG )
-  EW_OBJECT  ( ResetText,       ViewsText )
+  EW_OBJECT  ( ResetText,       ComponentsBaseText )
   EW_OBJECT  ( UpDownPushButtonSet, MenuUpDownPushButtonSet )
   EW_OBJECT  ( Divider,         ViewsImage )
   EW_PROPERTY( SelectedMeterInfo, XEnum )
@@ -166,8 +166,10 @@ EW_DEFINE_METHODS( PopPOP04_Reset, ComponentsBaseMainBG )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( PopPOP04_Reset )
 
-/* 'C' function for method : 'Pop::POP04_Reset.ReInit()' */
-void PopPOP04_Reset_ReInit( PopPOP04_Reset _this );
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void PopPOP04_Reset_Init( PopPOP04_Reset _this, XHandle aArg );
 
 /* 'C' function for method : 'Pop::POP04_Reset.OnOkButtonActivatedSlot()' */
 void PopPOP04_Reset_OnOkButtonActivatedSlot( PopPOP04_Reset _this, XObject sender );

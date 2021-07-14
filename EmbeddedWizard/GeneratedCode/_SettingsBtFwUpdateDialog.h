@@ -42,11 +42,11 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
+#include "_ComponentsBaseText.h"
 #include "_CoreGroup.h"
 #include "_CorePropertyObserver.h"
 #include "_CoreTimer.h"
 #include "_ViewsRectangle.h"
-#include "_ViewsText.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -100,7 +100,7 @@
 /* Deklaration of class : 'Settings::BtFwUpdateDialog' */
 EW_DEFINE_FIELDS( SettingsBtFwUpdateDialog, CoreGroup )
   EW_OBJECT  ( Rectangle,       ViewsRectangle )
-  EW_OBJECT  ( StatusText,      ViewsText )
+  EW_OBJECT  ( StatusText,      ComponentsBaseText )
   EW_OBJECT  ( BtFwStatusObserver, CorePropertyObserver )
   EW_OBJECT  ( RemoveDialogTimer, CoreTimer )
 EW_END_OF_FIELDS( SettingsBtFwUpdateDialog )

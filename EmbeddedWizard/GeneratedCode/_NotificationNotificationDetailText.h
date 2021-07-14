@@ -42,6 +42,7 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
+#include "_ComponentsBaseText.h"
 #include "_CoreGroup.h"
 #include "_EffectsInt32Effect.h"
 #include "_ViewsText.h"
@@ -105,9 +106,9 @@
 EW_DEFINE_FIELDS( NotificationNotificationDetailText, CoreGroup )
   EW_PROPERTY( NotificationData, DeviceInterfaceNotificationContext )
   EW_PROPERTY( OnLineNumUpdated, XSlot )
-  EW_OBJECT  ( TitleText,       ViewsText )
+  EW_OBJECT  ( TitleText,       ComponentsBaseText )
   EW_OBJECT  ( ReceivedTimeText, ViewsText )
-  EW_OBJECT  ( MessageText,     ViewsText )
+  EW_OBJECT  ( MessageText,     ComponentsBaseText )
   EW_OBJECT  ( ScrollEffect,    EffectsInt32Effect )
   EW_PROPERTY( ScrollOffsetY,   XInt32 )
   EW_PROPERTY( NoOfLines,       XInt32 )

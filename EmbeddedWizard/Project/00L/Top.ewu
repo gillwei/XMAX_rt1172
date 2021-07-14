@@ -2,27 +2,25 @@
 
 $rect <10,10,250,50>
 $output false
+$multilingual true
 class TOP01_Disclaimer : Components::BaseComponent
 {
-  $rect <10,390,210,430>
+  $rect <10,390,190,430>
   inherited method ReInit()
   {
-    DisclaimerText.String = Strings::TOP01_DISCLAIMER;
-    AcceptButton.Title = Strings::TOP01_ACCEPT;
-    WarningText.String = Strings::TOP01_WARNING;
     InvalidateLayout();
   }
 
   $rect <10,340,190,380>
   inherited method Init()
   {
-    trace "Init TOP01";
+    trace "TOP01";
   }
 
   $rect <10,290,190,330>
   inherited property Bounds = <0,0,480,272>;
 
-  $rect <509,0,689,40>
+  $rect <19,440,209,480>
   inherited method UpdateLayout()
   {
     super( aSize );
@@ -47,7 +45,7 @@ class TOP01_Disclaimer : Components::BaseComponent
     WarningText.Bounds = NewBounds;
   }
 
-  $rect <510,50,750,90>
+  $rect <20,490,260,530>
   inherited method OnLongHomeKeyActivated()
   {
     // neglect long home key event
@@ -61,7 +59,7 @@ class TOP01_Disclaimer : Components::BaseComponent
   }
 
   $rect <20,20,160,60>
-  object Views::Text DisclaimerText
+  object Components::BaseText DisclaimerText
   {
     preset Bounds = <10,51,470,206>;
     preset WrapText = true;
@@ -95,7 +93,7 @@ class TOP01_Disclaimer : Components::BaseComponent
   }
 
   $rect <20,20,160,60>
-  object Views::Text WarningText
+  object Components::BaseText WarningText
   {
     preset Bounds = <191,1,327,42>;
     preset AutoSize = true;

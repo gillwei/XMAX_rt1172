@@ -121,6 +121,7 @@ EW_DEFINE_FIELDS( ApplicationApplication, CoreRoot )
   EW_OBJECT  ( InspectionModeEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( VehicleDataReceivedEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( ReceivedSystemEventHandler, CoreSystemEventHandler )
+  EW_OBJECT  ( TestFontTimer,   CoreTimer )
   EW_VARIABLE( IsFactoryModeDialogDisplayed, XBool )
   EW_VARIABLE( IsDisclaimerDismissed, XBool )
   EW_PROPERTY( StatusBarVisible, XBool )
@@ -272,6 +273,10 @@ void ApplicationApplication_ShowNaviHome( ApplicationApplication _this, XObject
    receives an event. */
 void ApplicationApplication_OnSystemEventReceived( ApplicationApplication _this, 
   XObject sender );
+
+/* 'C' function for method : 'Application::Application.OnTestFontSlot()' */
+void ApplicationApplication_OnTestFontSlot( ApplicationApplication _this, XObject 
+  sender );
 
 #ifdef __cplusplus
   }

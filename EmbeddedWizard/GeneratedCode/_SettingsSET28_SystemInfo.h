@@ -43,6 +43,7 @@
 #endif
 
 #include "_ComponentsBaseMainBG.h"
+#include "_ComponentsBaseText.h"
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CorePropertyObserver.h"
@@ -51,7 +52,6 @@
 #include "_MenuUpDownPushButtonSet.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
-#include "_ViewsText.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -104,10 +104,10 @@
 
 /* Deklaration of class : 'Settings::SET28_SystemInfo' */
 EW_DEFINE_FIELDS( SettingsSET28_SystemInfo, ComponentsBaseMainBG )
-  EW_OBJECT  ( ESN,             ViewsText )
-  EW_OBJECT  ( SoftwareVersionTitle, ViewsText )
-  EW_OBJECT  ( EsnText,         ViewsText )
-  EW_OBJECT  ( SoftwareVersionText, ViewsText )
+  EW_OBJECT  ( ESN,             ComponentsBaseText )
+  EW_OBJECT  ( SoftwareVersionTitle, ComponentsBaseText )
+  EW_OBJECT  ( EsnText,         ComponentsBaseText )
+  EW_OBJECT  ( SoftwareVersionText, ComponentsBaseText )
   EW_OBJECT  ( EsnObserver,     CorePropertyObserver )
   EW_OBJECT  ( UpDownPushButtonSet, MenuUpDownPushButtonSet )
   EW_OBJECT  ( Divider,         ViewsImage )
@@ -170,9 +170,6 @@ EW_DEFINE_METHODS( SettingsSET28_SystemInfo, ComponentsBaseMainBG )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( SettingsSET28_SystemInfo )
-
-/* 'C' function for method : 'Settings::SET28_SystemInfo.ReInit()' */
-void SettingsSET28_SystemInfo_ReInit( SettingsSET28_SystemInfo _this );
 
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 

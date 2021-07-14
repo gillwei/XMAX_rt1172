@@ -42,6 +42,7 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
+#include "_ComponentsBaseText.h"
 #include "_CoreGroup.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
@@ -108,10 +109,10 @@ EW_DEFINE_FIELDS( NavigationTbtInfoItem, CoreGroup )
   EW_OBJECT  ( TbtItemBg,       ViewsRectangle )
   EW_OBJECT  ( NextTurnIcon,    ViewsImage )
   EW_OBJECT  ( NextTurnDist,    ViewsText )
-  EW_OBJECT  ( NextTurnDistUnit, ViewsText )
-  EW_OBJECT  ( NextTurnDescription, ViewsText )
+  EW_OBJECT  ( NextTurnDistUnit, ComponentsBaseText )
+  EW_OBJECT  ( NextTurnDescription, ComponentsBaseText )
   EW_OBJECT  ( ListDivider,     ViewsImage )
-  EW_OBJECT  ( LoadingText,     ViewsText )
+  EW_OBJECT  ( LoadingText,     ComponentsBaseText )
   EW_PROPERTY( Distance,        XString )
   EW_PROPERTY( DistanceUnit,    XString )
   EW_PROPERTY( TbtItemEnabled,  XBool )

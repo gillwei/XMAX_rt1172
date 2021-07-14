@@ -85,13 +85,13 @@
 /* Compressed strings for the language 'Default'. */
 EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
-  0x000000CC, /* ratio 74.51 % */
+  0x000000C2, /* ratio 74.23 % */
   0xB8001700, 0x00082452, 0x008E002B, 0x08C00100, 0x8A002A80, 0xA0026000, 0x45818222,
   0x02780090, 0x188009A0, 0x04546400, 0x126300D0, 0xA4006E00, 0x21674001, 0x3D1C8D00,
-  0xD2319C82, 0x2E16C600, 0x492C5671, 0x95CA64F0, 0xECC2192D, 0x00060008, 0x9821159A,
-  0x0EC00944, 0xD8003080, 0xC64004A8, 0x5594CAE5, 0x33C000CB, 0x39460332, 0x1D42B400,
-  0xCB8D0003, 0x4EB74F36, 0x00075B45, 0xA164865A, 0x164B49C2, 0x233C8028, 0x2A1C122F,
-  0xBFC8E3F3, 0x00000101, 0x00000000
+  0xD2319C82, 0x2E16C600, 0x08C45A71, 0x180023B3, 0x84566800, 0x00251260, 0x00C2003B,
+  0x0012A360, 0x532B9719, 0x00032D3E, 0x180CC8CF, 0xAAA000E5, 0x34000C74, 0xAD24DB2E,
+  0x1D6C54DA, 0x7A196200, 0xAC670A55, 0xF32D95D7, 0xB048BC8C, 0x238FCCA7, 0x000406F3,
+  0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -135,12 +135,12 @@ static const XRect _Const0024 = {{ 232, 7 }, { 282, 64 }};
 static const XRect _Const0025 = {{ 147, 7 }, { 197, 64 }};
 static const XRect _Const0026 = {{ 204, 15 }, { 231, 57 }};
 static const XRect _Const0027 = {{ 0, 0 }, { 369, 156 }};
-static const XStringRes _Const0028 = { _StringsDefault0, 0x0035 };
+static const XStringRes _Const0028 = { _StringsDefault0, 0x0030 };
 static const XRect _Const0029 = {{ 0, 0 }, { 6, 118 }};
 static const XRect _Const002A = {{ 0, 3 }, { 6, 118 }};
 static const XColor _Const002B = { 0x71, 0x9E, 0x0D, 0xFF };
 static const XRect _Const002C = {{ 0, 0 }, { 6, 6 }};
-static const XStringRes _Const002D = { _StringsDefault0, 0x0045 };
+static const XStringRes _Const002D = { _StringsDefault0, 0x0040 };
 static const XRect _Const002E = {{ 0, 0 }, { 480, 234 }};
 static const XRect _Const002F = {{ 0, 0 }, { 223, 234 }};
 static const XRect _Const0030 = {{ 0, 0 }, { 223, 91 }};
@@ -166,7 +166,7 @@ static const XRect _Const0043 = {{ 0, 119 }, { 480, 182 }};
 static const XRect _Const0044 = {{ 323, 232 }, { 474, 265 }};
 static const XRect _Const0045 = {{ 0, 38 }, { 480, 51 }};
 static const XRect _Const0046 = {{ 364, 38 }, { 474, 73 }};
-static const XStringRes _Const0047 = { _StringsDefault0, 0x005E };
+static const XStringRes _Const0047 = { _StringsDefault0, 0x0059 };
 static const XRect _Const0048 = {{ 50, 0 }, { 430, 234 }};
 static const XPoint _Const0049 = { 235, 132 };
 static const XPoint _Const004A = { 252, 132 };

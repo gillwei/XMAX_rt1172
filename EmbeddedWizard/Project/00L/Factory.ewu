@@ -1,4 +1,4 @@
-﻿$version 10.00
+﻿$version 11.00
 
 $rect <20,110,260,150>
 class DisplayAutoRun : Components::BaseComponent
@@ -132,7 +132,7 @@ class DisplayAutoRun : Components::BaseComponent
   {
     preset Bounds = <78,15,405,99>;
     preset String = "00:00:00";
-    preset Font = Fonts::NotoSansCjkJpMedium80pt;
+    preset Font = Fonts::NotoSansMedium80pt;
     preset Color = #000000FF;
     preset Visible = false;
   }
@@ -142,7 +142,7 @@ class DisplayAutoRun : Components::BaseComponent
   {
     preset Bounds = <125,126,343,225>;
     preset String = "";
-    preset Font = Fonts::NotoSansCjkJpMedium80pt;
+    preset Font = Fonts::NotoSansMedium80pt;
     preset Color = #000000FF;
     preset Visible = false;
   }

@@ -43,13 +43,13 @@
 #endif
 
 #include "_ComponentsBaseMainBG.h"
+#include "_ComponentsBaseText.h"
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
-#include "_ViewsText.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -102,7 +102,7 @@
 
 /* Deklaration of class : 'Settings::SET42_ResetCompleted' */
 EW_DEFINE_FIELDS( SettingsSET42_ResetCompleted, ComponentsBaseMainBG )
-  EW_OBJECT  ( MessageText,     ViewsText )
+  EW_OBJECT  ( MessageText,     ComponentsBaseText )
   EW_OBJECT  ( ReceivedSystemEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( HoldTimer,       CoreTimer )
   EW_VARIABLE( IsRebootResponseReceived, XBool )

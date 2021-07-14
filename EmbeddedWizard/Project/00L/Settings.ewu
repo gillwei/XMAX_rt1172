@@ -14,6 +14,8 @@ class SET01_MainSettingMenu : Menu::BaseMenuView
   $rect <510,10,710,50>
   inherited method Init()
   {
+    trace "SET01";
+
     var int32 i;
     var int32 NoOfItems;
     var Enum::MainSettingItem SettingItem;
@@ -170,7 +172,7 @@ class SET03_ConnectionSettingMenu : Menu::BaseMenuView
   $rect <10,290,190,330>
   inherited method Init()
   {
-    trace "Init SET03";
+    trace "SET03";
   }
 
   $rect <10,340,210,380>
@@ -227,6 +229,7 @@ class SET04_BtSettingMenu : Menu::BaseMenuView
   $rect <10,290,190,330>
   inherited method Init()
   {
+    trace "SET04";
     DeviceInterface::BluetoothDevice.GetBluetoothEnable();
   }
 
@@ -363,6 +366,12 @@ $rect <600,160,800,200>
 $output false
 class SET35_LegalMenu : Menu::BaseMenuView
 {
+  $rect <237,310,417,350>
+  inherited method Init()
+  {
+    trace "SET35";
+  }
+
   $rect <10,360,210,400>
   inherited property DDModeEnabled = true;
 
@@ -411,8 +420,15 @@ class SET35_LegalMenu : Menu::BaseMenuView
 
 $rect <600,480,810,520>
 $output false
+$multilingual true
 class SET38_ConfirmAllReset : Components::BaseMainBG
 {
+  $rect <10,400,190,440>
+  inherited method Init()
+  {
+    trace "SET38";
+  }
+
   $rect <10,300,210,340>
   inherited property Bounds = <0,0,480,272>;
 
@@ -420,7 +436,7 @@ class SET38_ConfirmAllReset : Components::BaseMainBG
   inherited property DDModeEnabled = true;
 
   $rect <20,20,160,60>
-  object Views::Text Text
+  object Components::BaseText Text
   {
     preset Bounds = <10,46,470,170>;
     preset String = Strings::SET38_RESET_TO_FACTORY;
@@ -475,7 +491,7 @@ class SET39_DeletePairedDevice : Components::BaseMainBG
   $rect <10,290,210,330>
   inherited method Init()
   {
-    trace "Init SET39";
+    trace "SET39";
   }
 
   $rect <10,390,210,430>
@@ -497,7 +513,7 @@ class SET39_DeletePairedDevice : Components::BaseMainBG
   }
 
   $rect <20,20,160,60>
-  object Views::Text Text
+  object Components::BaseText Text
   {
     preset Bounds = <10,46,470,201>;
     preset WrapText = true;
@@ -508,18 +524,13 @@ class SET39_DeletePairedDevice : Components::BaseMainBG
 
 $rect <600,580,810,620>
 $output false
+$multilingual true
 class SET41_ResetInProgress : Components::BaseMainBG
 {
-  $rect <10,350,190,390>
-  inherited method ReInit()
-  {
-    LoadingText.String = Strings::GEN_PLEASE_WAIT;
-  }
-
   $rect <10,300,190,340>
   inherited method Init()
   {
-    trace "Init SET41";
+    trace "SET41";
     if( DeviceInterface::VehicleDevice.DDModeActivated )
     {
       var Settings::TimeoutDialog Dialog = new Settings::TimeoutDialog;
@@ -545,7 +556,7 @@ class SET41_ResetInProgress : Components::BaseMainBG
     // neglect home key event
   }
 
-  $rect <10,400,190,440>
+  $rect <10,350,190,390>
   inherited property DDModeEnabled = true;
 
   $rect <20,20,160,60>
@@ -557,7 +568,7 @@ class SET41_ResetInProgress : Components::BaseMainBG
   }
 
   $rect <20,20,160,60>
-  object Views::Text LoadingText
+  object Components::BaseText LoadingText
   {
     preset Bounds = <10,156,470,187>;
     preset String = Strings::GEN_PLEASE_WAIT;
@@ -595,9 +606,10 @@ $rect <600,210,800,250>
 $output false
 class SET37_3rdPartyLicenses : Components::BaseMainBG
 {
-  $rect <240,310,440,350>
+  $rect <240,300,440,340>
   inherited method Init()
   {
+    trace "SET37";
     $if !$prototyper
       var int32 i;
       var string CopyRightTitle;
@@ -677,16 +689,9 @@ class SET37_3rdPartyLicenses : Components::BaseMainBG
 
 $rect <20,260,260,300>
 $output false
+$multilingual true
 class SET06_BtcDiscovarable : Components::BaseMainBG
 {
-  $rect <0,340,180,380>
-  inherited method ReInit()
-  {
-    DiscoverableText.String = Strings::SET06_DISCOVERABLE;
-    DisplayLocalDeviceName();
-    PushButton.Title = Strings::GEN_CANCEL;
-  }
-
   $rect <0,290,180,330>
   inherited method Init()
   {
@@ -719,11 +724,11 @@ class SET06_BtcDiscovarable : Components::BaseMainBG
     super();
   }
 
-  $rect <0,390,180,430>
+  $rect <0,340,180,380>
   inherited property DDModeEnabled = true;
 
   $rect <20,20,160,60>
-  object Views::Text DiscoverableText
+  object Components::BaseText DiscoverableText
   {
     preset Bounds = <10,42,470,104>;
     preset WrapText = true;
@@ -741,7 +746,7 @@ class SET06_BtcDiscovarable : Components::BaseMainBG
   }
 
   $rect <20,20,160,60>
-  object Views::Text TimeLeftText
+  object Components::BaseText TimeLeftText
   {
     preset Bounds = <10,169,470,200>;
     preset WrapText = true;
@@ -751,7 +756,7 @@ class SET06_BtcDiscovarable : Components::BaseMainBG
   }
 
   $rect <20,20,160,60>
-  object Views::Text NameText
+  object Components::BaseText NameText
   {
     preset Bounds = <10,104,470,166>;
     preset Ellipsis = true;
@@ -832,7 +837,7 @@ class SET06_BtcDiscovarable : Components::BaseMainBG
     }
   }
 
-  $rect <0,440,220,480>
+  $rect <0,390,220,430>
   method void DisplayLocalDeviceName()
   {
     var Utility::String StringUtil = new Utility::String;
@@ -861,13 +866,19 @@ class SET06_BtcDiscovarable : Components::BaseMainBG
 
 $rect <20,460,260,500>
 $output false
-class SET9_10_11_BtConnectionResult : Components::BaseMainBG
+class SET10_11_12_BtConnectionResult : Components::BaseMainBG
 {
+  $rect <0,390,180,430>
+  inherited method Init()
+  {
+    trace "SET12";
+  }
+
   $rect <0,290,200,330>
   inherited property DDModeEnabled = true;
 
   $rect <20,20,160,60>
-  object Views::Text Message
+  object Components::BaseText Message
   {
     preset Bounds = <10,50,470,236>;
     preset Ellipsis = true;
@@ -966,7 +977,7 @@ class SET9_10_11_BtConnectionResult : Components::BaseMainBG
   }
 
   $rect <20,20,160,60>
-  object Views::Text LoadingText
+  object Components::BaseText LoadingText
   {
     preset Bounds = <10,156,470,187>;
     preset String = Strings::GEN_PLEASE_WAIT;
@@ -1005,27 +1016,20 @@ class SET9_10_11_BtConnectionResult : Components::BaseMainBG
 
 $rect <20,210,260,250>
 $output false
+$multilingual true
 class SET05_BtcMaxPairedDevice : Components::BaseMainBG
 {
-  $rect <0,330,170,370>
-  inherited method ReInit()
-  {
-    Text.String = Strings::SET05_MAX_DEVICES;
-    UpDownPushButtonSet.UpButtonTitle = Strings::GEN_YES;
-    UpDownPushButtonSet.DownButtonTitle = Strings::GEN_NO;
-  }
-
   $rect <0,290,170,330>
   inherited method Init()
   {
-    trace "Init SET05";
+    trace "SET05";
   }
 
-  $rect <0,380,170,420>
+  $rect <0,330,170,370>
   inherited property DDModeEnabled = true;
 
   $rect <20,20,160,60>
-  object Views::Text Text
+  object Components::BaseText Text
   {
     preset Bounds = <10,44,470,168>;
     preset WrapText = true;
@@ -1066,14 +1070,13 @@ class SET05_BtcMaxPairedDevice : Components::BaseMainBG
 
 $rect <20,310,260,350>
 $output false
+$multilingual true
 class SET08_BtcPairDevice : Components::BaseMainBG
 {
   $rect <0,340,200,380>
   inherited method ReInit()
   {
     DisplayString();
-    UpDownPushButtonSet.UpButtonTitle = Strings::GEN_YES;
-    UpDownPushButtonSet.DownButtonTitle = Strings::GEN_NO;
   }
 
   $rect <0,290,200,330>
@@ -1107,7 +1110,7 @@ class SET08_BtcPairDevice : Components::BaseMainBG
   }
 
   $rect <20,20,160,60>
-  object Views::Text PairText
+  object Components::BaseText PairText
   {
     preset Bounds = <10,45,470,107>;
     preset WrapText = true;
@@ -1117,7 +1120,7 @@ class SET08_BtcPairDevice : Components::BaseMainBG
   }
 
   $rect <20,20,160,60>
-  object Views::Text PasskeyText
+  object Components::BaseText PasskeyText
   {
     preset Bounds = <10,107,470,169>;
     preset WrapText = true;
@@ -1166,6 +1169,7 @@ class SET08_BtcPairDevice : Components::BaseMainBG
 
 $rect <20,360,260,400>
 $output false
+$multilingual true
 class SET17_BtcPairedDeviceList : Menu::BaseMenuView
 {
   $rect <0,290,180,330>
@@ -1292,7 +1296,7 @@ class SET17_BtcPairedDeviceList : Menu::BaseMenuView
   }
 
   $rect <20,20,160,60>
-  object Views::Text NoDataText
+  object Components::BaseText NoDataText
   {
     preset Bounds = <10,50,470,236>;
     preset String = "No data";
@@ -1359,11 +1363,9 @@ class SET19_BtcPairedDeviceOperation : Menu::BaseMenuView
   $rect <510,20,710,60>
   inherited method LoadItemClass()
   {
-    // to suppress warning
-    if( aItemNo >= 0 )
-    {
-      // empty body
-    }
+    // suppress warning
+    aItemNo;
+
     return Menu::ItemBase;
 
   }
@@ -1400,7 +1402,7 @@ class SET19_BtcPairedDeviceOperation : Menu::BaseMenuView
       }
       case 1:
       {
-        var Settings::SET9_10_11_BtConnectionResult Dialog = new Settings::SET9_10_11_BtConnectionResult;
+        var Settings::SET10_11_12_BtConnectionResult Dialog = new Settings::SET10_11_12_BtConnectionResult;
         Dialog.DeviceName = DeviceName;
         var Menu::BaseMenuView OwnerMenu = (Menu::BaseMenuView)Owner;
         if( null != OwnerMenu )
@@ -1471,7 +1473,7 @@ class BtFwUpdateDialog : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text StatusText
+  object Components::BaseText StatusText
   {
     preset Bounds = <80,60,380,210>;
     preset WrapText = true;
@@ -1525,13 +1527,14 @@ class BtFwUpdateDialog : Core::Group
 
 $rect <280,10,520,50>
 $output false
+$multilingual true
 class TimeoutDialog : Components::BaseMainBG
 {
   $rect <20,290,200,330>
   inherited property DDModeEnabled = true;
 
   $rect <20,20,160,60>
-  object Views::Text MessageText
+  object Components::BaseText MessageText
   {
     preset Bounds = <10,50,470,236>;
     preset Ellipsis = true;
@@ -1587,17 +1590,13 @@ class TimeoutDialog : Components::BaseMainBG
 
 $rect <600,110,800,150>
 $output false
+$multilingual true
 class SET30_QRCode : Components::BaseMainBG
 {
-  $rect <10,340,210,380>
-  inherited method ReInit()
-  {
-    PushButton.Title = Strings::GEN_OK;
-  }
-
   $rect <10,290,210,330>
   inherited method Init()
   {
+    trace "SET30";
     $if !$prototyper
       if( DeviceInterface::SystemDevice.GetSystemStatus( Enum::SystemStatus.IS_QRCODE_READY ) )
       {
@@ -1720,6 +1719,7 @@ class SET30_QRCode : Components::BaseMainBG
 
 $rect <280,60,520,100>
 $output false
+$multilingual true
 class SET22_WaitingConnection : Components::BaseMainBG
 {
   $rect <0,340,200,380>
@@ -1731,7 +1731,7 @@ class SET22_WaitingConnection : Components::BaseMainBG
   $rect <0,290,180,330>
   inherited method Init()
   {
-    trace "SET22";
+    trace "SET23";
 
     var string ProcessString = Strings::SET22_WAIT_APP_CONNECTION;
     var int32 LeftIdx = ProcessString.find( Strings::ARGUMENT_STR, 0 );
@@ -1752,7 +1752,7 @@ class SET22_WaitingConnection : Components::BaseMainBG
   inherited property DDModeEnabled = true;
 
   $rect <20,20,160,60>
-  object Views::Text WaitText
+  object Components::BaseText WaitText
   {
     preset Bounds = <10,131,470,255>;
     preset WrapText = true;
@@ -1813,6 +1813,7 @@ class SET22_WaitingConnection : Components::BaseMainBG
 
 $rect <280,110,520,150>
 $output false
+$multilingual true
 class SET23_PairingFail : Settings::TimeoutDialog
 {
   $rect <10,290,190,330>
@@ -1858,26 +1859,20 @@ class SET23_PairingFail : Settings::TimeoutDialog
 
 $rect <280,160,520,200>
 $output false
+$multilingual true
 class SET24_CheckPairingRecord : Components::BaseMainBG
 {
-  $rect <0,340,180,380>
-  inherited method ReInit()
-  {
-    MessageText.String = Strings::SET24_CHECK_BT_PAIRING_RECORD;
-    PushButton.Title = Strings::GEN_OK;
-  }
-
   $rect <0,290,180,330>
   inherited method Init()
   {
     trace "SET24";
   }
 
-  $rect <0,390,180,430>
+  $rect <0,340,180,380>
   inherited property DDModeEnabled = true;
 
   $rect <20,20,160,60>
-  object Views::Text MessageText
+  object Components::BaseText MessageText
   {
     preset Bounds = <10,46,470,201>;
     preset WrapText = true;
@@ -1906,20 +1901,13 @@ class SET24_CheckPairingRecord : Components::BaseMainBG
 
 $rect <600,60,800,100>
 $output false
+$multilingual true
 class SET28_SystemInfo : Components::BaseMainBG
 {
-  $rect <520,60,720,100>
-  inherited method ReInit()
-  {
-    ESN.String = Strings::SET28_ESN;
-    SoftwareVersionTitle.String = Strings::SET28_SW_VERSION;
-    UpDownPushButtonSet.UpButtonTitle = Strings::SET28_UNIT_ID;
-    UpDownPushButtonSet.DownButtonTitle = Strings::SET28_SW_UPDATE;
-  }
-
-  $rect <520,10,720,50>
+  $rect <520,50,720,90>
   inherited method Init()
   {
+    trace "SET28";
     EsnText.String = DeviceInterface::SystemDevice.ESN;
     SoftwareVersionText.String = DeviceInterface::SystemDevice.SoftwareVersion;
     UpDownPushButtonSet.DownButtonEnabled = DeviceInterface::SystemDevice.IsSoftwareUpdateEnabled;
@@ -1947,7 +1935,7 @@ class SET28_SystemInfo : Components::BaseMainBG
   inherited property MagicKeyEnabled = true;
 
   $rect <20,20,160,60>
-  object Views::Text ESN
+  object Components::BaseText ESN
   {
     preset Bounds = <10,45,470,76>;
     preset String = Strings::SET28_ESN;
@@ -1955,7 +1943,7 @@ class SET28_SystemInfo : Components::BaseMainBG
   }
 
   $rect <20,20,160,60>
-  object Views::Text SoftwareVersionTitle
+  object Components::BaseText SoftwareVersionTitle
   {
     preset Bounds = <10,107,470,138>;
     preset String = Strings::SET28_SW_VERSION;
@@ -1963,7 +1951,7 @@ class SET28_SystemInfo : Components::BaseMainBG
   }
 
   $rect <20,20,160,60>
-  object Views::Text EsnText
+  object Components::BaseText EsnText
   {
     preset Bounds = <10,76,470,107>;
     preset String = "";
@@ -1971,7 +1959,7 @@ class SET28_SystemInfo : Components::BaseMainBG
   }
 
   $rect <20,20,160,60>
-  object Views::Text SoftwareVersionText
+  object Components::BaseText SoftwareVersionText
   {
     preset Bounds = <10,138,470,169>;
     preset String = DeviceInterface::SystemDevice.SoftwareVersion;
@@ -2070,7 +2058,7 @@ class LicenseDetail : Core::Group
   inherited property Bounds = <0,0,388,211>;
 
   $rect <20,20,160,60>
-  object Views::Text TitleText
+  object Components::BaseText TitleText
   {
     preset Bounds = <0,0,388,31>;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
@@ -2079,7 +2067,7 @@ class LicenseDetail : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text LicenseText
+  object Components::BaseText LicenseText
   {
     preset Bounds = <0,61,388,1301>;
     preset RowDistance = 30;
@@ -2278,6 +2266,7 @@ class SET43_ResetMenu : Menu::BaseMenuView
 
 $rect <600,630,810,670>
 $output false
+$multilingual true
 class SET42_ResetCompleted : Components::BaseMainBG
 {
   $rect <10,300,190,340>
@@ -2303,7 +2292,7 @@ class SET42_ResetCompleted : Components::BaseMainBG
   inherited property DDModeEnabled = true;
 
   $rect <20,20,160,60>
-  object Views::Text MessageText
+  object Components::BaseText MessageText
   {
     preset Bounds = <10,50,470,236>;
     preset Ellipsis = true;
@@ -2383,7 +2372,7 @@ class SET45_TripMileageReset : Menu::BaseMenuView
   $rect <0,290,200,330>
   inherited method Init()
   {
-    trace "Init SET45";
+    trace "SET45";
 
     SetNoOfMenuItems();
     GetMileageSetting();
@@ -2630,7 +2619,7 @@ class SET46_VehicleInfoReset : Menu::BaseMenuView
   $rect <0,290,200,330>
   inherited method Init()
   {
-    trace "Init SET46";
+    trace "SET46";
 
     SetNoOfMenuItems();
     GetUnitSetting();
@@ -3014,20 +3003,13 @@ const uint32 MAX_CRUISE_SPEED = 999;
 
 $rect <820,60,1030,100>
 $output false
+$multilingual true
 class SET27_ConfirmUpdate : Components::BaseMainBG
 {
-  $rect <10,350,210,390>
-  inherited method ReInit()
-  {
-    Text.String = Strings::SET27_UPDATE_SYSTEM;
-    UpDownPushButtonSet.UpButtonTitle = Strings::GEN_CANCEL;
-    UpDownPushButtonSet.DownButtonTitle = Strings::GEN_OK;
-  }
-
   $rect <10,300,190,340>
   inherited method Init()
   {
-    trace "Init SET27";
+    trace "SET27";
     DeviceInterface::SystemDevice.SaveLastStatus();
   }
 
@@ -3035,7 +3017,7 @@ class SET27_ConfirmUpdate : Components::BaseMainBG
   inherited property DDModeEnabled = true;
 
   $rect <20,20,160,60>
-  object Views::Text Text
+  object Components::BaseText Text
   {
     preset Bounds = <10,40,470,168>;
     preset String = Strings::SET27_UPDATE_SYSTEM;
@@ -3124,6 +3106,7 @@ const float COOLANT_HIGH_TEMPERATURE = 128.75;
 
 $rect <280,260,520,300>
 $output false
+$multilingual true
 class SET47_WaitingApproval : Components::BaseMainBG
 {
   $rect <10,350,190,390>
@@ -3171,7 +3154,7 @@ class SET47_WaitingApproval : Components::BaseMainBG
   }
 
   $rect <20,20,160,60>
-  object Views::Text WaitingText
+  object Components::BaseText WaitingText
   {
     preset Bounds = <10,156,470,227>;
     preset WrapText = true;
@@ -3249,6 +3232,7 @@ class SET47_WaitingApproval : Components::BaseMainBG
 
 $rect <280,360,520,400>
 $output false
+$multilingual true
 class SET49_OnlyNaviAppConnected : Settings::TimeoutDialog
 {
   $rect <3,340,180,380>
@@ -3310,6 +3294,7 @@ class SET49_OnlyNaviAppConnected : Settings::TimeoutDialog
 
 $rect <280,410,520,450>
 $output false
+$multilingual true
 class SET50_OnlyYahamaAppConnected : Settings::TimeoutDialog
 {
   $rect <0,340,180,380>
@@ -3359,6 +3344,7 @@ class SET50_OnlyYahamaAppConnected : Settings::TimeoutDialog
 
 $rect <280,310,520,350>
 $output false
+$multilingual true
 class SET48_ReconnectYamahaApp : Settings::TimeoutDialog
 {
   $rect <10,340,190,380>
@@ -3403,6 +3389,7 @@ class SET48_ReconnectYamahaApp : Settings::TimeoutDialog
 
 $rect <280,460,520,500>
 $output false
+$multilingual true
 class SET51_BothAppConnected : Settings::TimeoutDialog
 {
   $rect <0,335,200,375>
@@ -3452,6 +3439,7 @@ class SET51_BothAppConnected : Settings::TimeoutDialog
 
 $rect <280,210,520,250>
 $output false
+$multilingual true
 class SET26_PairingSuccessful : Settings::TimeoutDialog
 {
   $rect <10,290,190,330>

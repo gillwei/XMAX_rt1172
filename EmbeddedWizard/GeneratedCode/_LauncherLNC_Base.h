@@ -150,6 +150,9 @@ EW_DEFINE_METHODS( LauncherLNC_Base, CoreGroup )
     aOrder )
 EW_END_OF_METHODS( LauncherLNC_Base )
 
+/* 'C' function for method : 'Launcher::LNC_Base.ReInit()' */
+void LauncherLNC_Base_ReInit( LauncherLNC_Base _this );
+
 /* 'C' function for method : 'Launcher::LNC_Base.GetStringOfLauncherItem()' */
 XString LauncherLNC_Base_GetStringOfLauncherItem( LauncherLNC_Base _this, XEnum 
   aLauncherItem );

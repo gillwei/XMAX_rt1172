@@ -26,6 +26,7 @@
 
 #include "ewlocale.h"
 #include "_ApplicationApplication.h"
+#include "_ComponentsBaseText.h"
 #include "_CoreGroup.h"
 #include "_CorePropertyObserver.h"
 #include "_CoreSystemEventHandler.h"
@@ -50,7 +51,6 @@
 #include "_ResourcesFont.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
-#include "_ViewsText.h"
 #include "_WeatherWEA01_Main.h"
 #include "DeviceInterface.h"
 #include "Enum.h"
@@ -63,48 +63,55 @@
 /* Compressed strings for the language 'Default'. */
 EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
-  0x00000038, /* ratio 92.86 % */
-  0xB8001B00, 0x00092452, 0x00D20037, 0x040003A0, 0x9E002800, 0x0300043C, 0x18000C80,
-  0x88341205, 0x87432150, 0xAC422510, 0x49A30318, 0x0001018C, 0x00000000
+  0x0000008A, /* ratio 60.87 % */
+  0xB8001100, 0x800A0452, 0xC20C0027, 0x80038000, 0x0B0305C3, 0x60084C1E, 0x2F000E61,
+  0x4000C400, 0x810021C3, 0x54220D04, 0x47864008, 0x56471290, 0x64E37004, 0x17149144,
+  0x1288746E, 0x348EC926, 0xB8344E5F, 0x90CE65B1, 0xF0CE573B, 0x00203448, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
 static const XRect _Const0000 = {{ 10, 156 }, { 470, 187 }};
 static const XRect _Const0001 = {{ 193, 54 }, { 287, 148 }};
-static const XRect _Const0002 = {{ 10, 49 }, { 470, 235 }};
-static const XRect _Const0003 = {{ 0, 0 }, { 480, 272 }};
-static const XColor _Const0004 = { 0x00, 0x00, 0x00, 0xFF };
-static const XRect _Const0005 = {{ 10, 55 }, { 470, 89 }};
-static const XRect _Const0006 = {{ 0, 0 }, { 480, 43 }};
-static const XColor _Const0007 = { 0xFF, 0xF5, 0x00, 0xFF };
-static const XRect _Const0008 = {{ 155, 5 }, { 191, 41 }};
-static const XRect _Const0009 = {{ 144, 2 }, { 375, 43 }};
-static const XRect _Const000A = {{ 215, 105 }, { 265, 155 }};
-static const XRect _Const000B = {{ 296, 105 }, { 346, 155 }};
-static const XRect _Const000C = {{ 134, 105 }, { 184, 155 }};
-static const XRect _Const000D = {{ 165, 176 }, { 315, 259 }};
-static const XStringRes _Const000E = { _StringsDefault0, 0x0002 };
-static const XRect _Const000F = {{ 0, 44 }, { 480, 48 }};
-static const XRect _Const0010 = {{ 10, 56 }, { 60, 106 }};
-static const XRect _Const0011 = {{ 10, 127 }, { 60, 177 }};
-static const XRect _Const0012 = {{ 10, 198 }, { 60, 248 }};
-static const XRect _Const0013 = {{ 10, 4 }, { 470, 41 }};
-static const XColor _Const0014 = { 0xFF, 0xFF, 0xFF, 0xFF };
-static const XRect _Const0015 = {{ 68, 49 }, { 440, 111 }};
-static const XRect _Const0016 = {{ 68, 120 }, { 440, 182 }};
-static const XRect _Const0017 = {{ 68, 191 }, { 440, 253 }};
-static const XRect _Const0018 = {{ 0, 115 }, { 480, 119 }};
-static const XRect _Const0019 = {{ 0, 186 }, { 480, 190 }};
-static const XRect _Const001A = {{ 0, 257 }, { 480, 261 }};
-static const XStringRes _Const001B = { _StringsDefault0, 0x000F };
-static const XRect _Const001C = {{ 10, 46 }, { 470, 170 }};
-static const XRect _Const001D = {{ 0, 36 }, { 480, 38 }};
-static const XRect _Const001E = {{ 10, 50 }, { 470, 236 }};
-static const XRect _Const001F = {{ 0, 0 }, { 480, 234 }};
-static const XRect _Const0020 = {{ 0, 144 }, { 480, 234 }};
-static const XRect _Const0021 = {{ 0, 0 }, { 480, 144 }};
-static const XRect _Const0022 = {{ 10, 118 }, { 470, 149 }};
-static const XRect _Const0023 = {{ 193, 18 }, { 287, 112 }};
+static const XStringRes _Const0002 = { _StringsDefault0, 0x0002 };
+static const XRect _Const0003 = {{ 10, 49 }, { 470, 235 }};
+static const XStringRes _Const0004 = { _StringsDefault0, 0x000A };
+static const XRect _Const0005 = {{ 0, 0 }, { 480, 272 }};
+static const XColor _Const0006 = { 0x00, 0x00, 0x00, 0xFF };
+static const XRect _Const0007 = {{ 10, 55 }, { 470, 89 }};
+static const XRect _Const0008 = {{ 0, 0 }, { 480, 43 }};
+static const XColor _Const0009 = { 0xFF, 0xF5, 0x00, 0xFF };
+static const XRect _Const000A = {{ 155, 5 }, { 191, 41 }};
+static const XRect _Const000B = {{ 144, 2 }, { 375, 43 }};
+static const XRect _Const000C = {{ 215, 105 }, { 265, 155 }};
+static const XRect _Const000D = {{ 296, 105 }, { 346, 155 }};
+static const XRect _Const000E = {{ 134, 105 }, { 184, 155 }};
+static const XRect _Const000F = {{ 165, 176 }, { 315, 259 }};
+static const XStringRes _Const0010 = { _StringsDefault0, 0x0015 };
+static const XRect _Const0011 = {{ 0, 44 }, { 480, 48 }};
+static const XRect _Const0012 = {{ 10, 56 }, { 60, 106 }};
+static const XRect _Const0013 = {{ 10, 127 }, { 60, 177 }};
+static const XRect _Const0014 = {{ 10, 198 }, { 60, 248 }};
+static const XRect _Const0015 = {{ 10, 4 }, { 470, 41 }};
+static const XColor _Const0016 = { 0xFF, 0xFF, 0xFF, 0xFF };
+static const XRect _Const0017 = {{ 68, 49 }, { 440, 111 }};
+static const XRect _Const0018 = {{ 68, 120 }, { 440, 182 }};
+static const XRect _Const0019 = {{ 68, 191 }, { 440, 253 }};
+static const XRect _Const001A = {{ 0, 115 }, { 480, 119 }};
+static const XRect _Const001B = {{ 0, 186 }, { 480, 190 }};
+static const XRect _Const001C = {{ 0, 257 }, { 480, 261 }};
+static const XStringRes _Const001D = { _StringsDefault0, 0x001D };
+static const XStringRes _Const001E = { _StringsDefault0, 0x0025 };
+static const XRect _Const001F = {{ 10, 46 }, { 470, 170 }};
+static const XRect _Const0020 = {{ 0, 36 }, { 480, 38 }};
+static const XStringRes _Const0021 = { _StringsDefault0, 0x002D };
+static const XRect _Const0022 = {{ 10, 50 }, { 470, 236 }};
+static const XStringRes _Const0023 = { _StringsDefault0, 0x0035 };
+static const XStringRes _Const0024 = { _StringsDefault0, 0x003D };
+static const XRect _Const0025 = {{ 0, 0 }, { 480, 234 }};
+static const XRect _Const0026 = {{ 0, 144 }, { 480, 234 }};
+static const XRect _Const0027 = {{ 0, 0 }, { 480, 144 }};
+static const XRect _Const0028 = {{ 10, 118 }, { 470, 149 }};
+static const XRect _Const0029 = {{ 193, 18 }, { 287, 112 }};
 
 /* Initializer for the class 'Pop::POP08_WeatherLoadingUI' */
 void PopPOP08_WeatherLoadingUI__Init( PopPOP08_WeatherLoadingUI _this, XObject aLink, XHandle aArg )
@@ -116,7 +123,7 @@ void PopPOP08_WeatherLoadingUI__Init( PopPOP08_WeatherLoadingUI _this, XObject a
   _this->_.XObject._.GCT = EW_CLASS_GCT( PopPOP08_WeatherLoadingUI );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->LoadingText, &_this->_.XObject, 0 );
+  ComponentsBaseText__Init( &_this->LoadingText, &_this->_.XObject, 0 );
   CorePropertyObserver__Init( &_this->WeatherLoadingObserver, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->LoadingAnimation, &_this->_.XObject, 0 );
   CoreTimer__Init( &_this->ConnectionFailedTimer, &_this->_.XObject, 0 );
@@ -127,14 +134,14 @@ void PopPOP08_WeatherLoadingUI__Init( PopPOP08_WeatherLoadingUI _this, XObject a
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( &_this->LoadingText, _Const0000 );
-  ViewsText_OnSetString( &_this->LoadingText, EwGetVariantOfString( &StringsGEN_PLEASE_WAIT ));
+  ViewsText_OnSetString((ViewsText)&_this->LoadingText, EwGetVariantOfString( &StringsGEN_PLEASE_WAIT ));
   CoreRectView__OnSetBounds( &_this->LoadingAnimation, _Const0001 );
   ViewsImage_OnSetAnimated( &_this->LoadingAnimation, 1 );
   CoreTimer_OnSetPeriod( &_this->ConnectionFailedTimer, 20000 );
   CoreTimer_OnSetEnabled( &_this->ConnectionFailedTimer, 1 );
   CoreGroup__Add( _this, ((CoreView)&_this->LoadingText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->LoadingAnimation ), 0 );
-  ViewsText_OnSetFont( &_this->LoadingText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ViewsText_OnSetFont((ViewsText)&_this->LoadingText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
   _this->WeatherLoadingObserver.OnEvent = EwNewSlot( _this, PopPOP08_WeatherLoadingUI_OnWeatherLoadingUpdateSlot );
   CorePropertyObserver_OnSetOutlet( &_this->WeatherLoadingObserver, EwNewRef( EwGetAutoObject( 
@@ -158,14 +165,16 @@ void PopPOP08_WeatherLoadingUI__ReInit( PopPOP08_WeatherLoadingUI _this )
   ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
-  ViewsText__ReInit( &_this->LoadingText );
+  ComponentsBaseText__ReInit( &_this->LoadingText );
   CorePropertyObserver__ReInit( &_this->WeatherLoadingObserver );
   ViewsImage__ReInit( &_this->LoadingAnimation );
   CoreTimer__ReInit( &_this->ConnectionFailedTimer );
   CoreSystemEventHandler__ReInit( &_this->MotoConConnectionEventHandler );
 
-  /* Call the user defined re-constructor of the class */
-  PopPOP08_WeatherLoadingUI_ReInit( _this );
+  /* ... and re-initialize objects, variables, properties, etc. */
+  ViewsText_OnSetString((ViewsText)&_this->LoadingText, EwGetVariantOfString( &StringsGEN_PLEASE_WAIT ));
+  ViewsText_OnSetFont((ViewsText)&_this->LoadingText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ResourcesFont ));
 }
 
 /* Finalizer method for the class 'Pop::POP08_WeatherLoadingUI' */
@@ -175,7 +184,7 @@ void PopPOP08_WeatherLoadingUI__Done( PopPOP08_WeatherLoadingUI _this )
   _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
-  ViewsText__Done( &_this->LoadingText );
+  ComponentsBaseText__Done( &_this->LoadingText );
   CorePropertyObserver__Done( &_this->WeatherLoadingObserver );
   ViewsImage__Done( &_this->LoadingAnimation );
   CoreTimer__Done( &_this->ConnectionFailedTimer );
@@ -183,12 +192,6 @@ void PopPOP08_WeatherLoadingUI__Done( PopPOP08_WeatherLoadingUI _this )
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseMainBG__Done( &_this->_.Super );
-}
-
-/* 'C' function for method : 'Pop::POP08_WeatherLoadingUI.ReInit()' */
-void PopPOP08_WeatherLoadingUI_ReInit( PopPOP08_WeatherLoadingUI _this )
-{
-  ViewsText_OnSetString( &_this->LoadingText, EwGetVariantOfString( &StringsGEN_PLEASE_WAIT ));
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -200,6 +203,7 @@ void PopPOP08_WeatherLoadingUI_Init( PopPOP08_WeatherLoadingUI _this, XHandle aA
   EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( aArg );
 
+  EwTrace( "%s", EwLoadString( &_Const0002 ));
   DeviceInterfaceWeatherDeviceClass_SendWeatherInfoRequest( EwGetAutoObject( &DeviceInterfaceWeatherDevice, 
   DeviceInterfaceWeatherDeviceClass ));
   DeviceInterfaceWeatherDeviceClass_SendVehicleSettingRequest( EwGetAutoObject( 
@@ -314,22 +318,26 @@ void PopPOP09_POP14_BleConnectionErrorUI__Init( PopPOP09_POP14_BleConnectionErro
   _this->_.XObject._.GCT = EW_CLASS_GCT( PopPOP09_POP14_BleConnectionErrorUI );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->ConnectionFailedMessage, &_this->_.XObject, 0 );
+  ComponentsBaseText__Init( &_this->ConnectionFailedMessage, &_this->_.XObject, 0 );
   CoreTimer__Init( &_this->CountDownTimer, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_.VMT = EW_CLASS( PopPOP09_POP14_BleConnectionErrorUI );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( &_this->ConnectionFailedMessage, _Const0002 );
-  ViewsText_OnSetString( &_this->ConnectionFailedMessage, EwGetVariantOfString( 
+  CoreRectView__OnSetBounds( &_this->ConnectionFailedMessage, _Const0003 );
+  ViewsText_OnSetWrapText((ViewsText)&_this->ConnectionFailedMessage, 1 );
+  ViewsText_OnSetString((ViewsText)&_this->ConnectionFailedMessage, EwGetVariantOfString( 
   &StringsPOP09_CONNECTION_FAILED ));
   CoreTimer_OnSetPeriod( &_this->CountDownTimer, 2000 );
   CoreTimer_OnSetEnabled( &_this->CountDownTimer, 1 );
   CoreGroup__Add( _this, ((CoreView)&_this->ConnectionFailedMessage ), 0 );
-  ViewsText_OnSetFont( &_this->ConnectionFailedMessage, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
-  ResourcesFont ));
+  ViewsText_OnSetFont((ViewsText)&_this->ConnectionFailedMessage, EwLoadResource( 
+  &FontsNotoSansCjkJpMedium24pt, ResourcesFont ));
   _this->CountDownTimer.OnTrigger = EwNewSlot( _this, PopPOP09_POP14_BleConnectionErrorUI_OnCountDownTimeoutSlot );
+
+  /* Call the user defined constructor */
+  PopPOP09_POP14_BleConnectionErrorUI_Init( _this, aArg );
 }
 
 /* Re-Initializer for the class 'Pop::POP09_POP14_BleConnectionErrorUI' */
@@ -339,11 +347,14 @@ void PopPOP09_POP14_BleConnectionErrorUI__ReInit( PopPOP09_POP14_BleConnectionEr
   ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
-  ViewsText__ReInit( &_this->ConnectionFailedMessage );
+  ComponentsBaseText__ReInit( &_this->ConnectionFailedMessage );
   CoreTimer__ReInit( &_this->CountDownTimer );
 
-  /* Call the user defined re-constructor of the class */
-  PopPOP09_POP14_BleConnectionErrorUI_ReInit( _this );
+  /* ... and re-initialize objects, variables, properties, etc. */
+  ViewsText_OnSetString((ViewsText)&_this->ConnectionFailedMessage, EwGetVariantOfString( 
+  &StringsPOP09_CONNECTION_FAILED ));
+  ViewsText_OnSetFont((ViewsText)&_this->ConnectionFailedMessage, EwLoadResource( 
+  &FontsNotoSansCjkJpMedium24pt, ResourcesFont ));
 }
 
 /* Finalizer method for the class 'Pop::POP09_POP14_BleConnectionErrorUI' */
@@ -353,18 +364,24 @@ void PopPOP09_POP14_BleConnectionErrorUI__Done( PopPOP09_POP14_BleConnectionErro
   _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
-  ViewsText__Done( &_this->ConnectionFailedMessage );
+  ComponentsBaseText__Done( &_this->ConnectionFailedMessage );
   CoreTimer__Done( &_this->CountDownTimer );
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
-/* 'C' function for method : 'Pop::POP09_POP14_BleConnectionErrorUI.ReInit()' */
-void PopPOP09_POP14_BleConnectionErrorUI_ReInit( PopPOP09_POP14_BleConnectionErrorUI _this )
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void PopPOP09_POP14_BleConnectionErrorUI_Init( PopPOP09_POP14_BleConnectionErrorUI _this, 
+  XHandle aArg )
 {
-  ViewsText_OnSetString( &_this->ConnectionFailedMessage, EwGetVariantOfString( 
-  &StringsPOP09_CONNECTION_FAILED ));
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+  EW_UNUSED_ARG( aArg );
+
+  EwTrace( "%s", EwLoadString( &_Const0004 ));
 }
 
 /* 'C' function for method : 'Pop::POP09_POP14_BleConnectionErrorUI.OnCountDownTimeoutSlot()' */
@@ -447,10 +464,10 @@ void PopPOP02_ConnectionError__Init( PopPOP02_ConnectionError _this, XObject aLi
 
   /* ... then construct all embedded objects */
   ViewsRectangle__Init( &_this->BlackBackground, &_this->_.XObject, 0 );
-  ViewsText__Init( &_this->CheckText, &_this->_.XObject, 0 );
+  ComponentsBaseText__Init( &_this->CheckText, &_this->_.XObject, 0 );
   ViewsRectangle__Init( &_this->TopBar, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->ErrorIcon, &_this->_.XObject, 0 );
-  ViewsText__Init( &_this->ConnectionErrText, &_this->_.XObject, 0 );
+  ComponentsBaseText__Init( &_this->ConnectionErrText, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->ErrorBTIcon, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->ErrorNavigationIcon, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->ErrorPhoneLockIcon, &_this->_.XObject, 0 );
@@ -460,38 +477,39 @@ void PopPOP02_ConnectionError__Init( PopPOP02_ConnectionError _this, XObject aLi
   _this->_.VMT = EW_CLASS( PopPOP02_ConnectionError );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const0003 );
-  CoreRectView__OnSetBounds( &_this->BlackBackground, _Const0003 );
-  ViewsRectangle_OnSetColor( &_this->BlackBackground, _Const0004 );
-  CoreRectView__OnSetBounds( &_this->CheckText, _Const0005 );
-  ViewsText_OnSetWrapText( &_this->CheckText, 0 );
-  ViewsText_OnSetString( &_this->CheckText, EwGetVariantOfString( &StringsPOP02_PLEASE_CHECK ));
-  CoreRectView__OnSetBounds( &_this->TopBar, _Const0006 );
-  ViewsRectangle_OnSetColor( &_this->TopBar, _Const0007 );
-  CoreRectView__OnSetBounds( &_this->ErrorIcon, _Const0008 );
+  CoreRectView__OnSetBounds( _this, _Const0005 );
+  CoreRectView__OnSetBounds( &_this->BlackBackground, _Const0005 );
+  ViewsRectangle_OnSetColor( &_this->BlackBackground, _Const0006 );
+  CoreRectView__OnSetBounds( &_this->CheckText, _Const0007 );
+  ViewsText_OnSetWrapText((ViewsText)&_this->CheckText, 0 );
+  ViewsText_OnSetString((ViewsText)&_this->CheckText, EwGetVariantOfString( &StringsPOP02_PLEASE_CHECK ));
+  CoreRectView__OnSetBounds( &_this->TopBar, _Const0008 );
+  ViewsRectangle_OnSetColor( &_this->TopBar, _Const0009 );
+  CoreRectView__OnSetBounds( &_this->ErrorIcon, _Const000A );
   ViewsImage_OnSetAlignment( &_this->ErrorIcon, ViewsImageAlignmentAlignHorzCenter 
   | ViewsImageAlignmentAlignVertCenter | ViewsImageAlignmentScaleToFit );
   ViewsImage_OnSetVisible( &_this->ErrorIcon, 1 );
-  CoreRectView__OnSetBounds( &_this->ConnectionErrText, _Const0009 );
-  ViewsText_OnSetAutoSize( &_this->ConnectionErrText, 1 );
-  ViewsText_OnSetAlignment( &_this->ConnectionErrText, ViewsTextAlignmentAlignHorzLeft 
+  CoreRectView__OnSetBounds( &_this->ConnectionErrText, _Const000B );
+  ViewsText_OnSetAutoSize((ViewsText)&_this->ConnectionErrText, 1 );
+  ViewsText_OnSetAlignment((ViewsText)&_this->ConnectionErrText, ViewsTextAlignmentAlignHorzLeft 
   | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->ConnectionErrText, EwGetVariantOfString( &StringsPOP02_CONNECTION_ERR ));
-  ViewsText_OnSetColor( &_this->ConnectionErrText, _Const0004 );
-  ViewsText_OnSetVisible( &_this->ConnectionErrText, 1 );
-  CoreRectView__OnSetBounds( &_this->ErrorBTIcon, _Const000A );
+  ViewsText_OnSetString((ViewsText)&_this->ConnectionErrText, EwGetVariantOfString( 
+  &StringsPOP02_CONNECTION_ERR ));
+  ViewsText_OnSetColor((ViewsText)&_this->ConnectionErrText, _Const0006 );
+  ViewsText_OnSetVisible((ViewsText)&_this->ConnectionErrText, 1 );
+  CoreRectView__OnSetBounds( &_this->ErrorBTIcon, _Const000C );
   ViewsImage_OnSetAlignment( &_this->ErrorBTIcon, ViewsImageAlignmentAlignHorzCenter 
   | ViewsImageAlignmentAlignVertCenter );
   ViewsImage_OnSetVisible( &_this->ErrorBTIcon, 1 );
-  CoreRectView__OnSetBounds( &_this->ErrorNavigationIcon, _Const000B );
+  CoreRectView__OnSetBounds( &_this->ErrorNavigationIcon, _Const000D );
   ViewsImage_OnSetAlignment( &_this->ErrorNavigationIcon, ViewsImageAlignmentAlignHorzCenter 
   | ViewsImageAlignmentAlignVertCenter );
   ViewsImage_OnSetVisible( &_this->ErrorNavigationIcon, 1 );
-  CoreRectView__OnSetBounds( &_this->ErrorPhoneLockIcon, _Const000C );
+  CoreRectView__OnSetBounds( &_this->ErrorPhoneLockIcon, _Const000E );
   ViewsImage_OnSetAlignment( &_this->ErrorPhoneLockIcon, ViewsImageAlignmentAlignHorzCenter 
   | ViewsImageAlignmentAlignVertCenter );
   ViewsImage_OnSetVisible( &_this->ErrorPhoneLockIcon, 1 );
-  CoreRectView__OnSetBounds( &_this->UpDownPushButtonSet, _Const000D );
+  CoreRectView__OnSetBounds( &_this->UpDownPushButtonSet, _Const000F );
   _this->UpDownPushButtonSet.Super1.PassHomeKey = 1;
   _this->UpDownPushButtonSet.Super1.PassMagicKey = 1;
   ComponentsBaseComponent__OnSetDDModeEnabled( &_this->UpDownPushButtonSet, 1 );
@@ -509,11 +527,11 @@ void PopPOP02_ConnectionError__Init( PopPOP02_ConnectionError _this, XObject aLi
   CoreGroup__Add( _this, ((CoreView)&_this->ErrorNavigationIcon ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ErrorPhoneLockIcon ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->UpDownPushButtonSet ), 0 );
-  ViewsText_OnSetFont( &_this->CheckText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ViewsText_OnSetFont((ViewsText)&_this->CheckText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
   ResourcesFont ));
   ViewsImage_OnSetBitmap( &_this->ErrorIcon, EwLoadResource( &ResourceIconError, 
   ResourcesBitmap ));
-  ViewsText_OnSetFont( &_this->ConnectionErrText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ViewsText_OnSetFont((ViewsText)&_this->ConnectionErrText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
   ResourcesFont ));
   ViewsImage_OnSetBitmap( &_this->ErrorBTIcon, EwLoadResource( &ResourceIconErrorBT, 
   ResourcesBitmap ));
@@ -536,14 +554,27 @@ void PopPOP02_ConnectionError__ReInit( PopPOP02_ConnectionError _this )
 
   /* ... then re-construct all embedded objects */
   ViewsRectangle__ReInit( &_this->BlackBackground );
-  ViewsText__ReInit( &_this->CheckText );
+  ComponentsBaseText__ReInit( &_this->CheckText );
   ViewsRectangle__ReInit( &_this->TopBar );
   ViewsImage__ReInit( &_this->ErrorIcon );
-  ViewsText__ReInit( &_this->ConnectionErrText );
+  ComponentsBaseText__ReInit( &_this->ConnectionErrText );
   ViewsImage__ReInit( &_this->ErrorBTIcon );
   ViewsImage__ReInit( &_this->ErrorNavigationIcon );
   ViewsImage__ReInit( &_this->ErrorPhoneLockIcon );
   MenuUpDownPushButtonSet__ReInit( &_this->UpDownPushButtonSet );
+
+  /* ... and re-initialize objects, variables, properties, etc. */
+  ViewsText_OnSetString((ViewsText)&_this->CheckText, EwGetVariantOfString( &StringsPOP02_PLEASE_CHECK ));
+  ViewsText_OnSetString((ViewsText)&_this->ConnectionErrText, EwGetVariantOfString( 
+  &StringsPOP02_CONNECTION_ERR ));
+  MenuUpDownPushButtonSet_OnSetUpButtonTitle( &_this->UpDownPushButtonSet, EwGetVariantOfString( 
+  &StringsGEN_OK ));
+  MenuUpDownPushButtonSet_OnSetDownButtonTitle( &_this->UpDownPushButtonSet, EwGetVariantOfString( 
+  &StringsPOP02_DETAILS ));
+  ViewsText_OnSetFont((ViewsText)&_this->CheckText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ResourcesFont ));
+  ViewsText_OnSetFont((ViewsText)&_this->ConnectionErrText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ResourcesFont ));
 
   /* Call the user defined re-constructor of the class */
   PopPOP02_ConnectionError_ReInit( _this );
@@ -557,10 +588,10 @@ void PopPOP02_ConnectionError__Done( PopPOP02_ConnectionError _this )
 
   /* Finalize all embedded objects */
   ViewsRectangle__Done( &_this->BlackBackground );
-  ViewsText__Done( &_this->CheckText );
+  ComponentsBaseText__Done( &_this->CheckText );
   ViewsRectangle__Done( &_this->TopBar );
   ViewsImage__Done( &_this->ErrorIcon );
-  ViewsText__Done( &_this->ConnectionErrText );
+  ComponentsBaseText__Done( &_this->ConnectionErrText );
   ViewsImage__Done( &_this->ErrorBTIcon );
   ViewsImage__Done( &_this->ErrorNavigationIcon );
   ViewsImage__Done( &_this->ErrorPhoneLockIcon );
@@ -573,12 +604,6 @@ void PopPOP02_ConnectionError__Done( PopPOP02_ConnectionError _this )
 /* 'C' function for method : 'Pop::POP02_ConnectionError.ReInit()' */
 void PopPOP02_ConnectionError_ReInit( PopPOP02_ConnectionError _this )
 {
-  ViewsText_OnSetString( &_this->ConnectionErrText, EwGetVariantOfString( &StringsPOP02_CONNECTION_ERR ));
-  ViewsText_OnSetString( &_this->CheckText, EwGetVariantOfString( &StringsPOP02_PLEASE_CHECK ));
-  MenuUpDownPushButtonSet_OnSetUpButtonTitle( &_this->UpDownPushButtonSet, EwGetVariantOfString( 
-  &StringsGEN_OK ));
-  MenuUpDownPushButtonSet_OnSetDownButtonTitle( &_this->UpDownPushButtonSet, EwGetVariantOfString( 
-  &StringsPOP02_DETAILS ));
   CoreGroup_InvalidateLayout((CoreGroup)_this );
 }
 
@@ -591,7 +616,7 @@ void PopPOP02_ConnectionError_Init( PopPOP02_ConnectionError _this, XHandle aArg
   EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const000E ));
+  EwTrace( "%s", EwLoadString( &_Const0010 ));
 }
 
 /* The method UpdateLayout() is invoked automatically after the size of the component 
@@ -611,15 +636,15 @@ void PopPOP02_ConnectionError_UpdateLayout( PopPOP02_ConnectionError _this, XPoi
 
   CoreGroup_UpdateLayout((CoreGroup)_this, aSize );
   TotalWidth = ( EwGetRectW( _this->ErrorIcon.Super1.Bounds ) + 3 ) + EwGetRectW( 
-  ViewsText_GetContentArea( &_this->ConnectionErrText ));
+  ViewsText_GetContentArea((ViewsText)&_this->ConnectionErrText ));
   Margin = ( EwGetRectW( _this->Super3.Bounds ) - TotalWidth ) / 2;
   Width = EwGetRectW( _this->ErrorIcon.Super1.Bounds );
   NewBounds = _this->ErrorIcon.Super1.Bounds;
   NewBounds.Point1.X = Margin;
   NewBounds.Point2.X = ( NewBounds.Point1.X + Width );
   CoreRectView__OnSetBounds( &_this->ErrorIcon, NewBounds );
-  Width = EwGetRectW( _this->ConnectionErrText.Super1.Bounds );
-  NewBounds = _this->ConnectionErrText.Super1.Bounds;
+  Width = EwGetRectW( _this->ConnectionErrText.Super2.Bounds );
+  NewBounds = _this->ConnectionErrText.Super2.Bounds;
   NewBounds.Point1.X = ( _this->ErrorIcon.Super1.Bounds.Point2.X + 3 );
   NewBounds.Point2.X = ( NewBounds.Point1.X + Width );
   CoreRectView__OnSetBounds( &_this->ConnectionErrText, NewBounds );
@@ -732,10 +757,10 @@ void PopPOP07_TROUBLE_SHOOTING__Init( PopPOP07_TROUBLE_SHOOTING _this, XObject a
   ViewsImage__Init( &_this->ErrorPhoneLockIcon, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->ErrorBTIcon, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->ErrorNavigationIcon, &_this->_.XObject, 0 );
-  ViewsText__Init( &_this->TroubleShootingTitle, &_this->_.XObject, 0 );
-  ViewsText__Init( &_this->TroubleShootingText1, &_this->_.XObject, 0 );
-  ViewsText__Init( &_this->TroubleShootingText2, &_this->_.XObject, 0 );
-  ViewsText__Init( &_this->TroubleShootingText3, &_this->_.XObject, 0 );
+  ComponentsBaseText__Init( &_this->TroubleShootingTitle, &_this->_.XObject, 0 );
+  ComponentsBaseText__Init( &_this->TroubleShootingText1, &_this->_.XObject, 0 );
+  ComponentsBaseText__Init( &_this->TroubleShootingText2, &_this->_.XObject, 0 );
+  ComponentsBaseText__Init( &_this->TroubleShootingText3, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->Divider1, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->Divider2, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->Divider3, &_this->_.XObject, 0 );
@@ -744,57 +769,61 @@ void PopPOP07_TROUBLE_SHOOTING__Init( PopPOP07_TROUBLE_SHOOTING _this, XObject a
   _this->_.VMT = EW_CLASS( PopPOP07_TROUBLE_SHOOTING );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( &_this->Super1.BlackBG, _Const0003 );
-  CoreRectView__OnSetBounds( &_this->Divider, _Const000F );
+  CoreRectView__OnSetBounds( &_this->Super1.BlackBG, _Const0005 );
+  CoreRectView__OnSetBounds( &_this->Divider, _Const0011 );
   ViewsImage_OnSetAlignment( &_this->Divider, ViewsImageAlignmentAlignHorzCenter 
   | ViewsImageAlignmentAlignVertCenter );
-  CoreRectView__OnSetBounds( &_this->ErrorPhoneLockIcon, _Const0010 );
+  CoreRectView__OnSetBounds( &_this->ErrorPhoneLockIcon, _Const0012 );
   ViewsImage_OnSetAlignment( &_this->ErrorPhoneLockIcon, ViewsImageAlignmentAlignHorzCenter 
   | ViewsImageAlignmentAlignVertCenter );
   ViewsImage_OnSetVisible( &_this->ErrorPhoneLockIcon, 1 );
-  CoreRectView__OnSetBounds( &_this->ErrorBTIcon, _Const0011 );
+  CoreRectView__OnSetBounds( &_this->ErrorBTIcon, _Const0013 );
   ViewsImage_OnSetAlignment( &_this->ErrorBTIcon, ViewsImageAlignmentAlignHorzCenter 
   | ViewsImageAlignmentAlignVertCenter );
   ViewsImage_OnSetVisible( &_this->ErrorBTIcon, 1 );
-  CoreRectView__OnSetBounds( &_this->ErrorNavigationIcon, _Const0012 );
+  CoreRectView__OnSetBounds( &_this->ErrorNavigationIcon, _Const0014 );
   ViewsImage_OnSetAlignment( &_this->ErrorNavigationIcon, ViewsImageAlignmentAlignHorzCenter 
   | ViewsImageAlignmentAlignVertCenter );
   ViewsImage_OnSetVisible( &_this->ErrorNavigationIcon, 1 );
-  CoreRectView__OnSetBounds( &_this->TroubleShootingTitle, _Const0013 );
-  ViewsText_OnSetAutoSize( &_this->TroubleShootingTitle, 1 );
-  ViewsText_OnSetAlignment( &_this->TroubleShootingTitle, ViewsTextAlignmentAlignHorzCenter 
+  CoreRectView__OnSetBounds( &_this->TroubleShootingTitle, _Const0015 );
+  ViewsText_OnSetAutoSize((ViewsText)&_this->TroubleShootingTitle, 1 );
+  ViewsText_OnSetAlignment((ViewsText)&_this->TroubleShootingTitle, ViewsTextAlignmentAlignHorzCenter 
   | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->TroubleShootingTitle, EwGetVariantOfString( &StringsPOP07_TROUBLE_SHOOTING ));
-  ViewsText_OnSetColor( &_this->TroubleShootingTitle, _Const0014 );
-  ViewsText_OnSetVisible( &_this->TroubleShootingTitle, 1 );
-  CoreRectView__OnSetBounds( &_this->TroubleShootingText1, _Const0015 );
-  ViewsText_OnSetAutoSize( &_this->TroubleShootingText1, 0 );
-  ViewsText_OnSetAlignment( &_this->TroubleShootingText1, ViewsTextAlignmentAlignHorzLeft 
+  ViewsText_OnSetString((ViewsText)&_this->TroubleShootingTitle, EwGetVariantOfString( 
+  &StringsPOP07_TROUBLE_SHOOTING ));
+  ViewsText_OnSetColor((ViewsText)&_this->TroubleShootingTitle, _Const0016 );
+  ViewsText_OnSetVisible((ViewsText)&_this->TroubleShootingTitle, 1 );
+  CoreRectView__OnSetBounds( &_this->TroubleShootingText1, _Const0017 );
+  ViewsText_OnSetAutoSize((ViewsText)&_this->TroubleShootingText1, 0 );
+  ViewsText_OnSetAlignment((ViewsText)&_this->TroubleShootingText1, ViewsTextAlignmentAlignHorzLeft 
   | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->TroubleShootingText1, EwGetVariantOfString( &StringsPOP07_UNLOCK_PHONE ));
-  ViewsText_OnSetColor( &_this->TroubleShootingText1, _Const0014 );
-  ViewsText_OnSetVisible( &_this->TroubleShootingText1, 1 );
-  CoreRectView__OnSetBounds( &_this->TroubleShootingText2, _Const0016 );
-  ViewsText_OnSetAutoSize( &_this->TroubleShootingText2, 0 );
-  ViewsText_OnSetAlignment( &_this->TroubleShootingText2, ViewsTextAlignmentAlignHorzLeft 
+  ViewsText_OnSetString((ViewsText)&_this->TroubleShootingText1, EwGetVariantOfString( 
+  &StringsPOP07_UNLOCK_PHONE ));
+  ViewsText_OnSetColor((ViewsText)&_this->TroubleShootingText1, _Const0016 );
+  ViewsText_OnSetVisible((ViewsText)&_this->TroubleShootingText1, 1 );
+  CoreRectView__OnSetBounds( &_this->TroubleShootingText2, _Const0018 );
+  ViewsText_OnSetAutoSize((ViewsText)&_this->TroubleShootingText2, 0 );
+  ViewsText_OnSetAlignment((ViewsText)&_this->TroubleShootingText2, ViewsTextAlignmentAlignHorzLeft 
   | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->TroubleShootingText2, EwGetVariantOfString( &StringsPOP07_TURN_ON_BT ));
-  ViewsText_OnSetColor( &_this->TroubleShootingText2, _Const0014 );
-  ViewsText_OnSetVisible( &_this->TroubleShootingText2, 1 );
-  CoreRectView__OnSetBounds( &_this->TroubleShootingText3, _Const0017 );
-  ViewsText_OnSetAutoSize( &_this->TroubleShootingText3, 0 );
-  ViewsText_OnSetAlignment( &_this->TroubleShootingText3, ViewsTextAlignmentAlignHorzLeft 
+  ViewsText_OnSetString((ViewsText)&_this->TroubleShootingText2, EwGetVariantOfString( 
+  &StringsPOP07_TURN_ON_BT ));
+  ViewsText_OnSetColor((ViewsText)&_this->TroubleShootingText2, _Const0016 );
+  ViewsText_OnSetVisible((ViewsText)&_this->TroubleShootingText2, 1 );
+  CoreRectView__OnSetBounds( &_this->TroubleShootingText3, _Const0019 );
+  ViewsText_OnSetAutoSize((ViewsText)&_this->TroubleShootingText3, 0 );
+  ViewsText_OnSetAlignment((ViewsText)&_this->TroubleShootingText3, ViewsTextAlignmentAlignHorzLeft 
   | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString( &_this->TroubleShootingText3, EwGetVariantOfString( &StringsPOP07_LAUNCH_APP ));
-  ViewsText_OnSetColor( &_this->TroubleShootingText3, _Const0014 );
-  ViewsText_OnSetVisible( &_this->TroubleShootingText3, 1 );
-  CoreRectView__OnSetBounds( &_this->Divider1, _Const0018 );
+  ViewsText_OnSetString((ViewsText)&_this->TroubleShootingText3, EwGetVariantOfString( 
+  &StringsPOP07_LAUNCH_APP ));
+  ViewsText_OnSetColor((ViewsText)&_this->TroubleShootingText3, _Const0016 );
+  ViewsText_OnSetVisible((ViewsText)&_this->TroubleShootingText3, 1 );
+  CoreRectView__OnSetBounds( &_this->Divider1, _Const001A );
   ViewsImage_OnSetAlignment( &_this->Divider1, ViewsImageAlignmentAlignHorzCenter 
   | ViewsImageAlignmentAlignVertCenter );
-  CoreRectView__OnSetBounds( &_this->Divider2, _Const0019 );
+  CoreRectView__OnSetBounds( &_this->Divider2, _Const001B );
   ViewsImage_OnSetAlignment( &_this->Divider2, ViewsImageAlignmentAlignHorzCenter 
   | ViewsImageAlignmentAlignVertCenter );
-  CoreRectView__OnSetBounds( &_this->Divider3, _Const001A );
+  CoreRectView__OnSetBounds( &_this->Divider3, _Const001C );
   ViewsImage_OnSetAlignment( &_this->Divider3, ViewsImageAlignmentAlignHorzCenter 
   | ViewsImageAlignmentAlignVertCenter );
   CoreGroup__Add( _this, ((CoreView)&_this->Divider ), 0 );
@@ -816,13 +845,13 @@ void PopPOP07_TROUBLE_SHOOTING__Init( PopPOP07_TROUBLE_SHOOTING _this, XObject a
   ResourcesBitmap ));
   ViewsImage_OnSetBitmap( &_this->ErrorNavigationIcon, EwLoadResource( &ResourceIconErrorNavigation, 
   ResourcesBitmap ));
-  ViewsText_OnSetFont( &_this->TroubleShootingTitle, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ViewsText_OnSetFont((ViewsText)&_this->TroubleShootingTitle, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
   ResourcesFont ));
-  ViewsText_OnSetFont( &_this->TroubleShootingText1, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ViewsText_OnSetFont((ViewsText)&_this->TroubleShootingText1, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
-  ViewsText_OnSetFont( &_this->TroubleShootingText2, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ViewsText_OnSetFont((ViewsText)&_this->TroubleShootingText2, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
-  ViewsText_OnSetFont( &_this->TroubleShootingText3, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ViewsText_OnSetFont((ViewsText)&_this->TroubleShootingText3, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
   ViewsImage_OnSetBitmap( &_this->Divider1, EwLoadResource( &ResourceSplitLineMiddle, 
   ResourcesBitmap ));
@@ -830,6 +859,9 @@ void PopPOP07_TROUBLE_SHOOTING__Init( PopPOP07_TROUBLE_SHOOTING _this, XObject a
   ResourcesBitmap ));
   ViewsImage_OnSetBitmap( &_this->Divider3, EwLoadResource( &ResourceSplitLineMiddle, 
   ResourcesBitmap ));
+
+  /* Call the user defined constructor */
+  PopPOP07_TROUBLE_SHOOTING_Init( _this, aArg );
 }
 
 /* Re-Initializer for the class 'Pop::POP07_TROUBLE_SHOOTING' */
@@ -843,16 +875,31 @@ void PopPOP07_TROUBLE_SHOOTING__ReInit( PopPOP07_TROUBLE_SHOOTING _this )
   ViewsImage__ReInit( &_this->ErrorPhoneLockIcon );
   ViewsImage__ReInit( &_this->ErrorBTIcon );
   ViewsImage__ReInit( &_this->ErrorNavigationIcon );
-  ViewsText__ReInit( &_this->TroubleShootingTitle );
-  ViewsText__ReInit( &_this->TroubleShootingText1 );
-  ViewsText__ReInit( &_this->TroubleShootingText2 );
-  ViewsText__ReInit( &_this->TroubleShootingText3 );
+  ComponentsBaseText__ReInit( &_this->TroubleShootingTitle );
+  ComponentsBaseText__ReInit( &_this->TroubleShootingText1 );
+  ComponentsBaseText__ReInit( &_this->TroubleShootingText2 );
+  ComponentsBaseText__ReInit( &_this->TroubleShootingText3 );
   ViewsImage__ReInit( &_this->Divider1 );
   ViewsImage__ReInit( &_this->Divider2 );
   ViewsImage__ReInit( &_this->Divider3 );
 
-  /* Call the user defined re-constructor of the class */
-  PopPOP07_TROUBLE_SHOOTING_ReInit( _this );
+  /* ... and re-initialize objects, variables, properties, etc. */
+  ViewsText_OnSetString((ViewsText)&_this->TroubleShootingTitle, EwGetVariantOfString( 
+  &StringsPOP07_TROUBLE_SHOOTING ));
+  ViewsText_OnSetString((ViewsText)&_this->TroubleShootingText1, EwGetVariantOfString( 
+  &StringsPOP07_UNLOCK_PHONE ));
+  ViewsText_OnSetString((ViewsText)&_this->TroubleShootingText2, EwGetVariantOfString( 
+  &StringsPOP07_TURN_ON_BT ));
+  ViewsText_OnSetString((ViewsText)&_this->TroubleShootingText3, EwGetVariantOfString( 
+  &StringsPOP07_LAUNCH_APP ));
+  ViewsText_OnSetFont((ViewsText)&_this->TroubleShootingTitle, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ResourcesFont ));
+  ViewsText_OnSetFont((ViewsText)&_this->TroubleShootingText1, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ResourcesFont ));
+  ViewsText_OnSetFont((ViewsText)&_this->TroubleShootingText2, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ResourcesFont ));
+  ViewsText_OnSetFont((ViewsText)&_this->TroubleShootingText3, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ResourcesFont ));
 }
 
 /* Finalizer method for the class 'Pop::POP07_TROUBLE_SHOOTING' */
@@ -866,10 +913,10 @@ void PopPOP07_TROUBLE_SHOOTING__Done( PopPOP07_TROUBLE_SHOOTING _this )
   ViewsImage__Done( &_this->ErrorPhoneLockIcon );
   ViewsImage__Done( &_this->ErrorBTIcon );
   ViewsImage__Done( &_this->ErrorNavigationIcon );
-  ViewsText__Done( &_this->TroubleShootingTitle );
-  ViewsText__Done( &_this->TroubleShootingText1 );
-  ViewsText__Done( &_this->TroubleShootingText2 );
-  ViewsText__Done( &_this->TroubleShootingText3 );
+  ComponentsBaseText__Done( &_this->TroubleShootingTitle );
+  ComponentsBaseText__Done( &_this->TroubleShootingText1 );
+  ComponentsBaseText__Done( &_this->TroubleShootingText2 );
+  ComponentsBaseText__Done( &_this->TroubleShootingText3 );
   ViewsImage__Done( &_this->Divider1 );
   ViewsImage__Done( &_this->Divider2 );
   ViewsImage__Done( &_this->Divider3 );
@@ -878,13 +925,16 @@ void PopPOP07_TROUBLE_SHOOTING__Done( PopPOP07_TROUBLE_SHOOTING _this )
   ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
-/* 'C' function for method : 'Pop::POP07_TROUBLE_SHOOTING.ReInit()' */
-void PopPOP07_TROUBLE_SHOOTING_ReInit( PopPOP07_TROUBLE_SHOOTING _this )
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void PopPOP07_TROUBLE_SHOOTING_Init( PopPOP07_TROUBLE_SHOOTING _this, XHandle aArg )
 {
-  ViewsText_OnSetString( &_this->TroubleShootingTitle, EwGetVariantOfString( &StringsPOP07_TROUBLE_SHOOTING ));
-  ViewsText_OnSetString( &_this->TroubleShootingText1, EwGetVariantOfString( &StringsPOP07_UNLOCK_PHONE ));
-  ViewsText_OnSetString( &_this->TroubleShootingText2, EwGetVariantOfString( &StringsPOP07_TURN_ON_BT ));
-  ViewsText_OnSetString( &_this->TroubleShootingText3, EwGetVariantOfString( &StringsPOP07_LAUNCH_APP ));
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+  EW_UNUSED_ARG( aArg );
+
+  EwTrace( "%s", EwLoadString( &_Const001D ));
 }
 
 /* 'C' function for method : 'Pop::POP07_TROUBLE_SHOOTING.OnShortEnterKeyActivated()' */
@@ -967,7 +1017,7 @@ void PopPOP01_PleaseWait__Init( PopPOP01_PleaseWait _this, XObject aLink, XHandl
   _this->_.XObject._.GCT = EW_CLASS_GCT( PopPOP01_PleaseWait );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->LoadingText, &_this->_.XObject, 0 );
+  ComponentsBaseText__Init( &_this->LoadingText, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->LoadingAnimation, &_this->_.XObject, 0 );
   CoreTimer__Init( &_this->ConnectionFailedTimer, &_this->_.XObject, 0 );
   CoreSystemEventHandler__Init( &_this->NaviConnectUpdateEventHandler, &_this->_.XObject, 0 );
@@ -976,10 +1026,10 @@ void PopPOP01_PleaseWait__Init( PopPOP01_PleaseWait _this, XObject aLink, XHandl
   _this->_.VMT = EW_CLASS( PopPOP01_PleaseWait );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( &_this->Super1.BlackBG, _Const0003 );
-  ViewsRectangle_OnSetColor( &_this->Super1.BlackBG, _Const0004 );
+  CoreRectView__OnSetBounds( &_this->Super1.BlackBG, _Const0005 );
+  ViewsRectangle_OnSetColor( &_this->Super1.BlackBG, _Const0006 );
   CoreRectView__OnSetBounds( &_this->LoadingText, _Const0000 );
-  ViewsText_OnSetString( &_this->LoadingText, EwGetVariantOfString( &StringsGEN_PLEASE_WAIT ));
+  ViewsText_OnSetString((ViewsText)&_this->LoadingText, EwGetVariantOfString( &StringsGEN_PLEASE_WAIT ));
   CoreRectView__OnSetBounds( &_this->LoadingAnimation, _Const0001 );
   ViewsImage_OnSetAnimated( &_this->LoadingAnimation, 1 );
   CoreTimer_OnSetPeriod( &_this->ConnectionFailedTimer, 0 );
@@ -987,7 +1037,7 @@ void PopPOP01_PleaseWait__Init( PopPOP01_PleaseWait _this, XObject aLink, XHandl
   CoreTimer_OnSetEnabled( &_this->ConnectionFailedTimer, 1 );
   CoreGroup__Add( _this, ((CoreView)&_this->LoadingText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->LoadingAnimation ), 0 );
-  ViewsText_OnSetFont( &_this->LoadingText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ViewsText_OnSetFont((ViewsText)&_this->LoadingText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
   ViewsImage_OnSetBitmap( &_this->LoadingAnimation, EwLoadResource( &ResourceLoadingAnimation, 
   ResourcesBitmap ));
@@ -1007,13 +1057,15 @@ void PopPOP01_PleaseWait__ReInit( PopPOP01_PleaseWait _this )
   ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
-  ViewsText__ReInit( &_this->LoadingText );
+  ComponentsBaseText__ReInit( &_this->LoadingText );
   ViewsImage__ReInit( &_this->LoadingAnimation );
   CoreTimer__ReInit( &_this->ConnectionFailedTimer );
   CoreSystemEventHandler__ReInit( &_this->NaviConnectUpdateEventHandler );
 
-  /* Call the user defined re-constructor of the class */
-  PopPOP01_PleaseWait_ReInit( _this );
+  /* ... and re-initialize objects, variables, properties, etc. */
+  ViewsText_OnSetString((ViewsText)&_this->LoadingText, EwGetVariantOfString( &StringsGEN_PLEASE_WAIT ));
+  ViewsText_OnSetFont((ViewsText)&_this->LoadingText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ResourcesFont ));
 }
 
 /* Finalizer method for the class 'Pop::POP01_PleaseWait' */
@@ -1023,19 +1075,13 @@ void PopPOP01_PleaseWait__Done( PopPOP01_PleaseWait _this )
   _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
-  ViewsText__Done( &_this->LoadingText );
+  ComponentsBaseText__Done( &_this->LoadingText );
   ViewsImage__Done( &_this->LoadingAnimation );
   CoreTimer__Done( &_this->ConnectionFailedTimer );
   CoreSystemEventHandler__Done( &_this->NaviConnectUpdateEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseMainBG__Done( &_this->_.Super );
-}
-
-/* 'C' function for method : 'Pop::POP01_PleaseWait.ReInit()' */
-void PopPOP01_PleaseWait_ReInit( PopPOP01_PleaseWait _this )
-{
-  ViewsText_OnSetString( &_this->LoadingText, EwGetVariantOfString( &StringsGEN_PLEASE_WAIT ));
 }
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -1047,7 +1093,7 @@ void PopPOP01_PleaseWait_Init( PopPOP01_PleaseWait _this, XHandle aArg )
   EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const001B ));
+  EwTrace( "%s", EwLoadString( &_Const001E ));
 }
 
 /* 'C' function for method : 'Pop::POP01_PleaseWait.OnShortHomeKeyActivated()' */
@@ -1156,7 +1202,7 @@ void PopPOP04_Reset__Init( PopPOP04_Reset _this, XObject aLink, XHandle aArg )
   _this->_.XObject._.GCT = EW_CLASS_GCT( PopPOP04_Reset );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->ResetText, &_this->_.XObject, 0 );
+  ComponentsBaseText__Init( &_this->ResetText, &_this->_.XObject, 0 );
   MenuUpDownPushButtonSet__Init( &_this->UpDownPushButtonSet, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->Divider, &_this->_.XObject, 0 );
 
@@ -1164,9 +1210,9 @@ void PopPOP04_Reset__Init( PopPOP04_Reset _this, XObject aLink, XHandle aArg )
   _this->_.VMT = EW_CLASS( PopPOP04_Reset );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( &_this->ResetText, _Const001C );
-  ViewsText_OnSetString( &_this->ResetText, EwGetVariantOfString( &StringsGEN_RESET_QUESTION_MARK ));
-  CoreRectView__OnSetBounds( &_this->UpDownPushButtonSet, _Const000D );
+  CoreRectView__OnSetBounds( &_this->ResetText, _Const001F );
+  ViewsText_OnSetString((ViewsText)&_this->ResetText, EwGetVariantOfString( &StringsGEN_RESET_QUESTION_MARK ));
+  CoreRectView__OnSetBounds( &_this->UpDownPushButtonSet, _Const000F );
   _this->UpDownPushButtonSet.Super1.PassHomeKey = 1;
   _this->UpDownPushButtonSet.Super1.PassMagicKey = 1;
   MenuUpDownPushButtonSet_OnSetUpButtonTitle( &_this->UpDownPushButtonSet, EwGetVariantOfString( 
@@ -1174,18 +1220,21 @@ void PopPOP04_Reset__Init( PopPOP04_Reset _this, XObject aLink, XHandle aArg )
   MenuUpDownPushButtonSet_OnSetDownButtonTitle( &_this->UpDownPushButtonSet, EwGetVariantOfString( 
   &StringsGEN_OK ));
   MenuUpDownPushButtonSet_OnSetDownButtonEnabled( &_this->UpDownPushButtonSet, 1 );
-  CoreRectView__OnSetBounds( &_this->Divider, _Const001D );
+  CoreRectView__OnSetBounds( &_this->Divider, _Const0020 );
   ViewsImage_OnSetAlignment( &_this->Divider, ViewsImageAlignmentAlignVertBottom 
   | ViewsImageAlignmentScaleToFit );
   CoreGroup__Add( _this, ((CoreView)&_this->ResetText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->UpDownPushButtonSet ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Divider ), 0 );
-  ViewsText_OnSetFont( &_this->ResetText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ViewsText_OnSetFont((ViewsText)&_this->ResetText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
   _this->UpDownPushButtonSet.OnUpButtonActivated = EwNewSlot( _this, PopPOP04_Reset_OnCancelButtonActivatedSlot );
   _this->UpDownPushButtonSet.OnDownButtonActivated = EwNewSlot( _this, PopPOP04_Reset_OnOkButtonActivatedSlot );
   ViewsImage_OnSetBitmap( &_this->Divider, EwLoadResource( &ResourceStatusBarDivider, 
   ResourcesBitmap ));
+
+  /* Call the user defined constructor */
+  PopPOP04_Reset_Init( _this, aArg );
 }
 
 /* Re-Initializer for the class 'Pop::POP04_Reset' */
@@ -1195,12 +1244,18 @@ void PopPOP04_Reset__ReInit( PopPOP04_Reset _this )
   ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
-  ViewsText__ReInit( &_this->ResetText );
+  ComponentsBaseText__ReInit( &_this->ResetText );
   MenuUpDownPushButtonSet__ReInit( &_this->UpDownPushButtonSet );
   ViewsImage__ReInit( &_this->Divider );
 
-  /* Call the user defined re-constructor of the class */
-  PopPOP04_Reset_ReInit( _this );
+  /* ... and re-initialize objects, variables, properties, etc. */
+  ViewsText_OnSetString((ViewsText)&_this->ResetText, EwGetVariantOfString( &StringsGEN_RESET_QUESTION_MARK ));
+  MenuUpDownPushButtonSet_OnSetUpButtonTitle( &_this->UpDownPushButtonSet, EwGetVariantOfString( 
+  &StringsGEN_CANCEL ));
+  MenuUpDownPushButtonSet_OnSetDownButtonTitle( &_this->UpDownPushButtonSet, EwGetVariantOfString( 
+  &StringsGEN_OK ));
+  ViewsText_OnSetFont((ViewsText)&_this->ResetText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ResourcesFont ));
 }
 
 /* Finalizer method for the class 'Pop::POP04_Reset' */
@@ -1210,7 +1265,7 @@ void PopPOP04_Reset__Done( PopPOP04_Reset _this )
   _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
-  ViewsText__Done( &_this->ResetText );
+  ComponentsBaseText__Done( &_this->ResetText );
   MenuUpDownPushButtonSet__Done( &_this->UpDownPushButtonSet );
   ViewsImage__Done( &_this->Divider );
 
@@ -1218,14 +1273,16 @@ void PopPOP04_Reset__Done( PopPOP04_Reset _this )
   ComponentsBaseMainBG__Done( &_this->_.Super );
 }
 
-/* 'C' function for method : 'Pop::POP04_Reset.ReInit()' */
-void PopPOP04_Reset_ReInit( PopPOP04_Reset _this )
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void PopPOP04_Reset_Init( PopPOP04_Reset _this, XHandle aArg )
 {
-  ViewsText_OnSetString( &_this->ResetText, EwGetVariantOfString( &StringsGEN_RESET_QUESTION_MARK ));
-  MenuUpDownPushButtonSet_OnSetUpButtonTitle( &_this->UpDownPushButtonSet, EwGetVariantOfString( 
-  &StringsGEN_CANCEL ));
-  MenuUpDownPushButtonSet_OnSetDownButtonTitle( &_this->UpDownPushButtonSet, EwGetVariantOfString( 
-  &StringsGEN_OK ));
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+  EW_UNUSED_ARG( aArg );
+
+  EwTrace( "%s", EwLoadString( &_Const0021 ));
 }
 
 /* 'C' function for method : 'Pop::POP04_Reset.OnOkButtonActivatedSlot()' */
@@ -1310,23 +1367,26 @@ void PopPOP17_AppInitSettingError__Init( PopPOP17_AppInitSettingError _this, XOb
   _this->_.XObject._.GCT = EW_CLASS_GCT( PopPOP17_AppInitSettingError );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->AppInitSettingFailedMessage, &_this->_.XObject, 0 );
+  ComponentsBaseText__Init( &_this->AppInitSettingFailedMessage, &_this->_.XObject, 0 );
   CoreTimer__Init( &_this->CountDownTimer, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_.VMT = EW_CLASS( PopPOP17_AppInitSettingError );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( &_this->AppInitSettingFailedMessage, _Const001E );
-  ViewsText_OnSetWrapText( &_this->AppInitSettingFailedMessage, 1 );
-  ViewsText_OnSetString( &_this->AppInitSettingFailedMessage, EwGetVariantOfString( 
+  CoreRectView__OnSetBounds( &_this->AppInitSettingFailedMessage, _Const0022 );
+  ViewsText_OnSetWrapText((ViewsText)&_this->AppInitSettingFailedMessage, 1 );
+  ViewsText_OnSetString((ViewsText)&_this->AppInitSettingFailedMessage, EwGetVariantOfString( 
   &StringsPOP17_APP_INIT_SETTING_FAILED ));
   CoreTimer_OnSetPeriod( &_this->CountDownTimer, 2000 );
   CoreTimer_OnSetEnabled( &_this->CountDownTimer, 1 );
   CoreGroup__Add( _this, ((CoreView)&_this->AppInitSettingFailedMessage ), 0 );
-  ViewsText_OnSetFont( &_this->AppInitSettingFailedMessage, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
-  ResourcesFont ));
+  ViewsText_OnSetFont((ViewsText)&_this->AppInitSettingFailedMessage, EwLoadResource( 
+  &FontsNotoSansCjkJpMedium24pt, ResourcesFont ));
   _this->CountDownTimer.OnTrigger = EwNewSlot( _this, PopPOP17_AppInitSettingError_OnLauncherScreenUpdateSlot );
+
+  /* Call the user defined constructor */
+  PopPOP17_AppInitSettingError_Init( _this, aArg );
 }
 
 /* Re-Initializer for the class 'Pop::POP17_AppInitSettingError' */
@@ -1336,8 +1396,14 @@ void PopPOP17_AppInitSettingError__ReInit( PopPOP17_AppInitSettingError _this )
   ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
-  ViewsText__ReInit( &_this->AppInitSettingFailedMessage );
+  ComponentsBaseText__ReInit( &_this->AppInitSettingFailedMessage );
   CoreTimer__ReInit( &_this->CountDownTimer );
+
+  /* ... and re-initialize objects, variables, properties, etc. */
+  ViewsText_OnSetString((ViewsText)&_this->AppInitSettingFailedMessage, EwGetVariantOfString( 
+  &StringsPOP17_APP_INIT_SETTING_FAILED ));
+  ViewsText_OnSetFont((ViewsText)&_this->AppInitSettingFailedMessage, EwLoadResource( 
+  &FontsNotoSansCjkJpMedium24pt, ResourcesFont ));
 }
 
 /* Finalizer method for the class 'Pop::POP17_AppInitSettingError' */
@@ -1347,11 +1413,24 @@ void PopPOP17_AppInitSettingError__Done( PopPOP17_AppInitSettingError _this )
   _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
-  ViewsText__Done( &_this->AppInitSettingFailedMessage );
+  ComponentsBaseText__Done( &_this->AppInitSettingFailedMessage );
   CoreTimer__Done( &_this->CountDownTimer );
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseMainBG__Done( &_this->_.Super );
+}
+
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void PopPOP17_AppInitSettingError_Init( PopPOP17_AppInitSettingError _this, XHandle 
+  aArg )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+  EW_UNUSED_ARG( aArg );
+
+  EwTrace( "%s", EwLoadString( &_Const0023 ));
 }
 
 /* 'C' function for method : 'Pop::POP17_AppInitSettingError.OnLauncherScreenUpdateSlot()' */
@@ -1433,7 +1512,7 @@ void PopPOP03_HomeOfficeSettingError__Init( PopPOP03_HomeOfficeSettingError _thi
   _this->_.XObject._.GCT = EW_CLASS_GCT( PopPOP03_HomeOfficeSettingError );
 
   /* ... then construct all embedded objects */
-  ViewsText__Init( &_this->HomeOfficeSettingFailedMessage, &_this->_.XObject, 0 );
+  ComponentsBaseText__Init( &_this->HomeOfficeSettingFailedMessage, &_this->_.XObject, 0 );
   CoreTimer__Init( &_this->CountDownTimer, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->Divider, &_this->_.XObject, 0 );
 
@@ -1441,21 +1520,24 @@ void PopPOP03_HomeOfficeSettingError__Init( PopPOP03_HomeOfficeSettingError _thi
   _this->_.VMT = EW_CLASS( PopPOP03_HomeOfficeSettingError );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( &_this->HomeOfficeSettingFailedMessage, _Const001E );
-  ViewsText_OnSetWrapText( &_this->HomeOfficeSettingFailedMessage, 1 );
-  ViewsText_OnSetString( &_this->HomeOfficeSettingFailedMessage, 0 );
+  CoreRectView__OnSetBounds( &_this->HomeOfficeSettingFailedMessage, _Const0022 );
+  ViewsText_OnSetWrapText((ViewsText)&_this->HomeOfficeSettingFailedMessage, 1 );
+  ViewsText_OnSetString((ViewsText)&_this->HomeOfficeSettingFailedMessage, 0 );
   CoreTimer_OnSetPeriod( &_this->CountDownTimer, 2000 );
   CoreTimer_OnSetEnabled( &_this->CountDownTimer, 1 );
-  CoreRectView__OnSetBounds( &_this->Divider, _Const001D );
+  CoreRectView__OnSetBounds( &_this->Divider, _Const0020 );
   ViewsImage_OnSetAlignment( &_this->Divider, ViewsImageAlignmentAlignVertBottom 
   | ViewsImageAlignmentScaleToFit );
   CoreGroup__Add( _this, ((CoreView)&_this->HomeOfficeSettingFailedMessage ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Divider ), 0 );
-  ViewsText_OnSetFont( &_this->HomeOfficeSettingFailedMessage, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
-  ResourcesFont ));
+  ViewsText_OnSetFont((ViewsText)&_this->HomeOfficeSettingFailedMessage, EwLoadResource( 
+  &FontsNotoSansCjkJpMedium24pt, ResourcesFont ));
   _this->CountDownTimer.OnTrigger = EwNewSlot( _this, PopPOP03_HomeOfficeSettingError_OnLauncherScreenUpdateSlot );
   ViewsImage_OnSetBitmap( &_this->Divider, EwLoadResource( &ResourceStatusBarDivider, 
   ResourcesBitmap ));
+
+  /* Call the user defined constructor */
+  PopPOP03_HomeOfficeSettingError_Init( _this, aArg );
 }
 
 /* Re-Initializer for the class 'Pop::POP03_HomeOfficeSettingError' */
@@ -1465,9 +1547,13 @@ void PopPOP03_HomeOfficeSettingError__ReInit( PopPOP03_HomeOfficeSettingError _t
   ComponentsBaseMainBG__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
-  ViewsText__ReInit( &_this->HomeOfficeSettingFailedMessage );
+  ComponentsBaseText__ReInit( &_this->HomeOfficeSettingFailedMessage );
   CoreTimer__ReInit( &_this->CountDownTimer );
   ViewsImage__ReInit( &_this->Divider );
+
+  /* ... and re-initialize objects, variables, properties, etc. */
+  ViewsText_OnSetFont((ViewsText)&_this->HomeOfficeSettingFailedMessage, EwLoadResource( 
+  &FontsNotoSansCjkJpMedium24pt, ResourcesFont ));
 }
 
 /* Finalizer method for the class 'Pop::POP03_HomeOfficeSettingError' */
@@ -1477,12 +1563,25 @@ void PopPOP03_HomeOfficeSettingError__Done( PopPOP03_HomeOfficeSettingError _thi
   _this->_.Super._.VMT = EW_CLASS( ComponentsBaseMainBG );
 
   /* Finalize all embedded objects */
-  ViewsText__Done( &_this->HomeOfficeSettingFailedMessage );
+  ComponentsBaseText__Done( &_this->HomeOfficeSettingFailedMessage );
   CoreTimer__Done( &_this->CountDownTimer );
   ViewsImage__Done( &_this->Divider );
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseMainBG__Done( &_this->_.Super );
+}
+
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void PopPOP03_HomeOfficeSettingError_Init( PopPOP03_HomeOfficeSettingError _this, 
+  XHandle aArg )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+  EW_UNUSED_ARG( aArg );
+
+  EwTrace( "%s", EwLoadString( &_Const0024 ));
 }
 
 /* 'C' function for method : 'Pop::POP03_HomeOfficeSettingError.OnLauncherScreenUpdateSlot()' */
@@ -1503,7 +1602,7 @@ void PopPOP03_HomeOfficeSettingError_OnSetErrorMessage( PopPOP03_HomeOfficeSetti
   if ( EwCompString( _this->ErrorMessage, value ) != 0 )
   {
     _this->ErrorMessage = EwShareString( value );
-    ViewsText_OnSetString( &_this->HomeOfficeSettingFailedMessage, _this->ErrorMessage );
+    ViewsText_OnSetString((ViewsText)&_this->HomeOfficeSettingFailedMessage, _this->ErrorMessage );
   }
 }
 
@@ -1572,20 +1671,21 @@ void PopPOP16_NaviLoadingUI__Init( PopPOP16_NaviLoadingUI _this, XObject aLink, 
   /* ... then construct all embedded objects */
   ViewsImage__Init( &_this->NaviLoadingMainBottom, &_this->_.XObject, 0 );
   ViewsRectangle__Init( &_this->NaviLoadingBlackBG, &_this->_.XObject, 0 );
-  ViewsText__Init( &_this->NaviLoadingText, &_this->_.XObject, 0 );
+  ComponentsBaseText__Init( &_this->NaviLoadingText, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->NaviLoadingAnimation, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_.VMT = EW_CLASS( PopPOP16_NaviLoadingUI );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const001F );
-  CoreRectView__OnSetBounds( &_this->NaviLoadingMainBottom, _Const0020 );
-  CoreRectView__OnSetBounds( &_this->NaviLoadingBlackBG, _Const0021 );
-  ViewsRectangle_OnSetColor( &_this->NaviLoadingBlackBG, _Const0004 );
-  CoreRectView__OnSetBounds( &_this->NaviLoadingText, _Const0022 );
-  ViewsText_OnSetString( &_this->NaviLoadingText, EwGetVariantOfString( &StringsGEN_PLEASE_WAIT ));
-  CoreRectView__OnSetBounds( &_this->NaviLoadingAnimation, _Const0023 );
+  CoreRectView__OnSetBounds( _this, _Const0025 );
+  CoreRectView__OnSetBounds( &_this->NaviLoadingMainBottom, _Const0026 );
+  CoreRectView__OnSetBounds( &_this->NaviLoadingBlackBG, _Const0027 );
+  ViewsRectangle_OnSetColor( &_this->NaviLoadingBlackBG, _Const0006 );
+  CoreRectView__OnSetBounds( &_this->NaviLoadingText, _Const0028 );
+  ViewsText_OnSetString((ViewsText)&_this->NaviLoadingText, EwGetVariantOfString( 
+  &StringsGEN_PLEASE_WAIT ));
+  CoreRectView__OnSetBounds( &_this->NaviLoadingAnimation, _Const0029 );
   ViewsImage_OnSetAnimated( &_this->NaviLoadingAnimation, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->NaviLoadingMainBottom ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->NaviLoadingBlackBG ), 0 );
@@ -1593,7 +1693,7 @@ void PopPOP16_NaviLoadingUI__Init( PopPOP16_NaviLoadingUI _this, XObject aLink, 
   CoreGroup__Add( _this, ((CoreView)&_this->NaviLoadingAnimation ), 0 );
   ViewsImage_OnSetBitmap( &_this->NaviLoadingMainBottom, EwLoadResource( &ResourceMainBG, 
   ResourcesBitmap ));
-  ViewsText_OnSetFont( &_this->NaviLoadingText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ViewsText_OnSetFont((ViewsText)&_this->NaviLoadingText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
   ViewsImage_OnSetBitmap( &_this->NaviLoadingAnimation, EwLoadResource( &ResourceLoadingAnimation, 
   ResourcesBitmap ));
@@ -1608,8 +1708,14 @@ void PopPOP16_NaviLoadingUI__ReInit( PopPOP16_NaviLoadingUI _this )
   /* ... then re-construct all embedded objects */
   ViewsImage__ReInit( &_this->NaviLoadingMainBottom );
   ViewsRectangle__ReInit( &_this->NaviLoadingBlackBG );
-  ViewsText__ReInit( &_this->NaviLoadingText );
+  ComponentsBaseText__ReInit( &_this->NaviLoadingText );
   ViewsImage__ReInit( &_this->NaviLoadingAnimation );
+
+  /* ... and re-initialize objects, variables, properties, etc. */
+  ViewsText_OnSetString((ViewsText)&_this->NaviLoadingText, EwGetVariantOfString( 
+  &StringsGEN_PLEASE_WAIT ));
+  ViewsText_OnSetFont((ViewsText)&_this->NaviLoadingText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ResourcesFont ));
 }
 
 /* Finalizer method for the class 'Pop::POP16_NaviLoadingUI' */
@@ -1621,7 +1727,7 @@ void PopPOP16_NaviLoadingUI__Done( PopPOP16_NaviLoadingUI _this )
   /* Finalize all embedded objects */
   ViewsImage__Done( &_this->NaviLoadingMainBottom );
   ViewsRectangle__Done( &_this->NaviLoadingBlackBG );
-  ViewsText__Done( &_this->NaviLoadingText );
+  ComponentsBaseText__Done( &_this->NaviLoadingText );
   ViewsImage__Done( &_this->NaviLoadingAnimation );
 
   /* Don't forget to deinitialize the super class ... */

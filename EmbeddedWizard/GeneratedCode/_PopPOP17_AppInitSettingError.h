@@ -43,13 +43,13 @@
 #endif
 
 #include "_ComponentsBaseMainBG.h"
+#include "_ComponentsBaseText.h"
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
-#include "_ViewsText.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -102,7 +102,7 @@
 
 /* Deklaration of class : 'Pop::POP17_AppInitSettingError' */
 EW_DEFINE_FIELDS( PopPOP17_AppInitSettingError, ComponentsBaseMainBG )
-  EW_OBJECT  ( AppInitSettingFailedMessage, ViewsText )
+  EW_OBJECT  ( AppInitSettingFailedMessage, ComponentsBaseText )
   EW_OBJECT  ( CountDownTimer,  CoreTimer )
 EW_END_OF_FIELDS( PopPOP17_AppInitSettingError )
 
@@ -162,6 +162,12 @@ EW_DEFINE_METHODS( PopPOP17_AppInitSettingError, ComponentsBaseMainBG )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( PopPOP17_AppInitSettingError )
+
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void PopPOP17_AppInitSettingError_Init( PopPOP17_AppInitSettingError _this, XHandle 
+  aArg );
 
 /* 'C' function for method : 'Pop::POP17_AppInitSettingError.OnLauncherScreenUpdateSlot()' */
 void PopPOP17_AppInitSettingError_OnLauncherScreenUpdateSlot( PopPOP17_AppInitSettingError _this, 

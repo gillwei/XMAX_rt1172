@@ -860,7 +860,7 @@ class HOM03_VehicleInfo : Home::BaseHome
   $rect <10,290,190,330>
   inherited method Init()
   {
-    trace "Init HOM03";
+    trace "HOM03";
   }
 
   $rect <230,340,460,380>

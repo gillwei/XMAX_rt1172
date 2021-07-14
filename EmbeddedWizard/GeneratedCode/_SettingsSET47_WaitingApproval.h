@@ -43,13 +43,13 @@
 #endif
 
 #include "_ComponentsBaseMainBG.h"
+#include "_ComponentsBaseText.h"
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
-#include "_ViewsText.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -103,7 +103,7 @@
 /* Deklaration of class : 'Settings::SET47_WaitingApproval' */
 EW_DEFINE_FIELDS( SettingsSET47_WaitingApproval, ComponentsBaseMainBG )
   EW_OBJECT  ( LoadingAnimation, ViewsImage )
-  EW_OBJECT  ( WaitingText,     ViewsText )
+  EW_OBJECT  ( WaitingText,     ComponentsBaseText )
   EW_OBJECT  ( BtcPairingStateChangeEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( CountDownTimer,  CoreTimer )
   EW_VARIABLE( CountDownTimeSec, XInt32 )

@@ -90,6 +90,7 @@ class ImageButton : Core::Group
 
 $rect <10,70,210,110>
 $output false
+$multilingual true
 class TEL01_IncomingCall : Components::BaseMainBG
 {
   $rect <20,290,200,330>
@@ -112,7 +113,7 @@ class TEL01_IncomingCall : Components::BaseMainBG
     }
     CallerText.Visible = true;
 
-    trace "Init TEL01, ", CallerText.String;
+    trace "TEL01, ", CallerText.String;
   }
 
   $rect <230,340,460,380>
@@ -176,7 +177,7 @@ class TEL01_IncomingCall : Components::BaseMainBG
   }
 
   $rect <20,20,160,60>
-  object Views::Text CallerText
+  object Components::BaseText CallerText
   {
     preset Bounds = <100,114,451,190>;
     preset Ellipsis = true;
@@ -256,6 +257,7 @@ class TEL01_IncomingCall : Components::BaseMainBG
 
 $rect <10,120,210,160>
 $output false
+$multilingual true
 class TEL02_ActiveCall : Components::BaseMainBG
 {
   $rect <20,290,200,330>
@@ -273,7 +275,7 @@ class TEL02_ActiveCall : Components::BaseMainBG
     signal OnPhoneCallVolumeChangedSlot;
     signal OnUpdateDurationSlot;
 
-    trace "Init TEL02 ", CallerText.String;
+    trace "TEL02 ", CallerText.String;
   }
 
   $rect <230,340,460,380>
@@ -328,7 +330,7 @@ class TEL02_ActiveCall : Components::BaseMainBG
   }
 
   $rect <20,20,160,60>
-  object Views::Text CallerText
+  object Components::BaseText CallerText
   {
     preset Bounds = <101,112,452,188>;
     preset Ellipsis = true;

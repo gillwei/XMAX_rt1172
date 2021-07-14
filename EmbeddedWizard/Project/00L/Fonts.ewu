@@ -1,7 +1,7 @@
 ﻿$version 11.00
 
 // This is a font resource.
-$rect <10,130,260,170>
+$rect <580,30,830,70>
 $output false
 resource Resources::Font NotoSansCjkJpMedium24pt
 {
@@ -48,7 +48,7 @@ resource Resources::Font NotoSansCjkJpMedium24pt
 }
 
 // This is a font resource.
-$rect <10,180,260,220>
+$rect <580,80,830,120>
 $output false
 resource Resources::Font NotoSansCjkJpMedium28pt
 {
@@ -100,11 +100,11 @@ resource Resources::Font NotoSansCjkJpMedium28pt
 }
 
 // This is a font resource.
-$rect <10,230,270,270>
+$rect <10,280,270,320>
 $output false
-resource Resources::Font NotoSansCjkJpMedium80pt
+resource Resources::Font NotoSansMedium80pt
 {
-  attr fontname FontName = Noto Sans CJK JP Medium;
+  attr fontname FontName = Noto Sans Med;
   attr fontheight Height = 80;
   attr fontquality Quality = Medium;
   attr fontranges Ranges = .\glyph\glyph-burnin.txt;
@@ -117,7 +117,7 @@ resource Resources::Font NotoSansCjkJpMedium80pt
 }
 
 // This is a font resource.
-$rect <10,80,260,120>
+$rect <10,80,270,120>
 $output false
 resource Resources::Font NotoSansMedium22pt
 {
@@ -145,7 +145,7 @@ resource Resources::Font NotoSansMedium22pt
 }
 
 // This is a font resource.
-$rect <10,280,270,320>
+$rect <10,130,270,170>
 $output false
 resource Resources::Font NotoSansMedium32pt
 {
@@ -162,7 +162,7 @@ resource Resources::Font NotoSansMedium32pt
 }
 
 // This is a font resource.
-$rect <10,30,260,70>
+$rect <10,30,270,70>
 $output false
 resource Resources::Font NotoSansMedium16pt
 {
@@ -178,7 +178,7 @@ resource Resources::Font NotoSansMedium16pt
   attr fontrowdistance RowDistance;
 }
 
-$rect <300,80,560,120>
+$rect <290,80,550,120>
 $output false
 resource Resources::Font NotoSansBold24pt
 {
@@ -194,15 +194,15 @@ resource Resources::Font NotoSansBold24pt
   attr fontrowdistance RowDistance;
 }
 
-$rect <610,30,810,70>
+$rect <860,30,1080,70>
 $output false
 const int32 ROW_DISTANCE_24PT = 31;
 
-$rect <610,80,810,120>
+$rect <860,80,1080,120>
 $output false
 const int32 ROW_DISTANCE_28PT = 36;
 
-$rect <300,130,560,170>
+$rect <290,130,550,170>
 $output false
 resource Resources::Font NotoSansBold38pt
 {
@@ -219,7 +219,7 @@ resource Resources::Font NotoSansBold38pt
 }
 
 // This is a font resource.
-$rect <10,330,270,370>
+$rect <10,180,270,220>
 $output false
 resource Resources::Font NotoSansMedium40pt
 {
@@ -235,7 +235,7 @@ resource Resources::Font NotoSansMedium40pt
   attr fontrowdistance RowDistance;
 }
 
-$rect <300,30,560,70>
+$rect <290,30,550,70>
 $output false
 resource Resources::Font NotoSansBold20pt
 {
@@ -252,7 +252,7 @@ resource Resources::Font NotoSansBold20pt
 }
 
 // This is a font resource.
-$rect <10,380,270,420>
+$rect <10,230,270,270>
 $output false
 resource Resources::Font NotoSansMedium42pt
 {
@@ -266,4 +266,101 @@ resource Resources::Font NotoSansMedium42pt
   attr fontkerning Kerning = true;
   attr fontheightmode HeightMode = Popular;
   attr fontrowdistance RowDistance;
+}
+
+// This is a font resource.
+$rect <580,130,830,170>
+resource Resources::Font NotoSansCjkTcMedium24pt
+{
+  attr fontname FontName =
+  (
+    Default = Noto Sans Med;
+    SimplifiedChinese = Noto Sans CJK TC Medium;
+    French = Noto Sans Med;
+    Italian = Noto Sans Med;
+    German = Noto Sans Med;
+    Japanese = Noto Sans CJK TC Medium;
+    Spanish = Noto Sans Med;
+    TraditionalChinese = Noto Sans CJK TC Medium;
+    Hindi = Noto Sans Devanagari Md;
+    Thai = Noto Sans Thai Med;
+    Korean = Noto Sans CJK TC Medium;
+  );
+
+  attr fontheight Height = 24;
+  attr fontquality Quality = Medium;
+  attr fontranges Ranges =
+  (
+    Default = 0x20-0x7E;
+    SimplifiedChinese = 0x3000-0x303F;
+    French = 0x0100-0x017F,0x0180-0x024F,0x1E00-0x1EFF;
+    Italian = 0xE0-0xEF;
+    German = 0xA0-0xDF;
+    Japanese = 0x3040-0x309F,0x30A0-0x30FF,'←','→','⇒','⇐';
+    Spanish = 0xF0-0xFF;
+    TraditionalChinese = 0x4E00-0x9FFF,0xFF01-0xFF9F;
+    Greek = 0x0370-0x03FF,0x1F00-0x1FFF;
+    Finnish = 0x2010-0x205E;
+    Hindi = 0x0900-0x097F;
+    Thai = 0x0E01-0x0E5B;
+    Korean = 0xA960-0xA97F,0xAC00-0xD7AF,0xD7B0-0xD7FF;
+  );
+
+  attr fontaspectratio AspectRatio = 1.0;
+  attr fontbold Bold = false;
+  attr fontitalic Italic = false;
+  attr fontkerning Kerning = true;
+  attr fontheightmode HeightMode = Popular;
+  attr fontrowdistance RowDistance = 31;
+}
+
+// This is a font resource.
+$rect <580,180,830,220>
+resource Resources::Font NotoSansCjkTcMedium28pt
+{
+  attr fontname FontName =
+  (
+    Default = Noto Sans Med;
+    SimplifiedChinese = Noto Sans CJK TC Medium;
+    French = Noto Sans Med;
+    Italian = Noto Sans Med;
+    German = Noto Sans Med;
+    Japanese = Noto Sans CJK TC Medium;
+    Spanish = Noto Sans Med;
+    TraditionalChinese = Noto Sans CJK TC Medium;
+    Hindi = Noto Sans Devanagari Md;
+    Thai = Noto Sans Thai Med;
+    Korean = Noto Sans CJK TC Medium;
+  );
+
+  attr fontheight Height =
+  (
+    Default = 28;
+    Thai = 24;
+  );
+
+  attr fontquality Quality = Medium;
+  attr fontranges Ranges =
+  (
+    Default = 0x20-0x7E,0x2103,0x2109;
+    SimplifiedChinese = 0x3000-0x303F;
+    French = 0x0100-0x017F,0x0180-0x024F,0x1E00-0x1EFF;
+    Italian = 0xE0-0xEF;
+    German = 0xA0-0xDF;
+    Japanese = 0x3040-0x309F,0x30A0-0x30FF;
+    Spanish = 0xF0-0xFF;
+    TraditionalChinese = 0x4E00-0x9FFF,0xFF01-0xFF9F;
+    Greek = 0x0370-0x03FF,0x1F00-0x1FFF;
+    Finnish = 0x2010-0x205E;
+    Hindi = 0x0900-0x097F;
+    Thai = 0x0E01-0x0E5B;
+    Korean = 0xA960-0xA97F,0xAC00-0xD7AF,0xD7B0-0xD7FF;
+  );
+
+  attr fontaspectratio AspectRatio = 1.0;
+  attr fontbold Bold = false;
+  attr fontitalic Italic = false;
+  attr fontkerning Kerning = true;
+  attr fontheightmode HeightMode = Popular;
+  attr fontrowdistance RowDistance = 34;
 }

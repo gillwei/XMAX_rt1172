@@ -42,6 +42,7 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
+#include "_ComponentsBaseText.h"
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
@@ -51,7 +52,6 @@
 #include "_PopPOP16_NaviLoadingUI.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
-#include "_ViewsText.h"
 
 /* Forward declaration of the class Components::BaseMainBG */
 #ifndef _ComponentsBaseMainBG_
@@ -118,9 +118,9 @@
 EW_DEFINE_FIELDS( NavigationNAV09_NAV10_PoiList, MenuBaseMenuView )
   EW_OBJECT  ( PoiListUpdateEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( PoiListLoadingTimer, CoreTimer )
-  EW_OBJECT  ( DataErrorText,   ViewsText )
+  EW_OBJECT  ( DataErrorText,   ComponentsBaseText )
   EW_OBJECT  ( CountDownTimer,  CoreTimer )
-  EW_OBJECT  ( NoDataText,      ViewsText )
+  EW_OBJECT  ( NoDataText,      ComponentsBaseText )
   EW_OBJECT  ( LoadingAnimation, PopPOP16_NaviLoadingUI )
   EW_OBJECT  ( Divider,         ViewsImage )
   EW_OBJECT  ( ReturnToFirstRowTestTimer, CoreTimer )

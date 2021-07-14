@@ -43,13 +43,13 @@
 #endif
 
 #include "_ComponentsBaseMainBG.h"
+#include "_ComponentsBaseText.h"
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
-#include "_ViewsText.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -102,7 +102,7 @@
 
 /* Deklaration of class : 'Pop::POP09_POP14_BleConnectionErrorUI' */
 EW_DEFINE_FIELDS( PopPOP09_POP14_BleConnectionErrorUI, ComponentsBaseMainBG )
-  EW_OBJECT  ( ConnectionFailedMessage, ViewsText )
+  EW_OBJECT  ( ConnectionFailedMessage, ComponentsBaseText )
   EW_OBJECT  ( CountDownTimer,  CoreTimer )
 EW_END_OF_FIELDS( PopPOP09_POP14_BleConnectionErrorUI )
 
@@ -163,8 +163,11 @@ EW_DEFINE_METHODS( PopPOP09_POP14_BleConnectionErrorUI, ComponentsBaseMainBG )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( PopPOP09_POP14_BleConnectionErrorUI )
 
-/* 'C' function for method : 'Pop::POP09_POP14_BleConnectionErrorUI.ReInit()' */
-void PopPOP09_POP14_BleConnectionErrorUI_ReInit( PopPOP09_POP14_BleConnectionErrorUI _this );
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void PopPOP09_POP14_BleConnectionErrorUI_Init( PopPOP09_POP14_BleConnectionErrorUI _this, 
+  XHandle aArg );
 
 /* 'C' function for method : 'Pop::POP09_POP14_BleConnectionErrorUI.OnCountDownTimeoutSlot()' */
 void PopPOP09_POP14_BleConnectionErrorUI_OnCountDownTimeoutSlot( PopPOP09_POP14_BleConnectionErrorUI _this, 

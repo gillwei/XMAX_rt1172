@@ -42,9 +42,9 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
+#include "_ComponentsBaseText.h"
 #include "_CoreGroup.h"
 #include "_EffectsInt32Effect.h"
-#include "_ViewsText.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -98,8 +98,8 @@
 /* Deklaration of class : 'Settings::LicenseDetail' */
 EW_DEFINE_FIELDS( SettingsLicenseDetail, CoreGroup )
   EW_PROPERTY( OnLineNumUpdated, XSlot )
-  EW_OBJECT  ( TitleText,       ViewsText )
-  EW_OBJECT  ( LicenseText,     ViewsText )
+  EW_OBJECT  ( TitleText,       ComponentsBaseText )
+  EW_OBJECT  ( LicenseText,     ComponentsBaseText )
   EW_OBJECT  ( ScrollEffect,    EffectsInt32Effect )
   EW_VARIABLE( LineToScroll,    XInt32 )
   EW_PROPERTY( ScrollOffsetY,   XInt32 )

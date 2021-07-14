@@ -162,6 +162,11 @@ EW_DEFINE_METHODS( WeatherWEA01_Main, ComponentsBaseMainBG )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( WeatherWEA01_Main )
 
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void WeatherWEA01_Main_Init( WeatherWEA01_Main _this, XHandle aArg );
+
 /* 'C' function for method : 'Weather::WEA01_Main.OnShortHomeKeyActivated()' */
 void WeatherWEA01_Main_OnShortHomeKeyActivated( WeatherWEA01_Main _this );
 

@@ -25,6 +25,7 @@
 *******************************************************************************/
 
 #include "ewlocale.h"
+#include "_ComponentsBaseText.h"
 #include "_CoreGroup.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
@@ -49,10 +50,10 @@
 /* Compressed strings for the language 'Default'. */
 EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
-  0x00000060, /* ratio 83.33 % */
-  0xB8001F00, 0x00092452, 0x00D20037, 0x040003A0, 0x8A002A00, 0x00026000, 0x00188006,
-  0xC0043458, 0x82C0C1D1, 0xDC2E1307, 0x45225108, 0x7236328B, 0x0751F024, 0x3E0D0047,
-  0x0610018E, 0x1B9B1B00, 0x837800ED, 0x97C3A5D3, 0x0002032F, 0x00000000
+  0x0000004C, /* ratio 84.21 % */
+  0xB8001500, 0x800A8452, 0x00980022, 0x06200180, 0x40001600, 0x60989800, 0x0983C160,
+  0x11900217, 0x02002271, 0x6C787516, 0x800C7160, 0xA4D80030, 0xC00768EC, 0x2522959B,
+  0x1018F47A, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -67,9 +68,9 @@ static const XStringRes _Const0007 = { _StringsDefault0, 0x0002 };
 static const XRect _Const0008 = {{ 101, 112 }, { 452, 188 }};
 static const XRect _Const0009 = {{ 100, 203 }, { 451, 237 }};
 static const XRect _Const000A = {{ 0, 114 }, { 94, 189 }};
-static const XStringRes _Const000B = { _StringsDefault0, 0x0011 };
-static const XStringRes _Const000C = { _StringsDefault0, 0x001F };
-static const XStringRes _Const000D = { _StringsDefault0, 0x0023 };
+static const XStringRes _Const000B = { _StringsDefault0, 0x000C };
+static const XStringRes _Const000C = { _StringsDefault0, 0x0015 };
+static const XStringRes _Const000D = { _StringsDefault0, 0x0019 };
 
 /* Initializer for the class 'Telephone::ImageButton' */
 void TelephoneImageButton__Init( TelephoneImageButton _this, XObject aLink, XHandle aArg )
@@ -238,7 +239,7 @@ void TelephoneTEL01_IncomingCall__Init( TelephoneTEL01_IncomingCall _this, XObje
   TelephoneImageButton__Init( &_this->AnswerButton, &_this->_.XObject, 0 );
   TelephoneImageButton__Init( &_this->DeclineButton, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->ForegroundImage, &_this->_.XObject, 0 );
-  ViewsText__Init( &_this->CallerText, &_this->_.XObject, 0 );
+  ComponentsBaseText__Init( &_this->CallerText, &_this->_.XObject, 0 );
   CoreSystemEventHandler__Init( &_this->PhoneCallStateChangedEventHandler, &_this->_.XObject, 0 );
   CoreTimer__Init( &_this->DismissTimer, &_this->_.XObject, 0 );
   CoreTimer__Init( &_this->KeyEnableTimer, &_this->_.XObject, 0 );
@@ -253,12 +254,12 @@ void TelephoneTEL01_IncomingCall__Init( TelephoneTEL01_IncomingCall _this, XObje
   TelephoneImageButton_OnSetForegroundFrameNumber( &_this->DeclineButton, 1 );
   CoreRectView__OnSetBounds( &_this->ForegroundImage, _Const0003 );
   CoreRectView__OnSetBounds( &_this->CallerText, _Const0004 );
-  ViewsText_OnSetEllipsis( &_this->CallerText, 1 );
-  ViewsText_OnSetWrapText( &_this->CallerText, 1 );
-  ViewsText_OnSetAlignment( &_this->CallerText, ViewsTextAlignmentAlignHorzLeft 
+  ViewsText_OnSetEllipsis((ViewsText)&_this->CallerText, 1 );
+  ViewsText_OnSetWrapText((ViewsText)&_this->CallerText, 1 );
+  ViewsText_OnSetAlignment((ViewsText)&_this->CallerText, ViewsTextAlignmentAlignHorzLeft 
   | ViewsTextAlignmentAlignVertTop );
-  ViewsText_OnSetString( &_this->CallerText, 0 );
-  ViewsText_OnSetVisible( &_this->CallerText, 0 );
+  ViewsText_OnSetString((ViewsText)&_this->CallerText, 0 );
+  ViewsText_OnSetVisible((ViewsText)&_this->CallerText, 0 );
   CoreTimer_OnSetPeriod( &_this->DismissTimer, 0 );
   CoreTimer_OnSetBegin( &_this->DismissTimer, 1000 );
   CoreTimer_OnSetPeriod( &_this->KeyEnableTimer, 0 );
@@ -280,7 +281,7 @@ void TelephoneTEL01_IncomingCall__Init( TelephoneTEL01_IncomingCall _this, XObje
   &ResourcePhoneAnswerDecline, ResourcesBitmap ));
   ViewsImage_OnSetBitmap( &_this->ForegroundImage, EwLoadResource( &ResourceIncomingCallIcon, 
   ResourcesBitmap ));
-  ViewsText_OnSetFont( &_this->CallerText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ViewsText_OnSetFont((ViewsText)&_this->CallerText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
   ResourcesFont ));
   _this->PhoneCallStateChangedEventHandler.OnEvent = EwNewSlot( _this, TelephoneTEL01_IncomingCall_OnPhoneCallStateChangedSlot );
   CoreSystemEventHandler_OnSetEvent( &_this->PhoneCallStateChangedEventHandler, 
@@ -304,11 +305,15 @@ void TelephoneTEL01_IncomingCall__ReInit( TelephoneTEL01_IncomingCall _this )
   TelephoneImageButton__ReInit( &_this->AnswerButton );
   TelephoneImageButton__ReInit( &_this->DeclineButton );
   ViewsImage__ReInit( &_this->ForegroundImage );
-  ViewsText__ReInit( &_this->CallerText );
+  ComponentsBaseText__ReInit( &_this->CallerText );
   CoreSystemEventHandler__ReInit( &_this->PhoneCallStateChangedEventHandler );
   CoreTimer__ReInit( &_this->DismissTimer );
   CoreTimer__ReInit( &_this->KeyEnableTimer );
   ViewsImage__ReInit( &_this->Divider );
+
+  /* ... and re-initialize objects, variables, properties, etc. */
+  ViewsText_OnSetFont((ViewsText)&_this->CallerText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ResourcesFont ));
 }
 
 /* Finalizer method for the class 'Telephone::TEL01_IncomingCall' */
@@ -321,7 +326,7 @@ void TelephoneTEL01_IncomingCall__Done( TelephoneTEL01_IncomingCall _this )
   TelephoneImageButton__Done( &_this->AnswerButton );
   TelephoneImageButton__Done( &_this->DeclineButton );
   ViewsImage__Done( &_this->ForegroundImage );
-  ViewsText__Done( &_this->CallerText );
+  ComponentsBaseText__Done( &_this->CallerText );
   CoreSystemEventHandler__Done( &_this->PhoneCallStateChangedEventHandler );
   CoreTimer__Done( &_this->DismissTimer );
   CoreTimer__Done( &_this->KeyEnableTimer );
@@ -340,24 +345,24 @@ void TelephoneTEL01_IncomingCall_Init( TelephoneTEL01_IncomingCall _this, XHandl
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aArg );
 
-  ViewsText_OnSetString( &_this->CallerText, DeviceInterfaceNotificationDeviceClass_GetIncomingCallCaller( 
+  ViewsText_OnSetString((ViewsText)&_this->CallerText, DeviceInterfaceNotificationDeviceClass_GetIncomingCallCaller( 
   EwGetAutoObject( &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass )));
 
-  if ( 0 == EwGetStringLength( _this->CallerText.String ))
-    ViewsText_OnSetString( &_this->CallerText, EwLoadString( &StringsGEN_THREE_HYPHENS ));
+  if ( 0 == EwGetStringLength( _this->CallerText.Super1.String ))
+    ViewsText_OnSetString((ViewsText)&_this->CallerText, EwLoadString( &StringsGEN_THREE_HYPHENS ));
 
-  if ( 1 >= ViewsText_GetNoOfRows( &_this->CallerText ))
-    ViewsText_OnSetAlignment( &_this->CallerText, ViewsTextAlignmentAlignHorzCenter 
+  if ( 1 >= ViewsText_GetNoOfRows((ViewsText)&_this->CallerText ))
+    ViewsText_OnSetAlignment((ViewsText)&_this->CallerText, ViewsTextAlignmentAlignHorzCenter 
     | ViewsTextAlignmentAlignVertTop );
   else
   {
-    ViewsText_OnSetAlignment( &_this->CallerText, ViewsTextAlignmentAlignHorzLeft 
+    ViewsText_OnSetAlignment((ViewsText)&_this->CallerText, ViewsTextAlignmentAlignHorzLeft 
     | ViewsTextAlignmentAlignVertTop );
     CoreRectView__OnSetBounds( &_this->CallerText, _Const0006 );
   }
 
-  ViewsText_OnSetVisible( &_this->CallerText, 1 );
-  EwTrace( "%s%s", EwLoadString( &_Const0007 ), _this->CallerText.String );
+  ViewsText_OnSetVisible((ViewsText)&_this->CallerText, 1 );
+  EwTrace( "%s%s", EwLoadString( &_Const0007 ), _this->CallerText.Super1.String );
 }
 
 /* 'C' function for method : 'Telephone::TEL01_IncomingCall.OnShortDownKeyActivated()' */
@@ -515,7 +520,7 @@ void TelephoneTEL02_ActiveCall__Init( TelephoneTEL02_ActiveCall _this, XObject a
   TelephoneImageButton__Init( &_this->VolumeUpButton, &_this->_.XObject, 0 );
   TelephoneImageButton__Init( &_this->VolumeDownButton, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->ForegroundImage, &_this->_.XObject, 0 );
-  ViewsText__Init( &_this->CallerText, &_this->_.XObject, 0 );
+  ComponentsBaseText__Init( &_this->CallerText, &_this->_.XObject, 0 );
   ViewsText__Init( &_this->DurationText, &_this->_.XObject, 0 );
   CoreSystemEventHandler__Init( &_this->PhoneCallStateChangedEventHandler, &_this->_.XObject, 0 );
   CoreTimer__Init( &_this->UpdateDurationTimer, &_this->_.XObject, 0 );
@@ -534,12 +539,12 @@ void TelephoneTEL02_ActiveCall__Init( TelephoneTEL02_ActiveCall _this, XObject a
   TelephoneImageButton_OnSetForegroundFrameNumber( &_this->VolumeDownButton, 1 );
   CoreRectView__OnSetBounds( &_this->ForegroundImage, _Const0003 );
   CoreRectView__OnSetBounds( &_this->CallerText, _Const0008 );
-  ViewsText_OnSetEllipsis( &_this->CallerText, 1 );
-  ViewsText_OnSetWrapText( &_this->CallerText, 1 );
-  ViewsText_OnSetAlignment( &_this->CallerText, ViewsTextAlignmentAlignHorzLeft 
+  ViewsText_OnSetEllipsis((ViewsText)&_this->CallerText, 1 );
+  ViewsText_OnSetWrapText((ViewsText)&_this->CallerText, 1 );
+  ViewsText_OnSetAlignment((ViewsText)&_this->CallerText, ViewsTextAlignmentAlignHorzLeft 
   | ViewsTextAlignmentAlignVertTop );
-  ViewsText_OnSetString( &_this->CallerText, 0 );
-  ViewsText_OnSetVisible( &_this->CallerText, 1 );
+  ViewsText_OnSetString((ViewsText)&_this->CallerText, 0 );
+  ViewsText_OnSetVisible((ViewsText)&_this->CallerText, 1 );
   CoreRectView__OnSetBounds( &_this->DurationText, _Const0009 );
   ViewsText_OnSetEllipsis( &_this->DurationText, 1 );
   ViewsText_OnSetString( &_this->DurationText, 0 );
@@ -567,7 +572,7 @@ void TelephoneTEL02_ActiveCall__Init( TelephoneTEL02_ActiveCall _this, XObject a
   &ResourcePhoneVolumeDown, ResourcesBitmap ));
   ViewsImage_OnSetBitmap( &_this->ForegroundImage, EwLoadResource( &ResourceActiveCallIcon, 
   ResourcesBitmap ));
-  ViewsText_OnSetFont( &_this->CallerText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ViewsText_OnSetFont((ViewsText)&_this->CallerText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
   ResourcesFont ));
   ViewsText_OnSetFont( &_this->DurationText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
   ResourcesFont ));
@@ -597,7 +602,7 @@ void TelephoneTEL02_ActiveCall__ReInit( TelephoneTEL02_ActiveCall _this )
   TelephoneImageButton__ReInit( &_this->VolumeUpButton );
   TelephoneImageButton__ReInit( &_this->VolumeDownButton );
   ViewsImage__ReInit( &_this->ForegroundImage );
-  ViewsText__ReInit( &_this->CallerText );
+  ComponentsBaseText__ReInit( &_this->CallerText );
   ViewsText__ReInit( &_this->DurationText );
   CoreSystemEventHandler__ReInit( &_this->PhoneCallStateChangedEventHandler );
   CoreTimer__ReInit( &_this->UpdateDurationTimer );
@@ -605,6 +610,12 @@ void TelephoneTEL02_ActiveCall__ReInit( TelephoneTEL02_ActiveCall _this )
   CoreSystemEventHandler__ReInit( &_this->PhoneCallVolumeChangedEventHandler );
   ViewsImage__ReInit( &_this->Image );
   CoreTimer__ReInit( &_this->DismissTimer );
+
+  /* ... and re-initialize objects, variables, properties, etc. */
+  ViewsText_OnSetFont((ViewsText)&_this->CallerText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ResourcesFont ));
+  ViewsText_OnSetFont( &_this->DurationText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ResourcesFont ));
 }
 
 /* Finalizer method for the class 'Telephone::TEL02_ActiveCall' */
@@ -617,7 +628,7 @@ void TelephoneTEL02_ActiveCall__Done( TelephoneTEL02_ActiveCall _this )
   TelephoneImageButton__Done( &_this->VolumeUpButton );
   TelephoneImageButton__Done( &_this->VolumeDownButton );
   ViewsImage__Done( &_this->ForegroundImage );
-  ViewsText__Done( &_this->CallerText );
+  ComponentsBaseText__Done( &_this->CallerText );
   ViewsText__Done( &_this->DurationText );
   CoreSystemEventHandler__Done( &_this->PhoneCallStateChangedEventHandler );
   CoreTimer__Done( &_this->UpdateDurationTimer );
@@ -652,7 +663,7 @@ void TelephoneTEL02_ActiveCall_Init( TelephoneTEL02_ActiveCall _this, XHandle aA
     ((XObject)_this ));
   EwSignal( EwNewSlot( _this, TelephoneTEL02_ActiveCall_OnUpdateDurationSlot ), 
     ((XObject)_this ));
-  EwTrace( "%s%s", EwLoadString( &_Const000B ), _this->CallerText.String );
+  EwTrace( "%s%s", EwLoadString( &_Const000B ), _this->CallerText.Super1.String );
 }
 
 /* 'C' function for method : 'Telephone::TEL02_ActiveCall.OnShortDownKeyActivated()' */
@@ -781,23 +792,23 @@ void TelephoneTEL02_ActiveCall_OnDismissSlot( TelephoneTEL02_ActiveCall _this, X
 /* 'C' function for method : 'Telephone::TEL02_ActiveCall.UpdateCaller()' */
 void TelephoneTEL02_ActiveCall_UpdateCaller( TelephoneTEL02_ActiveCall _this )
 {
-  ViewsText_OnSetString( &_this->CallerText, DeviceInterfaceNotificationDeviceClass_GetActiveCallCaller( 
+  ViewsText_OnSetString((ViewsText)&_this->CallerText, DeviceInterfaceNotificationDeviceClass_GetActiveCallCaller( 
   EwGetAutoObject( &DeviceInterfaceNotificationDevice, DeviceInterfaceNotificationDeviceClass )));
 
-  if ( 0 == EwGetStringLength( _this->CallerText.String ))
-    ViewsText_OnSetString( &_this->CallerText, EwLoadString( &StringsGEN_THREE_HYPHENS ));
+  if ( 0 == EwGetStringLength( _this->CallerText.Super1.String ))
+    ViewsText_OnSetString((ViewsText)&_this->CallerText, EwLoadString( &StringsGEN_THREE_HYPHENS ));
 
-  if ( 1 >= ViewsText_GetNoOfRows( &_this->CallerText ))
-    ViewsText_OnSetAlignment( &_this->CallerText, ViewsTextAlignmentAlignHorzCenter 
+  if ( 1 >= ViewsText_GetNoOfRows((ViewsText)&_this->CallerText ))
+    ViewsText_OnSetAlignment((ViewsText)&_this->CallerText, ViewsTextAlignmentAlignHorzCenter 
     | ViewsTextAlignmentAlignVertTop );
   else
   {
-    ViewsText_OnSetAlignment( &_this->CallerText, ViewsTextAlignmentAlignHorzLeft 
+    ViewsText_OnSetAlignment((ViewsText)&_this->CallerText, ViewsTextAlignmentAlignHorzLeft 
     | ViewsTextAlignmentAlignVertTop );
     CoreRectView__OnSetBounds( &_this->CallerText, _Const0006 );
   }
 
-  ViewsText_OnSetVisible( &_this->CallerText, 1 );
+  ViewsText_OnSetVisible((ViewsText)&_this->CallerText, 1 );
 }
 
 /* Variants derived from the class : 'Telephone::TEL02_ActiveCall' */

@@ -42,6 +42,7 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
+#include "_ComponentsBaseText.h"
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
@@ -120,12 +121,12 @@ EW_DEFINE_FIELDS( NavigationNAV05_TBTView, HomeBaseHome )
   EW_OBJECT  ( SpeedLimitIcon,  ViewsImage )
   EW_OBJECT  ( SpeedLimitText,  ViewsText )
   EW_OBJECT  ( NextTurnDist,    ViewsText )
-  EW_OBJECT  ( NextTurnDistUnit, ViewsText )
-  EW_OBJECT  ( NextTurnDescription, ViewsText )
+  EW_OBJECT  ( NextTurnDistUnit, ComponentsBaseText )
+  EW_OBJECT  ( NextTurnDescription, ComponentsBaseText )
   EW_OBJECT  ( NextTurnIcon,    ViewsImage )
   EW_OBJECT  ( ETAUpdateEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( CurRdUpdateEventHandler, CoreSystemEventHandler )
-  EW_OBJECT  ( RecalculateMessage, ViewsText )
+  EW_OBJECT  ( RecalculateMessage, ComponentsBaseText )
   EW_OBJECT  ( TbtListUpdateEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( SpeedLimitUpdateEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( SpeedLimitFlickeringTimer, CoreTimer )

@@ -73,10 +73,9 @@
 /* Compressed strings for the language 'Default'. */
 EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
-  0x00000050, /* ratio 95.00 % */
-  0xB8001F00, 0x80098452, 0x00EA0030, 0x0C600370, 0xCA003400, 0x20039000, 0x690042C9,
-  0xC001D000, 0x22C0C2F1, 0x98023044, 0x488DA003, 0x3C872492, 0x0006C914, 0x33210019,
-  0x06F96C22, 0x009199C0, 0xC9DC7040, 0x00002031, 0x00000000
+  0x0000003E, /* ratio 90.32 % */
+  0xB8000D00, 0x00098452, 0x00860027, 0x60617858, 0xD2002211, 0xA0039800, 0x1889C44D,
+  0xC8B9A215, 0x00190006, 0x01862510, 0x800DF1D0, 0x2C411833, 0x2030B95C, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -87,7 +86,7 @@ static const XRect _Const0003 = {{ 0, 38 }, { 134, 272 }};
 static const XRect _Const0004 = {{ -134, 38 }, { 0, 272 }};
 static const XRect _Const0005 = {{ 0, 38 }, { 480, 49 }};
 static const XStringRes _Const0006 = { _StringsDefault0, 0x0002 };
-static const XStringRes _Const0007 = { _StringsDefault0, 0x0011 };
+static const XStringRes _Const0007 = { _StringsDefault0, 0x0008 };
 static const XRect _Const0008 = {{ 0, 0 }, { 134, 234 }};
 static const XRect _Const0009 = {{ -81, -143 }, { -31, -93 }};
 static const XRect _Const000A = {{ 9, 10 }, { 59, 60 }};
@@ -1445,6 +1444,9 @@ void LauncherLNC_Base__ReInit( LauncherLNC_Base _this )
   ViewsText__ReInit( &_this->CurrentItemTitleText );
   ViewsText__ReInit( &_this->PreviousItemTitleText );
   ViewsText__ReInit( &_this->NextItemTitleText );
+
+  /* Call the user defined re-constructor of the class */
+  LauncherLNC_Base_ReInit( _this );
 }
 
 /* Finalizer method for the class 'Launcher::LNC_Base' */
@@ -1462,6 +1464,34 @@ void LauncherLNC_Base__Done( LauncherLNC_Base _this )
 
   /* Don't forget to deinitialize the super class ... */
   CoreGroup__Done( &_this->_.Super );
+}
+
+/* 'C' function for method : 'Launcher::LNC_Base.ReInit()' */
+void LauncherLNC_Base_ReInit( LauncherLNC_Base _this )
+{
+  switch ( EwGetLanguage())
+  {
+    case TraditionalChinese :
+    {
+      ViewsText_OnSetFont( &_this->PreviousItemTitleText, EwLoadResource( &FontsNotoSansCjkTcMedium24pt, 
+      ResourcesFont ));
+      ViewsText_OnSetFont( &_this->CurrentItemTitleText, EwLoadResource( &FontsNotoSansCjkTcMedium28pt, 
+      ResourcesFont ));
+      ViewsText_OnSetFont( &_this->NextItemTitleText, EwLoadResource( &FontsNotoSansCjkTcMedium24pt, 
+      ResourcesFont ));
+    }
+    break;
+
+    default : 
+    {
+      ViewsText_OnSetFont( &_this->PreviousItemTitleText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+      ResourcesFont ));
+      ViewsText_OnSetFont( &_this->CurrentItemTitleText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+      ResourcesFont ));
+      ViewsText_OnSetFont( &_this->NextItemTitleText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+      ResourcesFont ));
+    }
+  }
 }
 
 /* 'C' function for method : 'Launcher::LNC_Base.GetStringOfLauncherItem()' */

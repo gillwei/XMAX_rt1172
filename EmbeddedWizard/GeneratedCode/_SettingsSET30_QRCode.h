@@ -168,9 +168,6 @@ EW_DEFINE_METHODS( SettingsSET30_QRCode, ComponentsBaseMainBG )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( SettingsSET30_QRCode )
 
-/* 'C' function for method : 'Settings::SET30_QRCode.ReInit()' */
-void SettingsSET30_QRCode_ReInit( SettingsSET30_QRCode _this );
-
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 
    statements. */

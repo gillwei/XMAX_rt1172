@@ -198,6 +198,12 @@ EW_DEFINE_METHODS( NavigationNAV11_RouteOptionMenu, MenuBaseMenuView )
   EW_METHOD( LoadItemIcon2Visible, XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( NavigationNAV11_RouteOptionMenu )
 
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void NavigationNAV11_RouteOptionMenu_Init( NavigationNAV11_RouteOptionMenu _this, 
+  XHandle aArg );
+
 /* 'C' function for method : 'Navigation::NAV11_RouteOptionMenu.LoadItemClass()' */
 XClass NavigationNAV11_RouteOptionMenu_LoadItemClass( NavigationNAV11_RouteOptionMenu _this, 
   XInt32 aItemNo );

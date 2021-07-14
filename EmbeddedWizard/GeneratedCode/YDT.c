@@ -25,11 +25,11 @@
 *******************************************************************************/
 
 #include "ewlocale.h"
+#include "_ComponentsBaseText.h"
 #include "_CoreTimer.h"
 #include "_CoreView.h"
 #include "_MenuPushButton.h"
 #include "_ResourcesFont.h"
-#include "_ViewsText.h"
 #include "_YDTYDT01_Main.h"
 #include "Fonts.h"
 #include "Strings.h"
@@ -38,9 +38,8 @@
 /* Compressed strings for the language 'Default'. */
 EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
-  0x0000001E, /* ratio 133.33 % */
-  0xB8001B00, 0x00092452, 0x00D20037, 0x040003A0, 0x88002C80, 0x0002A000, 0x00188006,
-  0x10046A32, 0x00000010, 0x00000000
+  0x00000014, /* ratio 140.00 % */
+  0xB8001100, 0x000B2452, 0x00A80022, 0x06200180, 0x01108780, 0x00000404, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -59,7 +58,7 @@ void YDTYDT01_Main__Init( YDTYDT01_Main _this, XObject aLink, XHandle aArg )
 
   /* ... then construct all embedded objects */
   MenuPushButton__Init( &_this->PushButton, &_this->_.XObject, 0 );
-  ViewsText__Init( &_this->Text, &_this->_.XObject, 0 );
+  ComponentsBaseText__Init( &_this->Text, &_this->_.XObject, 0 );
   CoreTimer__Init( &_this->DisableTimer, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
@@ -69,14 +68,14 @@ void YDTYDT01_Main__Init( YDTYDT01_Main _this, XObject aLink, XHandle aArg )
   CoreRectView__OnSetBounds( &_this->PushButton, _Const0000 );
   MenuPushButton_OnSetTitle( &_this->PushButton, EwGetVariantOfString( &StringsGEN_OK ));
   CoreRectView__OnSetBounds( &_this->Text, _Const0001 );
-  ViewsText_OnSetWrapText( &_this->Text, 1 );
-  ViewsText_OnSetString( &_this->Text, EwGetVariantOfString( &StringsYDT01_MESSAGE ));
+  ViewsText_OnSetWrapText((ViewsText)&_this->Text, 1 );
+  ViewsText_OnSetString((ViewsText)&_this->Text, EwGetVariantOfString( &StringsYDT01_MESSAGE ));
   CoreTimer_OnSetPeriod( &_this->DisableTimer, 0 );
   CoreTimer_OnSetBegin( &_this->DisableTimer, 1000 );
   CoreGroup__Add( _this, ((CoreView)&_this->PushButton ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Text ), 0 );
   _this->PushButton.OnActivate = EwNewSlot( _this, YDTYDT01_Main_OnOkSelectedSlot );
-  ViewsText_OnSetFont( &_this->Text, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ViewsText_OnSetFont((ViewsText)&_this->Text, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
   _this->DisableTimer.OnTrigger = EwNewSlot( _this, YDTYDT01_Main_OnDisableSlot );
 
@@ -92,11 +91,14 @@ void YDTYDT01_Main__ReInit( YDTYDT01_Main _this )
 
   /* ... then re-construct all embedded objects */
   MenuPushButton__ReInit( &_this->PushButton );
-  ViewsText__ReInit( &_this->Text );
+  ComponentsBaseText__ReInit( &_this->Text );
   CoreTimer__ReInit( &_this->DisableTimer );
 
-  /* Call the user defined re-constructor of the class */
-  YDTYDT01_Main_ReInit( _this );
+  /* ... and re-initialize objects, variables, properties, etc. */
+  MenuPushButton_OnSetTitle( &_this->PushButton, EwGetVariantOfString( &StringsGEN_OK ));
+  ViewsText_OnSetString((ViewsText)&_this->Text, EwGetVariantOfString( &StringsYDT01_MESSAGE ));
+  ViewsText_OnSetFont((ViewsText)&_this->Text, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ResourcesFont ));
 }
 
 /* Finalizer method for the class 'YDT::YDT01_Main' */
@@ -107,18 +109,11 @@ void YDTYDT01_Main__Done( YDTYDT01_Main _this )
 
   /* Finalize all embedded objects */
   MenuPushButton__Done( &_this->PushButton );
-  ViewsText__Done( &_this->Text );
+  ComponentsBaseText__Done( &_this->Text );
   CoreTimer__Done( &_this->DisableTimer );
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseMainBG__Done( &_this->_.Super );
-}
-
-/* 'C' function for method : 'YDT::YDT01_Main.ReInit()' */
-void YDTYDT01_Main_ReInit( YDTYDT01_Main _this )
-{
-  ViewsText_OnSetString( &_this->Text, EwGetVariantOfString( &StringsYDT01_MESSAGE ));
-  MenuPushButton_OnSetTitle( &_this->PushButton, EwGetVariantOfString( &StringsGEN_OK ));
 }
 
 /* The method Init() is invoked automatically after the component has been created. 

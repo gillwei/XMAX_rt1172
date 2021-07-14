@@ -7,6 +7,8 @@ class BRT01_BrightnessSettingMenu : Menu::BaseMenuView
   $rect <510,10,710,50>
   inherited method Init()
   {
+    trace "BRT01";
+
     var int32 NoOfItems = 1;
 
     $if !$prototyper
@@ -129,6 +131,7 @@ class BRT02_TFTBrightness : Components::BaseMainBG
   $rect <210,290,390,330>
   inherited method Init()
   {
+    trace "BRT02";
     UpdateBrightnessLevel();
     IsDeratingOn = DeviceInterface::SystemDevice.GetSystemStatus( Enum::SystemStatus.IS_TFT_DERATING_ON );
   }
@@ -365,6 +368,7 @@ class BRT03_MeterBrightness : Components::BaseMainBG
   $rect <210,290,390,330>
   inherited method Init()
   {
+    trace "BRT03";
     UpdateBrightnessLevel();
   }
 

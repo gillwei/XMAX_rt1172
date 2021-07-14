@@ -43,6 +43,7 @@
 #endif
 
 #include "_ComponentsBaseMainBG.h"
+#include "_ComponentsBaseText.h"
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CorePropertyObserver.h"
@@ -105,9 +106,9 @@
 /* Deklaration of class : 'Media::MED01_MediaUI' */
 EW_DEFINE_FIELDS( MediaMED01_MediaUI, ComponentsBaseMainBG )
   EW_PROPERTY( HighlightBG,     ViewsImage )
-  EW_OBJECT  ( Title,           ViewsText )
-  EW_OBJECT  ( Artist,          ViewsText )
-  EW_OBJECT  ( Album,           ViewsText )
+  EW_OBJECT  ( Title,           ComponentsBaseText )
+  EW_OBJECT  ( Artist,          ComponentsBaseText )
+  EW_OBJECT  ( Album,           ComponentsBaseText )
   EW_OBJECT  ( ElapsedTimeSec,  ViewsText )
   EW_OBJECT  ( TotalTimeSec,    ViewsText )
   EW_OBJECT  ( PlaybackTimeEventHandler, CoreSystemEventHandler )
@@ -125,7 +126,7 @@ EW_DEFINE_FIELDS( MediaMED01_MediaUI, ComponentsBaseMainBG )
   EW_OBJECT  ( ArtistObserver,  CorePropertyObserver )
   EW_OBJECT  ( SeekBar,         WidgetSetHorizontalSlider )
   EW_OBJECT  ( MotoConMusicInfoEventHandler, CoreSystemEventHandler )
-  EW_OBJECT  ( ErrorMessage,    ViewsText )
+  EW_OBJECT  ( ErrorMessage,    ComponentsBaseText )
   EW_OBJECT  ( MotoConEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( BleConnectionRecoveryTimer, CoreTimer )
   EW_OBJECT  ( AmsBleConnectionEventHandler, CoreSystemEventHandler )
@@ -189,9 +190,6 @@ EW_DEFINE_METHODS( MediaMED01_MediaUI, ComponentsBaseMainBG )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
 EW_END_OF_METHODS( MediaMED01_MediaUI )
-
-/* 'C' function for method : 'Media::MED01_MediaUI.ReInit()' */
-void MediaMED01_MediaUI_ReInit( MediaMED01_MediaUI _this );
 
 /* The method Init() is invoked automatically after the component has been created. 
    This method can be overridden and filled with logic containing additional initialization 
