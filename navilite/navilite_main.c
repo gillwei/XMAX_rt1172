@@ -860,11 +860,18 @@ if( data_len >= 4 && strncmp( (char*)data, MAGIC_CODE, 4 ) == 0 )
         if( data[idx] != 0xff )
             {
             image_type = data[idx++];
+            image_frame_update_payload_size--;
+            #if( NAVILITE_DEBUG )
+                PRINTF( "[DEB] NEW JPEG DATA:%d\r\n",image_frame_update_payload_size );
+            #endif
             }
         else
             {
             // used for old version API
             image_type = NAVILITE_IMAGE_NAVIGATION;
+            #if( NAVILITE_DEBUG )
+                PRINTF( "[DEB] OLD JPEG DATA:%d\r\n",image_frame_update_payload_size );
+            #endif
             }
         jpg_current_size = 0;
         memcpy( navilite_jpg_buffer, data + idx, data_len - idx );
@@ -1540,6 +1547,7 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
         if( data[idx] != 0xff )
             {
             image_type = data[idx++];
+            image_frame_update_payload_size--;
             }
         else
             {
