@@ -2370,7 +2370,7 @@ $rect <290,70,490,110>
 $output false
 class NAV03_TBTListView : Home::BaseHome
 {
-  $rect <530,240,730,280>
+  $rect <530,230,730,270>
   inherited method Init()
   {
     trace "NAV03";
@@ -2398,21 +2398,25 @@ class NAV03_TBTListView : Home::BaseHome
         }
       }
     }
+    else
+    {
+      postsignal OnNoTbtListDataSlot;
+    }
   }
 
-  $rect <740,290,940,330>
+  $rect <740,280,940,320>
   inherited method OnShortDownKeyActivated()
   {
     TbtList.ScrollDown();
   }
 
-  $rect <530,290,730,330>
+  $rect <530,280,730,320>
   inherited method OnShortUpKeyActivated()
   {
     TbtList.ScrollUp();
   }
 
-  $rect <740,240,940,280>
+  $rect <740,230,940,270>
   inherited method OnLongEnterKeyActivated()
   {
     if( !NaviConnectFailedTimer.Enabled &&
@@ -2442,13 +2446,23 @@ class NAV03_TBTListView : Home::BaseHome
     preset Bounds = <0,38,480,272>;
   }
 
+  $rect <960,340,1160,380>
+  inherited method ReturnToHome()
+  {
+    super();
+    if( !DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() )
+    {
+      signal OnNoTbtListDataSlot;
+    }
+  }
+
   $rect <530,90,730,130>
   inherited var HomeType = Enum::HomeType.NAVI_TURN_BY_TURN;
 
   // Method
   note group Note8
   {
-    attr Bounds = <510,200,1230,400>;
+    attr Bounds = <510,190,1230,390>;
   }
 
   $rect <20,20,160,60>
@@ -2461,10 +2475,10 @@ class NAV03_TBTListView : Home::BaseHome
   // System Event
   note group Note7
   {
-    attr Bounds = <510,420,1230,740>;
+    attr Bounds = <510,410,1230,650>;
   }
 
-  $rect <530,460,730,500>
+  $rect <530,450,730,490>
   object Core::SystemEventHandler TbtListUpdateEventHandler
   {
     preset OnEvent = OnTbtListUpdateSlot;
@@ -2473,7 +2487,7 @@ class NAV03_TBTListView : Home::BaseHome
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <740,460,940,500>
+  $rect <740,450,940,490>
   slot OnTbtListUpdateSlot
   {
     // Receive tbt data so that hide loading animation.
@@ -2493,24 +2507,38 @@ class NAV03_TBTListView : Home::BaseHome
       {
         TbtList.NoOfItems = DeviceInterface::NavigationDevice.GetTbtListSize();
       }
-      TbtList.InvalidateItems( 0, TbtList.NoOfItems-1 );
-    }
-  }
 
-  // TODO:
-  // 1. Integrate with navi protocol.
-  note group Note5
-  {
-    attr Bounds = <0,310,480,400>;
+      if( TbtList.NoOfItems == 0 )
+      {
+        signal OnNoTbtListDataSlot;
+      }
+      else
+      {
+        // Receive Tbt data, remove Tbt list data empty dialog.
+        if( CountDialogs() > 0 )
+        {
+          var Navigation::NaviTbtListDataEmptyDialog Dialog = ( Navigation::NaviTbtListDataEmptyDialog )GetDialogAtIndex( 0 );
+          if( null != Dialog )
+          {
+            DismissDialog( Dialog, null, null, null, null, null, false );
+          }
+        }
+        TbtList.InvalidateItems( 0, TbtList.NoOfItems-1 );
+      }
+    }
+    else
+    {
+      signal OnNoTbtListDataSlot;
+    }
   }
 
   // Variable
   note group Note6
   {
-    attr Bounds = <510,50,1230,160>;
+    attr Bounds = <510,50,1230,170>;
   }
 
-  $rect <530,510,740,550>
+  $rect <530,500,740,540>
   object Core::SystemEventHandler NavigatingStatusUpdateEventHandler
   {
     preset OnEvent = OnNavigatingStatusUpdateSlot;
@@ -2519,19 +2547,18 @@ class NAV03_TBTListView : Home::BaseHome
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <750,510,990,550>
+  $rect <750,500,990,540>
   slot OnNavigatingStatusUpdateSlot
   {
     // Clear all items displayed on the tbt list.
     if( !DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() )
     {
-      trace "navigation stops";
       TbtList.NoOfItems = 0;
-      // TODO: return to default view when route is finished. Need to consider how to handle start a new route/add as next stop/add as last stop.
+      signal OnNoTbtListDataSlot;
     }
   }
 
-  $rect <530,650,730,690>
+  $rect <530,560,730,600>
   object Core::SystemEventHandler NaviDisconnectEventHandler
   {
     preset OnEvent = OnNaviDisconnectUpdateSlot;
@@ -2540,7 +2567,7 @@ class NAV03_TBTListView : Home::BaseHome
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <740,650,940,690>
+  $rect <740,560,940,600>
   slot OnNaviDisconnectUpdateSlot
   {
     if( null != Owner && IsCurrentDialog() )
@@ -2563,6 +2590,29 @@ class NAV03_TBTListView : Home::BaseHome
     preset StackingPriority = 1;
   }
 
+  $rect <960,230,1160,270>
+  slot OnNoTbtListDataSlot
+  {
+    if( IsCurrentDialog() || CountDialogs() == 0 )
+    {
+      var Navigation::NaviTbtListDataEmptyDialog NoTbtListData = new Navigation::NaviTbtListDataEmptyDialog;
+      NoTbtListData.ViewMapUpdateSlot = ReturnToMapSlot;
+
+      PresentDialog( NoTbtListData, null, null, null, null, null, null, null, null, false );
+    }
+  }
+
+  $rect <960,280,1160,320>
+  slot ReturnToMapSlot
+  {
+    var Application::Application App = ( Application::Application )GetRoot();
+    if( null != App )
+    {
+      DeviceInterface::NavigationDevice.CurrentHome = Enum::HomeType.NAVI_DEFAULT_VIEW;
+      App.SwitchToHome( DeviceInterface::NavigationDevice.CurrentHome );
+    }
+  }
+
   $reorder NaviConnectFailedTimer 4
   $reorder OnNaviConnectFailedSlot 4
   $reorder Note8 4
@@ -2570,7 +2620,6 @@ class NAV03_TBTListView : Home::BaseHome
   $reorder Note7 4
   $reorder TbtListUpdateEventHandler 4
   $reorder OnTbtListUpdateSlot 4
-  $reorder Note5 4
   $reorder Note6 4
   $reorder NavigatingStatusUpdateEventHandler 4
   $reorder OnNavigatingStatusUpdateSlot 4
@@ -3749,3 +3798,46 @@ const rect TURN_ICON_BOUNDS_W_DIST = <45,14,90,59>;
 $rect <1140,530,1340,570>
 $output false
 const rect TURN_ICON_BOUNDS_WO_DIST = <45,32,90,77>;
+
+$rect <290,250,490,290>
+$output false
+class NaviTbtListDataEmptyDialog : Core::Group
+{
+  $rect <0,310,200,350>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <20,20,160,60>
+  object Views::Rectangle BlackBG
+  {
+    preset Bounds = <0,38,480,272>;
+    preset Color = #000000FF;
+  }
+
+  $rect <20,20,160,60>
+  object Menu::PushButton PushButton
+  {
+    preset Bounds = <144,209,336,249>;
+    preset Visible = true;
+    preset Title = Strings::NAV03_VIEW_MAP;
+    preset OnActivate = OnViewMapSlot;
+  }
+
+  $rect <240,310,440,350>
+  slot OnViewMapSlot
+  {
+    Owner.DismissDialog( this, null, null, null, null, null, false );
+    signal ViewMapUpdateSlot;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text DataErrorMessage
+  {
+    preset Bounds = <105,83,375,189>;
+    preset String = Strings::NAV03_NOT_ON_A_ROUTE;
+    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    preset Visible = true;
+  }
+
+  $rect <0,370,200,410>
+  property slot ViewMapUpdateSlot;
+}

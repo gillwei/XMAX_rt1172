@@ -43,7 +43,7 @@
 #endif
 
 /* This file is generated automatically.
-   Generated: 2021/07/19 16:26:22 */
+   Generated: 2021/07/20 21:11:57 */
 extern const XStringRes StringsARGUMENT_STR;
 
 /* User defined constant: 'Strings::GEN_OK' */
@@ -276,6 +276,12 @@ extern const XStringRes StringsNAV01_UNKNOWN;
 
 /* User defined constant: 'Strings::NAV01_SCHOOL_ZONE' */
 extern const XStringRes StringsNAV01_SCHOOL_ZONE;
+
+/* User defined constant: 'Strings::NAV03_NOT_ON_A_ROUTE' */
+extern const XStringRes StringsNAV03_NOT_ON_A_ROUTE;
+
+/* User defined constant: 'Strings::NAV03_VIEW_MAP' */
+extern const XStringRes StringsNAV03_VIEW_MAP;
 
 /* User defined constant: 'Strings::NAV06_STOP_NAVIGATION' */
 EW_DECLARE_CONST( StringsNAV06_STOP_NAVIGATION )

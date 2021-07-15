@@ -715,27 +715,28 @@ EW_CONST_STRING_PRAGMA static const unsigned int _StringsVietnamese1[] =
 /* Compressed strings for the language 'Default'. */
 EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault2[] =
 {
-  0x0000042A, /* ratio 50.28 % */
+  0x00000474, /* ratio 50.18 % */
   0xB8001D00, 0x800A6452, 0x00D00031, 0x0010B378, 0x0020001B, 0x06E86968, 0x18001940,
-  0x082C0C25, 0x38434E80, 0x0C540110, 0x800EC003, 0x00CE0034, 0x2511E920, 0x23188AC3,
-  0xE6B8346C, 0x11900024, 0xD3C45E2B, 0x9E9CE431, 0x5462410C, 0xC348F1B0, 0xB6190A88,
-  0x401188B1, 0x8147A283, 0x50D3BC86, 0x189A800E, 0xB2346C19, 0x9B5564B2, 0xC4FE2F1E,
-  0x13A36168, 0x8AAD24A6, 0xA4279001, 0x233F9251, 0xD2C8F4FE, 0x63004BE6, 0x38240801,
-  0x8AD76124, 0x34462F2A, 0x5522F289, 0x12360F8C, 0x6BA66A61, 0x073D871D, 0x34DC34DB,
-  0x002A4131, 0xD8AD5B1E, 0xB6DAC002, 0x166A3D9D, 0xE5EB54D9, 0x873600CC, 0x6E72887C,
-  0x7B330A53, 0x35DC8DA6, 0x11AA5327, 0x1C7C32AD, 0x8D84E9B6, 0x11900041, 0x486E121E,
-  0x7A78009D, 0x28552B94, 0x8304DF80, 0xD11E1F0F, 0xC687C478, 0x5E6DE397, 0x84576B79,
-  0x6D5A191E, 0xC329711B, 0x7A3117E1, 0x352508D8, 0x01719FD3, 0x04500088, 0xF5CC59C0,
-  0xB90FC8A5, 0x8AD4B796, 0x15447911, 0xE45D084A, 0xF51B6F82, 0xE0721775, 0x445A45D9,
-  0x9BA559F5, 0x07B1887B, 0x09C645D9, 0x0A5F4006, 0x5610845D, 0xD0451000, 0x65D11762,
-  0x717943D3, 0x0D1211B0, 0x43E1A52D, 0x9754210C, 0x14DA0F4B, 0x690C455F, 0x008953F7,
-  0x0751881C, 0x9A445209, 0x08D13D87, 0x3E134F60, 0x6243D6B6, 0x8E50C5F9, 0x54D60136,
-  0x41551B05, 0x5D078C1A, 0x4B0013E5, 0x4811E6CD, 0x63D90D49, 0x369D1153, 0xD84F91DA,
-  0xEE9765B7, 0x98A4E97D, 0xD9010911, 0xD93E3C63, 0x023E4293, 0x4C46C1A0, 0x421A4638,
-  0x97E8050A, 0x04812486, 0xCE596B12, 0x569E6428, 0x5320B904, 0x52191A0D, 0xC4A12463,
-  0x12077124, 0x5AA421C5, 0x532739C6, 0x51E435E1, 0x4A3E59A0, 0x32424B64, 0x52AA23C7,
-  0x86E994FE, 0x13596683, 0xE55A6C73, 0xE5C89866, 0x2045E9C6, 0x9E577AA1, 0x1010014D,
-  0x00000000
+  0x922C0C35, 0x881D61A5, 0x9000C200, 0x45641163, 0x32407486, 0x645118AC, 0x3F0C9244,
+  0x02E8BCA6, 0x1B058023, 0x534800AD, 0x26C80EF2, 0xB1C00121, 0xC1A36129, 0x46870C94,
+  0xCED228AC, 0x8267004E, 0xD2B9E4A6, 0x00A30466, 0x0A553CD6, 0x3C45E2A0, 0x9C465200,
+  0x50E1B613, 0x1E360A8C, 0x21511869, 0x312536C3, 0xB6CB5036, 0x3E88C32C, 0x8AD49219,
+  0x2346C191, 0x7DEA9D41, 0x5900133A, 0x3A36168C, 0xA4922929, 0x40790018, 0x764915AE,
+  0x5391596C, 0x29B61A29, 0x8490E090, 0xBD462B41, 0xCF29D118, 0x3E313E8B, 0xA4A448D8,
+  0x1F1FA099, 0xBA60058A, 0x04D5CDA7, 0x48F800A9, 0x000B62B2, 0x4EFF238F, 0x4DABBBC9,
+  0x8F77B9BF, 0x21F11E34, 0x3129B24F, 0xB29AC052, 0x2696D971, 0x58F4BF6D, 0x09C622F6,
+  0x2000831B, 0xE5241E33, 0x6FAF5FEC, 0x26D42A46, 0xC9E28278, 0xD95EC793, 0x20E85061,
+  0xFDBD27F1, 0xF6422837, 0x11164524, 0xE7910C5C, 0x6C1E001D, 0x1772C504, 0x089F5591,
+  0xC0011400, 0x2849BA62, 0x46100005, 0x764C98F4, 0x4F965731, 0x9344213C, 0x567D1B7B,
+  0x95075795, 0x12879545, 0x72D30492, 0xDF6829AA, 0x0691E745, 0x5D0A67C0, 0x005F1084,
+  0x6B5045A4, 0xD4F75517, 0xC0018743, 0x344846C1, 0x0F8D9704, 0x66108431, 0xD115554F,
+  0x94A1D973, 0xD529495F, 0x25075184, 0x7FE2866A, 0xD2987A51, 0xF63D1F8B, 0x31A08350,
+  0xA24F2564, 0x46C154D9, 0x64D71855, 0x06595A8A, 0x0D297597, 0x237196E5, 0x72511462,
+  0xC004B1C5, 0x795E1313, 0xA67972E7, 0x424827C9, 0x9051F7D8, 0x90A9590D, 0x44680096,
+  0x19B01310, 0x11429087, 0x79A394A5, 0x5CE50DED, 0x58AE508A, 0x793AA511, 0x604965E6,
+  0x6BD20A9A, 0x6674F122, 0x85A53579, 0x3159AB23, 0x919628EA, 0x8A69C596, 0x999AE227,
+  0x9A419B94, 0xD5649B59, 0x3A68237A, 0x50676AE6, 0x27BA2524, 0x7B35DB8A, 0x1AC350D1,
+  0x004DA947, 0x00000404, 0x00000000
 };
 
 /* Compressed strings for the language 'Finnish'. */
@@ -2490,7 +2491,7 @@ EW_CONST_STRING_PRAGMA static const unsigned int _StringsVietnamese5[] =
 };
 
 /* This file is generated automatically.
-   Generated: 2021/07/19 16:26:22 */
+   Generated: 2021/07/20 21:11:57 */
 const XStringRes StringsARGUMENT_STR = { _StringsDefault0, 0x0002 };
 
 /* User defined constant: 'Strings::GEN_OK' */
@@ -3403,6 +3404,12 @@ const XStringRes StringsNAV01_UNKNOWN = { _StringsDefault1, 0x01F5 };
 /* User defined constant: 'Strings::NAV01_SCHOOL_ZONE' */
 const XStringRes StringsNAV01_SCHOOL_ZONE = { _StringsDefault2, 0x0002 };
 
+/* User defined constant: 'Strings::NAV03_NOT_ON_A_ROUTE' */
+const XStringRes StringsNAV03_NOT_ON_A_ROUTE = { _StringsDefault2, 0x0010 };
+
+/* User defined constant: 'Strings::NAV03_VIEW_MAP' */
+const XStringRes StringsNAV03_VIEW_MAP = { _StringsDefault2, 0x002A };
+
 /* User defined constant: 'Strings::NAV06_STOP_NAVIGATION' */
 const XVariantOfString _StringsNAV06_STOP_NAVIGATION[] = 
 {
@@ -3423,7 +3430,7 @@ const XVariantOfString _StringsNAV06_STOP_NAVIGATION[] =
   { Thai,      { _StringsThai1, 0x002C }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x00FB }},
   { Vietnamese, { _StringsVietnamese1, 0x003F }},
-  { Default,   { _StringsDefault2, 0x0010 }}
+  { Default,   { _StringsDefault2, 0x0035 }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::NAV06_STOP_NAVIGATION' */
@@ -3449,7 +3456,7 @@ const XVariantOfString _StringsNAV06_SKIP_NEXT_STOP[] =
   { Thai,      { _StringsThai1, 0x003B }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x0102 }},
   { Vietnamese, { _StringsVietnamese1, 0x0051 }},
-  { Default,   { _StringsDefault2, 0x0022 }}
+  { Default,   { _StringsDefault2, 0x0047 }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::NAV06_SKIP_NEXT_STOP' */
@@ -3475,7 +3482,7 @@ const XVariantOfString _StringsNAV06_GO_HOME[] =
   { Thai,      { _StringsThai1, 0x004D }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x010A }},
   { Vietnamese, { _StringsVietnamese1, 0x006E }},
-  { Default,   { _StringsDefault2, 0x0033 }}
+  { Default,   { _StringsDefault2, 0x0058 }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::NAV06_GO_HOME' */
@@ -3501,7 +3508,7 @@ const XVariantOfString _StringsNAV06_GO_TO_WORK[] =
   { Thai,      { _StringsThai1, 0x0056 }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x010F }},
   { Vietnamese, { _StringsVietnamese1, 0x0077 }},
-  { Default,   { _StringsDefault2, 0x003D }}
+  { Default,   { _StringsDefault2, 0x0062 }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::NAV06_GO_TO_WORK' */
@@ -3527,7 +3534,7 @@ const XVariantOfString _StringsNAV06_FAVORITES[] =
   { Thai,      { _StringsThai1, 0x0060 }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x0114 }},
   { Vietnamese, { _StringsVietnamese1, 0x0080 }},
-  { Default,   { _StringsDefault2, 0x004A }}
+  { Default,   { _StringsDefault2, 0x006F }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::NAV06_FAVORITES' */
@@ -3553,7 +3560,7 @@ const XVariantOfString _StringsNAV06_NEARBY_GAS_STATIONS[] =
   { Thai,      { _StringsThai1, 0x006B }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x011B }},
   { Vietnamese, { _StringsVietnamese1, 0x008C }},
-  { Default,   { _StringsDefault2, 0x0056 }}
+  { Default,   { _StringsDefault2, 0x007B }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::NAV06_NEARBY_GAS_STATIONS' */
@@ -3579,7 +3586,7 @@ const XVariantOfString _StringsNAV06_CHANGE_VIEW[] =
   { Thai,      { _StringsThai1, 0x0088 }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x0124 }},
   { Vietnamese, { _StringsVietnamese1, 0x009F }},
-  { Default,   { _StringsDefault2, 0x006C }}
+  { Default,   { _StringsDefault2, 0x0091 }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::NAV06_CHANGE_VIEW' */
@@ -3605,7 +3612,7 @@ const XVariantOfString _StringsNAV08_DEFAULT_VIEW[] =
   { Thai,      { _StringsThai1, 0x0098 }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x012B }},
   { Vietnamese, { _StringsVietnamese1, 0x00B5 }},
-  { Default,   { _StringsDefault2, 0x007A }}
+  { Default,   { _StringsDefault2, 0x009F }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::NAV08_DEFAULT_VIEW' */
@@ -3631,7 +3638,7 @@ const XVariantOfString _StringsNAV08_TURN_BY_TURN[] =
   { Thai,      { _StringsThai1, 0x00A9 }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x0132 }},
   { Vietnamese, { _StringsVietnamese1, 0x00CB }},
-  { Default,   { _StringsDefault2, 0x0089 }}
+  { Default,   { _StringsDefault2, 0x00AE }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::NAV08_TURN_BY_TURN' */
@@ -3657,26 +3664,26 @@ const XVariantOfString _StringsNAV08_TURN_LIST[] =
   { Thai,      { _StringsThai1, 0x00BB }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x0139 }},
   { Vietnamese, { _StringsVietnamese1, 0x00D6 }},
-  { Default,   { _StringsDefault2, 0x0098 }}
+  { Default,   { _StringsDefault2, 0x00BD }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::NAV08_TURN_LIST' */
 EW_CONST_WITHOUT_VARIANTS( StringsNAV08_TURN_LIST )
 
 /* User defined constant: 'Strings::NAV11_NEW_ROUTE' */
-const XStringRes StringsNAV11_NEW_ROUTE = { _StringsDefault2, 0x00A4 };
+const XStringRes StringsNAV11_NEW_ROUTE = { _StringsDefault2, 0x00C9 };
 
 /* User defined constant: 'Strings::NAV11_NEXT_STOP' */
-const XStringRes StringsNAV11_NEXT_STOP = { _StringsDefault2, 0x00B8 };
+const XStringRes StringsNAV11_NEXT_STOP = { _StringsDefault2, 0x00DD };
 
 /* User defined constant: 'Strings::NAV11_LAST_STOP' */
-const XStringRes StringsNAV11_LAST_STOP = { _StringsDefault2, 0x00CB };
+const XStringRes StringsNAV11_LAST_STOP = { _StringsDefault2, 0x00F0 };
 
 /* User defined constant: 'Strings::OPN02_FACTORY_MODE' */
-const XStringRes StringsOPN02_FACTORY_MODE = { _StringsDefault2, 0x00DE };
+const XStringRes StringsOPN02_FACTORY_MODE = { _StringsDefault2, 0x0103 };
 
 /* User defined constant: 'Strings::OPN02_ENTER_TWICE' */
-const XStringRes StringsOPN02_ENTER_TWICE = { _StringsDefault2, 0x00ED };
+const XStringRes StringsOPN02_ENTER_TWICE = { _StringsDefault2, 0x0112 };
 
 /* User defined constant: 'Strings::POP02_CONNECTION_ERR' */
 const XVariantOfString _StringsPOP02_CONNECTION_ERR[] = 
@@ -3698,7 +3705,7 @@ const XVariantOfString _StringsPOP02_CONNECTION_ERR[] =
   { Thai,      { _StringsThai1, 0x00C8 }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x0141 }},
   { Vietnamese, { _StringsVietnamese1, 0x00E9 }},
-  { Default,   { _StringsDefault2, 0x010B }}
+  { Default,   { _StringsDefault2, 0x0130 }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::POP02_CONNECTION_ERR' */
@@ -3724,7 +3731,7 @@ const XVariantOfString _StringsPOP02_PLEASE_CHECK[] =
   { Thai,      { _StringsThai1, 0x00E3 }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x0148 }},
   { Vietnamese, { _StringsVietnamese1, 0x00F9 }},
-  { Default,   { _StringsDefault2, 0x011E }}
+  { Default,   { _StringsDefault2, 0x0143 }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::POP02_PLEASE_CHECK' */
@@ -3749,7 +3756,7 @@ const XVariantOfString _StringsPOP02_DETAILS[] =
   { Thai,      { _StringsThai1, 0x00F1 }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x014F }},
   { Vietnamese, { _StringsVietnamese1, 0x010D }},
-  { Default,   { _StringsDefault2, 0x012D }}
+  { Default,   { _StringsDefault2, 0x0152 }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::POP02_DETAILS' */
@@ -3775,7 +3782,7 @@ const XVariantOfString _StringsPOP03_NO_HOME_LOCATION[] =
   { Thai,      { _StringsThai1, 0x00FE }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x0156 }},
   { Vietnamese, { _StringsVietnamese1, 0x0118 }},
-  { Default,   { _StringsDefault2, 0x0137 }}
+  { Default,   { _StringsDefault2, 0x015C }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::POP03_NO_HOME_LOCATION' */
@@ -3801,7 +3808,7 @@ const XVariantOfString _StringsPOP07_TROUBLE_SHOOTING[] =
   { Thai,      { _StringsThai1, 0x0119 }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x0161 }},
   { Vietnamese, { _StringsVietnamese1, 0x012F }},
-  { Default,   { _StringsDefault2, 0x0153 }}
+  { Default,   { _StringsDefault2, 0x0178 }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::POP07_TROUBLE_SHOOTING' */
@@ -3827,7 +3834,7 @@ const XVariantOfString _StringsPOP07_UNLOCK_PHONE[] =
   { Thai,      { _StringsThai1, 0x0135 }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x016A }},
   { Vietnamese, { _StringsVietnamese1, 0x0149 }},
-  { Default,   { _StringsDefault2, 0x0170 }}
+  { Default,   { _StringsDefault2, 0x0195 }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::POP07_UNLOCK_PHONE' */
@@ -3853,7 +3860,7 @@ const XVariantOfString _StringsPOP07_TURN_ON_BT[] =
   { Thai,      { _StringsThai1, 0x0148 }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x0178 }},
   { Vietnamese, { _StringsVietnamese1, 0x016A }},
-  { Default,   { _StringsDefault2, 0x0185 }}
+  { Default,   { _StringsDefault2, 0x01AA }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::POP07_TURN_ON_BT' */
@@ -3879,7 +3886,7 @@ const XVariantOfString _StringsPOP07_LAUNCH_APP[] =
   { Thai,      { _StringsThai1, 0x015E }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x018E }},
   { Vietnamese, { _StringsVietnamese1, 0x0195 }},
-  { Default,   { _StringsDefault2, 0x01A5 }}
+  { Default,   { _StringsDefault2, 0x01CA }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::POP07_LAUNCH_APP' */
@@ -3905,7 +3912,7 @@ const XVariantOfString _StringsPOP09_CONNECTION_FAILED[] =
   { Thai,      { _StringsThai1, 0x0170 }},
   { TraditionalChinese, { _StringsTraditionalChinese0, 0x0198 }},
   { Vietnamese, { _StringsVietnamese1, 0x01AB }},
-  { Default,   { _StringsDefault2, 0x01BF }}
+  { Default,   { _StringsDefault2, 0x01E4 }}
 };
 
 /* Table with links to derived variants of the constant : 'Strings::POP09_CONNECTION_FAILED' */

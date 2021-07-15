@@ -175,6 +175,8 @@ NAV01_STATE_BORDER,State Border,,,,,,,,,,,,,,,,,
 NAV01_COUNTRY_BORDER,Country Border,,,,,,,,,,,,,,,,,
 NAV01_SCHOOL_ZONE,School Zone,,,,,,,,,,,,,,,,,
 NAV01_NO_DESTINATION,No possible route to this destination.,,,,,,,,,,,,,,,,,
+NAV03_NOT_ON_A_ROUTE,You are not on a route.,,,,,,,,,,,,,,,,,
+NAV03_VIEW_MAP,View Map,,,,,,,,,,,,,,,,,
 NAV06_STOP_NAVIGATION,Stop navigation,案内中止,Arrêter la navigation,Detener navegación,Ferma navigazione,Navigation stoppen,停止導航,停止导航,Διακοπή πλοήγησης,Lopeta navigointi,नेविगेशन रोकें,Hentikan navigasi,Zatrzymaj nawigację,Parar navegação,หยุดการนำทาง,Dừng điều hướng,내비게이션 중지,Henti navigasi
 NAV06_SKIP_NEXT_STOP,Skip next stop,次の経由地をスキップ,Ignorer le prochain arrêt,Omitir la próxima parada,Salta prossima tappa,Nächsten Stopp überspringen,跳過下一站,跳过下一站,Παράλειψη επόμενης στάσης,Ohita seuraava pysähdys,अगला स्टॉप छोड़ें,Lewati perhentian berikutnya,Pomiń następny krok,Pular próxima parada,ข้ามจุดจอดถัดไป,Bỏ qua điểm dừng tiếp theo,다음 종착지 건너뛰기,Langkau hentian seterusnya
 NAV06_GO_HOME,Go home,自宅,Retourner à la maison,Ir a casa,Vai a casa,Nach Hause fahren,住家,回家,Μετάβαση στο σπίτι,Mene kotiin,घर जाएं,Ke rumah,Jedź do domu,Ir para casa,ไปบ้าน,Về nhà,집으로,Pulang ke rumah

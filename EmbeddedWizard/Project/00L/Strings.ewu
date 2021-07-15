@@ -1,7 +1,7 @@
 $version 11.00
 
 // This file is generated automatically.
-// Generated: 2021/07/19 16:26:22
+// Generated: 2021/07/20 21:11:57
 
 $output false
 const string ARGUMENT_STR =
@@ -1109,6 +1109,18 @@ $output false
 const string NAV01_NO_DESTINATION =
 (
   Default = "No possible route to this destination.";
+);
+
+$output false
+const string NAV03_NOT_ON_A_ROUTE =
+(
+  Default = "You are not on a route.";
+);
+
+$output false
+const string NAV03_VIEW_MAP =
+(
+  Default = "View Map";
 );
 
 $output false

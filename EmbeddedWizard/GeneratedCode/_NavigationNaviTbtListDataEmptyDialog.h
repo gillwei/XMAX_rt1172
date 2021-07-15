@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _NavigationNAV03_TBTListView_H
-#define _NavigationNAV03_TBTListView_H
+#ifndef _NavigationNaviTbtListDataEmptyDialog_H
+#define _NavigationNaviTbtListDataEmptyDialog_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,21 +42,10 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_ComponentsDDModeMask.h"
-#include "_CoreKeyPressHandler.h"
-#include "_CoreSystemEventHandler.h"
-#include "_CoreTimer.h"
-#include "_HomeBaseHome.h"
-#include "_NavigationTbtListMenu.h"
-#include "_PopPOP16_NaviLoadingUI.h"
-#include "_ViewsImage.h"
+#include "_CoreGroup.h"
+#include "_MenuPushButton.h"
 #include "_ViewsRectangle.h"
-
-/* Forward declaration of the class Components::BaseMainBG */
-#ifndef _ComponentsBaseMainBG_
-  EW_DECLARE_CLASS( ComponentsBaseMainBG )
-#define _ComponentsBaseMainBG_
-#endif
+#include "_ViewsText.h"
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -64,10 +53,10 @@
 #define _CoreDialogContext_
 #endif
 
-/* Forward declaration of the class Core::Group */
-#ifndef _CoreGroup_
-  EW_DECLARE_CLASS( CoreGroup )
-#define _CoreGroup_
+/* Forward declaration of the class Core::KeyPressHandler */
+#ifndef _CoreKeyPressHandler_
+  EW_DECLARE_CLASS( CoreKeyPressHandler )
+#define _CoreKeyPressHandler_
 #endif
 
 /* Forward declaration of the class Core::LayoutContext */
@@ -100,24 +89,23 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Navigation::NAV03_TBTListView */
-#ifndef _NavigationNAV03_TBTListView_
-  EW_DECLARE_CLASS( NavigationNAV03_TBTListView )
-#define _NavigationNAV03_TBTListView_
+/* Forward declaration of the class Navigation::NaviTbtListDataEmptyDialog */
+#ifndef _NavigationNaviTbtListDataEmptyDialog_
+  EW_DECLARE_CLASS( NavigationNaviTbtListDataEmptyDialog )
+#define _NavigationNaviTbtListDataEmptyDialog_
 #endif
 
 
-/* Deklaration of class : 'Navigation::NAV03_TBTListView' */
-EW_DEFINE_FIELDS( NavigationNAV03_TBTListView, HomeBaseHome )
-  EW_OBJECT  ( TbtList,         NavigationTbtListMenu )
-  EW_OBJECT  ( TbtListUpdateEventHandler, CoreSystemEventHandler )
-  EW_OBJECT  ( NavigatingStatusUpdateEventHandler, CoreSystemEventHandler )
-  EW_OBJECT  ( NaviDisconnectEventHandler, CoreSystemEventHandler )
-  EW_OBJECT  ( Divider,         ViewsImage )
-EW_END_OF_FIELDS( NavigationNAV03_TBTListView )
+/* Deklaration of class : 'Navigation::NaviTbtListDataEmptyDialog' */
+EW_DEFINE_FIELDS( NavigationNaviTbtListDataEmptyDialog, CoreGroup )
+  EW_PROPERTY( ViewMapUpdateSlot, XSlot )
+  EW_OBJECT  ( BlackBG,         ViewsRectangle )
+  EW_OBJECT  ( PushButton,      MenuPushButton )
+  EW_OBJECT  ( DataErrorMessage, ViewsText )
+EW_END_OF_FIELDS( NavigationNaviTbtListDataEmptyDialog )
 
-/* Virtual Method Table (VMT) for the class : 'Navigation::NAV03_TBTListView' */
-EW_DEFINE_METHODS( NavigationNAV03_TBTListView, HomeBaseHome )
+/* Virtual Method Table (VMT) for the class : 'Navigation::NaviTbtListDataEmptyDialog' */
+EW_DEFINE_METHODS( NavigationNaviTbtListDataEmptyDialog, CoreGroup )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -159,66 +147,16 @@ EW_DEFINE_METHODS( NavigationNAV03_TBTListView, HomeBaseHome )
   EW_METHOD( Remove,            void )( CoreGroup _this, CoreView aView )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
-  EW_METHOD( OnShortDownKeyActivated, void )( NavigationNAV03_TBTListView _this )
-  EW_METHOD( OnShortUpKeyActivated, void )( NavigationNAV03_TBTListView _this )
-  EW_METHOD( OnShortEnterKeyActivated, void )( HomeBaseHome _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( HomeBaseHome _this )
-  EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnLongEnterKeyActivated, void )( NavigationNAV03_TBTListView _this )
-  EW_METHOD( OnLongHomeKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
-  EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
-  EW_METHOD( ReturnToHome,      void )( NavigationNAV03_TBTListView _this )
-EW_END_OF_METHODS( NavigationNAV03_TBTListView )
+EW_END_OF_METHODS( NavigationNaviTbtListDataEmptyDialog )
 
-/* The method Init() is invoked automatically after the component has been created. 
-   This method can be overridden and filled with logic containing additional initialization 
-   statements. */
-void NavigationNAV03_TBTListView_Init( NavigationNAV03_TBTListView _this, XHandle 
-  aArg );
-
-/* 'C' function for method : 'Navigation::NAV03_TBTListView.OnShortDownKeyActivated()' */
-void NavigationNAV03_TBTListView_OnShortDownKeyActivated( NavigationNAV03_TBTListView _this );
-
-/* 'C' function for method : 'Navigation::NAV03_TBTListView.OnShortUpKeyActivated()' */
-void NavigationNAV03_TBTListView_OnShortUpKeyActivated( NavigationNAV03_TBTListView _this );
-
-/* 'C' function for method : 'Navigation::NAV03_TBTListView.OnLongEnterKeyActivated()' */
-void NavigationNAV03_TBTListView_OnLongEnterKeyActivated( NavigationNAV03_TBTListView _this );
-
-/* 'C' function for method : 'Navigation::NAV03_TBTListView.ReturnToHome()' */
-void NavigationNAV03_TBTListView_ReturnToHome( NavigationNAV03_TBTListView _this );
-
-/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
-   receives an event. */
-void NavigationNAV03_TBTListView_OnTbtListUpdateSlot( NavigationNAV03_TBTListView _this, 
-  XObject sender );
-
-/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
-   receives an event. */
-void NavigationNAV03_TBTListView_OnNavigatingStatusUpdateSlot( NavigationNAV03_TBTListView _this, 
-  XObject sender );
-
-/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
-   receives an event. */
-void NavigationNAV03_TBTListView_OnNaviDisconnectUpdateSlot( NavigationNAV03_TBTListView _this, 
-  XObject sender );
-
-/* 'C' function for method : 'Navigation::NAV03_TBTListView.OnNoTbtListDataSlot()' */
-void NavigationNAV03_TBTListView_OnNoTbtListDataSlot( NavigationNAV03_TBTListView _this, 
-  XObject sender );
-
-/* 'C' function for method : 'Navigation::NAV03_TBTListView.ReturnToMapSlot()' */
-void NavigationNAV03_TBTListView_ReturnToMapSlot( NavigationNAV03_TBTListView _this, 
+/* 'C' function for method : 'Navigation::NaviTbtListDataEmptyDialog.OnViewMapSlot()' */
+void NavigationNaviTbtListDataEmptyDialog_OnViewMapSlot( NavigationNaviTbtListDataEmptyDialog _this, 
   XObject sender );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _NavigationNAV03_TBTListView_H */
+#endif /* _NavigationNaviTbtListDataEmptyDialog_H */
 
 /* Embedded Wizard */
