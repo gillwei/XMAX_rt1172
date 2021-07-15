@@ -19,6 +19,7 @@
 #endif
 #include "timers.h"
 #include "client_dcm_appl.h"
+#include "error_code.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -826,57 +827,58 @@ for( int i = 0; i < length; i++ )
     BC_MOTOCON_PRINTF( " %2X", bytes[i] );
     }
 BC_MOTOCON_PRINTF( "\r\n" );
-
-
-if( ! bc_motocon_connected )
-    {
-    return BC_MOTOCON_SEND_RESULT_BLE_ERROR;
-    }
-
 #if( ENABLE_MOTOCON_HCI_LINK )
+    int result = ERR_NONE;
     switch( type )
         {
         case BC_MOTOCON_NOTIFY:
-            HCI_le_send_gatt_server_data( HCI_CONTROL_GATT_COMMAND_NOTIFY, HDLC_MOTOCONSDK_NOTIFY_VALUE, bytes, length );
+            result = HCI_le_send_gatt_server_data( HCI_CONTROL_GATT_COMMAND_NOTIFY, HDLC_MOTOCONSDK_NOTIFY_VALUE, bytes, length );
             break;
 
         case BC_MOTOCON_DDT_TO_VEHICLE_STATUS_READ_RESPONSE:
-            HCI_le_send_gatt_server_data( HCI_CONTROL_GATT_COMMAND_READ_RESPONSE, HDLC_MOTOCONSDK_DDT_TO_VEHICLE_STATUS_VALUE, bytes, length );
+            result = HCI_le_send_gatt_server_data( HCI_CONTROL_GATT_COMMAND_READ_RESPONSE, HDLC_MOTOCONSDK_DDT_TO_VEHICLE_STATUS_VALUE, bytes, length );
             break;
 
         case BC_MOTOCON_DDT_TO_VEHICLE_STATUS_NOTIFY:
-            HCI_le_send_gatt_server_data( HCI_CONTROL_GATT_COMMAND_NOTIFY, HDLC_MOTOCONSDK_DDT_TO_VEHICLE_STATUS_VALUE, bytes, length );
+            result = HCI_le_send_gatt_server_data( HCI_CONTROL_GATT_COMMAND_NOTIFY, HDLC_MOTOCONSDK_DDT_TO_VEHICLE_STATUS_VALUE, bytes, length );
             break;
 
         case BC_MOTOCON_DDT_TO_PHONE_CONTROL_NOTIFY:
-            HCI_le_send_gatt_server_data( HCI_CONTROL_GATT_COMMAND_NOTIFY, HDLC_MOTOCONSDK_DDT_TO_PHONE_CONTROL_VALUE, bytes, length );
+            result = HCI_le_send_gatt_server_data( HCI_CONTROL_GATT_COMMAND_NOTIFY, HDLC_MOTOCONSDK_DDT_TO_PHONE_CONTROL_VALUE, bytes, length );
             break;
 
         case BC_MOTOCON_DDT_TO_PHONE_DATA_NOTIFY:
-            HCI_le_send_gatt_server_data( HCI_CONTROL_GATT_COMMAND_NOTIFY, HDLC_MOTOCONSDK_DDT_TO_PHONE_DATA_VALUE, bytes, length );
+            result = HCI_le_send_gatt_server_data( HCI_CONTROL_GATT_COMMAND_NOTIFY, HDLC_MOTOCONSDK_DDT_TO_PHONE_DATA_VALUE, bytes, length );
             break;
 
         case BC_MOTOCON_DDT_VEHICLE_INFORMATION_CONTROL_NOTIFY:
-            HCI_le_send_gatt_server_data( HCI_CONTROL_GATT_COMMAND_NOTIFY, HDLC_MOTOCONSDK_DDT_VEHICLE_INFORMATION_CONTROL_VALUE, bytes, length );
+            result = HCI_le_send_gatt_server_data( HCI_CONTROL_GATT_COMMAND_NOTIFY, HDLC_MOTOCONSDK_DDT_VEHICLE_INFORMATION_CONTROL_VALUE, bytes, length );
             break;
 
         case BC_MOTOCON_DDT_VEHICLE_INFORMATION_DATA_NOTIFY:
-            HCI_le_send_gatt_server_data( HCI_CONTROL_GATT_COMMAND_NOTIFY, HDLC_MOTOCONSDK_DDT_VEHICLE_INFORMATION_DATA_VALUE, bytes, length );
+            result = HCI_le_send_gatt_server_data( HCI_CONTROL_GATT_COMMAND_NOTIFY, HDLC_MOTOCONSDK_DDT_VEHICLE_INFORMATION_DATA_VALUE, bytes, length );
             break;
 
         case BC_MOTOCON_DDT_CAN_CONTROL_NOTIFY:
-            HCI_le_send_gatt_server_data( HCI_CONTROL_GATT_COMMAND_NOTIFY, HDLC_MOTOCONSDK_DDT_CAN_CONTROL_VALUE, bytes, length );
+            result = HCI_le_send_gatt_server_data( HCI_CONTROL_GATT_COMMAND_NOTIFY, HDLC_MOTOCONSDK_DDT_CAN_CONTROL_VALUE, bytes, length );
             break;
 
         case BC_MOTOCON_DDT_CAN_DATA_NOTIFY:
-            HCI_le_send_gatt_server_data( HCI_CONTROL_GATT_COMMAND_NOTIFY, HDLC_MOTOCONSDK_DDT_CAN_DATA_VALUE, bytes, length );
+            result = HCI_le_send_gatt_server_data( HCI_CONTROL_GATT_COMMAND_NOTIFY, HDLC_MOTOCONSDK_DDT_CAN_DATA_VALUE, bytes, length );
             break;
 
         default:
             return BC_MOTOCON_SEND_RESULT_INVALID_TYPE;
             break;
         }
-    return BC_MOTOCON_SEND_RESULT_SUCCESS;
+    if( result != ERR_NONE )
+        {
+        return BC_MOTOCON_SEND_RESULT_BLE_ERROR;
+        }
+    else
+        {
+        return BC_MOTOCON_SEND_RESULT_SUCCESS;
+        }
 #else
     return BC_MOTOCON_SEND_RESULT_BLE_ERROR;
 #endif
