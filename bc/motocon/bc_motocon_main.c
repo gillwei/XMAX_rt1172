@@ -826,6 +826,13 @@ for( int i = 0; i < length; i++ )
     BC_MOTOCON_PRINTF( " %2X", bytes[i] );
     }
 BC_MOTOCON_PRINTF( "\r\n" );
+
+
+if( ! bc_motocon_connected )
+    {
+    return BC_MOTOCON_SEND_RESULT_BLE_ERROR;
+    }
+
 #if( ENABLE_MOTOCON_HCI_LINK )
     switch( type )
         {

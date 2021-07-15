@@ -51,11 +51,6 @@ for( ; index < CHANNELS_COUNT; index++)
     client_mem_read_init_dtc_data[index].overflow_flag = FALSE;
     client_mem_read_init_dtc_data[index].mem_data = client_mem_init_dtc_data_array[index];
     }
-
-client_mem_indentifier_data.empty_flag = TRUE;
-client_mem_indentifier_data.overflow_flag = FALSE;
-client_mem_indentifier_data.length = 0x02;
-client_mem_indentifier_data.mem_data = client_mem_indentifier_data_array;
 }
 
 /*!******************************************************************************
@@ -94,6 +89,12 @@ client_ReturnType client_mem_storage_init_dtc_data
 {
 uint16 empty_length = 0x0000;
 
+
+if( channel_id >= CHANNELS_COUNT )
+    {
+    return E_NOT_OK;
+    }
+
 if( 0x0000 == data_lenth )
     {
     return E_NOT_OK;
@@ -120,7 +121,6 @@ if( 0x0000 < client_mem_read_init_dtc_data[channel_id].length )
     {
     client_mem_read_init_dtc_data[channel_id].empty_flag = FALSE;
     }
-//PRINTF("current storage initial length %d \r\n", client_mem_read_init_dtc_data[channel_id].length );
 
 return E_OK;
 }
@@ -138,51 +138,6 @@ boolean client_mem_get_storage_init_dtc_state
 {
 return FALSE == client_mem_read_init_dtc_data[channel_id].empty_flag?TRUE:FALSE;
 }
-
-
-
-#if( MEM_DEBUG )
-/*!******************************************************************************
-*
-* @public
-* Function name: client_mem_print_init_dtc_data
-* Description  : print the received data
-*********************************************************************************/
-client_ReturnType client_mem_print_init_dtc_data
-    (
-    void
-    )
-{
-uint8 temp = 0;
-uint16 index = 0;
-
-for( ; temp < CHANNELS_COUNT; temp++ )
-    {
-    if( TRUE == client_mem_read_init_dtc_data[temp].empty_flag )
-        {
-        PRINTF( "Channel %d is empty for init dtc\r\n", temp );
-        continue;
-        }
-    else if( TRUE == client_mem_read_init_dtc_data[temp].overflow_flag )
-        {
-        PRINTF( "Channel %d Received data over flow for init dtc\r\n", temp );
-        }
-    else
-        {
-        /*do nothing*/
-        }
-
-    PRINTF("Receive %d byte data for init dtc:", client_mem_read_init_dtc_data[temp].length );
-    for( index = 0; index < client_mem_read_init_dtc_data[temp].length; index++ )
-        {
-        PRINTF( "%2x ",client_mem_init_dtc_data_array[temp][index] );
-        }
-        PRINTF( "\r\n" );
-    }
-return E_OK;
-}
-#endif
-
 
 
 /*!******************************************************************************
@@ -203,7 +158,7 @@ if( TRUE == client_mem_read_init_dtc_data[channel_id].empty_flag)
     {
     *result = CLIENT_MEM_EMPTY;
     *resp_length = 0x0000;
-    resp_data = 0;/*pointer*/
+    *resp_data = 0;/*pointer*/
     return E_NOT_OK;
     }
 else if( TRUE == client_mem_read_init_dtc_data[channel_id].overflow_flag )
@@ -314,20 +269,6 @@ return E_OK;
 }
 
 
-uint16  client_mem_get_iden_data_storage_length
-    (
-    void
-    )
-{
-if( TRUE == client_mem_indentifier_data.empty_flag)
-    {
-    return 0;
-    }
-else
-    {
-    return client_mem_indentifier_data.length;
-    }
-}
 
 
  /*!******************************************************************************
@@ -347,58 +288,6 @@ else
  client_appl_response_can_related_data( command, size, data, &client_appl_cmd_rsp_result_notify );
  return return_value;
  }
-
- /*!******************************************************************************
- *
- * @public
- * Function name:client_mem_send_can_data
- * Description  : send the storage data to MOTOCAN
- *********************************************************************************/
- client_ReturnType client_mem_send_can_data
-    (
-    void
-    )
-{
-client_ReturnType return_value = 0x00;
-uint8 channel_id = 0x00;
-uint16 resp_len = 0x0000;
-uint8* resp_data = 0x00;
-uint32 resp_cmd = 0;
-client_process_flow_type current_flow = client_get_current_process_flow();
-
-switch( current_flow )
-    {
-    case PROCESS_FLOW_RDBCID:
-        resp_cmd = BLE_RSP_CMD_VEHICLE_IDENTIFICATION;
-    case PROCESS_FLOW_MARKET:
-        resp_cmd = BLE_RSP_CMD_MARKET_DATA;
-    case PROCESS_FLOW_MONITOR:
-        resp_cmd = BLE_RSP_CMD_VEHICLE_INFORMATION;
-    case PROCESS_FLOW_RFFD:
-        resp_cmd = BLE_RSP_CMD_FFD;
-        (void)client_mem_get_identifier_data( &resp_len, &resp_data );
-        return_value = client_mem_send_can_related_data( resp_cmd,(uint32)resp_len, resp_data );
-        break;
-
-    case PROCESS_FLOW_INIT_RDTCBS:
-    if( client_appl_get_storage_init_dtc_state() )
-        {
-        (void)client_mem_get_identifier_data( &resp_len, &resp_data );
-        }
-    else
-        {
-        channel_id = client_appl_get_current_connected_server_id();
-        resp_len = client_mem_read_init_dtc_data[channel_id].length;
-        resp_data = client_mem_read_init_dtc_data[channel_id].mem_data;
-        }
-    return_value = client_mem_send_can_related_data( BLE_RSP_CMD_MALFUNCTION, (uint32)resp_len, resp_data );
-    break;
-
-    default:
-    break;
-    }
-return return_value;
-}
 
 /*!******************************************************************************
 *

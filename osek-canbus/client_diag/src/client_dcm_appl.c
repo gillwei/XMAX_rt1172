@@ -36,8 +36,6 @@
 #define CLIENT_DEBUG(x)
 #endif
 
-
-
 #define APPL_PENDING                                 (TRUE )
 
 
@@ -361,6 +359,10 @@ static void client_appl_send_protobuf_data_success
     void
     );
 
+void client_appl_rsp_initial_dtc_after_ble_connect
+    (
+    boolean value
+    );
 
 
 static client_process_flow_handler_type client_process_flow_handler[SUPPORT_FUCNTION_NUMS - 1] =
@@ -2494,10 +2496,9 @@ return E_SUCCESS;
 
 
 typedef void (*rsp_result_func_notify)(uint8);
-
 void client_appl_rsp_initial_dtc_after_ble_connect
     (
-    boolean value
+    uint8 value
     )
 {
 uint8 index = 0;
@@ -2512,89 +2513,78 @@ uint8* start_addr = NULL;
 uint16 dtc_code = 0;
 rsp_result_func_notify rsp_result_func_ptr = NULL;
 
+server_code = client_appl_ble_server_code_mapping[current_send_channel_id].ble_server_code ;
 
-for( ; current_send_channel_id < SUPPORT_SERVER_NUM; current_send_channel_id++ )
+if( SERVER_CONNECT == server_list_detect_infos[current_send_channel_id].server_connect_status_default )
     {
-    server_code = client_appl_ble_server_code_mapping[current_send_channel_id].ble_server_code ;
+    client_mem_get_init_dtc_data( current_send_channel_id, &result, &data_length, &data_ptr );
 
-    if( SERVER_CONNECT == server_list_detect_infos[current_send_channel_id].server_connect_status_default )
+    /*choose callback function*/
+    if( current_send_channel_id == client_appl_get_last_detected_server_index() )
         {
-        client_mem_get_init_dtc_data( current_send_channel_id, &result, &data_length, &data_ptr );
+        rsp_result_func_ptr = &client_appl_cmd_rsp_result_notify;
+        current_send_channel_id = 0;
+        }
+    else
+        {
+        rsp_result_func_ptr = &client_appl_rsp_initial_dtc_after_ble_connect;
+        current_send_channel_id++;
+        }
 
-        /*choose callback function*/
-        if( current_send_channel_id == client_appl_get_last_detected_server_index() )
+    if( E_OK == result )
+        {
+        g_McMalfunctionResponse_list.count = 0;
+        /*postive resposne data foramt */
+        /*  1 bytes SID  + n #DTC     + n *(2 bytes DTC + 1 bytes status)*/
+        dtc_number = data_ptr[BYTE_NUM_1];
+
+        if( ( 0 == dtc_number ) && ( 0x02 == data_length ) )
             {
-            rsp_result_func_ptr = &client_appl_cmd_rsp_result_notify;
-            current_send_channel_id = 0;
-            }
-        else
-            {
-            rsp_result_func_ptr = &client_appl_rsp_initial_dtc_after_ble_connect;
-            current_send_channel_id++;
-            }
+            /*1 fill data*/
+            McMalfunctionResponse_list_add_data( &g_McMalfunctionResponse_list, server_code, 0x0000, read_dtc_infos.current_STADTC );
 
-        if( E_OK == result )
-            {
-            g_McMalfunctionResponse_list.count = 0;
-            /*postive resposne data foramt */
-            /*  1 bytes SID  + n #DTC     + n *(2 bytes DTC + 1 bytes status)*/
-            dtc_number = data_ptr[BYTE_NUM_1];
+            /*2 generate protobuf data*/
+            resp_data_len = Gen_McMalfunctionResponse( &g_McMalfunctionResponse_list, McMalfunctionResponse_protobuf, sizeof( McMalfunctionResponse_protobuf ) );
 
-            if( ( 0 == dtc_number ) && ( 0x02 == data_length ) )
-                {
-                /*1 fill data*/
-                McMalfunctionResponse_list_add_data( &g_McMalfunctionResponse_list, server_code, 0x0000, read_dtc_infos.current_STADTC );
 
-                /*2 generate protobuf data*/
-                resp_data_len = Gen_McMalfunctionResponse( &g_McMalfunctionResponse_list, McMalfunctionResponse_protobuf, sizeof( McMalfunctionResponse_protobuf ) );
-
-                /*3 send protobuf data*/
-                if( 0 == resp_data_len )
-                    {
-                    client_appl_response_can_related_data( BLE_RSP_CMD_MALFUNCTION, 0x00, NULL, rsp_result_func_ptr );
-                    }
-                else
-                    {
-                    client_appl_response_can_related_data( BLE_RSP_CMD_MALFUNCTION,resp_data_len,McMalfunctionResponse_protobuf, rsp_result_func_ptr );
-                    }
-                }
-            else if( data_length == 3* dtc_number + 2 )
-                {
-                /*1 fill data*/
-                for( index = 0; index < dtc_number; index++ )
-                    {
-                    start_addr = data_ptr + 2 + (dtc_number - 1 )* 3;
-                    if( read_dtc_infos.current_STADTC == start_addr[2] )
-                        {
-                        dtc_code = byte_merge_u16( start_addr );
-                         McMalfunctionResponse_list_add_data( &g_McMalfunctionResponse_list, server_code, dtc_code, McMalfunctionStatus_TRIANGLE );
-                        }
-                    }
-
-                /*2 generate protobuf data*/
-                resp_data_len = Gen_McMalfunctionResponse( &g_McMalfunctionResponse_list, McMalfunctionResponse_protobuf, sizeof( McMalfunctionResponse_protobuf ) );
-
-               /*3 send protobuf data*/
-                if( 0 == resp_data_len )
-                    {
-                    client_appl_response_can_related_data( BLE_RSP_CMD_MALFUNCTION, 0x00, NULL, rsp_result_func_ptr );
-                    }
-                else
-                    {
-                    client_appl_response_can_related_data( BLE_RSP_CMD_MALFUNCTION,resp_data_len,McMalfunctionResponse_protobuf, rsp_result_func_ptr );
-                    }
-                }
-           else
+            /*3 send protobuf data*/
+            if( 0 == resp_data_len )
                 {
                 client_appl_response_can_related_data( BLE_RSP_CMD_MALFUNCTION, 0x00, NULL, rsp_result_func_ptr );
-                return;
+                }
+            else
+                {
+                client_appl_response_can_related_data( BLE_RSP_CMD_MALFUNCTION, resp_data_len, McMalfunctionResponse_protobuf, rsp_result_func_ptr );
                 }
             }
-        /*current channel is valid,but no initial data*/
+        else if( data_length == 3* dtc_number + 2 )
+            {
+            /*1 fill data*/
+            for( index = 0; index < dtc_number; index++ )
+                {
+                start_addr = data_ptr + 3*index + 2 ;
+                if( 0xA1 == start_addr[2] )
+                    {
+                    dtc_code = byte_merge_u16( start_addr );
+                    McMalfunctionResponse_list_add_data( &g_McMalfunctionResponse_list, server_code, dtc_code, 0xA1 );
+                    }
+                }
+                    /*2 generate protobuf data*/
+            resp_data_len = Gen_McMalfunctionResponse( &g_McMalfunctionResponse_list, McMalfunctionResponse_protobuf, sizeof( McMalfunctionResponse_protobuf ) );
+
+            /*3 send protobuf data*/
+            if( 0 == resp_data_len )
+                {
+                client_appl_response_can_related_data( BLE_RSP_CMD_MALFUNCTION, 0x00, NULL, rsp_result_func_ptr );
+                }
+            else
+                {
+                client_appl_response_can_related_data( BLE_RSP_CMD_MALFUNCTION,resp_data_len,McMalfunctionResponse_protobuf, rsp_result_func_ptr );
+                }
+            }
         else
             {
-            client_appl_response_can_related_data( BLE_RSP_CMD_MALFUNCTION, 0x00, NULL, rsp_result_func_ptr );
-            return;
+            rsp_result_func_ptr(TRUE);
             }
         }
     else
@@ -2611,6 +2601,21 @@ for( ; current_send_channel_id < SUPPORT_SERVER_NUM; current_send_channel_id++ )
             /*There shall call a callback fucntion*/
             client_appl_rsp_initial_dtc_after_ble_connect( TRUE );
             }
+        }
+}
+else
+    {
+    /*choose callback function*/
+    if( current_send_channel_id == client_appl_get_last_detected_server_index() )
+        {
+        /*There shall not call a callback fucntion*/
+        current_send_channel_id = 0;
+        }
+    else
+        {
+        current_send_channel_id++;
+        /*There shall call a callback fucntion*/
+        client_appl_rsp_initial_dtc_after_ble_connect( TRUE );
         }
     }
 }
@@ -2653,8 +2658,7 @@ if( 0 == resp_data_length )
 /*LC will send init DTC data continuosly if have been storaged init DTC data*/
 else if( TRUE == read_dtc_infos.is_storge_init_dtc )
     {
-    //client_appl_response_can_related_data( BLE_RSP_CMD_SERVERLIST, resp_data_length, (uint8*)McServerListResponse_protobuf, &client_appl_rsp_initial_dtc_after_ble_connect );
-     client_appl_response_can_related_data( BLE_RSP_CMD_SERVERLIST, resp_data_length, (uint8*)McServerListResponse_protobuf, &client_appl_cmd_rsp_result_notify );
+    client_appl_response_can_related_data( BLE_RSP_CMD_SERVERLIST, resp_data_length, (uint8*)McServerListResponse_protobuf, &client_appl_rsp_initial_dtc_after_ble_connect );
     }
 else
     {
@@ -3352,13 +3356,6 @@ if( PROCESS_RESULT_INIT != detect_connected_server_infos.process_result )
        /*analysis the result*/
         if( 0x00 < extend_server_list_detect_amount )
             {
-                /*extend shall not send notify to MOTOCAN -----i think*/
-          //  if( TRUE == client_appl_get_ble_connected_state() )
-               // {
-              //  client_mem_send_can_data();
-              //  }
-            //client_mem_reset_data();
-
             /*Enter next process flow*/
             set_current_conncet_server_id( client_appl_get_first_connected_server_id() );
             client_appl_set_current_process_flow_step( PROCESS_FLOW_INIT_RDTCBS );
@@ -3773,6 +3770,8 @@ if( 2 >= resp_lenth )
     read_dtc_infos.process_result = PROCESS_RESULT_INVALID_DATA;
     }
 
+connect_server_id = get_current_connect_server_id();
+
 switch( read_dtc_infos.curr_dtc_status_frame )
     {
     case REQ_ORIGINAL_FRAME:
@@ -3789,7 +3788,7 @@ switch( read_dtc_infos.curr_dtc_status_frame )
             /*  1 bytes SID  + n #DTC     + n *(2 bytes DTC + 1 bytes status)*/
             dtc_number = resp_data[BYTE_NUM_1];
 
-            connect_server_id = get_current_connect_server_id();
+
             server_code = client_appl_ble_server_code_mapping[connect_server_id].ble_server_code ;
 
             if( ( 0 == dtc_number ) && ( 0x02 == resp_lenth ) )
@@ -3800,7 +3799,8 @@ switch( read_dtc_infos.curr_dtc_status_frame )
                 {
                 for( index = 0; index < dtc_number; index++ )
                     {
-                    start_addr = resp_data + 2 + (dtc_number -1 )* 3;
+                    /*start_addr = resp_data + 2 + ( index - 1 )* 3*/;
+                    start_addr = resp_data + 3*index + 2 ;
                     if( read_dtc_infos.current_STADTC == start_addr[2] )
                         {
                         dtc_code = byte_merge_u16( start_addr );
