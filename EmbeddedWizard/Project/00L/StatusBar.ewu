@@ -289,8 +289,10 @@ class Main : Core::Group
         // empty
       }
     }
-
-    SignalLevelIcon.Visible = IsMotoConConnected;
+    else
+    {
+      SignalLevelIcon.Visible = IsMotoConConnected;
+    }
   }
 
   $rect <20,20,160,60>

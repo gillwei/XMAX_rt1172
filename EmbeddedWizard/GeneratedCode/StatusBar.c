@@ -459,8 +459,8 @@ void StatusBarMain_UpdatePhoneCellSignalLevelIcon( StatusBarMain _this )
         ViewsImage_OnSetVisible( &_this->SignalLevelIcon, 1 );
       }
   }
-
-  ViewsImage_OnSetVisible( &_this->SignalLevelIcon, _this->IsMotoConConnected );
+  else
+    ViewsImage_OnSetVisible( &_this->SignalLevelIcon, _this->IsMotoConConnected );
 }
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
