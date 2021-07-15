@@ -152,6 +152,11 @@ navilite_message NAVILITE_pack_frame_update_officelocationsetting
     uint8_t is_office_setting
     );
 
+navilite_message NAVILITE_pack_frame_update_appsetting
+    (
+    uint16_t app_setting_status_bits
+    );
+
 navilite_message NAVILITE_pack_frame_update_zoomlevel
     (
     uint8_t current_level,

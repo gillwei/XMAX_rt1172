@@ -1737,6 +1737,18 @@ if( data_len >= 4 && strncmp( (char*)data, MAGIC_CODE, 4 ) == 0 )
             }
         }
 
+    // NAVILITE_SERVICETYPE_APPSETTING_UPDATE
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_APPSETTING_UPDATE )
+        {
+        uint16_t status = navilite_packet.data_value;
+
+        if( navilite_content_update_callbacks.callback_func_appsetting )
+            {
+            // Callback API for app setting status notification update
+            navilite_content_update_callbacks.callback_func_appsetting( status );
+            }
+        }
+
     // Non image frame update operations
     if( navilite_packet.payload_size > 0 && navilite_packet.service_type != NAVILITE_SERVICETYPE_IMAGEFRAME_UPDATE )
         {
@@ -2504,6 +2516,18 @@ if( data_len >= 4 && strncmp( (char*)data , MAGIC_CODE, 4 ) == 0 )
             navilite_content_update_callbacks.callback_func_navigationstatus( status );
             // Update the session status for navigation status, used for blocking type API
             navilite_session_status.navigation_status = status;
+            }
+        }
+
+    // NAVILITE_SERVICETYPE_APPSETTING_UPDATE
+    if( navilite_packet.payload_size > 0 && navilite_packet.service_type == NAVILITE_SERVICETYPE_APPSETTING_UPDATE )
+        {
+        uint16_t status = navilite_packet.data_value;
+
+        if( navilite_content_update_callbacks.callback_func_appsetting )
+            {
+            // Callback API for app setting status notification update
+            navilite_content_update_callbacks.callback_func_appsetting( status );
             }
         }
 

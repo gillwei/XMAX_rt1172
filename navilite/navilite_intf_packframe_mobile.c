@@ -561,7 +561,7 @@
     * @param str event data pointer
     * @param str_size size of string
     * @param navi_event_type type of navi event
-    * @param event_extra_subtype subtype of the camera
+    * @param event_extra_subtype extra subtype of the navi event
     * @param visibility visibility of the event
     * @return navilite_message return navilite_message copy to caller
     *
@@ -571,7 +571,7 @@
         uint8_t* str,
         uint8_t str_size,
         navilite_navievent_type navi_event_type,
-        navilite_navievent_camera_extra_subtype event_extra_subtype,
+        navilite_navievent_extra_subtype event_extra_subtype,
         uint8_t visibility
         )
     {
@@ -658,6 +658,33 @@
     frame.payload_size = sizeof( uint16_t );
     frame.payload_data_type = NAVILITE_PAYLOAD_DATA_TYPE_AS_VALUE;
     frame.data_value = is_office_loc_set;
+    return frame;
+    }
+
+    /*********************************************************************
+    *
+    * @public
+    * NAVILITE_pack_frame_update_appsetting
+    *
+    * app setting
+    *
+    * @param app_setting_status_bits app setting status bits to set
+    * @return navilite_message return navilite_message copy to caller
+    *
+    *********************************************************************/
+    navilite_message NAVILITE_pack_frame_update_appsetting
+        (
+        uint16_t app_setting_status_bits
+        )
+    {
+    navilite_message frame = { 0 };
+    memcpy( (char*)frame.magic_code, (unsigned char*)MAGIC_CODE, MAGIC_CODE_SIZE );
+    frame.version = PROTOCOL_VERSION;
+    frame.frame_type = NAVILITE_FRAMETYPE_MCU_UPDATE;
+    frame.service_type = NAVILITE_SERVICETYPE_APPSETTING_UPDATE;
+    frame.payload_size = sizeof( uint16_t );
+    frame.payload_data_type = NAVILITE_PAYLOAD_DATA_TYPE_AS_VALUE;
+    frame.data_value = app_setting_status_bits;
     return frame;
     }
 

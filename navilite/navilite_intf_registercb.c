@@ -602,4 +602,27 @@ extern navilite_content_update_callbacks_type navilite_content_update_callbacks;
     PRINTF( "%s callback register done\r\n", __FUNCTION__ );
     return ret;
     }
+
+    /*********************************************************************
+    *
+    * @public
+    * NAVILITE_register_update_callback_appsetting
+    *
+    * register app status setting notify callback
+    *
+    * @param callback_func callback function for app setting bit status
+    * @return The result of the callback registering
+    *
+    *********************************************************************/
+    bool NAVILITE_register_update_callback_appsetting
+        (
+        navilite_callback_func_appsetting callback_func
+        )
+    {
+    bool ret = true;
+    navilite_content_update_callbacks.callback_func_appsetting = callback_func;
+    NAVILITE_PRINTF( "%s callback register done\r\n", __FUNCTION__ );
+    return ret;
+    }
+
 #endif

@@ -198,6 +198,7 @@ typedef void ( *navilite_callback_func_viapointcount )( uint8_t via_point_count 
 typedef void ( *navilite_callback_func_navigationstatus )( uint8_t navigation_status ); // navigation status
 typedef void ( *navilite_callback_func_dialogevent )( uint8_t dialog_id, navilite_dialog_type dialog_type, uint8_t* message, uint8_t message_size, uint8_t timeout, uint8_t default_choice ); // dialog event
 typedef void ( *navilite_callback_func_runloopevent )( void ); // runloop event for running any jobs
+typedef void ( *navilite_callback_func_appsetting )( uint16_t app_setting_status ); // app status (16 bits)
 
 /* Helper Utitilty (indirect callback API) */
 typedef void ( *navilite_callback_func_tbtmodestatus )( uint8_t is_tbt ); // when TBT/image is updated, this callback will fire
@@ -230,6 +231,7 @@ typedef struct tagNAVILITE_CONTENT_UPDATE_CALLBACKS
     navilite_callback_func_navigationstatus callback_func_navigationstatus;
     navilite_callback_func_dialogevent callback_func_dialogevent;
     navilite_callback_func_runloopevent callback_func_runloopevent;
+    navilite_callback_func_appsetting callback_func_appsetting;
     } navilite_content_update_callbacks_type;
 
 typedef struct tagNAVILITE_ACK_STATE_CALLBACKS
@@ -309,6 +311,7 @@ bool NAVILITE_register_update_callback_bt_timeout( navilite_callback_func_bt_tim
 bool NAVILITE_register_update_callback_dialogevent( navilite_callback_func_dialogevent callback_func );
 bool NAVILITE_register_update_callback_runloopevent( navilite_callback_func_runloopevent callback_func );
 bool NAVILITE_register_update_callback_content_mode_switch( navilite_callback_func_content_mode_switch callback_func );
+bool NAVILITE_register_update_callback_appsetting( navilite_callback_func_appsetting callback_func );
 
 /* NaviLight Connection Event API */
 bool NAVILITE_register_update_callback_preconnected();

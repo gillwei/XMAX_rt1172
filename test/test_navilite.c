@@ -64,6 +64,7 @@
 #define TEST_NAVILITE_SERVICETYPE_NAVIEVENTTEXTUPDATE 0
 #define TEST_NAVILITE_SERVICETYPE_HOMESETTING_UPDATE 0
 #define TEST_NAVILITE_SERVICETYPE_OFFICESETTING_UPDATE 0
+#define TEST_NAVILITE_SERVICETYPE_APPSETTING_UPDATE 0
 #define TEST_NAVILITE_SERVICETYPE_MAP_ZOOM_LEVEL_UPDATE 0
 #define TEST_NAVILITE_SERVICETYPE_ROUTE_CALC_PROGRESS_UPDATE 0
 #define TEST_NAVILITE_SERVICETYPE_DAYNIGHT_MODE_UPDATE 0
@@ -430,6 +431,11 @@
 
     #if( TEST_NAVILITE_SERVICETYPE_OFFICESETTING_UPDATE )
         frame = NAVILITE_pack_frame_update_officelocationsetting( 1 );
+        NAVILITE_send_as_mobile( (uint8_t*)&frame, sizeof( frame ) );
+    #endif
+
+    #if( TEST_NAVILITE_SERVICETYPE_APPSETTING_UPDATE )
+        frame = NAVILITE_pack_frame_update_appsetting( 1 );
         NAVILITE_send_as_mobile( (uint8_t*)&frame, sizeof( frame ) );
     #endif
 
