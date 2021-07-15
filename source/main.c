@@ -33,8 +33,7 @@
 #include "NAVILITE_pub.h"
 #include "JPEG_pub.h"
 #include "TEST_pub.h"
-#include "HCI_pub.h"
-#include "BTM_pub.h"
+#include "BT_pub.h"
 #include "BC_pub.h"
 #include "MM_pub.h"
 #include "QR_pub.h"
@@ -135,9 +134,8 @@ PERIPHERAL_init();
 PM_init();
 EEPM_init();
 WDG_init();
-HCI_init();
+BT_init();
 FACTORY_init();
-BTM_init();
 BC_init();
 VI_init();
 JPEG_init();

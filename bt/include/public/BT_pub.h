@@ -96,6 +96,8 @@ BT_status_e BT_is_paired_device_max_num_reached
     bool* max_num_reached
     );
 
+void BT_set_auto_pairing_once( void );
+
 BT_status_e BT_set_discoverable_state
     (
     const bool enable

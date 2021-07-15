@@ -62,6 +62,7 @@ typedef struct BT_core
     bool initialized;
     bool discoverable_state;
     bool test_mode;
+    bool auto_pairing_once;
     BT_power_setting_t power_setting;
     BT_pairing_request_t pairing_request;
     } BT_core_t;
@@ -530,6 +531,7 @@ static void BT_core_reset( void )
 {
 s_core.discoverable_state = true;
 s_core.test_mode = false;
+s_core.auto_pairing_once = false;
 
 if( BT_PAIRING_NONE != BT_core_get_pairing_status() )
     {
@@ -569,6 +571,17 @@ bool BT_core_send_standard_hci_command
     )
 {
 return HCI_send_standard_command( op_code, payload, payload_len );
+}
+
+/*================================================================================================
+@brief   Set Bluetooth Manager to automatically accept pairing request once
+@details Set Bluetooth Manager to automatically accept pairing request once
+@return  None
+@retval  None
+================================================================================================*/
+void BT_core_set_auto_pairing_once( void )
+{
+s_core.auto_pairing_once = true;
 }
 
 /*================================================================================================
@@ -1021,9 +1034,23 @@ void BT_core_handle_device_event_user_confirmation
     const uint32_t passkey
     )
 {
+BT_request_t request = {
+    .type = BT_REQUEST_ACCEPT_PAIRING,
+    .param_u.accept_pairing.accept = true
+    };
+
 BT_core_set_pairing_status( BT_PAIRING_USER_CONFIRMING, bd_addr );
 
-// TODO: Notify HMI the pairing request
+if( s_core.auto_pairing_once )
+    {
+    BT_LOG_DEBUG( "Auto-pairing-once enabled, accept the pairing request" );
+    s_core.auto_pairing_once = false;
+    BT_tsk_send_request( &request );
+    }
+else
+    {
+    // TODO: Notify HMI the pairing request
+    }
 }
 
 /*================================================================================================

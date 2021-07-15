@@ -20,8 +20,8 @@ extern "C"{
 //#include "JPEGPARSER_pub.h"
 #include "PERIPHERAL_pub.h"
 #include "peripheral_priv.h"
-#include <HCI_pub.h>
 #include "GRM_pub_prj.h"
+#include "hci_tsk.h"
 
 /*--------------------------------------------------------------------
                         Definitions
@@ -87,6 +87,7 @@ static TaskHandle_t             uartTaskHandle;
 
 AT_NONCACHEABLE_SECTION(uint8_t rx_Buffer[UART_RX_BUFFER_NOM_SIZE]);
 AT_NONCACHEABLE_SECTION(uint8_t tx_Buffer[UART_TX_BUFFER_NOM_SIZE]);
+AT_NONCACHEABLE_SECTION(uint8_t rx_temp[UART_TX_BUFFER_NOM_SIZE]);
 AT_NONCACHEABLE_SECTION(uint8_t tx_temp[UART_TX_BUFFER_NOM_SIZE]);
 
 /*--------------------------------------------------------------------
@@ -422,21 +423,19 @@ while( true )
         if( tmpTail > uart_data.rxHead )
             {
             rxDataSize = tmpTail - uart_data.rxHead;
-
-            HCI_notify_received( &uart_data.rx_buffer_ptr[uart_data.rxHead], rxDataSize );
-            uart_data.rxHead = tmpTail;
+            HCI_tsk_send_event( &uart_data.rx_buffer_ptr[uart_data.rxHead], rxDataSize );
             }
         else
             {
             rxDataSize = UART_RX_BUFFER_NOM_SIZE - uart_data.rxHead;
+            memcpy( rx_temp, &(uart_data.rx_buffer_ptr[uart_data.rxHead]), rxDataSize );
 
-            /* Notify HCI task for receive event */
-            HCI_notify_received( &uart_data.rx_buffer_ptr[uart_data.rxHead], rxDataSize );
-            HCI_notify_received( uart_data.rx_buffer_ptr, tmpTail );
-
+            memcpy( &(rx_temp[rxDataSize]), uart_data.rx_buffer_ptr, tmpTail );
             rxDataSize += tmpTail;
-            uart_data.rxHead = tmpTail;
+
+            HCI_tsk_send_event( rx_temp, rxDataSize );
             }
+        uart_data.rxHead = tmpTail;
         }
 
     /* process TX */
@@ -454,9 +453,11 @@ while( true )
             else
                 {
                 txDataSize = UART_TX_BUFFER_NOM_SIZE - uart_data.txHead;
-                memcpy( tx_temp,  &(uart_data.tx_buffer_ptr[uart_data.txHead]), txDataSize );
+                memcpy( tx_temp, &(uart_data.tx_buffer_ptr[uart_data.txHead]), txDataSize );
+
                 memcpy( &(tx_temp[txDataSize]), uart_data.tx_buffer_ptr, tmpTail );
                 txDataSize += tmpTail;
+
                 uart_send( &(uart_edma_data.edma_Handle), tx_temp, txDataSize );
                 }
             uart_data.txHead = tmpTail;

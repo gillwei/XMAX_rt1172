@@ -28,6 +28,7 @@ extern "C"{
 #include "EEPM_pub.h"
 #include "RTC_pub.h"
 #include "WDG_pub.h"
+#include "BT_pub.h"
 
 #include "can_cfg.h"
 #include "can_drv.h"
@@ -40,10 +41,6 @@ extern "C"{
 #include "IOP_pub_vim_inst_prj.h"
 
 #include "factory_test.h"
-#include "HCI_pub.h"
-#include "BTM_pub.h"
-#include "hci_control_api.h"
-#include "BT_UPDATE_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -161,14 +158,9 @@ static uint32_t                     burnInElapseTime       = 0;
 static IOP_set_BurnIn_state_type    burnInState            = IOP_BURNIN_STATE_NONE;
 static boolean                      burnInPassFlag         = FALSE;
 
-static const uint8_t default_bd_addr[BT_DEVICE_ADDRESS_LEN] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
-
 //CAN ID test
 static boolean CAN_ID_test_flag = FALSE;
 static uint32_t CAN_test_ID[]   = { 0x4C0, 0x100, 0x200, 0x400, 0x110, 0x220, 0x440, 0x480, 0x111, 0x222, 0x444, 0x488, 0x4C7 };
-
-//For BTC auto confirm
-static bool  accept_next_pairing = false;
 
 //QRCODE
 static uint8_t qrcode_write_status = 0;
@@ -780,78 +772,65 @@ switch( inst_id )
                 {
 
                 IOPDone = true;
-                break;
                 }
+                break;
 
             case IOP_BT_GET_BDADDR:
                 {
-                uint8_t dummy_bd_address[BT_DEVICE_ADDRESS_LEN] = {0};
-                if( true == BT_UPDATE_get_BT_update_status() )
-                    {
-                    IOPInstId = IOP_BT_ADDR_DATA;
-                    packageIopToCanData( &dummy_bd_address, sizeof( dummy_bd_address ) );
-                    }
-                else
-                    {
-                    BTM_IOP_read_local_device_address();
-                    }
+                const uint8_t* local_bd_addr = BT_get_local_device_address();
+                uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN] = { 0 };
+                memcpy( bd_addr, local_bd_addr, BT_DEVICE_ADDRESS_LEN );
+
+                IOPInstId = IOP_BT_ADDR_DATA;
+                packageIopToCanData( &bd_addr, BT_DEVICE_ADDRESS_LEN );
                 IOPDone = true;
                 }
                 break;
 
             case IOP_BT_POWER_ON:
                 {
-                if( false == BT_UPDATE_get_BT_update_status() )
-                    {
-                    HCI_BT_on();
-                    }
+                BT_set_enable_state( true );
                 IOPDone = true;
                 }
                 break;
 
             case IOP_BT_POWER_OFF:
                 {
-                if( false == BT_UPDATE_get_BT_update_status() )
-                    {
-                    HCI_BT_off();
-                    }
+                BT_set_enable_state( false );
                 IOPDone = true;
                 }
                 break;
 
             case IOP_BT_SET_TEST_MODE:
                 {
-                if( false == BT_UPDATE_get_BT_update_status() )
-                    {
-                    HCI_set_test_mode();
-                    }
+                BT_set_test_mode( true );
                 IOPDone = true;
                 }
                 break;
 
             case IOP_BT_GET_TEST_MODE:
                 {
-                uint8_t resp_data[8] = { 0x8C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00  };
-                bool bt_test_mode = false;
-                if( false == BT_UPDATE_get_BT_update_status() )
-                    {
-                    bt_test_mode = HCI_get_test_mode_state();
-                    IOPInstId = IOP_EVNT_DATA;
-                    resp_data[2] =  bt_test_mode;
-                    packageIopToCanData( &resp_data, sizeof( resp_data ) );
-                    }
+                uint8_t data[8] = { 0x8C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00  };
+                data[2] = BT_get_test_mode();
+
+                IOPInstId = IOP_EVNT_DATA;
+                packageIopToCanData( &data, sizeof( data ) );
+                IOPDone = true;
                 }
                 break;
 
             case IOP_BT_CLEAR_PAIRINGS:
                 {
-                uint8_t paired_dev_num;
-                if( false == BT_UPDATE_get_BT_update_status() )
+                uint8_t num_paired_devices = 0;
+                BT_device_info_t device_info = { 0 };
+                if( BT_STATUS_OK == BT_get_num_paired_devices( &num_paired_devices ) )
                     {
-                    paired_dev_num = BTM_get_paired_device_num();
-                    for( uint8_t i = 0; i < paired_dev_num; i++ )
+                    for( uint8_t i = 0; i < num_paired_devices; ++i )
                         {
-                        BTM_unpair_paired_device( i );
+                        if( BT_STATUS_OK == BT_get_paired_device_info( 0, &device_info ) )
+                            {
+                            BT_delete_paired_device( device_info.bd_addr );
+                            }
                         }
                     }
                 IOPDone = true;
@@ -953,45 +932,23 @@ switch( inst_id )
 
     case IOP_BT_SET_BDADDR:
         {
-        uint8_t temp_bd_addr[BT_DEVICE_ADDRESS_LEN] = { 0 };
-        if( false == BT_UPDATE_get_BT_update_status() )
-            {
-            BTM_get_local_device_address( temp_bd_addr );
-            // Check the BD address have not been set, or set bd address are default address
-            if( ( BT_DEVICE_ADDRESS_LEN == size ) && ( 0 == memcmp( default_bd_addr, temp_bd_addr, BT_DEVICE_ADDRESS_LEN ) ) )
-                {
-                BTM_IOP_set_local_device_address( data );
-                }
-            else if ( ( BT_DEVICE_ADDRESS_LEN == size ) && ( 0 == memcmp( default_bd_addr, data, BT_DEVICE_ADDRESS_LEN ) ) )
-                {
-                BTM_IOP_set_local_device_address( data );
-                }
-            }
+        uint8_t* bd_addr = data;
+        BT_set_local_device_address( bd_addr );
         IOPDone = true;
         }
         break;
 
     case IOP_BT_TX_CARRIER_FREQ:
         {
-        if( false == BT_UPDATE_get_BT_update_status() )
-            {
-            HCI_tx_carrier_cmd( data[0] );
-            }
+        BT_tx_channel_type_e channel_type = data[0];
+        BT_set_tx_carrier_mode( true, channel_type );
         IOPDone = true;
         }
         break;
 
     case IOP_MFI_START_COPROCESSOR_TEST:
         {
-        if( false == BT_UPDATE_get_BT_update_status() )
-            {
-            HCI_wiced_send_command( HCI_CONTROL_IAP2_COMMAND_GET_AUTH_CHIP_INFO, NULL, 0 );
-            HCI_wait_for_resp_start( RESPONSE_MFI_CHIP_VER );
-            }
-        else
-            {
-            receive_auth_chip_ver( AUTH_CHIP_RESULT_FAIL );
-            }
+        BT_spp_read_mfi_auth_chip_info();
         IOPDone = true;
         }
         break;
@@ -1231,20 +1188,14 @@ switch( IOPSubId )
 
     case IOP_BT_ACCEPT_NEXT_PAIR_REQUEST:
         {
-        if( false == BT_UPDATE_get_BT_update_status() )
-            {
-            accept_next_pairing = true;
-            }
+        BT_set_auto_pairing_once();
         IOPDone = true;
         }
         break;
 
     case IOP_BT_SET_TO_ACTIVE:
         {
-        if( false == BT_UPDATE_get_BT_update_status() )
-            {
-            BTM_set_discoverable_state( true );
-            }
+        BT_set_discoverable_state( true );
         IOPDone = true;
         }
         break;
@@ -2063,80 +2014,21 @@ CanToIopParser( &p_rmd->data[0] );
 /*********************************************************************
 *
 * @public
-* receive_auth_chip_ver
+* FACTORY_handle_mfi_auth_chip_diag_result
 *
-* @brief receive authenticate chip information result and send IOP
+* @brief Handle the MFi authentication chip diagnostic result
 *
 *********************************************************************/
-void receive_auth_chip_ver
+void FACTORY_handle_mfi_auth_chip_diag_result
     (
-    uint8_t result
+    const bool result
     )
 {
+uint8_t success = result;
+
 IOPInstId = IOP_MFI_INST_RESPONSE;
-packageIopToCanData( &result, sizeof( uint8_t ) );
+packageIopToCanData( &success, sizeof( uint8_t ) );
 }
-
-
-/*********************************************************************
-*
-* @public
-* sent_iop_bd_address
-*
-* @brief receive bd address result from BT chip and send IOP
-*
-*********************************************************************/
-void sent_iop_bd_address
-    (
-    void
-    )
-{
-uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN] = {0};
-uint8_t bd_addr_rev[BT_DEVICE_ADDRESS_LEN] = {0};
-
-BTM_get_local_device_address( &(bd_addr[0]) );
-for( uint8_t i = 0; i < BT_DEVICE_ADDRESS_LEN; i++ )
-    {
-    bd_addr_rev[i] = bd_addr[BT_DEVICE_ADDRESS_LEN - 1 - i];
-    }
-
-IOPInstId = IOP_BT_ADDR_DATA;
-packageIopToCanData( &bd_addr_rev, sizeof( bd_addr_rev ) );
-}
-
-/*********************************************************************
-*
-* @public
-* return auto confirm status
-*
-* @brief if true, next user confirm request will be accepted
-*
-*********************************************************************/
-bool return_accept_next_pairing
-    (
-    void
-    )
-{
-return accept_next_pairing;
-}
-
-/*********************************************************************
-*
-* @public
-* set auto confirm status
-*
-* @brief If already accept pairing confirm on BT manager, set accept_next_pairing
-* false
-*
-*********************************************************************/
-void set_accept_next_pairing_false
-    (
-    void
-    )
-{
-accept_next_pairing = false;
-}
-
 
 #ifdef __cplusplus
 }

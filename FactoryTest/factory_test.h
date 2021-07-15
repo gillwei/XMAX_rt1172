@@ -17,6 +17,7 @@ extern "C"{
 /*--------------------------------------------------------------------
                            GENERAL INCLUDES
 --------------------------------------------------------------------*/
+#include <stdbool.h>
 #include "can_defs.h"
 
 /*--------------------------------------------------------------------
@@ -142,24 +143,9 @@ void FACTORY_init
     void
     );
 
-void receive_auth_chip_ver
+void FACTORY_handle_mfi_auth_chip_diag_result
     (
-    uint8_t result
-    );
-
-void sent_iop_bd_address
-    (
-    void
-    );
-
-bool return_accept_next_pairing
-    (
-    void
-    );
-
-void set_accept_next_pairing_false
-    (
-    void
+    const bool result
     );
 
 #ifdef __cplusplus

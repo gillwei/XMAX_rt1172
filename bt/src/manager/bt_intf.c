@@ -411,6 +411,19 @@ return BT_STATUS_OK;
 }
 
 /*================================================================================================
+@brief   Set Bluetooth Manager to automatically accept pairing request once
+@details Directly set Bluetooth Manager to automatically accept pairing request once
+@return  None
+@retval  None
+================================================================================================*/
+void BT_set_auto_pairing_once( void )
+{
+FUNC_ENTRY_PRINT();
+
+BT_core_set_auto_pairing_once();
+}
+
+/*================================================================================================
 @brief   Enable or Disable the discoverable mode
 @details Send the request of enabling or disabling the discoverable mode to Bluetooth Manager
 @return  None

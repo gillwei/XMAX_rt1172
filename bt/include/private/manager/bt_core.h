@@ -124,6 +124,8 @@ bool BT_core_send_standard_hci_command
     const uint8_t payload_len
     );
 
+void BT_core_set_auto_pairing_once( void );
+
 bool BT_core_set_discoverable_state
     (
     const bool enable

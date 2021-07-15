@@ -17,6 +17,8 @@ extern "C"{
 #include <task.h>
 #include <string.h>
 
+#include "factory_test.h"
+
 #include "bt_device.h"
 #include "bt_log.h"
 #include "bt_spp_core.h"
@@ -823,7 +825,8 @@ BT_mfi_auth_chip_info_t mfi_auth_chip_info =
 bool ret = ( 0 == memcmp( &s_default_mfi_auth_chip_info, &mfi_auth_chip_info, sizeof( BT_mfi_auth_chip_info_t ) ) );
 
 BT_LOG_INFO( "MFi auth chip info check result: %s", ( ret ? "OK" : "Failed" ) );
-// TODO: Report IOP success
+
+FACTORY_handle_mfi_auth_chip_diag_result( ret );
 }
 
 #ifdef __cplusplus
