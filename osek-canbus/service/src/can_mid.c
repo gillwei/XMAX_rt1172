@@ -57,8 +57,13 @@
 #define MID_MSG_UPDATE_TO_BC_1000MS                     200 // !< 200 * 5ms = 1000ms
 #define MID_MSG_UPDATE_TO_BC_100MS                      20  // !< 20 * 5ms = 100ms
 
-#define MID_MSG_UPDATE_TO_BC_PERIOD_1000MS              100 // 1000ms
-#define MID_MSG_UPDATE_TO_BC_PERIOD_100MS               10  // 100ms
+#define MID_MSG_UPDATE_TO_BC_PERIOD_1000MS              1000 // 1000ms
+#define MID_MSG_UPDATE_TO_BC_PERIOD_100MS               100  // 100ms
+
+#define SUPP_MESSAGE_ID_CNT                             20
+#define SUPP_1000MS_DATA_SIZE                           300
+#define SUPP_100MS_DATA_SIZE                            300
+#define SUPP_TIMEOUT_MAX                                1000    //5s timeout
 
 /*--------------------------------------------------------------------
                             TYPES
@@ -74,6 +79,13 @@ mid_msg_supp_func_t supp_func_list      = { 0 };
 boolean             supp_func_list_syc  = FALSE;
 boolean             comm_err            = FALSE;
 
+boolean             supp_send_result_flag = TRUE;
+
+/*------------------------------------------------------
+Supported function list instances
+------------------------------------------------------*/
+IdDataList can_supp_100ms_g_McCanResponse_dataList;
+IdDataList can_supp_1000ms_g_McCanResponse_dataList;
 
 /*------------------------------------------------------
 Message list pointer
@@ -93,7 +105,7 @@ mid_msg_t mid_msg_inst[] =
     { TX2_REQ_SUPPORT_CAN0_ID,     RX2_RES_SUPPORT_CAN0_ID,     MID_MSG_SID_SUPP_FUNC_LIST,      MID_RES_SID_SUPP_FUNC_LIST },
 };
 
-il_rx_frm_index_t supplement_messages[] =
+il_rx_frm_index_t supplement_messages[SUPP_MESSAGE_ID_CNT] =
 {
     IL_CAN0_RX0_ECU_INDCT_STAT_IDX,
     IL_CAN0_RXH_VH_EG_SPD_IDX,
@@ -117,6 +129,11 @@ il_rx_frm_index_t supplement_messages[] =
     IL_CAN0_RXZ1_TCU_STAT_ECU_IDX,
 };
 
+uint16 supplement_messages_period[SUPP_MESSAGE_ID_CNT] =
+{
+    100,100,1000,1000,100,1000,1000,100,100,100,
+    1000,100,100,100,100,100,1000,1000,1000,100,
+};
 
 /*------------------------------------------------------
 Fuel consumption
@@ -783,6 +800,18 @@ return ( &supp_func_list );
 }
 
 /*------------------------------------------------------
+Get supplement information sending status
+------------------------------------------------------*/
+void
+can_mid_get_supp_sending_sts
+    (
+    uint8 value
+    )
+{
+supp_send_result_flag = TRUE;
+}
+
+/*------------------------------------------------------
 Supplement CAN messages sending by Bluetooth
 ------------------------------------------------------*/
 void can_mid_supplement_task
@@ -803,12 +832,35 @@ dll_rx_frm_dispatch_t   const * l_p_frm_dispatch    = NULL;
 uint8                           l_num_filters       = 0;
 uint8                           l_can_data_len      = 0;
 
-static can_supp_msg_t           l_supp_data         = { 0 };
-static uint8                    l_supp_1000ms_data[240]	= { 0 };
-static uint8                    l_supp_100ms_data[240]	= { 0 };
-static uint8                    l_supp_1000ms_data_index=  0;
-static uint8                    l_supp_100ms_data_index =  0;
 static uint8                    timer = 0;
+static uint16                   timeout_cnt = 0;
+static can_supp_msg_t           l_supp_data         = { 0 };
+uint16                          resp_100ms_data_len = 0;
+uint16                          resp_1000ms_data_len = 0;
+
+static uint8                    l_supp_1000ms_data[SUPP_1000MS_DATA_SIZE] = { 0 };
+static uint8                    l_supp_100ms_data[SUPP_100MS_DATA_SIZE]  = { 0 };
+
+#if(DEBUG_RX_CAN_SUPPORT)
+static uint8                    i  = 0;
+#endif
+/*------------------------------------------------------
+Check the connection status of Bluetooth
+------------------------------------------------------*/
+if( FALSE == BC_motocon_is_connected() )
+    {
+    timer = 0;
+    #if(DEBUG_RX_CAN_SUPPORT)
+    i++;
+    if( i >= 200 )
+        {
+        PRINTF( "Bluetooth can not connected ---- \n\n\n");
+        i = 0;
+        }
+    #endif
+    return ;
+    }
+
 /*------------------------------------------------------
 Get pointers to the frame information
 ------------------------------------------------------*/
@@ -817,6 +869,11 @@ l_p_rxfrm_info = il_get_rxfrm_info_ptr( CAN_CONTROLLER_2 );
 /*------------------------------------------------------
 Check every supplement messages' timers
 ------------------------------------------------------*/
+can_supp_100ms_g_McCanResponse_dataList.count = 0;
+can_supp_1000ms_g_McCanResponse_dataList.count = 0;
+can_supp_100ms_g_McCanResponse_dataList.fields = McCanResponse_IdData_fields;
+can_supp_1000ms_g_McCanResponse_dataList.fields = McCanResponse_IdData_fields;
+
 for( l_supp_index = 0; l_supp_index < ( sizeof(supplement_messages) / sizeof(il_rx_frm_index_t) ); l_supp_index++ )
     {
     /*------------------------------------------------------
@@ -835,36 +892,23 @@ for( l_supp_index = 0; l_supp_index < ( sizeof(supplement_messages) / sizeof(il_
         {
         l_p_filt_dispatch = &( l_p_buf_dispatch->p_rx_filt_dispatch[l_frm_index] );
         l_p_frm_dispatch  = l_p_filt_dispatch->p_frame_dispatch;
-        l_supp_data.id	  = l_p_frm_dispatch->identifier;
+        l_supp_data.id  = l_p_frm_dispatch->identifier;
         l_can_data_len = l_p_rxfrm->dlc;
         /*------------------------------------------------------
         Send supplement messages to APP by Bluetooth
         Maybe a Sending FIFO and another BT sending task
         could be added here for BT's Asynchrony
         ------------------------------------------------------*/
-        //TBD
-
-        if( MID_MSG_UPDATE_TO_BC_PERIOD_1000MS == l_p_per_info->period ) /*1000ms*/
+       if( ( MID_MSG_UPDATE_TO_BC_PERIOD_1000MS == supplement_messages_period[l_supp_index] ) || ( MID_MSG_UPDATE_TO_BC_PERIOD_100MS == supplement_messages_period[l_supp_index] ) )/*1000ms*/
             {
-            memcpy( &(l_supp_1000ms_data[l_supp_1000ms_data_index]), &(l_supp_data.id), sizeof(l_supp_data.id) );
-            l_supp_1000ms_data_index+=sizeof(l_supp_data.id);
-            memcpy( &(l_supp_1000ms_data[l_supp_1000ms_data_index]), l_p_rxfrm->p_data, l_can_data_len );
-            l_supp_1000ms_data_index+=l_can_data_len;
+            IdDataList_add_IdData( &can_supp_1000ms_g_McCanResponse_dataList, ( uint32 )l_supp_data.id, ( uint8 * )( l_p_rxfrm->p_data ), ( uint32 )( l_can_data_len ) );
             }
-        else if( MID_MSG_UPDATE_TO_BC_PERIOD_100MS == l_p_per_info->period ) /*100ms*/
+       if( MID_MSG_UPDATE_TO_BC_PERIOD_100MS == supplement_messages_period[l_supp_index] ) /*100ms*/
             {
-            memcpy( &(l_supp_100ms_data[l_supp_1000ms_data_index]), &(l_supp_data.id), sizeof(l_supp_data.id) );
-            l_supp_100ms_data_index+=sizeof(l_supp_data.id);
-            memcpy( &(l_supp_100ms_data[l_supp_100ms_data_index]), l_p_rxfrm->p_data, l_can_data_len );
-            l_supp_100ms_data_index+=l_can_data_len;
+            IdDataList_add_IdData( &can_supp_100ms_g_McCanResponse_dataList, ( uint32 )l_supp_data.id, ( uint8 * )( l_p_rxfrm->p_data ), ( uint32 )( l_can_data_len ) );
             }
-        else
-            {
-            //do nothing
-            }
-       }
+        }
     }
-
 /*------------------------------------------------------
 Send supplement messages to APP by 100ms and 1000ms
 ------------------------------------------------------*/
@@ -872,23 +916,49 @@ if( ( timer%MID_MSG_UPDATE_TO_BC_100MS ) == 0 )
 {
     if( ( timer%MID_MSG_UPDATE_TO_BC_1000MS ) == 0)
         {
-        memcpy( &(l_supp_100ms_data[l_supp_100ms_data_index]), &(l_supp_1000ms_data[0]), l_supp_1000ms_data_index );
-        l_supp_100ms_data_index+=l_supp_1000ms_data_index;
         timer = 0;
+        if( supp_send_result_flag )
+            {
+            resp_1000ms_data_len = Gen_McCanResponse( &can_supp_1000ms_g_McCanResponse_dataList, l_supp_1000ms_data,sizeof( l_supp_1000ms_data ) );
+            supp_send_result_flag = FALSE;
+            BC_motocon_send_can_response( resp_1000ms_data_len, l_supp_1000ms_data, can_mid_get_supp_sending_sts );
+            timeout_cnt = 0;
+            }
+
+        #if(DEBUG_RX_CAN_SUPPORT)
+        PRINTF( "Supplement CAN LEN:%d \r\n", resp_1000ms_data_len );
+        #endif
         }
-    BC_motocon_send_can_response( l_supp_100ms_data_index, l_supp_100ms_data, NULL );
-    #if(DEBUG_RX_CAN_SUPPORT)
-    PRINTF( "Supplement CAN LEN:%d \r\n", l_supp_100ms_data_index );
-    #endif
+    else
+        {
+        if( supp_send_result_flag )
+            {
+            resp_100ms_data_len = Gen_McCanResponse( &can_supp_100ms_g_McCanResponse_dataList, l_supp_100ms_data,sizeof( l_supp_100ms_data ) );
+            supp_send_result_flag = FALSE;
+            BC_motocon_send_can_response( resp_100ms_data_len, l_supp_100ms_data, can_mid_get_supp_sending_sts );
+            timeout_cnt = 0;
+            }
+
+        #if(DEBUG_RX_CAN_SUPPORT)
+        PRINTF( "Supplement CAN LEN:%d \r\n", resp_100ms_data_len );
+        #endif
+        }
 }
 
+if( supp_send_result_flag == FALSE )
+    {
+    if( timeout_cnt > SUPP_TIMEOUT_MAX )
+        {
+        supp_send_result_flag = TRUE;
+        timeout_cnt = 0;
+        }
+    }
 if( timer > MID_MSG_UPDATE_TO_BC_1000MS )
     {
     timer = 0;
     }
-l_supp_100ms_data_index = 0;
-l_supp_1000ms_data_index = 0;
 timer++;
+timeout_cnt++;
 }
 /*------------------------------------------------------
 Fuel consumption set call back

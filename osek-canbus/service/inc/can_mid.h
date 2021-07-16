@@ -11,7 +11,11 @@
 #ifndef _CAN_MID_H
 #define _CAN_MID_H
 
+#include "BleServiceStructure.pb.h"
+#include "pb_decode.h"
+#include "pb_encode.h"
 #include "can_defs.h"
+#include "client_dcm_appl.h"
 
 /*--------------------------------------------------------------------
                             MACROS

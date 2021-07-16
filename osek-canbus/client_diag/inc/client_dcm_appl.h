@@ -351,6 +351,14 @@ extern void client_appl_response_can_related_data
    const uint8_t*                  data,
    void ( *result_callback )( const uint8 )
    );
+
+extern size_t Gen_McCanResponse
+    (
+    IdDataList* pList,
+    uint8_t* out_buf,
+    size_t out_buf_size
+    );
+
 #endif
 
 
