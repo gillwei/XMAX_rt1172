@@ -2938,6 +2938,7 @@ void MenuItemBaseValue_OnSetEnabled( MenuItemBaseValue _this, XBool value )
 {
   if ( _this->Super3.Enabled != value )
   {
+    _this->Super3.Enabled = value;
     MenuItemBase_OnSetEnabled((MenuItemBase)_this, value );
 
     if ( value )

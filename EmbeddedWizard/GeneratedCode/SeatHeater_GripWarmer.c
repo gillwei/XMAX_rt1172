@@ -59,16 +59,16 @@ EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 };
 
 /* Constant values used in this 'C' module only. */
-static const XStringRes _Const0000 = { _StringsDefault0, 0x0002 };
-static const XRect _Const0001 = {{ 0, 0 }, { 480, 272 }};
-static const XRect _Const0002 = {{ 193, 39 }, { 395, 268 }};
-static const XRect _Const0003 = {{ 230, 219 }, { 355, 238 }};
-static const XRect _Const0004 = {{ 0, 0 }, { 0, 0 }};
-static const XRect _Const0005 = {{ 0, 96 }, { 480, 206 }};
-static const XRect _Const0006 = {{ 138, 130 }, { 469, 173 }};
-static const XRect _Const0007 = {{ 0, 39 }, { 94, 114 }};
-static const XRect _Const0008 = {{ 0, 189 }, { 94, 264 }};
-static const XRect _Const0009 = {{ 13, 112 }, { 91, 190 }};
+static const XRect _Const0000 = {{ 0, 0 }, { 480, 272 }};
+static const XRect _Const0001 = {{ 193, 39 }, { 395, 268 }};
+static const XRect _Const0002 = {{ 230, 219 }, { 355, 238 }};
+static const XRect _Const0003 = {{ 0, 0 }, { 0, 0 }};
+static const XRect _Const0004 = {{ 0, 96 }, { 480, 206 }};
+static const XRect _Const0005 = {{ 138, 130 }, { 469, 173 }};
+static const XRect _Const0006 = {{ 0, 39 }, { 94, 114 }};
+static const XRect _Const0007 = {{ 0, 189 }, { 94, 264 }};
+static const XRect _Const0008 = {{ 13, 112 }, { 91, 190 }};
+static const XStringRes _Const0009 = { _StringsDefault0, 0x0002 };
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.
@@ -156,23 +156,26 @@ void SeatHeater_GripWarmerSHT02_GPW02_Main_Init( SeatHeater_GripWarmerSHT02_GPW0
 
   _this->ScaleIndicator = EwNewObject( SeatHeater_GripWarmerScaleIndicator, 0 );
 
-  if ( EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentVehicleFunction 
-      == EnumVehicleSupportedFunctionSEAT_HEATER )
+  switch ( EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentVehicleFunction )
   {
-    SeatHeater_GripWarmerSHT02_GPW02_Main_UpdateLevel( _this, EnumVehicleRxTypeSEAT_HEATER_VALUE_LOW );
-    SeatHeater_GripWarmerSHT02_GPW02_Main_UpdateLevel( _this, EnumVehicleRxTypeSEAT_HEATER_VALUE_MIDDLE );
-    SeatHeater_GripWarmerSHT02_GPW02_Main_UpdateLevel( _this, EnumVehicleRxTypeSEAT_HEATER_VALUE_HIGH );
-  }
-  else
-    if ( EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentVehicleFunction 
-        == EnumVehicleSupportedFunctionGRIP_WARMER )
+    case EnumVehicleSupportedFunctionSEAT_HEATER :
+    {
+      SeatHeater_GripWarmerSHT02_GPW02_Main_UpdateLevel( _this, EnumVehicleRxTypeSEAT_HEATER_VALUE_LOW );
+      SeatHeater_GripWarmerSHT02_GPW02_Main_UpdateLevel( _this, EnumVehicleRxTypeSEAT_HEATER_VALUE_MIDDLE );
+      SeatHeater_GripWarmerSHT02_GPW02_Main_UpdateLevel( _this, EnumVehicleRxTypeSEAT_HEATER_VALUE_HIGH );
+    }
+    break;
+
+    case EnumVehicleSupportedFunctionGRIP_WARMER :
     {
       SeatHeater_GripWarmerSHT02_GPW02_Main_UpdateLevel( _this, EnumVehicleRxTypeGRIP_WARMER_VALUE_LOW );
       SeatHeater_GripWarmerSHT02_GPW02_Main_UpdateLevel( _this, EnumVehicleRxTypeGRIP_WARMER_VALUE_MIDDLE );
       SeatHeater_GripWarmerSHT02_GPW02_Main_UpdateLevel( _this, EnumVehicleRxTypeGRIP_WARMER_VALUE_HIGH );
     }
-    else
-      EwTrace( "%s", EwLoadString( &_Const0000 ));
+    break;
+
+    default :; 
+  }
 }
 
 /* 'C' function for method : 'SeatHeater_GripWarmer::SHT02_GPW02_Main.LoadItemClass()' */
@@ -251,6 +254,18 @@ void SeatHeater_GripWarmerSHT02_GPW02_Main_OnItemActivate( SeatHeater_GripWarmer
   }
 }
 
+/* 'C' function for method : 'SeatHeater_GripWarmer::SHT02_GPW02_Main.LoadItemEnabled()' */
+XBool SeatHeater_GripWarmerSHT02_GPW02_Main_LoadItemEnabled( SeatHeater_GripWarmerSHT02_GPW02_Main _this, 
+  XInt32 aItemNo )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+  EW_UNUSED_ARG( aItemNo );
+
+  return (XBool)!DeviceInterfaceVehicleDeviceClass_OnGetIsTimeoutError2Detected( 
+    EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ));
+}
+
 /* 'C' function for method : 'SeatHeater_GripWarmer::SHT02_GPW02_Main.LoadItemBaseValue()' */
 XString SeatHeater_GripWarmerSHT02_GPW02_Main_LoadItemBaseValue( SeatHeater_GripWarmerSHT02_GPW02_Main _this, 
   XInt32 aItemNo )
@@ -275,31 +290,38 @@ void SeatHeater_GripWarmerSHT02_GPW02_Main_OnVehicleDataReceivedSlot( SeatHeater
   XObject sender )
 {
   DeviceInterfaceVehicleDataClass VehicleData;
-  XBool IsSeatHeaterValueReceived;
-  XBool IsGripWarmerValueReceived;
 
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
   VehicleData = EwCastObject( _this->VehicleDataReceivedEventHandler.Context, DeviceInterfaceVehicleDataClass );
-  IsSeatHeaterValueReceived = (XBool)((( EnumVehicleRxTypeSEAT_HEATER_VALUE_LOW 
-  == VehicleData->RxType ) || ( EnumVehicleRxTypeSEAT_HEATER_VALUE_MIDDLE == VehicleData->RxType )) 
-  || ( EnumVehicleRxTypeSEAT_HEATER_VALUE_HIGH == VehicleData->RxType ));
-  IsGripWarmerValueReceived = (XBool)((( EnumVehicleRxTypeGRIP_WARMER_VALUE_LOW 
-  == VehicleData->RxType ) || ( EnumVehicleRxTypeGRIP_WARMER_VALUE_MIDDLE == VehicleData->RxType )) 
-  || ( EnumVehicleRxTypeGRIP_WARMER_VALUE_HIGH == VehicleData->RxType ));
 
-  if ((( VehicleData != 0 ) && ( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
-      DeviceInterfaceVehicleDeviceClass )->CurrentVehicleFunction == EnumVehicleSupportedFunctionSEAT_HEATER )) 
-      && IsSeatHeaterValueReceived )
-    SeatHeater_GripWarmerSHT02_GPW02_Main_UpdateLevel( _this, VehicleData->RxType );
-  else
-    if ((( VehicleData != 0 ) && ( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
-        DeviceInterfaceVehicleDeviceClass )->CurrentVehicleFunction == EnumVehicleSupportedFunctionGRIP_WARMER )) 
-        && IsGripWarmerValueReceived )
-      SeatHeater_GripWarmerSHT02_GPW02_Main_UpdateLevel( _this, VehicleData->RxType );
-    else
-      EwTrace( "%s", EwLoadString( &_Const0000 ));
+  if ( VehicleData != 0 )
+    switch ( VehicleData->RxType )
+    {
+      case EnumVehicleRxTypeSEAT_HEATER_VALUE_LOW :
+      case EnumVehicleRxTypeSEAT_HEATER_VALUE_MIDDLE :
+      case EnumVehicleRxTypeSEAT_HEATER_VALUE_HIGH :
+        if ( EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentVehicleFunction 
+            == EnumVehicleSupportedFunctionSEAT_HEATER )
+          SeatHeater_GripWarmerSHT02_GPW02_Main_UpdateLevel( _this, VehicleData->RxType );
+      break;
+
+      case EnumVehicleRxTypeGRIP_WARMER_VALUE_LOW :
+      case EnumVehicleRxTypeGRIP_WARMER_VALUE_MIDDLE :
+      case EnumVehicleRxTypeGRIP_WARMER_VALUE_HIGH :
+        if ( EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentVehicleFunction 
+            == EnumVehicleSupportedFunctionGRIP_WARMER )
+          SeatHeater_GripWarmerSHT02_GPW02_Main_UpdateLevel( _this, VehicleData->RxType );
+      break;
+
+      case EnumVehicleRxTypeTIMEOUT_ERROR2_UPDATED :
+        MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, _this->Super1.Menu.NoOfItems 
+        - 1 );
+      break;
+
+      default :; 
+    }
 }
 
 /* 'C' function for method : 'SeatHeater_GripWarmer::SHT02_GPW02_Main.UpdateLevel()' */
@@ -463,7 +485,7 @@ EW_DEFINE_CLASS( SeatHeater_GripWarmerSHT02_GPW02_Main, MenuBaseMenuView, ScaleI
   SeatHeater_GripWarmerSHT02_GPW02_Main_LoadItemTitle,
   SeatHeater_GripWarmerSHT02_GPW02_Main_OnItemActivate,
   MenuBaseMenuView_LoadItemChecked,
-  MenuBaseMenuView_LoadItemEnabled,
+  SeatHeater_GripWarmerSHT02_GPW02_Main_LoadItemEnabled,
   SeatHeater_GripWarmerSHT02_GPW02_Main_LoadItemBaseValue,
   MenuBaseMenuView_LoadItemMessage,
   MenuBaseMenuView_LoadItemReceivedTime,
@@ -494,18 +516,19 @@ void SeatHeater_GripWarmerScaleIndicator__Init( SeatHeater_GripWarmerScaleIndica
   ViewsImage__Init( &_this->ScaleIndicatorWindow, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->ScaleIndicatorBg, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->ScaleIndicatorBar, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_.VMT = EW_CLASS( SeatHeater_GripWarmerScaleIndicator );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const0001 );
+  CoreRectView__OnSetBounds( _this, _Const0000 );
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
   ViewsImage_OnSetVisible( &_this->Super1.MainBottomBG, 0 );
   ViewsRectangle_OnSetVisible( &_this->Super1.BlackBG, 0 );
-  CoreRectView__OnSetBounds( &_this->ScaleIndicatorWindow, _Const0002 );
-  CoreRectView__OnSetBounds( &_this->ScaleIndicatorBg, _Const0002 );
-  CoreRectView__OnSetBounds( &_this->ScaleIndicatorBar, _Const0003 );
+  CoreRectView__OnSetBounds( &_this->ScaleIndicatorWindow, _Const0001 );
+  CoreRectView__OnSetBounds( &_this->ScaleIndicatorBg, _Const0001 );
+  CoreRectView__OnSetBounds( &_this->ScaleIndicatorBar, _Const0002 );
   CoreGroup__Add( _this, ((CoreView)&_this->ScaleIndicatorWindow ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ScaleIndicatorBg ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ScaleIndicatorBar ), 0 );
@@ -515,6 +538,9 @@ void SeatHeater_GripWarmerScaleIndicator__Init( SeatHeater_GripWarmerScaleIndica
   ResourcesBitmap ));
   ViewsImage_OnSetBitmap( &_this->ScaleIndicatorBar, EwLoadResource( &ResourceScaleIndicatorBar, 
   ResourcesBitmap ));
+  _this->VehicleDataReceivedEventHandler.OnEvent = EwNewSlot( _this, SeatHeater_GripWarmerScaleIndicator_OnVehicleDataReceivedSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->VehicleDataReceivedEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->VehicleDataReceivedSystemEvent );
 }
 
 /* Re-Initializer for the class 'SeatHeater_GripWarmer::ScaleIndicator' */
@@ -527,6 +553,7 @@ void SeatHeater_GripWarmerScaleIndicator__ReInit( SeatHeater_GripWarmerScaleIndi
   ViewsImage__ReInit( &_this->ScaleIndicatorWindow );
   ViewsImage__ReInit( &_this->ScaleIndicatorBg );
   ViewsImage__ReInit( &_this->ScaleIndicatorBar );
+  CoreSystemEventHandler__ReInit( &_this->VehicleDataReceivedEventHandler );
 }
 
 /* Finalizer method for the class 'SeatHeater_GripWarmer::ScaleIndicator' */
@@ -539,6 +566,7 @@ void SeatHeater_GripWarmerScaleIndicator__Done( SeatHeater_GripWarmerScaleIndica
   ViewsImage__Done( &_this->ScaleIndicatorWindow );
   ViewsImage__Done( &_this->ScaleIndicatorBg );
   ViewsImage__Done( &_this->ScaleIndicatorBar );
+  CoreSystemEventHandler__Done( &_this->VehicleDataReceivedEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseMainBG__Done( &_this->_.Super );
@@ -547,7 +575,9 @@ void SeatHeater_GripWarmerScaleIndicator__Done( SeatHeater_GripWarmerScaleIndica
 /* 'C' function for method : 'SeatHeater_GripWarmer::ScaleIndicator.OnShortDownKeyActivated()' */
 void SeatHeater_GripWarmerScaleIndicator_OnShortDownKeyActivated( SeatHeater_GripWarmerScaleIndicator _this )
 {
-  if ( 1 < _this->LevelValue )
+  if ( !DeviceInterfaceVehicleDeviceClass_OnGetIsTimeoutError2Detected( EwGetAutoObject( 
+      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )) && ( 1 
+      < _this->LevelValue ))
     DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
     DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeBUTTON_STATUS_AUDIO, 0 );
 }
@@ -555,7 +585,9 @@ void SeatHeater_GripWarmerScaleIndicator_OnShortDownKeyActivated( SeatHeater_Gri
 /* 'C' function for method : 'SeatHeater_GripWarmer::ScaleIndicator.OnShortUpKeyActivated()' */
 void SeatHeater_GripWarmerScaleIndicator_OnShortUpKeyActivated( SeatHeater_GripWarmerScaleIndicator _this )
 {
-  if ( 10 > _this->LevelValue )
+  if ( !DeviceInterfaceVehicleDeviceClass_OnGetIsTimeoutError2Detected( EwGetAutoObject( 
+      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )) && ( 10 
+      > _this->LevelValue ))
     DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
     DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeBUTTON_STATUS_AUDIO, 1 );
 }
@@ -602,15 +634,44 @@ void SeatHeater_GripWarmerScaleIndicator_OnSetLevelValue( SeatHeater_GripWarmerS
 {
   if ( _this->LevelValue != value )
   {
-    XRect NewBounds;
     _this->LevelValue = value;
-    ViewsImage_OnSetFrameNumber( &_this->ScaleIndicatorBar, 1 );
-    NewBounds = _Const0004;
-    NewBounds.Point1.X = 230;
-    NewBounds.Point1.Y = ( 219 - ( 18 * ( _this->LevelValue - 1 )));
-    NewBounds.Point2.X = 355;
-    NewBounds.Point2.Y = ( 238 - ( 18 * ( _this->LevelValue - 1 )));
-    CoreRectView__OnSetBounds( &_this->ScaleIndicatorBar, NewBounds );
+
+    if ( !DeviceInterfaceVehicleDeviceClass_OnGetIsTimeoutError2Detected( EwGetAutoObject( 
+        &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )))
+    {
+      XRect NewBounds;
+      ViewsImage_OnSetFrameNumber( &_this->ScaleIndicatorBar, 1 );
+      NewBounds = _Const0003;
+      NewBounds.Point1.X = 230;
+      NewBounds.Point1.Y = ( 219 - ( 18 * ( _this->LevelValue - 1 )));
+      NewBounds.Point2.X = 355;
+      NewBounds.Point2.Y = ( 238 - ( 18 * ( _this->LevelValue - 1 )));
+      CoreRectView__OnSetBounds( &_this->ScaleIndicatorBar, NewBounds );
+    }
+    else
+      ViewsImage_OnSetFrameNumber( &_this->ScaleIndicatorBar, 0 );
+  }
+}
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void SeatHeater_GripWarmerScaleIndicator_OnVehicleDataReceivedSlot( SeatHeater_GripWarmerScaleIndicator _this, 
+  XObject sender )
+{
+  DeviceInterfaceVehicleDataClass VehicleData;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  VehicleData = EwCastObject( _this->VehicleDataReceivedEventHandler.Context, DeviceInterfaceVehicleDataClass );
+
+  if (( VehicleData != 0 ) && ( EnumVehicleRxTypeTIMEOUT_ERROR2_UPDATED == VehicleData->RxType ))
+  {
+    if ( !DeviceInterfaceVehicleDeviceClass_OnGetIsTimeoutError2Detected( EwGetAutoObject( 
+        &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )))
+      ViewsImage_OnSetFrameNumber( &_this->ScaleIndicatorBar, 1 );
+    else
+      ViewsImage_OnSetFrameNumber( &_this->ScaleIndicatorBar, 0 );
   }
 }
 
@@ -691,18 +752,18 @@ void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction__Init( SeatHeater_Gr
   _this->_.VMT = EW_CLASS( SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( &_this->ImgLCBlueline, _Const0005 );
-  CoreRectView__OnSetBounds( &_this->CurrentItemTitleText, _Const0006 );
+  CoreRectView__OnSetBounds( &_this->ImgLCBlueline, _Const0004 );
+  CoreRectView__OnSetBounds( &_this->CurrentItemTitleText, _Const0005 );
   ViewsText_OnSetAlignment( &_this->CurrentItemTitleText, ViewsTextAlignmentAlignHorzLeft 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString( &_this->CurrentItemTitleText, 0 );
-  CoreRectView__OnSetBounds( &_this->ControlUpBg, _Const0007 );
-  CoreRectView__OnSetBounds( &_this->ControlDownBg, _Const0008 );
-  CoreRectView__OnSetBounds( &_this->ControlDownButton, _Const0008 );
-  CoreRectView__OnSetBounds( &_this->ControlUpButton, _Const0007 );
-  CoreRectView__OnSetBounds( &_this->VehicleFunctionIcon, _Const0009 );
+  CoreRectView__OnSetBounds( &_this->ControlUpBg, _Const0006 );
+  CoreRectView__OnSetBounds( &_this->ControlDownBg, _Const0007 );
+  CoreRectView__OnSetBounds( &_this->ControlDownButton, _Const0007 );
+  CoreRectView__OnSetBounds( &_this->ControlUpButton, _Const0006 );
+  CoreRectView__OnSetBounds( &_this->VehicleFunctionIcon, _Const0008 );
   ViewsImage_OnSetFrameNumber( &_this->VehicleFunctionIcon, 1 );
-  ViewsImage_OnSetVisible( &_this->VehicleFunctionIcon, 0 );
+  ViewsImage_OnSetVisible( &_this->VehicleFunctionIcon, 1 );
   CoreTimer_OnSetPeriod( &_this->HighlightTimer, 100 );
   CoreTimer_OnSetEnabled( &_this->HighlightTimer, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ImgLCBlueline ), 0 );
@@ -809,7 +870,7 @@ void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_Init( SeatHeater_Gri
         ResourcesBitmap ));
       }
       else
-        EwTrace( "%s", EwLoadString( &_Const0000 ));
+        EwTrace( "%s", EwLoadString( &_Const0009 ));
 }
 
 /* The method UpdateViewState() is invoked automatically after the state of the 
@@ -848,9 +909,19 @@ void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_UpdateViewState( Sea
             ViewsImage_OnSetBitmap( &_this->VehicleFunctionIcon, EwLoadResource( 
             &ResourceIconGripWarmer0Large, ResourcesBitmap ));
 
-          ViewsImage_OnSetFrameNumber( &_this->ControlUpButton, 0 );
-          ViewsImage_OnSetFrameNumber( &_this->ControlDownButton, 1 );
-          ViewsImage_OnSetVisible( &_this->VehicleFunctionIcon, 1 );
+          if ( !DeviceInterfaceVehicleDeviceClass_OnGetIsTimeoutError2Detected( 
+              EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )))
+          {
+            ViewsImage_OnSetFrameNumber( &_this->VehicleFunctionIcon, 1 );
+            ViewsImage_OnSetFrameNumber( &_this->ControlUpButton, 0 );
+            ViewsImage_OnSetFrameNumber( &_this->ControlDownButton, 1 );
+          }
+          else
+          {
+            ViewsImage_OnSetFrameNumber( &_this->VehicleFunctionIcon, 0 );
+            ViewsImage_OnSetFrameNumber( &_this->ControlUpButton, 1 );
+            ViewsImage_OnSetFrameNumber( &_this->ControlDownButton, 1 );
+          }
         }
         break;
 
@@ -864,9 +935,19 @@ void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_UpdateViewState( Sea
             ViewsImage_OnSetBitmap( &_this->VehicleFunctionIcon, EwLoadResource( 
             &ResourceIconGripWarmer1Large, ResourcesBitmap ));
 
-          ViewsImage_OnSetFrameNumber( &_this->ControlUpButton, 0 );
-          ViewsImage_OnSetFrameNumber( &_this->ControlDownButton, 0 );
-          ViewsImage_OnSetVisible( &_this->VehicleFunctionIcon, 1 );
+          if ( !DeviceInterfaceVehicleDeviceClass_OnGetIsTimeoutError2Detected( 
+              EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )))
+          {
+            ViewsImage_OnSetFrameNumber( &_this->VehicleFunctionIcon, 1 );
+            ViewsImage_OnSetFrameNumber( &_this->ControlUpButton, 0 );
+            ViewsImage_OnSetFrameNumber( &_this->ControlDownButton, 0 );
+          }
+          else
+          {
+            ViewsImage_OnSetFrameNumber( &_this->VehicleFunctionIcon, 0 );
+            ViewsImage_OnSetFrameNumber( &_this->ControlUpButton, 1 );
+            ViewsImage_OnSetFrameNumber( &_this->ControlDownButton, 1 );
+          }
         }
         break;
 
@@ -880,9 +961,19 @@ void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_UpdateViewState( Sea
             ViewsImage_OnSetBitmap( &_this->VehicleFunctionIcon, EwLoadResource( 
             &ResourceIconGripWarmer2Large, ResourcesBitmap ));
 
-          ViewsImage_OnSetFrameNumber( &_this->ControlUpButton, 0 );
-          ViewsImage_OnSetFrameNumber( &_this->ControlDownButton, 0 );
-          ViewsImage_OnSetVisible( &_this->VehicleFunctionIcon, 1 );
+          if ( !DeviceInterfaceVehicleDeviceClass_OnGetIsTimeoutError2Detected( 
+              EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )))
+          {
+            ViewsImage_OnSetFrameNumber( &_this->VehicleFunctionIcon, 1 );
+            ViewsImage_OnSetFrameNumber( &_this->ControlUpButton, 0 );
+            ViewsImage_OnSetFrameNumber( &_this->ControlDownButton, 0 );
+          }
+          else
+          {
+            ViewsImage_OnSetFrameNumber( &_this->VehicleFunctionIcon, 0 );
+            ViewsImage_OnSetFrameNumber( &_this->ControlUpButton, 1 );
+            ViewsImage_OnSetFrameNumber( &_this->ControlDownButton, 1 );
+          }
         }
         break;
 
@@ -896,9 +987,19 @@ void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_UpdateViewState( Sea
             ViewsImage_OnSetBitmap( &_this->VehicleFunctionIcon, EwLoadResource( 
             &ResourceIconGripWarmer3Large, ResourcesBitmap ));
 
-          ViewsImage_OnSetFrameNumber( &_this->ControlUpButton, 1 );
-          ViewsImage_OnSetFrameNumber( &_this->ControlDownButton, 0 );
-          ViewsImage_OnSetVisible( &_this->VehicleFunctionIcon, 1 );
+          if ( !DeviceInterfaceVehicleDeviceClass_OnGetIsTimeoutError2Detected( 
+              EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )))
+          {
+            ViewsImage_OnSetFrameNumber( &_this->VehicleFunctionIcon, 1 );
+            ViewsImage_OnSetFrameNumber( &_this->ControlUpButton, 1 );
+            ViewsImage_OnSetFrameNumber( &_this->ControlDownButton, 0 );
+          }
+          else
+          {
+            ViewsImage_OnSetFrameNumber( &_this->VehicleFunctionIcon, 0 );
+            ViewsImage_OnSetFrameNumber( &_this->ControlUpButton, 1 );
+            ViewsImage_OnSetFrameNumber( &_this->ControlDownButton, 1 );
+          }
         }
         break;
 
@@ -911,90 +1012,107 @@ void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_UpdateViewState( Sea
     {
       ViewsImage_OnSetBitmap( &_this->VehicleFunctionIcon, EwLoadResource( &ResourceIconWindScreenLarge, 
       ResourcesBitmap ));
-      ViewsImage_OnSetVisible( &_this->VehicleFunctionIcon, 1 );
+
+      if ( !DeviceInterfaceVehicleDeviceClass_OnGetIsTimeoutError2Detected( EwGetAutoObject( 
+          &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )))
+      {
+        ViewsImage_OnSetFrameNumber( &_this->VehicleFunctionIcon, 1 );
+        ViewsImage_OnSetFrameNumber( &_this->ControlUpButton, 0 );
+        ViewsImage_OnSetFrameNumber( &_this->ControlDownButton, 0 );
+      }
+      else
+      {
+        ViewsImage_OnSetFrameNumber( &_this->VehicleFunctionIcon, 0 );
+        ViewsImage_OnSetFrameNumber( &_this->ControlUpButton, 1 );
+        ViewsImage_OnSetFrameNumber( &_this->ControlDownButton, 1 );
+      }
     }
     else
-      EwTrace( "%s", EwLoadString( &_Const0000 ));
+      EwTrace( "%s", EwLoadString( &_Const0009 ));
 }
 
 /* 'C' function for method : 'SeatHeater_GripWarmer::SHT01_GPW01_WSC01_VehicleFunction.OnShortDownKeyActivated()' */
 void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_OnShortDownKeyActivated( SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction _this )
 {
-  switch ( EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentVehicleFunction )
-  {
-    case EnumVehicleSupportedFunctionSEAT_HEATER :
-      if ( 0 < (XUInt32)_this->HeaterSettingStatus )
-      {
-        SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_StartHighlight( _this, 
-        &_this->ControlDownBg );
-        DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
-        DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeSEAT_HEATER_CHANGE_LEVEL, 
-        1 );
-      }
-    break;
-
-    case EnumVehicleSupportedFunctionGRIP_WARMER :
-      if ( 0 < (XUInt32)_this->HeaterSettingStatus )
-      {
-        SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_StartHighlight( _this, 
-        &_this->ControlDownBg );
-        DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
-        DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeGRIP_WARMER_CHANGE_LEVEL, 
-        1 );
-      }
-    break;
-
-    case EnumVehicleSupportedFunctionWIND_SCREEN :
+  if ( !DeviceInterfaceVehicleDeviceClass_OnGetIsTimeoutError2Detected( EwGetAutoObject( 
+      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )))
+    switch ( EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentVehicleFunction )
     {
-      ViewsImage_OnSetFrameNumber( &_this->ControlDownBg, 1 );
-      DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
-      DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeWIND_SCREEN_OPERATION, 
-      1 );
-    }
-    break;
+      case EnumVehicleSupportedFunctionSEAT_HEATER :
+        if ( 0 < (XUInt32)_this->HeaterSettingStatus )
+        {
+          SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_StartHighlight( 
+          _this, &_this->ControlDownBg );
+          DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+          DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeSEAT_HEATER_CHANGE_LEVEL, 
+          1 );
+        }
+      break;
 
-    default :; 
-  }
+      case EnumVehicleSupportedFunctionGRIP_WARMER :
+        if ( 0 < (XUInt32)_this->HeaterSettingStatus )
+        {
+          SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_StartHighlight( 
+          _this, &_this->ControlDownBg );
+          DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+          DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeGRIP_WARMER_CHANGE_LEVEL, 
+          1 );
+        }
+      break;
+
+      case EnumVehicleSupportedFunctionWIND_SCREEN :
+      {
+        ViewsImage_OnSetFrameNumber( &_this->ControlDownBg, 1 );
+        DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+        DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeWIND_SCREEN_OPERATION, 
+        1 );
+      }
+      break;
+
+      default :; 
+    }
 }
 
 /* 'C' function for method : 'SeatHeater_GripWarmer::SHT01_GPW01_WSC01_VehicleFunction.OnShortUpKeyActivated()' */
 void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_OnShortUpKeyActivated( SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction _this )
 {
-  switch ( EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentVehicleFunction )
-  {
-    case EnumVehicleSupportedFunctionSEAT_HEATER :
-      if ( 3 > (XUInt32)_this->HeaterSettingStatus )
-      {
-        SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_StartHighlight( _this, 
-        &_this->ControlUpBg );
-        DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
-        DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeSEAT_HEATER_CHANGE_LEVEL, 
-        2 );
-      }
-    break;
-
-    case EnumVehicleSupportedFunctionGRIP_WARMER :
-      if ( 3 > (XUInt32)_this->HeaterSettingStatus )
-      {
-        SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_StartHighlight( _this, 
-        &_this->ControlUpBg );
-        DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
-        DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeGRIP_WARMER_CHANGE_LEVEL, 
-        2 );
-      }
-    break;
-
-    case EnumVehicleSupportedFunctionWIND_SCREEN :
+  if ( !DeviceInterfaceVehicleDeviceClass_OnGetIsTimeoutError2Detected( EwGetAutoObject( 
+      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )))
+    switch ( EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->CurrentVehicleFunction )
     {
-      ViewsImage_OnSetFrameNumber( &_this->ControlUpBg, 1 );
-      DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
-      DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeWIND_SCREEN_OPERATION, 
-      2 );
-    }
-    break;
+      case EnumVehicleSupportedFunctionSEAT_HEATER :
+        if ( 3 > (XUInt32)_this->HeaterSettingStatus )
+        {
+          SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_StartHighlight( 
+          _this, &_this->ControlUpBg );
+          DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+          DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeSEAT_HEATER_CHANGE_LEVEL, 
+          2 );
+        }
+      break;
 
-    default :; 
-  }
+      case EnumVehicleSupportedFunctionGRIP_WARMER :
+        if ( 3 > (XUInt32)_this->HeaterSettingStatus )
+        {
+          SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_StartHighlight( 
+          _this, &_this->ControlUpBg );
+          DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+          DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeGRIP_WARMER_CHANGE_LEVEL, 
+          2 );
+        }
+      break;
+
+      case EnumVehicleSupportedFunctionWIND_SCREEN :
+      {
+        ViewsImage_OnSetFrameNumber( &_this->ControlUpBg, 1 );
+        DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
+        DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeWIND_SCREEN_OPERATION, 
+        2 );
+      }
+      break;
+
+      default :; 
+    }
 }
 
 /* 'C' function for method : 'SeatHeater_GripWarmer::SHT01_GPW01_WSC01_VehicleFunction.OnShortEnterKeyActivated()' */
@@ -1075,10 +1193,21 @@ void SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_OnVehicleDataReceive
 
   VehicleData = EwCastObject( _this->VehicleDataReceivedEventHandler.Context, DeviceInterfaceVehicleDataClass );
 
-  if (( VehicleData != 0 ) && (( EnumVehicleRxTypeGRIP_WARMER_STATUS == VehicleData->RxType ) 
-      || ( EnumVehicleRxTypeSEAT_HEATER_STATUS == VehicleData->RxType )))
-    SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_UpdateHeaterLevel( _this, 
-    VehicleData->RxType );
+  if ( VehicleData != 0 )
+    switch ( VehicleData->RxType )
+    {
+      case EnumVehicleRxTypeSEAT_HEATER_STATUS :
+      case EnumVehicleRxTypeGRIP_WARMER_STATUS :
+        SeatHeater_GripWarmerSHT01_GPW01_WSC01_VehicleFunction_UpdateHeaterLevel( 
+        _this, VehicleData->RxType );
+      break;
+
+      case EnumVehicleRxTypeTIMEOUT_ERROR2_UPDATED :
+        CoreGroup_InvalidateViewState((CoreGroup)_this );
+      break;
+
+      default :; 
+    }
 }
 
 /* 'C' function for method : 'SeatHeater_GripWarmer::SHT01_GPW01_WSC01_VehicleFunction.UpdateHeaterLevel()' */

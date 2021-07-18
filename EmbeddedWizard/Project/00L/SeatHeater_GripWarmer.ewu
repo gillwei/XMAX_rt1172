@@ -9,21 +9,21 @@ class SHT02_GPW02_Main : Menu::BaseMenuView
   {
     ScaleIndicator = new SeatHeater_GripWarmer::ScaleIndicator;
     $if !$prototyper
-      if( DeviceInterface::VehicleDevice.CurrentVehicleFunction == Enum::VehicleSupportedFunction.SEAT_HEATER )
+      switch( DeviceInterface::VehicleDevice.CurrentVehicleFunction )
       {
-        UpdateLevel( Enum::VehicleRxType.SEAT_HEATER_VALUE_LOW );
-        UpdateLevel( Enum::VehicleRxType.SEAT_HEATER_VALUE_MIDDLE );
-        UpdateLevel( Enum::VehicleRxType.SEAT_HEATER_VALUE_HIGH );
-      }
-      else if( DeviceInterface::VehicleDevice.CurrentVehicleFunction == Enum::VehicleSupportedFunction.GRIP_WARMER )
-      {
-        UpdateLevel( Enum::VehicleRxType.GRIP_WARMER_VALUE_LOW );
-        UpdateLevel( Enum::VehicleRxType.GRIP_WARMER_VALUE_MIDDLE );
-        UpdateLevel( Enum::VehicleRxType.GRIP_WARMER_VALUE_HIGH );
-      }
-      else
-      {
-        trace "Unexpected vehicle function";
+        case Enum::VehicleSupportedFunction.SEAT_HEATER:
+        {
+          UpdateLevel( Enum::VehicleRxType.SEAT_HEATER_VALUE_LOW );
+          UpdateLevel( Enum::VehicleRxType.SEAT_HEATER_VALUE_MIDDLE );
+          UpdateLevel( Enum::VehicleRxType.SEAT_HEATER_VALUE_HIGH );
+        }
+        case Enum::VehicleSupportedFunction.GRIP_WARMER:
+        {
+          UpdateLevel( Enum::VehicleRxType.GRIP_WARMER_VALUE_LOW );
+          UpdateLevel( Enum::VehicleRxType.GRIP_WARMER_VALUE_MIDDLE );
+          UpdateLevel( Enum::VehicleRxType.GRIP_WARMER_VALUE_HIGH );
+        }
+        default:;
       }
     $else
       // For testing in prototype and screenshot
@@ -62,7 +62,7 @@ class SHT02_GPW02_Main : Menu::BaseMenuView
     return title;
   }
 
-  $rect <520,210,720,250>
+  $rect <520,270,720,310>
   inherited method OnItemActivate()
   {
     // suppress warning
@@ -104,6 +104,13 @@ class SHT02_GPW02_Main : Menu::BaseMenuView
     }
   }
 
+  $rect <520,210,720,250>
+  inherited method LoadItemEnabled()
+  {
+    aItemNo;
+    return !DeviceInterface::VehicleDevice.IsTimeoutError2Detected;
+  }
+
   $rect <20,20,160,60>
   inherited object Menu
   {
@@ -143,7 +150,7 @@ class SHT02_GPW02_Main : Menu::BaseMenuView
   $rect <23,296,223,336>
   var SeatHeater_GripWarmer::ScaleIndicator ScaleIndicator;
 
-  $rect <520,290,720,330>
+  $rect <520,380,720,420>
   slot OnLevelUpUpdateSlot
   {
     $if $prototyper
@@ -212,7 +219,7 @@ class SHT02_GPW02_Main : Menu::BaseMenuView
   $rect <20,350,220,390>
   var int32 ItemIdx;
 
-  $rect <520,340,720,380>
+  $rect <520,430,720,470>
   slot OnLevelDownUpdateSlot
   {
     $if $prototyper
@@ -290,35 +297,40 @@ class SHT02_GPW02_Main : Menu::BaseMenuView
   slot OnVehicleDataReceivedSlot
   {
     var DeviceInterface::VehicleDataClass VehicleData = ( DeviceInterface::VehicleDataClass )VehicleDataReceivedEventHandler.Context;
-    var bool IsSeatHeaterValueReceived = ( Enum::VehicleRxType.SEAT_HEATER_VALUE_LOW == VehicleData.RxType ||
-                                           Enum::VehicleRxType.SEAT_HEATER_VALUE_MIDDLE == VehicleData.RxType ||
-                                           Enum::VehicleRxType.SEAT_HEATER_VALUE_HIGH == VehicleData.RxType );
-
-    var bool IsGripWarmerValueReceived = ( Enum::VehicleRxType.GRIP_WARMER_VALUE_LOW == VehicleData.RxType ||
-                                           Enum::VehicleRxType.GRIP_WARMER_VALUE_MIDDLE == VehicleData.RxType ||
-                                           Enum::VehicleRxType.GRIP_WARMER_VALUE_HIGH == VehicleData.RxType );
-    if( null != VehicleData &&
-        DeviceInterface::VehicleDevice.CurrentVehicleFunction == Enum::VehicleSupportedFunction.SEAT_HEATER &&
-        IsSeatHeaterValueReceived )
+    if( null != VehicleData )
     {
-      UpdateLevel( VehicleData.RxType );
-    }
-    else if( null != VehicleData &&
-             DeviceInterface::VehicleDevice.CurrentVehicleFunction == Enum::VehicleSupportedFunction.GRIP_WARMER &&
-             IsGripWarmerValueReceived )
-    {
-      UpdateLevel( VehicleData.RxType );
-    }
-    else
-    {
-      trace "Unexpected vehicle function";
+      switch( VehicleData.RxType )
+      {
+        case Enum::VehicleRxType.SEAT_HEATER_VALUE_LOW,
+             Enum::VehicleRxType.SEAT_HEATER_VALUE_MIDDLE,
+             Enum::VehicleRxType.SEAT_HEATER_VALUE_HIGH:
+        {
+          if( DeviceInterface::VehicleDevice.CurrentVehicleFunction == Enum::VehicleSupportedFunction.SEAT_HEATER )
+          {
+            UpdateLevel( VehicleData.RxType );
+          }
+        }
+        case Enum::VehicleRxType.GRIP_WARMER_VALUE_LOW,
+             Enum::VehicleRxType.GRIP_WARMER_VALUE_MIDDLE,
+             Enum::VehicleRxType.GRIP_WARMER_VALUE_HIGH:
+        {
+          if( DeviceInterface::VehicleDevice.CurrentVehicleFunction == Enum::VehicleSupportedFunction.GRIP_WARMER )
+          {
+            UpdateLevel( VehicleData.RxType );
+          }
+        }
+        case Enum::VehicleRxType.TIMEOUT_ERROR2_UPDATED:
+        {
+          Menu.InvalidateItems( 0, Menu.NoOfItems-1 );
+        }
+        default:;
+      }
     }
   }
 
-  $rect <750,270,950,310>
+  $rect <750,360,950,400>
   method void UpdateLevel( arg Enum::VehicleRxType aNewType )
   {
-    //TODO: get CAN timeout error state
     var DeviceInterface::VehicleDataClass VehicleData;
     switch( aNewType )
     {
@@ -442,7 +454,7 @@ class ScaleIndicator : Components::BaseMainBG
   $rect <820,160,1020,200>
   inherited method OnShortDownKeyActivated()
   {
-    if( SeatHeater_GripWarmer::MIN_LEVEL < LevelValue )
+    if( !DeviceInterface::VehicleDevice.IsTimeoutError2Detected && SeatHeater_GripWarmer::MIN_LEVEL < LevelValue )
     {
       DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.BUTTON_STATUS_AUDIO, SeatHeater_GripWarmer::BUTTON_STATUS_AUDIO_DOWN_CODE );
     }
@@ -481,7 +493,7 @@ class ScaleIndicator : Components::BaseMainBG
   $rect <820,120,1020,160>
   inherited method OnShortUpKeyActivated()
   {
-    if( SeatHeater_GripWarmer::MAX_LEVEL > LevelValue )
+    if( !DeviceInterface::VehicleDevice.IsTimeoutError2Detected && SeatHeater_GripWarmer::MAX_LEVEL > LevelValue )
     {
       DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.BUTTON_STATUS_AUDIO, SeatHeater_GripWarmer::BUTTON_STATUS_AUDIO_UP_CODE );
     }
@@ -588,14 +600,21 @@ class ScaleIndicator : Components::BaseMainBG
     if( pure LevelValue != value )
     {
       pure LevelValue = value;
-      ScaleIndicatorBar.FrameNumber = 1;
-      var rect NewBounds;
-      NewBounds.x1 = ScaleIndicatorBarOriBounds.x1;
-      NewBounds.y1 = ScaleIndicatorBarOriBounds.y1 - 18*( LevelValue - 1 );
-      NewBounds.x2 = ScaleIndicatorBarOriBounds.x2;
-      NewBounds.y2 = ScaleIndicatorBarOriBounds.y2 - 18*( LevelValue - 1 );
+      if( !DeviceInterface::VehicleDevice.IsTimeoutError2Detected )
+      {
+        ScaleIndicatorBar.FrameNumber = 1;
+        var rect NewBounds;
+        NewBounds.x1 = ScaleIndicatorBarOriBounds.x1;
+        NewBounds.y1 = ScaleIndicatorBarOriBounds.y1 - 18*( LevelValue - 1 );
+        NewBounds.x2 = ScaleIndicatorBarOriBounds.x2;
+        NewBounds.y2 = ScaleIndicatorBarOriBounds.y2 - 18*( LevelValue - 1 );
 
-      ScaleIndicatorBar.Bounds = NewBounds;
+        ScaleIndicatorBar.Bounds = NewBounds;
+      }
+      else
+      {
+        ScaleIndicatorBar.FrameNumber = 0;
+      }
     }
   }
 
@@ -608,11 +627,30 @@ class ScaleIndicator : Components::BaseMainBG
   $rect <550,300,750,340>
   property slot LevelDownUpdateSignal;
 
-  // TODO:
-  // When communication error occurs, framenumber is set to 0 to show gray bar.
-  note group Note
+  $rect <790,270,990,310>
+  object Core::SystemEventHandler VehicleDataReceivedEventHandler
   {
-    attr Bounds = <1070,30,1370,230>;
+    preset OnEvent = OnVehicleDataReceivedSlot;
+    preset Event = DeviceInterface::VehicleDevice.VehicleDataReceivedSystemEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <990,270,1190,310>
+  slot OnVehicleDataReceivedSlot
+  {
+    var DeviceInterface::VehicleDataClass VehicleData = ( DeviceInterface::VehicleDataClass )VehicleDataReceivedEventHandler.Context;
+    if( null != VehicleData && Enum::VehicleRxType.TIMEOUT_ERROR2_UPDATED == VehicleData.RxType )
+    {
+      if( !DeviceInterface::VehicleDevice.IsTimeoutError2Detected )
+      {
+        ScaleIndicatorBar.FrameNumber = 1;
+      }
+      else
+      {
+        ScaleIndicatorBar.FrameNumber = 0;
+      }
+    }
   }
 }
 
@@ -707,9 +745,19 @@ class SHT01_GPW01_WSC01_VehicleFunction : Components::BaseMainBG
             {
               VehicleFunctionIcon.Bitmap = Resource::IconGripWarmer0Large;
             }
-            ControlUpButton.FrameNumber = 0;
-            ControlDownButton.FrameNumber = 1;
-            VehicleFunctionIcon.Visible = true;
+
+            if( !DeviceInterface::VehicleDevice.IsTimeoutError2Detected )
+            {
+              VehicleFunctionIcon.FrameNumber = 1;
+              ControlUpButton.FrameNumber = 0;
+              ControlDownButton.FrameNumber = 1;
+            }
+            else
+            {
+              VehicleFunctionIcon.FrameNumber = 0;
+              ControlUpButton.FrameNumber = 1;
+              ControlDownButton.FrameNumber = 1;
+            }
           }
           case Enum::HeaterSettingStatusType.LOW:
           {
@@ -721,9 +769,19 @@ class SHT01_GPW01_WSC01_VehicleFunction : Components::BaseMainBG
             {
               VehicleFunctionIcon.Bitmap = Resource::IconGripWarmer1Large;
             }
-            ControlUpButton.FrameNumber = 0;
-            ControlDownButton.FrameNumber = 0;
-            VehicleFunctionIcon.Visible = true;
+
+            if( !DeviceInterface::VehicleDevice.IsTimeoutError2Detected )
+            {
+              VehicleFunctionIcon.FrameNumber = 1;
+              ControlUpButton.FrameNumber = 0;
+              ControlDownButton.FrameNumber = 0;
+            }
+            else
+            {
+              VehicleFunctionIcon.FrameNumber = 0;
+              ControlUpButton.FrameNumber = 1;
+              ControlDownButton.FrameNumber = 1;
+            }
           }
           case Enum::HeaterSettingStatusType.MID:
           {
@@ -735,9 +793,19 @@ class SHT01_GPW01_WSC01_VehicleFunction : Components::BaseMainBG
             {
               VehicleFunctionIcon.Bitmap = Resource::IconGripWarmer2Large;
             }
-            ControlUpButton.FrameNumber = 0;
-            ControlDownButton.FrameNumber = 0;
-            VehicleFunctionIcon.Visible = true;
+
+            if( !DeviceInterface::VehicleDevice.IsTimeoutError2Detected )
+            {
+              VehicleFunctionIcon.FrameNumber = 1;
+              ControlUpButton.FrameNumber = 0;
+              ControlDownButton.FrameNumber = 0;
+            }
+            else
+            {
+              VehicleFunctionIcon.FrameNumber = 0;
+              ControlUpButton.FrameNumber = 1;
+              ControlDownButton.FrameNumber = 1;
+            }
           }
           case Enum::HeaterSettingStatusType.HIGH:
           {
@@ -749,9 +817,19 @@ class SHT01_GPW01_WSC01_VehicleFunction : Components::BaseMainBG
             {
               VehicleFunctionIcon.Bitmap = Resource::IconGripWarmer3Large;
             }
-            ControlUpButton.FrameNumber = 1;
-            ControlDownButton.FrameNumber = 0;
-            VehicleFunctionIcon.Visible = true;
+
+            if( !DeviceInterface::VehicleDevice.IsTimeoutError2Detected )
+            {
+              VehicleFunctionIcon.FrameNumber = 1;
+              ControlUpButton.FrameNumber = 1;
+              ControlDownButton.FrameNumber = 0;
+            }
+            else
+            {
+              VehicleFunctionIcon.FrameNumber = 0;
+              ControlUpButton.FrameNumber = 1;
+              ControlDownButton.FrameNumber = 1;
+            }
           }
           default:;
         }
@@ -760,7 +838,18 @@ class SHT01_GPW01_WSC01_VehicleFunction : Components::BaseMainBG
     else if( DeviceInterface::VehicleDevice.CurrentVehicleFunction == Enum::VehicleSupportedFunction.WIND_SCREEN )
     {
       VehicleFunctionIcon.Bitmap = Resource::IconWindScreenLarge;
-      VehicleFunctionIcon.Visible = true;
+      if( !DeviceInterface::VehicleDevice.IsTimeoutError2Detected )
+      {
+        VehicleFunctionIcon.FrameNumber = 1;
+        ControlUpButton.FrameNumber = 0;
+        ControlDownButton.FrameNumber = 0;
+      }
+      else
+      {
+        VehicleFunctionIcon.FrameNumber = 0;
+        ControlUpButton.FrameNumber = 1;
+        ControlDownButton.FrameNumber = 1;
+      }
     }
     else
     {
@@ -771,60 +860,66 @@ class SHT01_GPW01_WSC01_VehicleFunction : Components::BaseMainBG
   $rect <510,110,720,150>
   inherited method OnShortDownKeyActivated()
   {
-    switch( DeviceInterface::VehicleDevice.CurrentVehicleFunction )
+    if( !DeviceInterface::VehicleDevice.IsTimeoutError2Detected )
     {
-      case Enum::VehicleSupportedFunction.SEAT_HEATER:
+      switch( DeviceInterface::VehicleDevice.CurrentVehicleFunction )
       {
-        if( SeatHeater_GripWarmer::LOWEST_STATUS < (uint32)HeaterSettingStatus )
+        case Enum::VehicleSupportedFunction.SEAT_HEATER:
         {
-          StartHighlight( ControlDownBg );
-          DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.SEAT_HEATER_CHANGE_LEVEL, SeatHeater_GripWarmer::HEATER_LEVEL_DOWN );
+          if( SeatHeater_GripWarmer::LOWEST_STATUS < (uint32)HeaterSettingStatus )
+          {
+            StartHighlight( ControlDownBg );
+            DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.SEAT_HEATER_CHANGE_LEVEL, SeatHeater_GripWarmer::HEATER_LEVEL_DOWN );
+          }
         }
-      }
-      case Enum::VehicleSupportedFunction.GRIP_WARMER:
-      {
-        if( SeatHeater_GripWarmer::LOWEST_STATUS < (uint32)HeaterSettingStatus )
+        case Enum::VehicleSupportedFunction.GRIP_WARMER:
         {
-          StartHighlight( ControlDownBg );
-          DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.GRIP_WARMER_CHANGE_LEVEL, SeatHeater_GripWarmer::HEATER_LEVEL_DOWN );
+          if( SeatHeater_GripWarmer::LOWEST_STATUS < (uint32)HeaterSettingStatus )
+          {
+            StartHighlight( ControlDownBg );
+            DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.GRIP_WARMER_CHANGE_LEVEL, SeatHeater_GripWarmer::HEATER_LEVEL_DOWN );
+          }
         }
+        case Enum::VehicleSupportedFunction.WIND_SCREEN:
+        {
+          ControlDownBg.FrameNumber = 1;
+          DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.WIND_SCREEN_OPERATION, SeatHeater_GripWarmer::HEATER_LEVEL_DOWN );
+        }
+        default:;
       }
-      case Enum::VehicleSupportedFunction.WIND_SCREEN:
-      {
-        ControlDownBg.FrameNumber = 1;
-        DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.WIND_SCREEN_OPERATION, SeatHeater_GripWarmer::HEATER_LEVEL_DOWN );
-      }
-      default:;
     }
   }
 
   $rect <510,50,720,90>
   inherited method OnShortUpKeyActivated()
   {
-    switch( DeviceInterface::VehicleDevice.CurrentVehicleFunction )
+    if( !DeviceInterface::VehicleDevice.IsTimeoutError2Detected )
     {
-      case Enum::VehicleSupportedFunction.SEAT_HEATER:
+      switch( DeviceInterface::VehicleDevice.CurrentVehicleFunction )
       {
-        if( SeatHeater_GripWarmer::HIGHEST_STATUS > (uint32)HeaterSettingStatus )
+        case Enum::VehicleSupportedFunction.SEAT_HEATER:
         {
-          StartHighlight( ControlUpBg );
-          DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.SEAT_HEATER_CHANGE_LEVEL, SeatHeater_GripWarmer::HEATER_LEVEL_UP );
+          if( SeatHeater_GripWarmer::HIGHEST_STATUS > (uint32)HeaterSettingStatus )
+          {
+            StartHighlight( ControlUpBg );
+            DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.SEAT_HEATER_CHANGE_LEVEL, SeatHeater_GripWarmer::HEATER_LEVEL_UP );
+          }
         }
-      }
-      case Enum::VehicleSupportedFunction.GRIP_WARMER:
-      {
-        if( SeatHeater_GripWarmer::HIGHEST_STATUS > (uint32)HeaterSettingStatus )
+        case Enum::VehicleSupportedFunction.GRIP_WARMER:
         {
-          StartHighlight( ControlUpBg );
-          DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.GRIP_WARMER_CHANGE_LEVEL, SeatHeater_GripWarmer::HEATER_LEVEL_UP );
+          if( SeatHeater_GripWarmer::HIGHEST_STATUS > (uint32)HeaterSettingStatus )
+          {
+            StartHighlight( ControlUpBg );
+            DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.GRIP_WARMER_CHANGE_LEVEL, SeatHeater_GripWarmer::HEATER_LEVEL_UP );
+          }
         }
+        case Enum::VehicleSupportedFunction.WIND_SCREEN:
+        {
+          ControlUpBg.FrameNumber = 1;
+          DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.WIND_SCREEN_OPERATION, SeatHeater_GripWarmer::HEATER_LEVEL_UP );
+        }
+        default:;
       }
-      case Enum::VehicleSupportedFunction.WIND_SCREEN:
-      {
-        ControlUpBg.FrameNumber = 1;
-        DeviceInterface::VehicleDevice.SetData( Enum::VehicleTxType.WIND_SCREEN_OPERATION, SeatHeater_GripWarmer::HEATER_LEVEL_UP );
-      }
-      default:;
     }
   }
 
@@ -915,7 +1010,7 @@ class SHT01_GPW01_WSC01_VehicleFunction : Components::BaseMainBG
   {
     preset Bounds = <13,112,91,190>;
     preset FrameNumber = 1;
-    preset Visible = false;
+    preset Visible = true;
   }
 
   $rect <350,300,630,340>
@@ -931,10 +1026,21 @@ class SHT01_GPW01_WSC01_VehicleFunction : Components::BaseMainBG
   slot OnVehicleDataReceivedSlot
   {
     var DeviceInterface::VehicleDataClass VehicleData = ( DeviceInterface::VehicleDataClass )VehicleDataReceivedEventHandler.Context;
-    if( null != VehicleData &&
-        ( Enum::VehicleRxType.GRIP_WARMER_STATUS == VehicleData.RxType || Enum::VehicleRxType.SEAT_HEATER_STATUS == VehicleData.RxType ) )
+    if( null != VehicleData )
     {
-      UpdateHeaterLevel( VehicleData.RxType );
+      switch( VehicleData.RxType )
+      {
+        case Enum::VehicleRxType.SEAT_HEATER_STATUS,
+             Enum::VehicleRxType.GRIP_WARMER_STATUS:
+        {
+          UpdateHeaterLevel( VehicleData.RxType );
+        }
+        case Enum::VehicleRxType.TIMEOUT_ERROR2_UPDATED:
+        {
+          InvalidateViewState();
+        }
+        default:;
+      }
     }
   }
 

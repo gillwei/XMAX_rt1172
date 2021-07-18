@@ -190,7 +190,8 @@ EW_DEFINE_METHODS( SeatHeater_GripWarmerSHT02_GPW02_Main, MenuBaseMenuView )
   EW_METHOD( OnItemActivate,    void )( SeatHeater_GripWarmerSHT02_GPW02_Main _this, 
     XInt32 aItemNo, MenuItemBase aMenuItem )
   EW_METHOD( LoadItemChecked,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemEnabled,   XBool )( SeatHeater_GripWarmerSHT02_GPW02_Main _this, 
+    XInt32 aItemNo )
   EW_METHOD( LoadItemBaseValue, XString )( SeatHeater_GripWarmerSHT02_GPW02_Main _this, 
     XInt32 aItemNo )
   EW_METHOD( LoadItemMessage,   XString )( MenuBaseMenuView _this, XInt32 aItemNo )
@@ -227,6 +228,10 @@ XString SeatHeater_GripWarmerSHT02_GPW02_Main_LoadItemTitle( SeatHeater_GripWarm
 /* 'C' function for method : 'SeatHeater_GripWarmer::SHT02_GPW02_Main.OnItemActivate()' */
 void SeatHeater_GripWarmerSHT02_GPW02_Main_OnItemActivate( SeatHeater_GripWarmerSHT02_GPW02_Main _this, 
   XInt32 aItemNo, MenuItemBase aMenuItem );
+
+/* 'C' function for method : 'SeatHeater_GripWarmer::SHT02_GPW02_Main.LoadItemEnabled()' */
+XBool SeatHeater_GripWarmerSHT02_GPW02_Main_LoadItemEnabled( SeatHeater_GripWarmerSHT02_GPW02_Main _this, 
+  XInt32 aItemNo );
 
 /* 'C' function for method : 'SeatHeater_GripWarmer::SHT02_GPW02_Main.LoadItemBaseValue()' */
 XString SeatHeater_GripWarmerSHT02_GPW02_Main_LoadItemBaseValue( SeatHeater_GripWarmerSHT02_GPW02_Main _this, 

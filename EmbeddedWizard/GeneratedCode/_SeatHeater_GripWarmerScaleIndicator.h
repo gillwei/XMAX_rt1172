@@ -104,6 +104,7 @@ EW_DEFINE_FIELDS( SeatHeater_GripWarmerScaleIndicator, ComponentsBaseMainBG )
   EW_OBJECT  ( ScaleIndicatorWindow, ViewsImage )
   EW_OBJECT  ( ScaleIndicatorBg, ViewsImage )
   EW_OBJECT  ( ScaleIndicatorBar, ViewsImage )
+  EW_OBJECT  ( VehicleDataReceivedEventHandler, CoreSystemEventHandler )
   EW_PROPERTY( LevelValue,      XInt32 )
   EW_PROPERTY( ScaleIndicatorType, XEnum )
 EW_END_OF_FIELDS( SeatHeater_GripWarmerScaleIndicator )
@@ -181,6 +182,11 @@ void SeatHeater_GripWarmerScaleIndicator_OnSetScaleIndicatorType( SeatHeater_Gri
 /* 'C' function for method : 'SeatHeater_GripWarmer::ScaleIndicator.OnSetLevelValue()' */
 void SeatHeater_GripWarmerScaleIndicator_OnSetLevelValue( SeatHeater_GripWarmerScaleIndicator _this, 
   XInt32 value );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void SeatHeater_GripWarmerScaleIndicator_OnVehicleDataReceivedSlot( SeatHeater_GripWarmerScaleIndicator _this, 
+  XObject sender );
 
 #ifdef __cplusplus
   }
