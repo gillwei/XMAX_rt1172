@@ -28,7 +28,6 @@
 #include "_ComponentsBaseMainBG.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
-#include "_CoreVerticalList.h"
 #include "_DeviceInterfaceVehicleDataClass.h"
 #include "_DeviceInterfaceVehicleDeviceClass.h"
 #include "_MenuItemBaseValue.h"
@@ -739,8 +738,7 @@ void UnitUNT02_MileageSettingMenu_OnVehicleDataReceivedSlot( UnitUNT02_MileageSe
 /* 'C' function for method : 'Unit::UNT02_MileageSettingMenu.ResetHighlightPosition()' */
 void UnitUNT02_MileageSettingMenu_ResetHighlightPosition( UnitUNT02_MileageSettingMenu _this )
 {
-  CoreVerticalList_OnSetSelectedItem( &_this->Super1.Menu.MenuList, 0 );
-  MenuVerticalMenu_MoveFocusFrame( &_this->Super1.Menu );
+  MenuVerticalMenu_OnSetSelectedItem( &_this->Super1.Menu, 0 );
 }
 
 /* Variants derived from the class : 'Unit::UNT02_MileageSettingMenu' */
@@ -1117,8 +1115,7 @@ void UnitUNT03_FuelSettingMenu_OnVehicleDataReceivedSlot( UnitUNT03_FuelSettingM
 /* 'C' function for method : 'Unit::UNT03_FuelSettingMenu.ResetHighlightPosition()' */
 void UnitUNT03_FuelSettingMenu_ResetHighlightPosition( UnitUNT03_FuelSettingMenu _this )
 {
-  CoreVerticalList_OnSetSelectedItem( &_this->Super1.Menu.MenuList, 0 );
-  MenuVerticalMenu_MoveFocusFrame( &_this->Super1.Menu );
+  MenuVerticalMenu_OnSetSelectedItem( &_this->Super1.Menu, 0 );
 }
 
 /* Variants derived from the class : 'Unit::UNT03_FuelSettingMenu' */
@@ -1414,8 +1411,7 @@ void UnitUNT04_PressureSettingMenu_OnVehicleDataReceivedSlot( UnitUNT04_Pressure
 /* 'C' function for method : 'Unit::UNT04_PressureSettingMenu.ResetHighlightPosition()' */
 void UnitUNT04_PressureSettingMenu_ResetHighlightPosition( UnitUNT04_PressureSettingMenu _this )
 {
-  CoreVerticalList_OnSetSelectedItem( &_this->Super1.Menu.MenuList, 0 );
-  MenuVerticalMenu_MoveFocusFrame( &_this->Super1.Menu );
+  MenuVerticalMenu_OnSetSelectedItem( &_this->Super1.Menu, 0 );
 }
 
 /* Variants derived from the class : 'Unit::UNT04_PressureSettingMenu' */
@@ -1693,8 +1689,7 @@ void UnitUNT05_TemperatureSettingMenu_OnVehicleDataReceivedSlot( UnitUNT05_Tempe
 /* 'C' function for method : 'Unit::UNT05_TemperatureSettingMenu.ResetHighlightPosition()' */
 void UnitUNT05_TemperatureSettingMenu_ResetHighlightPosition( UnitUNT05_TemperatureSettingMenu _this )
 {
-  CoreVerticalList_OnSetSelectedItem( &_this->Super1.Menu.MenuList, 0 );
-  MenuVerticalMenu_MoveFocusFrame( &_this->Super1.Menu );
+  MenuVerticalMenu_OnSetSelectedItem( &_this->Super1.Menu, 0 );
 }
 
 /* Variants derived from the class : 'Unit::UNT05_TemperatureSettingMenu' */

@@ -506,8 +506,7 @@ class UNT02_MileageSettingMenu : Menu::BaseMenuView
   $rect <780,100,980,140>
   method void ResetHighlightPosition()
   {
-    Menu.MenuList.SelectedItem = 0;
-    Menu.MoveFocusFrame();
+    Menu.SelectedItem = 0;
   }
 }
 
@@ -739,8 +738,7 @@ class UNT03_FuelSettingMenu : Menu::BaseMenuView
   $rect <750,120,950,160>
   method void ResetHighlightPosition()
   {
-    Menu.MenuList.SelectedItem = 0;
-    Menu.MoveFocusFrame();
+    Menu.SelectedItem = 0;
   }
 }
 
@@ -928,8 +926,7 @@ class UNT04_PressureSettingMenu : Menu::BaseMenuView
   $rect <750,150,950,190>
   method void ResetHighlightPosition()
   {
-    Menu.MenuList.SelectedItem = 0;
-    Menu.MoveFocusFrame();
+    Menu.SelectedItem = 0;
   }
 }
 
@@ -1096,8 +1093,7 @@ class UNT05_TemperatureSettingMenu : Menu::BaseMenuView
   $rect <750,120,950,160>
   method void ResetHighlightPosition()
   {
-    Menu.MenuList.SelectedItem = 0;
-    Menu.MoveFocusFrame();
+    Menu.SelectedItem = 0;
   }
 }
 
