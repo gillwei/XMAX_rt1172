@@ -42,9 +42,9 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
+#include "_ComponentsBaseText.h"
 #include "_CoreGroup.h"
 #include "_ViewsImage.h"
-#include "_ViewsText.h"
 #include "_ViewsWallpaper.h"
 
 /* Forward declaration of the class Core::DialogContext */
@@ -95,14 +95,20 @@
 #define _LauncherLNC_Base_
 #endif
 
+/* Forward declaration of the class Views::Text */
+#ifndef _ViewsText_
+  EW_DECLARE_CLASS( ViewsText )
+#define _ViewsText_
+#endif
+
 
 /* Deklaration of class : 'Launcher::LNC_Base' */
 EW_DEFINE_FIELDS( LauncherLNC_Base, CoreGroup )
   EW_OBJECT  ( Background,      ViewsWallpaper )
   EW_OBJECT  ( ImgLCBlueline,   ViewsImage )
-  EW_OBJECT  ( CurrentItemTitleText, ViewsText )
-  EW_OBJECT  ( PreviousItemTitleText, ViewsText )
-  EW_OBJECT  ( NextItemTitleText, ViewsText )
+  EW_OBJECT  ( CurrentItemTitleText, ComponentsBaseText )
+  EW_OBJECT  ( PreviousItemTitleText, ComponentsBaseText )
+  EW_OBJECT  ( NextItemTitleText, ComponentsBaseText )
 EW_END_OF_FIELDS( LauncherLNC_Base )
 
 /* Virtual Method Table (VMT) for the class : 'Launcher::LNC_Base' */
@@ -149,9 +155,6 @@ EW_DEFINE_METHODS( LauncherLNC_Base, CoreGroup )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
 EW_END_OF_METHODS( LauncherLNC_Base )
-
-/* 'C' function for method : 'Launcher::LNC_Base.ReInit()' */
-void LauncherLNC_Base_ReInit( LauncherLNC_Base _this );
 
 /* 'C' function for method : 'Launcher::LNC_Base.GetStringOfLauncherItem()' */
 XString LauncherLNC_Base_GetStringOfLauncherItem( LauncherLNC_Base _this, XEnum 

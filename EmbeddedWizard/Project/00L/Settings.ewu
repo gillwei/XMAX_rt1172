@@ -1600,10 +1600,13 @@ class SET30_QRCode : Components::BaseMainBG
     $if !$prototyper
       if( DeviceInterface::SystemDevice.GetSystemStatus( Enum::SystemStatus.IS_QRCODE_READY ) )
       {
-        trace "OnQrCodeReady";
         QrCodeImage.Bitmap = Resource::QrCodeExternBitmap;
         Resource::QrCodeExternBitmap.Name = Resource::EXTERN_BMP_QRCODE;
         Resource::QrCodeExternBitmap.Reload();
+      }
+      else
+      {
+        trace "qr not ready";
       }
     $endif
 
@@ -2323,7 +2326,7 @@ class SET42_ResetCompleted : Components::BaseMainBG
         {
           if( IsHoldTimerFinished )
           {
-            DeviceInterface::SystemDevice.RebootSystem();
+            DeviceInterface::SystemDevice.SendSystemCommand( Enum::SystemTxCmd.REBOOT_SYSTEM );
           }
           else
           {
@@ -2350,7 +2353,7 @@ class SET42_ResetCompleted : Components::BaseMainBG
     if( IsRebootResponseReceived ||
         DeviceInterface::VehicleDevice.IsResReprogramInfoTimeoutErr1Detected )
     {
-      DeviceInterface::SystemDevice.RebootSystem();
+      DeviceInterface::SystemDevice.SendSystemCommand( Enum::SystemTxCmd.REBOOT_SYSTEM );
     }
     else
     {
@@ -3010,7 +3013,7 @@ class SET27_ConfirmUpdate : Components::BaseMainBG
   inherited method Init()
   {
     trace "SET27";
-    DeviceInterface::SystemDevice.SaveLastStatus();
+    DeviceInterface::SystemDevice.SendSystemCommand( Enum::SystemTxCmd.SAVE_LAST_STATUS );
   }
 
   $rect <10,400,190,440>
@@ -3096,7 +3099,7 @@ class SET27_ConfirmUpdate : Components::BaseMainBG
   $rect <760,340,960,380>
   slot OnHoldTimerSlot
   {
-    DeviceInterface::SystemDevice.StartOTA();
+    DeviceInterface::SystemDevice.SendSystemCommand( Enum::SystemTxCmd.START_OTA );
   }
 }
 

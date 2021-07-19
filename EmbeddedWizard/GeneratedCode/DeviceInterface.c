@@ -112,7 +112,6 @@ void DeviceInterfaceSystemDeviceClass__Init( DeviceInterfaceSystemDeviceClass _t
 
   /* ... then construct all embedded objects */
   CoreSystemEvent__Init( &_this->FactoryTestSystemEvent, &_this->_.XObject, 0 );
-  CoreSystemEvent__Init( &_this->QrCodeSystemEvent, &_this->_.XObject, 0 );
   CoreSystemEvent__Init( &_this->OpeningSystemEvent, &_this->_.XObject, 0 );
   CoreSystemEvent__Init( &_this->InspectionDisplaySystemEvent, &_this->_.XObject, 0 );
   CoreSystemEvent__Init( &_this->InspectionModeSystemEvent, &_this->_.XObject, 0 );
@@ -134,7 +133,6 @@ void DeviceInterfaceSystemDeviceClass__ReInit( DeviceInterfaceSystemDeviceClass 
 
   /* ... then re-construct all embedded objects */
   CoreSystemEvent__ReInit( &_this->FactoryTestSystemEvent );
-  CoreSystemEvent__ReInit( &_this->QrCodeSystemEvent );
   CoreSystemEvent__ReInit( &_this->OpeningSystemEvent );
   CoreSystemEvent__ReInit( &_this->InspectionDisplaySystemEvent );
   CoreSystemEvent__ReInit( &_this->InspectionModeSystemEvent );
@@ -149,7 +147,6 @@ void DeviceInterfaceSystemDeviceClass__Done( DeviceInterfaceSystemDeviceClass _t
 
   /* Finalize all embedded objects */
   CoreSystemEvent__Done( &_this->FactoryTestSystemEvent );
-  CoreSystemEvent__Done( &_this->QrCodeSystemEvent );
   CoreSystemEvent__Done( &_this->OpeningSystemEvent );
   CoreSystemEvent__Done( &_this->InspectionDisplaySystemEvent );
   CoreSystemEvent__Done( &_this->InspectionModeSystemEvent );
@@ -195,38 +192,13 @@ void DeviceInterfaceSystemDeviceClass__TestDisplayPattern( void* _this, XInt32 a
   , aIdx );
 }
 
-/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.NotifyEsnRead()' */
-void DeviceInterfaceSystemDeviceClass_NotifyEsnRead( DeviceInterfaceSystemDeviceClass _this, 
-  XString aESN )
-{
-  DeviceInterfaceSystemDeviceClass_OnSetESN( _this, aESN );
-}
-
-/* Wrapper function for the non virtual method : 'DeviceInterface::SystemDeviceClass.NotifyEsnRead()' */
-void DeviceInterfaceSystemDeviceClass__NotifyEsnRead( void* _this, XString aESN )
-{
-  DeviceInterfaceSystemDeviceClass_NotifyEsnRead((DeviceInterfaceSystemDeviceClass)_this
-  , aESN );
-}
-
-/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnSetESN()' */
-void DeviceInterfaceSystemDeviceClass_OnSetESN( DeviceInterfaceSystemDeviceClass _this, 
-  XString value )
-{
-  if ( EwCompString( _this->ESN, value ) != 0 )
-  {
-    _this->ESN = EwShareString( value );
-    EwNotifyRefObservers( EwNewRef( _this, DeviceInterfaceSystemDeviceClass_OnGetESN, 
-      DeviceInterfaceSystemDeviceClass_OnSetESN ), 0 );
-  }
-}
-
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnGetESN()' */
 XString DeviceInterfaceSystemDeviceClass_OnGetESN( DeviceInterfaceSystemDeviceClass _this )
 {
-  if ( !EwCompString( 0, _this->ESN ))
-    ew_get_esn();
+  XString EsnStr = 0;
 
+  EsnStr = ew_get_esn_string();
+  _this->ESN = EwShareString( EsnStr );
   return _this->ESN;
 }
 
@@ -253,15 +225,6 @@ void DeviceInterfaceSystemDeviceClass_ResetToFactoryDefault( DeviceInterfaceSyst
 {
   _this->IsRunningFactoryReset = 1;
   EW_reset_to_factory_default();
-}
-
-/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.RebootSystem()' */
-void DeviceInterfaceSystemDeviceClass_RebootSystem( DeviceInterfaceSystemDeviceClass _this )
-{
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( _this );
-
-  ew_reboot_system();
 }
 
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.SetTFTDutyCycle()' */
@@ -353,19 +316,6 @@ void DeviceInterfaceSystemDeviceClass__ShowBurnInTestResult( void* _this, XBool
   , aResult );
 }
 
-/* This method is intended to be called by the device to notify the GUI application 
-   about a particular system event. */
-void DeviceInterfaceSystemDeviceClass_NotifyQrCodeReady( DeviceInterfaceSystemDeviceClass _this )
-{
-  CoreSystemEvent_Trigger( &_this->QrCodeSystemEvent, 0, 0 );
-}
-
-/* Wrapper function for the non virtual method : 'DeviceInterface::SystemDeviceClass.NotifyQrCodeReady()' */
-void DeviceInterfaceSystemDeviceClass__NotifyQrCodeReady( void* _this )
-{
-  DeviceInterfaceSystemDeviceClass_NotifyQrCodeReady((DeviceInterfaceSystemDeviceClass)_this );
-}
-
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.GetLocalTime()' */
 DeviceInterfaceRtcTime DeviceInterfaceSystemDeviceClass_GetLocalTime( DeviceInterfaceSystemDeviceClass _this )
 {
@@ -438,11 +388,7 @@ XBool DeviceInterfaceSystemDeviceClass_IsTFTBacklightOn( DeviceInterfaceSystemDe
 {
   XBool IsBacklightOn;
 
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( _this );
-
-  IsBacklightOn = 0;
-  IsBacklightOn = display_is_tft_backlight_on();
+  IsBacklightOn = !!DeviceInterfaceSystemDeviceClass_GetSystemStatus( _this, EnumSystemStatusIS_TFT_BACKLIGHT_ON );
   return IsBacklightOn;
 }
 
@@ -473,16 +419,13 @@ XEnum DeviceInterfaceSystemDeviceClass_OnGetOperationMode( DeviceInterfaceSystem
   return _this->OperationMode;
 }
 
-/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.IsOperationModeReady()' */
+/* Check if the operation mode is read from EEPROM */
 XBool DeviceInterfaceSystemDeviceClass_IsOperationModeReady( DeviceInterfaceSystemDeviceClass _this )
 {
   XBool IsOperationModeReady;
 
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( _this );
-
-  IsOperationModeReady = 0;
-  IsOperationModeReady = ew_is_operation_mode_ready();
+  IsOperationModeReady = !!DeviceInterfaceSystemDeviceClass_GetSystemStatus( _this, 
+  EnumSystemStatusIS_OP_MODE_READY );
   return IsOperationModeReady;
 }
 
@@ -532,7 +475,7 @@ void DeviceInterfaceSystemDeviceClass_SendInspectionResponse( DeviceInterfaceSys
 }
 
 /* Get current home type from UI */
-void DeviceInterfaceSystemDeviceClass_NotifyLastPageRead( DeviceInterfaceSystemDeviceClass _this )
+void DeviceInterfaceSystemDeviceClass_GetLastPage( DeviceInterfaceSystemDeviceClass _this )
 {
   XEnum HomeGroup = EnumHomeGroupNONE;
   XEnum MeterDisplaySetting = EnumMeterDisplayTACHOMETER;
@@ -602,10 +545,10 @@ void DeviceInterfaceSystemDeviceClass_NotifyLastPageRead( DeviceInterfaceSystemD
   }
 }
 
-/* Wrapper function for the non virtual method : 'DeviceInterface::SystemDeviceClass.NotifyLastPageRead()' */
-void DeviceInterfaceSystemDeviceClass__NotifyLastPageRead( void* _this )
+/* Wrapper function for the non virtual method : 'DeviceInterface::SystemDeviceClass.GetLastPage()' */
+void DeviceInterfaceSystemDeviceClass__GetLastPage( void* _this )
 {
-  DeviceInterfaceSystemDeviceClass_NotifyLastPageRead((DeviceInterfaceSystemDeviceClass)_this );
+  DeviceInterfaceSystemDeviceClass_GetLastPage((DeviceInterfaceSystemDeviceClass)_this );
 }
 
 /* Get current home type from UI */
@@ -813,10 +756,8 @@ void DeviceInterfaceSystemDeviceClass_OnSetIsClockAutoAdj( DeviceInterfaceSystem
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnGetIsClockAutoAdj()' */
 XBool DeviceInterfaceSystemDeviceClass_OnGetIsClockAutoAdj( DeviceInterfaceSystemDeviceClass _this )
 {
-  XBool ClockAutoAdjStatus = 0;
-
-  ClockAutoAdjStatus = EW_get_clk_auto_adj();
-  _this->IsClockAutoAdj = ClockAutoAdjStatus;
+  _this->IsClockAutoAdj = !!DeviceInterfaceSystemDeviceClass_GetSystemStatus( _this, 
+  EnumSystemStatusIS_CLK_AUTO_ADJ );
   return _this->IsClockAutoAdj;
 }
 
@@ -828,9 +769,19 @@ void DeviceInterfaceSystemDeviceClass_NotifySystemEventReceived( DeviceInterface
   DeviceInterfaceSystemData SystemDataContext = EwNewObject( DeviceInterfaceSystemData, 
     0 );
 
-  SystemDataContext->RxEvent = aSystemRxEvent;
-  CoreSystemEvent_Trigger( &_this->SystemDataReceivedSystemEvent, ((XObject)SystemDataContext ), 
-  0 );
+  switch ( aSystemRxEvent )
+  {
+    case EnumSystemRxEventLAST_PAGE_READ :
+      DeviceInterfaceSystemDeviceClass_GetLastPage( _this );
+    break;
+
+    default : 
+    {
+      SystemDataContext->RxEvent = aSystemRxEvent;
+      CoreSystemEvent_Trigger( &_this->SystemDataReceivedSystemEvent, ((XObject)SystemDataContext ), 
+      0 );
+    }
+  }
 }
 
 /* Wrapper function for the non virtual method : 'DeviceInterface::SystemDeviceClass.NotifySystemEventReceived()' */
@@ -841,35 +792,12 @@ void DeviceInterfaceSystemDeviceClass__NotifySystemEventReceived( void* _this, X
   , aSystemRxEvent );
 }
 
-/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.StartOTA()' */
-void DeviceInterfaceSystemDeviceClass_StartOTA( DeviceInterfaceSystemDeviceClass _this )
-{
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( _this );
-
-  ew_start_ota();
-}
-
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnGetIsSoftwareUpdateEnabled()' */
 XBool DeviceInterfaceSystemDeviceClass_OnGetIsSoftwareUpdateEnabled( DeviceInterfaceSystemDeviceClass _this )
 {
-  XBool IsEnabled = 0;
-
-  {
-    bc_motocon_ota_update_info_t* ota_update_info = BC_motocon_get_ota_update_info();
-    IsEnabled = ota_update_info->enable;
-  }
-  _this->IsSoftwareUpdateEnabled = IsEnabled;
+  _this->IsSoftwareUpdateEnabled = !!DeviceInterfaceSystemDeviceClass_GetSystemStatus( 
+  _this, EnumSystemStatusIS_SW_UPDATE_ENABLED );
   return _this->IsSoftwareUpdateEnabled;
-}
-
-/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.SaveLastStatus()' */
-void DeviceInterfaceSystemDeviceClass_SaveLastStatus( DeviceInterfaceSystemDeviceClass _this )
-{
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( _this );
-
-  ew_save_last_status();
 }
 
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.SendSystemCommand()' */
@@ -982,6 +910,13 @@ void DeviceInterfaceSystemDeviceClass_ChangeLanguage( DeviceInterfaceSystemDevic
     default : 
       EwSetLanguage( Default );
   }
+}
+
+/* Default onset method for the property 'ESN' */
+void DeviceInterfaceSystemDeviceClass_OnSetESN( DeviceInterfaceSystemDeviceClass _this, 
+  XString value )
+{
+  _this->ESN = EwShareString( value );
 }
 
 /* Variants derived from the class : 'DeviceInterface::SystemDeviceClass' */

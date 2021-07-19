@@ -8,6 +8,7 @@ class Application : Core::Root
   $rect <10,340,200,380>
   inherited method Init()
   {
+    trace "app init";
     $if $prototyper
       signal OnStartOpeningSlot;
 
@@ -329,7 +330,7 @@ class Application : Core::Root
     return aHomeDialog;
   }
 
-  $rect <530,140,780,180>
+  $rect <520,100,770,140>
   slot OnOpeningFinishedSlot
   {
     var Core::Group OpeningDialog = (Core::Group)sender;
@@ -346,18 +347,12 @@ class Application : Core::Root
     }
   }
 
-  $rect <530,40,780,80>
-  object Core::SystemEventHandler OpeningSystemEventHandler
-  {
-    preset OnEvent = OnStartOpeningSlot;
-    preset Event = DeviceInterface::SystemDevice.OpeningSystemEvent;
-  }
-
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <530,90,780,130>
+  $rect <520,50,770,90>
   slot OnStartOpeningSlot
   {
+    trace "OnStartOpeningSlot";
     CheckOpeningTimer.Enabled = false;
 
     if( Enum::OperationMode.FACTORY == DeviceInterface::SystemDevice.OperationMode )
@@ -409,7 +404,7 @@ class Application : Core::Root
     }
   }
 
-  $rect <530,190,780,230>
+  $rect <520,150,770,190>
   object Core::Timer CheckOpeningTimer
   {
     preset OnTrigger = OnCheckOpeningSlot;
@@ -418,7 +413,7 @@ class Application : Core::Root
     preset Enabled = true;
   }
 
-  $rect <530,240,780,280>
+  $rect <520,200,770,240>
   slot OnCheckOpeningSlot
   {
     var bool IsTFTBacklightOn = DeviceInterface::SystemDevice.IsTFTBacklightOn();
@@ -546,7 +541,7 @@ class Application : Core::Root
     DeviceInterface::SystemDevice.OperationMode = Enum::OperationMode.FACTORY;
   }
 
-  $rect <530,290,790,330>
+  $rect <520,250,780,290>
   var bool IsFactoryModeDialogDisplayed;
 
   $rect <800,490,1000,530>
@@ -635,6 +630,10 @@ class Application : Core::Root
     {
       switch( SystemData.RxEvent )
       {
+        case Enum::SystemRxEvent.START_OPENING:
+        {
+          postsignal OnStartOpeningSlot;
+        }
         case Enum::SystemRxEvent.LANGUAGE_CHANGED:
         {
           var Enum::Language NewLanguage = DeviceInterface::SystemDevice.GetSystemStatus( Enum::SystemStatus.LANGUAGE );

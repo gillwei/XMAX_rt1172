@@ -62,7 +62,6 @@
 EW_DEFINE_FIELDS( DeviceInterfaceSystemDeviceClass, TemplatesDeviceClass )
   EW_VARIABLE( CurrentAdjustTime, DeviceInterfaceRtcTime )
   EW_OBJECT  ( FactoryTestSystemEvent, CoreSystemEvent )
-  EW_OBJECT  ( QrCodeSystemEvent, CoreSystemEvent )
   EW_OBJECT  ( OpeningSystemEvent, CoreSystemEvent )
   EW_OBJECT  ( InspectionDisplaySystemEvent, CoreSystemEvent )
   EW_OBJECT  ( InspectionModeSystemEvent, CoreSystemEvent )
@@ -105,20 +104,6 @@ void DeviceInterfaceSystemDeviceClass__TestDisplayPattern( void* _this, XInt32 a
 /* The following define announces the presence of the method DeviceInterface::SystemDeviceClass.TestDisplayPattern(). */
 #define _DeviceInterfaceSystemDeviceClass__TestDisplayPattern_
 
-/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.NotifyEsnRead()' */
-void DeviceInterfaceSystemDeviceClass_NotifyEsnRead( DeviceInterfaceSystemDeviceClass _this, 
-  XString aESN );
-
-/* Wrapper function for the non virtual method : 'DeviceInterface::SystemDeviceClass.NotifyEsnRead()' */
-void DeviceInterfaceSystemDeviceClass__NotifyEsnRead( void* _this, XString aESN );
-
-/* The following define announces the presence of the method DeviceInterface::SystemDeviceClass.NotifyEsnRead(). */
-#define _DeviceInterfaceSystemDeviceClass__NotifyEsnRead_
-
-/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnSetESN()' */
-void DeviceInterfaceSystemDeviceClass_OnSetESN( DeviceInterfaceSystemDeviceClass _this, 
-  XString value );
-
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnGetESN()' */
 XString DeviceInterfaceSystemDeviceClass_OnGetESN( DeviceInterfaceSystemDeviceClass _this );
 
@@ -127,9 +112,6 @@ XString DeviceInterfaceSystemDeviceClass_OnGetSoftwareVersion( DeviceInterfaceSy
 
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.ResetToFactoryDefault()' */
 void DeviceInterfaceSystemDeviceClass_ResetToFactoryDefault( DeviceInterfaceSystemDeviceClass _this );
-
-/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.RebootSystem()' */
-void DeviceInterfaceSystemDeviceClass_RebootSystem( DeviceInterfaceSystemDeviceClass _this );
 
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.SetTFTDutyCycle()' */
 void DeviceInterfaceSystemDeviceClass_SetTFTDutyCycle( DeviceInterfaceSystemDeviceClass _this, 
@@ -169,16 +151,6 @@ void DeviceInterfaceSystemDeviceClass__ShowBurnInTestResult( void* _this, XBool
 /* The following define announces the presence of the method DeviceInterface::SystemDeviceClass.ShowBurnInTestResult(). */
 #define _DeviceInterfaceSystemDeviceClass__ShowBurnInTestResult_
 
-/* This method is intended to be called by the device to notify the GUI application 
-   about a particular system event. */
-void DeviceInterfaceSystemDeviceClass_NotifyQrCodeReady( DeviceInterfaceSystemDeviceClass _this );
-
-/* Wrapper function for the non virtual method : 'DeviceInterface::SystemDeviceClass.NotifyQrCodeReady()' */
-void DeviceInterfaceSystemDeviceClass__NotifyQrCodeReady( void* _this );
-
-/* The following define announces the presence of the method DeviceInterface::SystemDeviceClass.NotifyQrCodeReady(). */
-#define _DeviceInterfaceSystemDeviceClass__NotifyQrCodeReady_
-
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.GetLocalTime()' */
 DeviceInterfaceRtcTime DeviceInterfaceSystemDeviceClass_GetLocalTime( DeviceInterfaceSystemDeviceClass _this );
 
@@ -205,7 +177,7 @@ void DeviceInterfaceSystemDeviceClass_OnSetOperationMode( DeviceInterfaceSystemD
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnGetOperationMode()' */
 XEnum DeviceInterfaceSystemDeviceClass_OnGetOperationMode( DeviceInterfaceSystemDeviceClass _this );
 
-/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.IsOperationModeReady()' */
+/* Check if the operation mode is read from EEPROM */
 XBool DeviceInterfaceSystemDeviceClass_IsOperationModeReady( DeviceInterfaceSystemDeviceClass _this );
 
 /* Notifiy the inspection display pattern to test */
@@ -232,13 +204,13 @@ void DeviceInterfaceSystemDeviceClass_SendInspectionResponse( DeviceInterfaceSys
   XEnum aMode, XUInt8 aRes );
 
 /* Get current home type from UI */
-void DeviceInterfaceSystemDeviceClass_NotifyLastPageRead( DeviceInterfaceSystemDeviceClass _this );
+void DeviceInterfaceSystemDeviceClass_GetLastPage( DeviceInterfaceSystemDeviceClass _this );
 
-/* Wrapper function for the non virtual method : 'DeviceInterface::SystemDeviceClass.NotifyLastPageRead()' */
-void DeviceInterfaceSystemDeviceClass__NotifyLastPageRead( void* _this );
+/* Wrapper function for the non virtual method : 'DeviceInterface::SystemDeviceClass.GetLastPage()' */
+void DeviceInterfaceSystemDeviceClass__GetLastPage( void* _this );
 
-/* The following define announces the presence of the method DeviceInterface::SystemDeviceClass.NotifyLastPageRead(). */
-#define _DeviceInterfaceSystemDeviceClass__NotifyLastPageRead_
+/* The following define announces the presence of the method DeviceInterface::SystemDeviceClass.GetLastPage(). */
+#define _DeviceInterfaceSystemDeviceClass__GetLastPage_
 
 /* Get current home type from UI */
 void DeviceInterfaceSystemDeviceClass_UpdateLastPage( DeviceInterfaceSystemDeviceClass _this );
@@ -290,14 +262,8 @@ void DeviceInterfaceSystemDeviceClass__NotifySystemEventReceived( void* _this, X
 /* The following define announces the presence of the method DeviceInterface::SystemDeviceClass.NotifySystemEventReceived(). */
 #define _DeviceInterfaceSystemDeviceClass__NotifySystemEventReceived_
 
-/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.StartOTA()' */
-void DeviceInterfaceSystemDeviceClass_StartOTA( DeviceInterfaceSystemDeviceClass _this );
-
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnGetIsSoftwareUpdateEnabled()' */
 XBool DeviceInterfaceSystemDeviceClass_OnGetIsSoftwareUpdateEnabled( DeviceInterfaceSystemDeviceClass _this );
-
-/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.SaveLastStatus()' */
-void DeviceInterfaceSystemDeviceClass_SaveLastStatus( DeviceInterfaceSystemDeviceClass _this );
 
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.SendSystemCommand()' */
 void DeviceInterfaceSystemDeviceClass_SendSystemCommand( DeviceInterfaceSystemDeviceClass _this, 
@@ -310,6 +276,10 @@ XInt32 DeviceInterfaceSystemDeviceClass_GetSystemStatus( DeviceInterfaceSystemDe
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.ChangeLanguage()' */
 void DeviceInterfaceSystemDeviceClass_ChangeLanguage( DeviceInterfaceSystemDeviceClass _this, 
   XEnum aLanguage );
+
+/* Default onset method for the property 'ESN' */
+void DeviceInterfaceSystemDeviceClass_OnSetESN( DeviceInterfaceSystemDeviceClass _this, 
+  XString value );
 
 #ifdef __cplusplus
   }

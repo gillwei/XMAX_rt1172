@@ -72,20 +72,23 @@
 /* Compressed strings for the language 'Default'. */
 EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
-  0x00000080, /* ratio 81.25 % */
-  0xB8002D00, 0x000A6452, 0x1CC2003A, 0xC0075004, 0x1242001C, 0x00039002, 0x002B0004,
-  0x08CC38D2, 0x36000C40, 0xD000CA00, 0xC9801151, 0x508B0307, 0xA111B909, 0x60002245,
-  0x06F00136, 0x16961900, 0xC294A64F, 0x8A436112, 0xACAC006E, 0x80268489, 0x2A4D2C36,
-  0x88D2B948, 0x411E92D0, 0x354934E6, 0x00000020, 0x00000000
+  0x000000C0, /* ratio 70.83 % */
+  0xB8001700, 0x000C2452, 0x80010738, 0x80069000, 0xE800861B, 0x61689800, 0x11299160,
+  0x58941801, 0x001CC007, 0x90023442, 0x158010A3, 0x8A1B1F88, 0x4006C001, 0x4A3A0019,
+  0x91607C4E, 0x198F4B8A, 0xB0011217, 0x378009B3, 0x5CDCC800, 0xC582B138, 0x60010E27,
+  0xA4906894, 0x5F08A444, 0xF0F86C3E, 0x3F96528C, 0x28B4CE33, 0x91C726E5, 0x45026D49,
+  0xCDCDB592, 0x026A0A89, 0xE6C00230, 0x892D95C2, 0x101B9C4E, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
 static const XRect _Const0000 = {{ 0, 0 }, { 480, 272 }};
 static const XRect _Const0001 = {{ 0, 0 }, { 480, 38 }};
 static const XStringRes _Const0002 = { _StringsDefault0, 0x0002 };
-static const XStringRes _Const0003 = { _StringsDefault0, 0x0018 };
-static const XStringRes _Const0004 = { _StringsDefault0, 0x0027 };
-static const XStringRes _Const0005 = { _StringsDefault0, 0x0036 };
+static const XStringRes _Const0003 = { _StringsDefault0, 0x000D };
+static const XStringRes _Const0004 = { _StringsDefault0, 0x0023 };
+static const XStringRes _Const0005 = { _StringsDefault0, 0x0032 };
+static const XStringRes _Const0006 = { _StringsDefault0, 0x0047 };
+static const XStringRes _Const0007 = { _StringsDefault0, 0x0056 };
 
 /* Initializer for the class 'Application::Application' */
 void ApplicationApplication__Init( ApplicationApplication _this, XObject aLink, XHandle aArg )
@@ -100,7 +103,6 @@ void ApplicationApplication__Init( ApplicationApplication _this, XObject aLink, 
   CoreSystemEventHandler__Init( &_this->FactoryTestEventHandler, &_this->_.XObject, 0 );
   CorePropertyObserver__Init( &_this->BtFwStatusObserver, &_this->_.XObject, 0 );
   CoreTimer__Init( &_this->DDModeTestTimer, &_this->_.XObject, 0 );
-  CoreSystemEventHandler__Init( &_this->OpeningSystemEventHandler, &_this->_.XObject, 0 );
   StatusBarMain__Init( &_this->StatusBar, &_this->_.XObject, 0 );
   CoreTimer__Init( &_this->CheckOpeningTimer, &_this->_.XObject, 0 );
   CoreSystemEventHandler__Init( &_this->PhoneCallStateChangedEventHandler, &_this->_.XObject, 0 );
@@ -133,9 +135,6 @@ void ApplicationApplication__Init( ApplicationApplication _this, XObject aLink, 
   &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ), DeviceInterfaceBluetoothDeviceClass_OnGetBtFwStatus, 
   DeviceInterfaceBluetoothDeviceClass_OnSetBtFwStatus ));
   _this->DDModeTestTimer.OnTrigger = EwNewSlot( _this, ApplicationApplication_OnDDModeTestSlot );
-  _this->OpeningSystemEventHandler.OnEvent = EwNewSlot( _this, ApplicationApplication_OnStartOpeningSlot );
-  CoreSystemEventHandler_OnSetEvent( &_this->OpeningSystemEventHandler, &EwGetAutoObject( 
-  &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->OpeningSystemEvent );
   _this->CheckOpeningTimer.OnTrigger = EwNewSlot( _this, ApplicationApplication_OnCheckOpeningSlot );
   _this->PhoneCallStateChangedEventHandler.OnEvent = EwNewSlot( _this, ApplicationApplication_OnPhoneCallStateChangedSlot );
   CoreSystemEventHandler_OnSetEvent( &_this->PhoneCallStateChangedEventHandler, 
@@ -165,7 +164,6 @@ void ApplicationApplication__ReInit( ApplicationApplication _this )
   CoreSystemEventHandler__ReInit( &_this->FactoryTestEventHandler );
   CorePropertyObserver__ReInit( &_this->BtFwStatusObserver );
   CoreTimer__ReInit( &_this->DDModeTestTimer );
-  CoreSystemEventHandler__ReInit( &_this->OpeningSystemEventHandler );
   StatusBarMain__ReInit( &_this->StatusBar );
   CoreTimer__ReInit( &_this->CheckOpeningTimer );
   CoreSystemEventHandler__ReInit( &_this->PhoneCallStateChangedEventHandler );
@@ -185,7 +183,6 @@ void ApplicationApplication__Done( ApplicationApplication _this )
   CoreSystemEventHandler__Done( &_this->FactoryTestEventHandler );
   CorePropertyObserver__Done( &_this->BtFwStatusObserver );
   CoreTimer__Done( &_this->DDModeTestTimer );
-  CoreSystemEventHandler__Done( &_this->OpeningSystemEventHandler );
   StatusBarMain__Done( &_this->StatusBar );
   CoreTimer__Done( &_this->CheckOpeningTimer );
   CoreSystemEventHandler__Done( &_this->PhoneCallStateChangedEventHandler );
@@ -206,6 +203,8 @@ void ApplicationApplication_Init( ApplicationApplication _this, XHandle aArg )
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( aArg );
+
+  EwTrace( "%s", EwLoadString( &_Const0002 ));
 }
 
 /* 'C' function for method : 'Application::Application.OnDisclaimerAcceptedSlot()' */
@@ -323,7 +322,7 @@ void ApplicationApplication_OnSetStatusBarVisible( ApplicationApplication _this,
   {
     _this->StatusBarVisible = value;
     CoreGroup__OnSetVisible( &_this->StatusBar, value );
-    EwTrace( "%s%b", EwLoadString( &_Const0002 ), value );
+    EwTrace( "%s%b", EwLoadString( &_Const0003 ), value );
   }
 }
 
@@ -431,7 +430,7 @@ void ApplicationApplication_OnDDModeTestSlot( ApplicationApplication _this, XObj
   EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )->DDModeActivated 
   = (XBool)!DeviceInterfaceVehicleDeviceClass_OnGetDDModeActivated( EwGetAutoObject( 
   &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ));
-  EwTrace( "%s%b", EwLoadString( &_Const0003 ), DeviceInterfaceVehicleDeviceClass_OnGetDDModeActivated( 
+  EwTrace( "%s%b", EwLoadString( &_Const0004 ), DeviceInterfaceVehicleDeviceClass_OnGetDDModeActivated( 
     EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )));
   DeviceInterfaceVehicleDeviceClass_NotifyDDModeStateChanged( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
   DeviceInterfaceVehicleDeviceClass ));
@@ -577,6 +576,7 @@ void ApplicationApplication_OnStartOpeningSlot( ApplicationApplication _this, XO
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
+  EwTrace( "%s", EwLoadString( &_Const0005 ));
   CoreTimer_OnSetEnabled( &_this->CheckOpeningTimer, 0 );
 
   if ( EnumOperationModeFACTORY == DeviceInterfaceSystemDeviceClass_OnGetOperationMode( 
@@ -605,7 +605,7 @@ void ApplicationApplication_ReturnToHome( ApplicationApplication _this )
   XInt32 NoOfDialogs;
   XInt32 i;
 
-  EwTrace( "%s", EwLoadString( &_Const0004 ));
+  EwTrace( "%s", EwLoadString( &_Const0006 ));
   NoOfDialogs = CoreGroup_CountDialogs((CoreGroup)_this );
 
   for ( i = 0; i < NoOfDialogs; i++ )
@@ -638,7 +638,7 @@ void ApplicationApplication_OnCheckOpeningSlot( ApplicationApplication _this, XO
       && ( EnumOperationModePRODUCTION_TEST != DeviceInterfaceSystemDeviceClass_OnGetOperationMode( 
       EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass ))))
   {
-    EwTrace( "%s%b", EwLoadString( &_Const0005 ), IsTFTBacklightOn );
+    EwTrace( "%s%b", EwLoadString( &_Const0007 ), IsTFTBacklightOn );
     CoreTimer_OnSetEnabled( &_this->CheckOpeningTimer, 0 );
     EwSignal( EwNewSlot( _this, ApplicationApplication_OnStartOpeningSlot ), ((XObject)_this ));
   }
@@ -854,6 +854,11 @@ void ApplicationApplication_OnSystemEventReceived( ApplicationApplication _this,
   if ( SystemData != 0 )
     switch ( SystemData->RxEvent )
     {
+      case EnumSystemRxEventSTART_OPENING :
+        EwPostSignal( EwNewSlot( _this, ApplicationApplication_OnStartOpeningSlot ), 
+          ((XObject)_this ));
+      break;
+
       case EnumSystemRxEventLANGUAGE_CHANGED :
       {
         XEnum NewLanguage = (XEnum)DeviceInterfaceSystemDeviceClass_GetSystemStatus( 

@@ -426,7 +426,6 @@ class LNC_Main : Components::BaseComponent
   {
     while( CountDialogs() > 0 )
     {
-      trace "DismissChildDialogs ", classof GetDialogAtIndex( 0 );
       DismissDialog( GetDialogAtIndex( 0 ), null, null, null, null, null, false );
     }
   }
@@ -952,26 +951,6 @@ $rect <10,60,250,100>
 $output false
 class LNC_Base : Core::Group
 {
-  $rect <240,250,440,290>
-  inherited method ReInit()
-  {
-    switch( language )
-    {
-      case TraditionalChinese:
-      {
-        PreviousItemTitleText.Font = Fonts::NotoSansCjkTcMedium24pt;
-        CurrentItemTitleText.Font = Fonts::NotoSansCjkTcMedium28pt;
-        NextItemTitleText.Font = Fonts::NotoSansCjkTcMedium24pt;
-      }
-      default:
-      {
-        PreviousItemTitleText.Font = Fonts::NotoSansCjkJpMedium24pt;
-        CurrentItemTitleText.Font = Fonts::NotoSansCjkJpMedium28pt;
-        NextItemTitleText.Font = Fonts::NotoSansCjkJpMedium24pt;
-      }
-    }
-  }
-
   $rect <0,250,200,290>
   inherited property Bounds = <0,38,480,272>;
 
@@ -991,7 +970,7 @@ class LNC_Base : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text CurrentItemTitleText
+  object Components::BaseText CurrentItemTitleText
   {
     preset Bounds = <138,92,469,135>;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
@@ -999,7 +978,7 @@ class LNC_Base : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text PreviousItemTitleText
+  object Components::BaseText PreviousItemTitleText
   {
     preset Bounds = <121,17,439,50>;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
@@ -1009,7 +988,7 @@ class LNC_Base : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Text NextItemTitleText
+  object Components::BaseText NextItemTitleText
   {
     preset Bounds = <121,173,439,206>;
     preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];

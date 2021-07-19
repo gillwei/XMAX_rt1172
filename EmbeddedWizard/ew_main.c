@@ -572,8 +572,9 @@ void EW_init
     void
     )
 {
-create_task();
+ew_device_bluetooth_create_queue();
 ew_key_init();
 ew_system_int();
+create_task();
 }
 

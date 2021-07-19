@@ -1718,7 +1718,13 @@ enum SystemRxEvent
   item PHONE_LANGUAGE_RECEIVED;
 
   $rect <250,210,470,250>
-  item TOTAL;
+  item LAST_PAGE_READ;
+
+  $rect <250,310,470,350>
+  item START_OPENING;
+
+  $rect <250,260,470,300>
+  item ESN_READY;
 }
 
 $rect <730,470,930,510>
@@ -1831,36 +1837,54 @@ enum SystemTxCmd
   item ADJ_TFT_BRIGHTNESS_LEVEL_DOWN;
 
   $rect <10,210,230,250>
-  item TOTAL;
+  item START_OTA;
+
+  $rect <10,260,230,300>
+  item REBOOT_SYSTEM;
+
+  $rect <10,310,230,350>
+  item SAVE_LAST_STATUS;
 }
 
 $rect <730,270,930,310>
 $output false
 enum SystemStatus
 {
-  $rect <10,10,290,50>
+  $rect <10,10,240,50>
+  item IS_DEBUG_BUILD;
+
+  $rect <10,110,240,150>
+  item IS_CLK_AUTO_ADJ;
+
+  $rect <270,10,550,50>
   item IS_TFT_BRIGHTNESS_LEVEL_MAX;
 
-  $rect <10,60,290,100>
+  $rect <270,60,550,100>
   item IS_TFT_BRIGHTNESS_LEVEL_MIN;
 
-  $rect <10,110,290,150>
+  $rect <270,110,550,150>
   item IS_TFT_DERATING_ON;
 
-  $rect <10,160,290,200>
+  $rect <270,160,550,200>
+  item IS_TFT_BACKLIGHT_ON;
+
+  $rect <10,160,240,200>
   item IS_QRCODE_READY;
 
-  $rect <10,210,290,250>
+  $rect <570,10,790,50>
   item LANGUAGE;
 
-  $rect <10,260,230,300>
+  $rect <570,60,790,100>
   item TACHO_FULLSCALE;
 
-  $rect <10,310,230,350>
+  $rect <570,110,790,150>
   item TACHO_REDZONE_BEGIN;
 
-  $rect <10,360,230,400>
-  item TOTAL;
+  $rect <10,60,240,100>
+  item IS_OP_MODE_READY;
+
+  $rect <10,210,240,250>
+  item IS_SW_UPDATE_ENABLED;
 }
 
 $rect <730,320,930,360>
