@@ -1,7 +1,7 @@
 $version 11.00
 
 // This file is generated automatically.
-// Generated: 2021/07/02 14:28:43
+// Generated: 2021/07/19 16:26:22
 
 $output false
 const string ARGUMENT_STR =
@@ -1625,21 +1625,24 @@ const string POP17_APP_INIT_SETTING_FAILED =
 );
 
 $output false
-const string POP18_POI_LOADING_FAILED =
+const string POP19_NO_FAVORITE_PLACE =
+(
+  Default = "No favorites found.\nPinned locations in \u201cApp name\u201d will be shown here.";
+  Japanese = "\u304a\u6c17\u306b\u5165\u308a\u304c\u898b\u3064\u304b\u308a\u307e\u305b\u3093\u3002\n\u30a2\u30d7\u30ea\u304b\u3089\u304a\u6c17\u306b\u5165\u308a\u3092\u767b\u9332\u3057\u3066\u304f\u3060\u3055\u3044\u3002";
+);
+
+$output false
+const string POP20_NO_GAS_STATION =
+(
+  Default = "No nearby gas stations found.";
+  Japanese = "\u4ed8\u8fd1\u306b\u30ac\u30bd\u30ea\u30f3\u30b9\u30bf\u30f3\u30c9\u304c\u898b\u3064\u304b\u308a\u307e\u305b\u3093\u3002";
+);
+
+$output false
+const string POP21_POI_LOADING_FAILED =
 (
   Default = "Cannot retrieve data from your phone. Try again later.";
-);
-
-$output false
-const string POP18_NO_FAVORITE_PLACE =
-(
-  Default = "No favorites.\nPinned favorites in LC Navi will be shown here.";
-);
-
-$output false
-const string POP18_NO_GAS_STATION =
-(
-  Default = "No nearby gas stations.";
+  Japanese = "\u30c7\u30fc\u30bf\u3092\u53d6\u5f97\u3067\u304d\u307e\u305b\u3093\u3067\u3057\u305f\u3002\n\u3082\u3046\u4e00\u5ea6\u3001\u64cd\u4f5c\u3057\u3066\u304f\u3060\u3055\u3044\u3002";
 );
 
 $output false
@@ -2019,24 +2022,24 @@ const string SET06_NAME =
 $output false
 const string SET06_TIME_LEFT =
 (
-  Default = "Time left : ";
-  Japanese = "\u6b8b\u308a\u6642\u9593\uff1a";
-  French = "Temps restant : ";
-  Spanish = "Tiempo restante: ";
-  Italian = "Tempo rimasto: ";
-  German = "Verbleibende Zeit: ";
-  TraditionalChinese = "\u5269\u9918\u6642\u9593\uff1a";
-  SimplifiedChinese = "\u5269\u4f59\u65f6\u95f4: ";
-  Greek = "\u03a7\u03c1\u03cc\u03bd\u03bf\u03c2 \u03c0\u03bf\u03c5 \u03b1\u03c0\u03bf\u03bc\u03ad\u03bd\u03b5\u03b9: ";
-  Finnish = "Aikaa j\u00e4ljell\u00e4: ";
-  Hindi = "\u0936\u0947\u0937 \u0938\u092e\u092f: ";
-  Indonesian = "Waktu tersisa: ";
-  Polish = "Pozosta\u0142y czas: ";
-  PortugueseBrazil = "Tempo restante : ";
-  Thai = "\u0e40\u0e27\u0e25\u0e32\u0e17\u0e35\u0e48\u0e40\u0e2b\u0e25\u0e37\u0e2d: 3:00 \u0e19";
-  Vietnamese = "Th\u1eddi gian c\u00f2n l\u1ea1i: 3:00";
-  Korean = "\ub0a8\uc740 \uc2dc\uac04 : 3:00";
-  Malay = "Masa tinggal: 3:00";
+  Default = "Time left : %s";
+  Japanese = "\u6b8b\u308a\u6642\u9593\uff1a%s";
+  French = "Temps restant : %s";
+  Spanish = "Tiempo restante: %s";
+  Italian = "Tempo rimasto: %s";
+  German = "Verbleibende Zeit: %s";
+  TraditionalChinese = "\u5269\u9918\u6642\u9593\uff1a%s";
+  SimplifiedChinese = "\u5269\u4f59\u65f6\u95f4: %s";
+  Greek = "\u03a7\u03c1\u03cc\u03bd\u03bf\u03c2 \u03c0\u03bf\u03c5 \u03b1\u03c0\u03bf\u03bc\u03ad\u03bd\u03b5\u03b9: %s";
+  Finnish = "Aikaa j\u00e4ljell\u00e4: %s";
+  Hindi = "\u0936\u0947\u0937 \u0938\u092e\u092f: %s";
+  Indonesian = "Waktu tersisa: %s";
+  Polish = "Pozosta\u0142y czas: %s";
+  PortugueseBrazil = "Tempo restante : %s";
+  Thai = "\u0e40\u0e27\u0e25\u0e32\u0e17\u0e35\u0e48\u0e40\u0e2b\u0e25\u0e37\u0e2d: %s \u0e19";
+  Vietnamese = "Th\u1eddi gian c\u00f2n l\u1ea1i: %s";
+  Korean = "\ub0a8\uc740 \uc2dc\uac04 : %s";
+  Malay = "Masa tinggal: %s";
 );
 
 $output false
@@ -2109,27 +2112,72 @@ const string SET08_PASSKEY =
 );
 
 $output false
-const string SET09_BT_CONNECTED =
-(
-  Default = "\"%s\"\nBluetooth\nconnected.";
-);
-
-$output false
 const string SET10_CONNECTION_FAILED =
 (
   Default = "\"%s\"\nBluetooth\nconnection failed.";
+  Japanese = "\"%s\"\u3068\u306e\u63a5\u7d9a\u306b\u5931\u6557\u3057\u307e\u3057\u305f\u3002";
+  French = "\u00c9chec de connexion\nBluetooth \u00e0\n\u00ab\u00a0%s\u00a0\u00bb.";
+  Spanish = "\"%s\"\nConexi\u00f3n mediante\nBluetooth fallida.";
+  Italian = "\"%s\" Connessione \nBluetooth\nfallita.";
+  German = "\u201e%s\u201c\nBluetooth\n-Verbindung fehlgeschlagen.";
+  TraditionalChinese = "\u300c%s\u300d\nBluetooth\n\u9023\u7dda\u5931\u6557\u3002";
+  SimplifiedChinese = "\u201c%s\u201d\n\u84dd\u7259\n\u8fde\u63a5\u5931\u8d25\u3002";
+  Greek = "\u03a4\u03bf \"%s\"\nBluetooth\n\u03b4\u03b5\u03bd \u03c3\u03c5\u03bd\u03b4\u03ad\u03b8\u03b7\u03ba\u03b5.";
+  Finnish = "Laitteen %s\nBluetooth-\nyhteys ep\u00e4onnistui.";
+  Hindi = "\"%s\"\n\u092c\u094d\u0932\u0942\u091f\u0942\u0925\n\u0915\u0928\u0947\u0915\u094d\u0936\u0928 \u0905\u0938\u092b\u0932\u0964";
+  Indonesian = "\"%s\"\nKoneksi\nBluetooth gagal.";
+  Polish = "Nieudane po\u0142\u0105czenie przez\nBluetooth\nz urz\u0105dzeniem \u201e%s\u201d.";
+  PortugueseBrazil = "\"%s\"\nConex\u00e3o Bluetooth\ncom falha.";
+  Thai = "\"%s\"\n\u0e01\u0e32\u0e23\u0e40\u0e0a\u0e37\u0e48\u0e2d\u0e21\u0e15\u0e48\u0e2d\n\u0e1a\u0e25\u0e39\u0e17\u0e39\u0e18\u0e25\u0e49\u0e21\u0e40\u0e2b\u0e25\u0e27";
+  Vietnamese = "\"%s\"\nK\u1ebft n\u1ed1i\u00a0Bluetooth\nth\u1ea5t b\u1ea1i.";
+  Korean = "\"%s\"\uc640\uc758\nBluetooth \uc5f0\uacb0\uc744\n\uc2e4\ud328\ud588\uc2b5\ub2c8\ub2e4.";
+  Malay = "\u201c%s\u201d\nSambungan\nBluetooth gagal.";
 );
 
 $output false
 const string SET11_NO_LONGER_PAIRED =
 (
   Default = "\"%s\" is no longer paired with the vehicle.\nPlease pair it again.";
+  Japanese = "%s\u306b\u63a5\u7d9a\u3067\u304d\u307e\u305b\u3093\u3002\n\u30da\u30a2\u30ea\u30f3\u30b0\u3092\u3084\u308a\u76f4\u3057\u3066\u304f\u3060\u3055\u3044\u3002";
+  French = "%s n'est plus appair\u00e9 au\nv\u00e9hicule.\nVeuillez de nouveau proc\u00e9der \u00e0\nl'appairage.";
+  Spanish = "%s ya no est\u00e1 emparejado\ncon el veh\u00edculo.\nVuelva a emparejarlo.";
+  Italian = "%s non \u00e8 pi\u00f9 accoppiato con\nil veicolo.\nAccoppialo di nuovo.";
+  German = "%s ist nicht mehr mit dem\nFahrzeug gekoppelt.\nBitte koppeln Sie es erneut.";
+  TraditionalChinese = "%s \u5df2\u53d6\u6d88\u8207\u6a5f\u8eca\u7684\u914d\u5c0d\u3002\n\u8acb\u91cd\u65b0\u914d\u5c0d\u3002";
+  SimplifiedChinese = "%s \u4e0d\u518d\u4e0e\u8f66\u8f86\u914d\u5bf9\u3002\n\u8bf7\u91cd\u65b0\u914d\u5bf9\u3002";
+  Greek = "\u0397 \u03c3\u03c5\u03c3\u03ba\u03b5\u03c5\u03ae %s \u03b4\u03b5\u03bd \u03b5\u03af\u03bd\u03b1\u03b9 \u03c0\u03b9\u03b1 \u03c3\u03b5\n\u03b6\u03b5\u03cd\u03be\u03b7 \u03bc\u03b5 \u03c4\u03bf \u03cc\u03c7\u03b7\u03bc\u03b1.\n\u03a0\u03c1\u03b1\u03b3\u03bc\u03b1\u03c4\u03bf\u03c0\u03bf\u03b9\u03ae\u03c3\u03c4\u03b5 \u03be\u03b1\u03bd\u03ac \u03b6\u03b5\u03cd\u03be\u03b7.";
+  Finnish = "%s ei en\u00e4\u00e4 ole ajoneuvon pari.\nMuodosta laitepari uudelleen.";
+  Hindi = "%s \u0915\u093e \u091c\u094b\u095c\u093e \u0905\u092c \u0917\u093e\u0921\u0940 \u0915\u0947 \u0938\u093e\u0925 \u092c\u0928\u093e\n\u0939\u0941\u0906 \u0928\u0939\u0940\u0902 \u0939\u0948\u0964\n\u0915\u0943\u092a\u092f\u093e \u0907\u0938\u0947 \u0926\u094b\u092c\u093e\u0930\u093e \u091c\u094b\u095c\u093e \u0932\u0917\u093e\u090f\u0902\u0964";
+  Indonesian = "%s\u00a0tidak lagi dipasangkan\ndengan kendaraan.\nHarap pasangkan lagi.";
+  Polish = "Urz\u0105dzenie %s nie jest ju\u017c\nsparowane z pojazdem.\nSparuj ponownie.";
+  PortugueseBrazil = "%s n\u00e3o est\u00e1 mais pareado com\no ve\u00edculo.\nPareie novamente.";
+  Thai = "%s\n\u0e44\u0e21\u0e48\u0e44\u0e14\u0e49\u0e08\u0e31\u0e1a\u0e04\u0e39\u0e48\u0e01\u0e31\u0e1a\u0e23\u0e16\u0e2d\u0e35\u0e01\u0e15\u0e48\u0e2d\u0e44\u0e1b\n\u0e42\u0e1b\u0e23\u0e14\u0e08\u0e31\u0e1a\u0e04\u0e39\u0e48\u0e2d\u0e35\u0e01\u0e04\u0e23\u0e31\u0e49\u0e07";
+  Vietnamese = "%s\u00a0\nkh\u00f4ng c\u00f2n \u0111\u01b0\u1ee3c gh\u00e9p n\u1ed1i v\u1edbi xe.\nVui l\u00f2ng gh\u00e9p n\u1ed1i l\u1ea1i.";
+  Korean = "%s\uc740 \uc774\uc81c \uc774 \ubc14\uc774\ud06c\uc640 \ub354\n\uc774\uc0c1 \ud398\uc5b4\ub9c1\ub418\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4.\n\ub2e4\uc2dc \ud398\uc5b4\ub9c1\ud558\uc138\uc694.";
+  Malay = "%s tidak lagi berpasangan\ndengan kenderaan.\nSila pasangkan semula.";
 );
 
 $output false
 const string SET19_DELETE_PAIRING =
 (
   Default = "Delete pairing";
+  Japanese = "\u30da\u30a2\u30ea\u30f3\u30b0\u524a\u9664";
+  French = "Supprimer l'association";
+  Spanish = "Eliminar v\u00ednculo";
+  Italian = "Elimina accoppiamento";
+  German = "Kopplung l\u00f6schen";
+  TraditionalChinese = "\u522a\u9664\u914d\u5c0d";
+  SimplifiedChinese = "\u5220\u9664\u914d\u5bf9";
+  Greek = "\u0394\u03b9\u03b1\u03b3\u03c1\u03b1\u03c6\u03ae \u03b6\u03b5\u03cd\u03be\u03b7\u03c2";
+  Finnish = "Poista pari";
+  Hindi = "\u092a\u0947\u092f\u0930\u093f\u0902\u0917 \u092e\u093f\u091f\u093e\u0928\u093e";
+  Indonesian = "Hapus pemasangan";
+  Polish = "Usu\u0144 parowanie";
+  PortugueseBrazil = "Excluir pareamento";
+  Thai = "\u0e25\u0e1a\u0e01\u0e32\u0e23\u0e08\u0e31\u0e1a\u0e04\u0e39\u0e48";
+  Vietnamese = "X\u00f3a gh\u00e9p n\u1ed1i";
+  Korean = "\ud398\uc5b4\ub9c1 \uc0ad\uc81c";
+  Malay = "Padamkan pasangan";
 );
 
 $output false
@@ -2212,6 +2260,23 @@ $output false
 const string SET24_CHECK_BT_PAIRING_RECORD =
 (
   Default = "Please check the bluetooth pairing record on your previously paired Smartphone. You may need to delete the unused pairing record.";
+  Japanese = "\u4ee5\u524d\u4f7f\u7528\u3057\u305f\u30b9\u30de\u30fc\u30c8\u30d5\u30a9\u30f3\u304b\u3089\u3001\u30da\u30a2\u30ea\u30f3\u30b0\u60c5\u5831\u3092\u524a\u9664\u3057\u3066\u304f\u3060\u3055\u3044\u3002";
+  French = "Veuillez v\u00e9rifier l'historique d'appairage\ndu dernier smartphone appair\u00e9. Il est\npossible que vous deviez supprimer\nl'historique d'appairage non utilis\u00e9.";
+  Spanish = "Verifique el registro de emparejamiento\nde Bluetooth en su tel\u00e9fono previamente\nemparejado. Es posible que tenga que\neliminar el registro de emparejamiento\nno utilizado.";
+  Italian = "Controlla i dati di accoppiamento sul tuo\nsmartphone utilizzato per l\u2019accoppiamento\nprecedente. Potrebbe essere necessario\neliminare i dati di accoppiamento non\npi\u00f9 utilizzati.";
+  German = "Bitte \u00fcberpr\u00fcfen Sie den Bluetooth-\nKopplungsdatensatz auf Ihrem zuvor\ngekoppelten Smartphone.\nM\u00f6glicherweise m\u00fcssen Sie den nicht\nverwendeten Kopplungsdatensatz l\u00f6schen.";
+  TraditionalChinese = "\u8acb\u6aa2\u67e5\u60a8\u5148\u524d\u914d\u5c0d\u7684\u667a\u6167\u578b\u624b\u6a5f\u7684\nBluetooth \u914d\u5c0d\u7d00\u9304\u3002\u8acb\u60a8\u522a\u9664\n\u4e0d\u4f7f\u7528\u7684\u914d\u5c0d\u7d00\u9304\u3002";
+  SimplifiedChinese = "\u8bf7\u68c0\u67e5\u60a8\u4e4b\u524d\u914d\u5bf9\u7684\u667a\u80fd\u624b\u673a\u4e0a\u7684\n\u84dd\u7259\u914d\u5bf9\u8bb0\u5f55\u3002\u60a8\u53ef\u80fd\u9700\u8981\u5220\u9664\n\u672a\u4f7f\u7528\u7684\u914d\u5bf9\u8bb0\u5f55\u3002";
+  Greek = "\u0395\u03bb\u03ad\u03b3\u03be\u03c4\u03b5 \u03c4\u03b7\u03bd \u03b5\u03b3\u03b3\u03c1\u03b1\u03c6\u03ae \u03b6\u03b5\u03cd\u03be\u03b7\u03c2 Bluetooth \u03c3\u03c4\u03bf\nsmartphone \u03bc\u03b5 \u03c4\u03bf \u03bf\u03c0\u03bf\u03af\u03bf \u03b5\u03af\u03c7\u03b5 \u03b3\u03af\u03bd\u03b5\u03b9\n\u03c0\u03c1\u03bf\u03b7\u03b3\u03bf\u03c5\u03bc\u03ad\u03bd\u03c9\u03c2 \u03b6\u03b5\u03cd\u03be\u03b7. \u039c\u03c0\u03bf\u03c1\u03b5\u03af \u03bd\u03b1 \u03c7\u03c1\u03b5\u03b9\u03b1\u03c3\u03c4\u03b5\u03af\n\u03bd\u03b1 \u03b4\u03b9\u03b1\u03b3\u03c1\u03ac\u03c8\u03b5\u03c4\u03b5 \u03c4\u03b7\u03bd \u03b5\u03b3\u03b3\u03c1\u03b1\u03c6\u03ae \u03c4\u03b7\u03c2 \u03bc\u03b7\n\u03c7\u03c1\u03b7\u03c3\u03b9\u03bc\u03bf\u03c0\u03bf\u03b9\u03b7\u03bc\u03ad\u03bd\u03b7\u03c2 \u03b6\u03b5\u03cd\u03be\u03b7\u03c2.";
+  Finnish = "Tarkista aiemmin pariksi lis\u00e4tyn\n\u00e4lypuhelimen Bluetooth\n-parinmuodostustietue.\nK\u00e4ytt\u00e4m\u00e4t\u00f6n parinmuodostustietue\nt\u00e4ytyy mahdollisesti poistaa.";
+  Hindi = "\u0915\u0943\u092a\u092f\u093e \u0905\u092a\u0928\u0947 \u092a\u0939\u0932\u0947 \u0938\u0947 \u091c\u094b\u095c\u093e \u092c\u0928\u093e\u090f \u0917\u090f \u0938\u094d\u092e\u093e\u0930\u094d\u091f\u092b\u093c\u094b\u0928 \u092a\u0930\n\u092c\u094d\u0932\u0942\u091f\u0942\u0925 \u092a\u0947\u092f\u0930\u093f\u0902\u0917 \u0930\u093f\u0915\u0949\u0930\u094d\u0921 \u0915\u0940 \u091c\u093e\u0901\u091a \u0915\u0930\u0947\u0902\u0964 \u0906\u092a\u0915\u094b\n\u0905\u092a\u094d\u0930\u092f\u0941\u0915\u094d\u0924 \u092a\u0947\u092f\u0930\u093f\u0902\u0917 \u0930\u093f\u0915\u0949\u0930\u094d\u0921 \u0915\u094b \u092e\u093f\u091f\u093e\u0928\u0947 \u0915\u0940 \u0906\u0935\u0936\u094d\u092f\u0915\u0924\u093e\n\u0939\u094b \u0938\u0915\u0924\u0940 \u0939\u0948\u0964";
+  Indonesian = "Silakan periksa catatan pemasangan\nBluetooth pada Ponsel Pintar Anda\nyang dipasangkan sebelumnya. Anda\nmungkin perlu menghapus catatan\npemasangan yang tidak digunakan.";
+  Polish = "Sprawd\u017a zapisane parowanie Bluetooth\nna wcze\u015bniej sparowanym smartfonie.\nMo\u017ce by\u0107 konieczne usuni\u0119cie\nnieu\u017cywanego zapisanego parowania.";
+  PortugueseBrazil = "Verifique o registro de pareamento do\nbluetooth em seu Smartphone pareado\nanteriormente. Pode ser necess\u00e1rio excluir\no registro de pareamento n\u00e3o utilizado.";
+  Thai = "\u0e42\u0e1b\u0e23\u0e14\u0e15\u0e23\u0e27\u0e08\u0e2a\u0e2d\u0e1a\u0e1a\u0e31\u0e19\u0e17\u0e36\u0e01\u0e01\u0e32\u0e23\u0e08\u0e31\u0e1a\u0e04\u0e39\u0e48\u0e1a\u0e25\u0e39\u0e17\u0e39\u0e18\u0e43\u0e19\n\u0e2a\u0e21\u0e32\u0e23\u0e4c\u0e17\u0e42\u0e1f\u0e19\u0e02\u0e2d\u0e07\u0e04\u0e38\u0e13\u0e17\u0e35\u0e48\u0e08\u0e31\u0e1a\u0e04\u0e39\u0e48\u0e01\u0e48\u0e2d\u0e19\u0e2b\u0e19\u0e49\u0e32\u0e19\u0e35\u0e49\n\u0e04\u0e38\u0e13\u0e2d\u0e32\u0e08\u0e15\u0e49\u0e2d\u0e07\u0e25\u0e1a\u0e1a\u0e31\u0e19\u0e17\u0e36\u0e01\u0e01\u0e32\u0e23\u0e08\u0e31\u0e1a\u0e04\u0e39\u0e48\u0e17\u0e35\u0e48\u0e44\u0e21\u0e48\u0e44\u0e14\u0e49\u0e43\u0e0a\u0e49";
+  Vietnamese = "Vui l\u00f2ng ki\u1ec3m tra b\u1ea3n ghi gh\u00e9p n\u1ed1i \nbluetooth tr\u00ean \u0110i\u1ec7n tho\u1ea1i th\u00f4ng minh \u0111\u00e3\ngh\u00e9p n\u1ed1i tr\u01b0\u1edbc \u0111\u00f3 c\u1ee7a b\u1ea1n. B\u1ea1n c\u00f3 th\u1ec3\nph\u1ea3i x\u00f3a b\u1ea3n ghi gh\u00e9p n\u1ed1i kh\u00f4ng s\u1eed d\u1ee5ng.";
+  Korean = "\uc774\uc804\uc5d0 \ud398\uc5b4\ub9c1\ud588\ub358 \uc2a4\ub9c8\ud2b8\ud3f0\uc5d0\uc11c Bluetooth\n\ud398\uc5b4\ub9c1 \uae30\ub85d\uc744 \uc810\uac80\ud558\uc138\uc694. \uc0ac\uc6a9\ud558\uc9c0 \uc54a\ub294\n\ud398\uc5b4\ub9c1 \uae30\ub85d\uc744 \uc0ad\uc81c\ud574\uc57c \ud560 \uc218 \uc788\uc2b5\ub2c8\ub2e4.";
+  Malay = "Sila periksa rekod pasangan Bluetooth\npada Telefon Pintar yang dipasangkan\nsebelum ini. Anda mungkin perlu\nmenghapus rekod pasangan yang tidak\ndigunakan.";
 );
 
 $output false

@@ -4766,7 +4766,7 @@ void NavigationNAV09_NAV10_PoiList__Init( NavigationNAV09_NAV10_PoiList _this, X
   CoreTimer_OnSetPeriod( &_this->PoiListLoadingTimer, 3000 );
   CoreRectView__OnSetBounds( &_this->DataErrorText, _Const005D );
   ViewsText_OnSetWrapText( &_this->DataErrorText, 1 );
-  ViewsText_OnSetString( &_this->DataErrorText, EwLoadString( &StringsPOP18_POI_LOADING_FAILED ));
+  ViewsText_OnSetString( &_this->DataErrorText, EwGetVariantOfString( &StringsPOP21_POI_LOADING_FAILED ));
   ViewsText_OnSetVisible( &_this->DataErrorText, 0 );
   CoreTimer_OnSetPeriod( &_this->CountDownTimer, 2000 );
   CoreRectView__OnSetBounds( &_this->NoDataText, _Const005D );
@@ -5035,7 +5035,7 @@ void NavigationNAV09_NAV10_PoiList_OnPoiListUpdateSlot( NavigationNAV09_NAV10_Po
     {
       case EnumNaviPoiListTypeFAVORITE :
       {
-        ViewsText_OnSetString( &_this->DataErrorText, EwLoadString( &StringsPOP18_NO_FAVORITE_PLACE ));
+        ViewsText_OnSetString( &_this->DataErrorText, EwGetVariantOfString( &StringsPOP19_NO_FAVORITE_PLACE ));
         ViewsText_OnSetVisible( &_this->DataErrorText, 1 );
         CoreTimer_OnSetEnabled( &_this->CountDownTimer, 1 );
       }
@@ -5043,7 +5043,7 @@ void NavigationNAV09_NAV10_PoiList_OnPoiListUpdateSlot( NavigationNAV09_NAV10_Po
 
       case EnumNaviPoiListTypeGAS_STATION :
       {
-        ViewsText_OnSetString( &_this->DataErrorText, EwLoadString( &StringsPOP18_NO_GAS_STATION ));
+        ViewsText_OnSetString( &_this->DataErrorText, EwGetVariantOfString( &StringsPOP20_NO_GAS_STATION ));
         ViewsText_OnSetVisible( &_this->DataErrorText, 1 );
         CoreTimer_OnSetEnabled( &_this->CountDownTimer, 1 );
       }

@@ -3476,13 +3476,13 @@ class NAV09_NAV10_PoiList : Menu::BaseMenuView
       {
         case Enum::NaviPoiListType.FAVORITE:
         {
-          DataErrorText.String = Strings::POP18_NO_FAVORITE_PLACE;
+          DataErrorText.String = Strings::POP19_NO_FAVORITE_PLACE;
           DataErrorText.Visible = true;
           CountDownTimer.Enabled = true;
         }
         case Enum::NaviPoiListType.GAS_STATION:
         {
-          DataErrorText.String = Strings::POP18_NO_GAS_STATION;
+          DataErrorText.String = Strings::POP20_NO_GAS_STATION;
           DataErrorText.Visible = true;
           CountDownTimer.Enabled = true;
         }
@@ -3545,7 +3545,7 @@ class NAV09_NAV10_PoiList : Menu::BaseMenuView
   {
     preset Bounds = <10,50,470,236>;
     preset WrapText = true;
-    preset String = Strings::POP18_POI_LOADING_FAILED;
+    preset String = Strings::POP21_POI_LOADING_FAILED;
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
     preset Visible = false;
   }

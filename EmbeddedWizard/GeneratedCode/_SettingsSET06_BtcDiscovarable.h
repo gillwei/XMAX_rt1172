@@ -203,6 +203,9 @@ void SettingsSET06_BtcDiscovarable_OnBtcPairingStateChangeSlot( SettingsSET06_Bt
 /* 'C' function for method : 'Settings::SET06_BtcDiscovarable.DisplayLocalDeviceName()' */
 void SettingsSET06_BtcDiscovarable_DisplayLocalDeviceName( SettingsSET06_BtcDiscovarable _this );
 
+/* 'C' function for method : 'Settings::SET06_BtcDiscovarable.DisplayTimeLeft()' */
+void SettingsSET06_BtcDiscovarable_DisplayTimeLeft( SettingsSET06_BtcDiscovarable _this );
+
 #ifdef __cplusplus
   }
 #endif

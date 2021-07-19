@@ -43,7 +43,7 @@
 #endif
 
 /* This file is generated automatically.
-   Generated: 2021/07/02 14:28:43 */
+   Generated: 2021/07/19 16:26:22 */
 extern const XStringRes StringsARGUMENT_STR;
 
 /* User defined constant: 'Strings::GEN_OK' */
@@ -355,14 +355,14 @@ EW_DECLARE_CONST( StringsPOP13_NO_OFFICE_LOCATION )
 /* User defined constant: 'Strings::POP17_APP_INIT_SETTING_FAILED' */
 EW_DECLARE_CONST( StringsPOP17_APP_INIT_SETTING_FAILED )
 
-/* User defined constant: 'Strings::POP18_POI_LOADING_FAILED' */
-extern const XStringRes StringsPOP18_POI_LOADING_FAILED;
+/* User defined constant: 'Strings::POP19_NO_FAVORITE_PLACE' */
+EW_DECLARE_CONST( StringsPOP19_NO_FAVORITE_PLACE )
 
-/* User defined constant: 'Strings::POP18_NO_FAVORITE_PLACE' */
-extern const XStringRes StringsPOP18_NO_FAVORITE_PLACE;
+/* User defined constant: 'Strings::POP20_NO_GAS_STATION' */
+EW_DECLARE_CONST( StringsPOP20_NO_GAS_STATION )
 
-/* User defined constant: 'Strings::POP18_NO_GAS_STATION' */
-extern const XStringRes StringsPOP18_NO_GAS_STATION;
+/* User defined constant: 'Strings::POP21_POI_LOADING_FAILED' */
+EW_DECLARE_CONST( StringsPOP21_POI_LOADING_FAILED )
 
 /* User defined constant: 'Strings::SET01_TRACTION_CONTROL' */
 EW_DECLARE_CONST( StringsSET01_TRACTION_CONTROL )
@@ -428,13 +428,13 @@ EW_DECLARE_CONST( StringsSET08_PAIR_WITH )
 EW_DECLARE_CONST( StringsSET08_PASSKEY )
 
 /* User defined constant: 'Strings::SET10_CONNECTION_FAILED' */
-extern const XStringRes StringsSET10_CONNECTION_FAILED;
+EW_DECLARE_CONST( StringsSET10_CONNECTION_FAILED )
 
 /* User defined constant: 'Strings::SET11_NO_LONGER_PAIRED' */
-extern const XStringRes StringsSET11_NO_LONGER_PAIRED;
+EW_DECLARE_CONST( StringsSET11_NO_LONGER_PAIRED )
 
 /* User defined constant: 'Strings::SET19_DELETE_PAIRING' */
-extern const XStringRes StringsSET19_DELETE_PAIRING;
+EW_DECLARE_CONST( StringsSET19_DELETE_PAIRING )
 
 /* User defined constant: 'Strings::SET19_CONNECT' */
 EW_DECLARE_CONST( StringsSET19_CONNECT )
@@ -449,7 +449,7 @@ EW_DECLARE_CONST( StringsSET22_WAIT_APP_CONNECTION )
 EW_DECLARE_CONST( StringsSET23_PAIRING_FAILED )
 
 /* User defined constant: 'Strings::SET24_CHECK_BT_PAIRING_RECORD' */
-extern const XStringRes StringsSET24_CHECK_BT_PAIRING_RECORD;
+EW_DECLARE_CONST( StringsSET24_CHECK_BT_PAIRING_RECORD )
 
 /* User defined constant: 'Strings::SET26_PAIRING_SUCCESSFUL' */
 EW_DECLARE_CONST( StringsSET26_PAIRING_SUCCESSFUL )

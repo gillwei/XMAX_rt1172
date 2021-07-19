@@ -310,10 +310,12 @@ của bạn để hoàn tất các cài đặt ban
 arahan [Navigation app name] di
 telefon anda untuk menyelesaikan
 tetapan awal."
-POP18_POI_LOADING_FAILED,Cannot retrieve data from your phone. Try again later.,,,,,,,,,,,,,,,,,
-POP18_NO_FAVORITE_PLACE,"No favorites.
-Pinned favorites in LC Navi will be shown here.",,,,,,,,,,,,,,,,,
-POP18_NO_GAS_STATION,No nearby gas stations.,,,,,,,,,,,,,,,,,
+POP19_NO_FAVORITE_PLACE,"No favorites found.
+Pinned locations in “App name” will be shown here.","お気に入りが見つかりません。
+アプリからお気に入りを登録してください。",,,,,,,,,,,,,,,,
+POP20_NO_GAS_STATION,No nearby gas stations found.,付近にガソリンスタンドが見つかりません。,,,,,,,,,,,,,,,,
+POP21_POI_LOADING_FAILED,Cannot retrieve data from your phone. Try again later.,"データを取得できませんでした。
+もう一度、操作してください。",,,,,,,,,,,,,,,,
 SET01_TRACTION_CONTROL,Traction Control,トラクションコントロール,Antipatinage,Control de tracción,Controllo trazione,Traktionskontrolle,循跡控制,牵引力控制,Έλεγχος πρόσφυσης,Luistonesto,ट्रैक्शन कंट्रोल,Kontrol Traksi,Kontrola trakcji,Controle de tração,การควบคุมแรงฉุด,Kiểm soát lực kéo,정지 마찰력 제어,Kawalan Cengkaman
 SET01_CONNECTION,Connection,コネクション,Connexion,Conexión,Connessione,Verbindung,連線,连接,Σύνδεση,Yhteys,कनेक्शन,Sambungan,Połączenie,Conexão,การเชื่อมต่อ,Kết nối,연결,Sambungan
 SET01_CLOCK,Clock,時計,Horloge,Reloj,Orologio,Uhr,時鐘,时钟,Ρολόι,Kello,घड़ी,Jam,Zegar,Relógio,นาฬิกา,Đồng hồ,시계,Jam
@@ -377,7 +379,7 @@ các thiết bị Bluetooth.","이제 다른 Bluetooth 장치에서도
 탐색 가능합니다.","Kini dapat ditemui oleh
 peranti Bluetooth lain."
 SET06_NAME,Name : %s,名称：%s,Nom :%s,Nombre:%s,Nome:%s,Name:%s,名稱：%s,名称:%s,Όνομα: %s,Nimi: %s,नाम: %s,Nama: %s,Nazwa: %s,Nome : %s,ชื่อ: %s,Tên: %s,이름 : %s,Nama: %s
-SET06_TIME_LEFT,Time left : ,残り時間：,Temps restant : ,Tiempo restante: ,Tempo rimasto: ,Verbleibende Zeit: ,剩餘時間：,剩余时间: ,Χρόνος που απομένει: ,Aikaa jäljellä: ,शेष समय: ,Waktu tersisa: ,Pozostały czas: ,Tempo restante : ,เวลาที่เหลือ: 3:00 น,Thời gian còn lại: 3:00,남은 시간 : 3:00,Masa tinggal: 3:00
+SET06_TIME_LEFT,Time left : %s,残り時間：%s,Temps restant : %s,Tiempo restante: %s,Tempo rimasto: %s,Verbleibende Zeit: %s,剩餘時間：%s,剩余时间: %s,Χρόνος που απομένει: %s,Aikaa jäljellä: %s,शेष समय: %s,Waktu tersisa: %s,Pozostały czas: %s,Tempo restante : %s,เวลาที่เหลือ: %s น,Thời gian còn lại: %s,남은 시간 : %s,Masa tinggal: %s
 SET07_PAIRING_FAILED,Bluetooth pairing failed.,ペアリングに失敗しました。,Échec de l'appairage Bluetooth.,Emparejamiento de Bluetooth fallido.,Accoppiamento Bluetooth fallito.,"Die Bluetooth-Kopplung ist
 fehlgeschlagen.",Bluetooth 配對失敗。,蓝牙配对失败。,Η ζεύξη Bluetooth απέτυχε.,Bluetooth-parinmuodostus epäonnistui.,ब्लूटूथ पेयरिंग असफल:,Pemasangan Bluetooth gagal.,Parowanie przez Bluetooth nieudane.,Pareamento de Bluetooth com falha.,การจับคู่บลูทูธล้มเหลว,Ghép nối Bluetooth không thành công.,Bluetooth 페어링을 실패했습니다.,Pasangan Bluetooth gagal.
 SET08_PAIR_WITH,"Pair with
@@ -398,15 +400,75 @@ SET08_PAIR_WITH,"Pair with
 페어링할까요?","Pasangkan dengan
 ""%s""?"
 SET08_PASSKEY,Passkey:,パスキー：,Clé de vérification :,Clave de acceso:,Chiave d’accesso:,Passkey:,認證碼：,密码: ,Κλειδί πρόσβασης:,Salasana:,पासकुंजी:,Kode sandi:,Kod:,Senha:,รหัสประจำตัว:,Mật khẩu:,암호키:,Kata kunci:
-SET09_BT_CONNECTED,"""%s""
-Bluetooth
-connected.",,,,,,,,,,,,,,,,,
 SET10_CONNECTION_FAILED,"""%s""
 Bluetooth
-connection failed.",,,,,,,,,,,,,,,,,
+connection failed.","""%s""との接続に失敗しました。","Échec de connexion
+Bluetooth à
+« %s ».","""%s""
+Conexión mediante
+Bluetooth fallida.","""%s"" Connessione 
+Bluetooth
+fallita.","„%s“
+Bluetooth
+-Verbindung fehlgeschlagen.","「%s」
+Bluetooth
+連線失敗。","“%s”
+蓝牙
+连接失败。","Το ""%s""
+Bluetooth
+δεν συνδέθηκε.","Laitteen %s
+Bluetooth-
+yhteys epäonnistui.","""%s""
+ब्लूटूथ
+कनेक्शन असफल।","""%s""
+Koneksi
+Bluetooth gagal.","Nieudane połączenie przez
+Bluetooth
+z urządzeniem „%s”.","""%s""
+Conexão Bluetooth
+com falha.","""%s""
+การเชื่อมต่อ
+บลูทูธล้มเหลว","""%s""
+Kết nối Bluetooth
+thất bại.","""%s""와의
+Bluetooth 연결을
+실패했습니다.","“%s”
+Sambungan
+Bluetooth gagal."
 SET11_NO_LONGER_PAIRED,"""%s"" is no longer paired with the vehicle.
-Please pair it again.",,,,,,,,,,,,,,,,,
-SET19_DELETE_PAIRING,Delete pairing,,,,,,,,,,,,,,,,,
+Please pair it again.","%sに接続できません。
+ペアリングをやり直してください。","%s n'est plus appairé au
+véhicule.
+Veuillez de nouveau procéder à
+l'appairage.","%s ya no está emparejado
+con el vehículo.
+Vuelva a emparejarlo.","%s non è più accoppiato con
+il veicolo.
+Accoppialo di nuovo.","%s ist nicht mehr mit dem
+Fahrzeug gekoppelt.
+Bitte koppeln Sie es erneut.","%s 已取消與機車的配對。
+請重新配對。","%s 不再与车辆配对。
+请重新配对。","Η συσκευή %s δεν είναι πια σε
+ζεύξη με το όχημα.
+Πραγματοποιήστε ξανά ζεύξη.","%s ei enää ole ajoneuvon pari.
+Muodosta laitepari uudelleen.","%s का जोड़ा अब गाडी के साथ बना
+हुआ नहीं है।
+कृपया इसे दोबारा जोड़ा लगाएं।","%s tidak lagi dipasangkan
+dengan kendaraan.
+Harap pasangkan lagi.","Urządzenie %s nie jest już
+sparowane z pojazdem.
+Sparuj ponownie.","%s não está mais pareado com
+o veículo.
+Pareie novamente.","%s
+ไม่ได้จับคู่กับรถอีกต่อไป
+โปรดจับคู่อีกครั้ง","%s 
+không còn được ghép nối với xe.
+Vui lòng ghép nối lại.","%s은 이제 이 바이크와 더
+이상 페어링되지 않습니다.
+다시 페어링하세요.","%s tidak lagi berpasangan
+dengan kenderaan.
+Sila pasangkan semula."
+SET19_DELETE_PAIRING,Delete pairing,ペアリング削除,Supprimer l'association,Eliminar vínculo,Elimina accoppiamento,Kopplung löschen,刪除配對,删除配对,Διαγραφή ζεύξης,Poista pari,पेयरिंग मिटाना,Hapus pemasangan,Usuń parowanie,Excluir pareamento,ลบการจับคู่,Xóa ghép nối,페어링 삭제,Padamkan pasangan
 SET19_CONNECT,Connect,接続,Connecter,Conectar,Connetti,Verbinden,連線,连接,Σύνδεση,Yhdistä,कनेक्ट करें,Hubungkan,Połącz,Conectar,เชื่อมต่อ,Kết nối,연결,Sambung
 SET19_DISCONNECT,Disconnect,切断,Déconnecter,Desconectar,Disconnetti,Trennen,中斷連線,断开连接,Αποσύνδεση,Katkaise,डिसकनेक्ट करें,Putuskan sambungan,Rozłącz,Desconectar,ตัดเชื่อมต่อ,Ngắt kết nối,연결 해제,Putuskan sambungan
 SET22_WAIT_APP_CONNECTION,"%s is connecting.
@@ -414,7 +476,58 @@ Check the Yamaha Motorcycle connect app for instructions.","%sを接続してい
 Yamaha Motorccycle connect appを
 確認してください",,,,,,,,,,,,,,,,
 SET23_PAIRING_FAILED,Pairing failed.,ペアリングに失敗しました。,Échec de l'appairage.,Emparejamiento fallido.,Accoppiamento fallito.,Kopplung fehlgeschlagen.,配對失敗。,配对失败。,Η ζεύξη απέτυχε.,Parinmuodostus epäonnistui.,पेयरिंग असफल।,Pemasangan gagal.,Parowanie nieudane.,Falha no pareamento.,การจับคู่ล้มเหลว,Ghép nối không thành công.,페어링을 실패했습니다.,Pasangan gagal.
-SET24_CHECK_BT_PAIRING_RECORD,Please check the bluetooth pairing record on your previously paired Smartphone. You may need to delete the unused pairing record.,,,,,,,,,,,,,,,,,
+SET24_CHECK_BT_PAIRING_RECORD,Please check the bluetooth pairing record on your previously paired Smartphone. You may need to delete the unused pairing record.,以前使用したスマートフォンから、ペアリング情報を削除してください。,"Veuillez vérifier l'historique d'appairage
+du dernier smartphone appairé. Il est
+possible que vous deviez supprimer
+l'historique d'appairage non utilisé.","Verifique el registro de emparejamiento
+de Bluetooth en su teléfono previamente
+emparejado. Es posible que tenga que
+eliminar el registro de emparejamiento
+no utilizado.","Controlla i dati di accoppiamento sul tuo
+smartphone utilizzato per l’accoppiamento
+precedente. Potrebbe essere necessario
+eliminare i dati di accoppiamento non
+più utilizzati.","Bitte überprüfen Sie den Bluetooth-
+Kopplungsdatensatz auf Ihrem zuvor
+gekoppelten Smartphone.
+Möglicherweise müssen Sie den nicht
+verwendeten Kopplungsdatensatz löschen.","請檢查您先前配對的智慧型手機的
+Bluetooth 配對紀錄。請您刪除
+不使用的配對紀錄。","请检查您之前配对的智能手机上的
+蓝牙配对记录。您可能需要删除
+未使用的配对记录。","Ελέγξτε την εγγραφή ζεύξης Bluetooth στο
+smartphone με το οποίο είχε γίνει
+προηγουμένως ζεύξη. Μπορεί να χρειαστεί
+να διαγράψετε την εγγραφή της μη
+χρησιμοποιημένης ζεύξης.","Tarkista aiemmin pariksi lisätyn
+älypuhelimen Bluetooth
+-parinmuodostustietue.
+Käyttämätön parinmuodostustietue
+täytyy mahdollisesti poistaa.","कृपया अपने पहले से जोड़ा बनाए गए स्मार्टफ़ोन पर
+ब्लूटूथ पेयरिंग रिकॉर्ड की जाँच करें। आपको
+अप्रयुक्त पेयरिंग रिकॉर्ड को मिटाने की आवश्यकता
+हो सकती है।","Silakan periksa catatan pemasangan
+Bluetooth pada Ponsel Pintar Anda
+yang dipasangkan sebelumnya. Anda
+mungkin perlu menghapus catatan
+pemasangan yang tidak digunakan.","Sprawdź zapisane parowanie Bluetooth
+na wcześniej sparowanym smartfonie.
+Może być konieczne usunięcie
+nieużywanego zapisanego parowania.","Verifique o registro de pareamento do
+bluetooth em seu Smartphone pareado
+anteriormente. Pode ser necessário excluir
+o registro de pareamento não utilizado.","โปรดตรวจสอบบันทึกการจับคู่บลูทูธใน
+สมาร์ทโฟนของคุณที่จับคู่ก่อนหน้านี้
+คุณอาจต้องลบบันทึกการจับคู่ที่ไม่ได้ใช้","Vui lòng kiểm tra bản ghi ghép nối 
+bluetooth trên Điện thoại thông minh đã
+ghép nối trước đó của bạn. Bạn có thể
+phải xóa bản ghi ghép nối không sử dụng.","이전에 페어링했던 스마트폰에서 Bluetooth
+페어링 기록을 점검하세요. 사용하지 않는
+페어링 기록을 삭제해야 할 수 있습니다.","Sila periksa rekod pasangan Bluetooth
+pada Telefon Pintar yang dipasangkan
+sebelum ini. Anda mungkin perlu
+menghapus rekod pasangan yang tidak
+digunakan."
 SET26_PAIRING_SUCCESSFUL,Pairing successful.,ペアリング完了,Association réussie.,Vinculación completada.,Accoppiamento riuscito.,Kopplung erfolgreich.,配對成功。,配对成功。,Η ζεύξη ήταν επιτυχής.,Parinmuodostus onnistui.,पेयरिंग सफल।,Pemasangan berhasil.,Parowanie udane.,Pareamento bem-sucedido.,จับคู่สำเร็จ,Ghép nối thành công.,페어링을 성공했습니다.,Pasangan berjaya.
 SET27_UPDATE_SYSTEM,Update system ?,ソフトウェアを更新しますか？,Mettre le système à jour ?,¿Actualizar sistema?,Aggiornare sistema?,System updaten?,是否要更新系統？,要更新系统吗?,Ενημέρωση συστήματος;,Päivitetäänkö järjestelmä?,सिस्टम अपडेट करें?,Perbarui sistem?,Zaktualizować system?,Atualizar sistema?,อัปเดตระบบหรือไม่,Cập nhật hệ thống?,시스템을 업데이트할까요?,Kemaskini sistem?
 SET28_ESN,Electronic Serial Number,Electronic Serial Number,Numéro de série électronique,Número de serie electrónico,Numero di serie elettronico,Elektronische Seriennummer,電子序號,电子序列号,Ηλεκτρονικός σειριακός αριθμός,Elektroninen sarjanumero,इलेक्ट्रॉनिक क्रम संख्या,Nomor Seri Elektronik,Elektroniczny numer seryjny,Número de série eletrônico,หมายเลขซีเรียลอิเล็กทรอนิกส์,Số sê-ri điện tử,전자 일련 번호,Nombor Siri Elektronik
