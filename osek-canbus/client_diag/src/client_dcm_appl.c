@@ -1698,6 +1698,21 @@ void client_appl_response_can_related_data
     )
 {
 set_client_app_cmd_rsp_state( CMD_RSP_PROCESSING );
+#ifndef BC_DEBUG
+uint32_t index = 0;
+PRINTF( "Response to APP-RSPCMD: %02x \r\n", command );
+PRINTF( "Rseposne to APP-Datalen: %d \r\n", size );
+PRINTF( "Response to APP-data:" );
+for( ; index < size; index++ )
+    {
+    PRINTF( " %02x", data[index]);
+    if( index % 30 == 0 )
+        {
+        PRINTF("\r\n");
+        }
+    }
+PRINTF( " \r\n");
+#endif
 BC_motocon_send_can_related_data( command, size, data,result_callback );
 }
 

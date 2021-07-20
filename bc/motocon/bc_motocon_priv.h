@@ -30,6 +30,18 @@ extern "C" {
     #define BC_MOTOCON_PRINTF(fmt,...)
 #endif
 
+#if( ENABLE_MOTOCON_DEBUG_LOG && ENABLE_MOTOCON_DDT_DEBUG_LOG )
+    #define BC_MOTOCON_DDT_PRINTF PRINTF
+#else
+    #define BC_MOTOCON_DDT_PRINTF(fmt,...)
+#endif
+
+#if( ENABLE_MOTOCON_DEBUG_LOG && ENABLE_MOTOCON_PERIODIC_DEBUG_LOG )
+    #define BC_MOTOCON_PERIODIC_PRINTF PRINTF
+#else
+    #define BC_MOTOCON_PERIODIC_PRINTF(fmt,...)
+#endif
+
 #define BC_MOTOCON_CALLBACK_MAX                     ( 5 )
 
 #define BC_MOTOCON_DDT_INACTIVE_ID                  ( 0 )

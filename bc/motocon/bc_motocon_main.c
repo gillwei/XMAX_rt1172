@@ -250,13 +250,11 @@ static void send_alive_request
     TimerHandle_t timer_handle
     )
 {
-BC_MOTOCON_PRINTF( "%s, %d\r\n", __FUNCTION__, alive_id );
+BC_MOTOCON_PERIODIC_PRINTF( "%s, %d\r\n", __FUNCTION__, alive_id );
 if( alive_count >= MOTOCON_ALIVE_TIMEOUT_COUNT )
     {
-    BC_MOTOCON_PRINTF( "%s, disconnect ble. (sim)\r\n", __FUNCTION__ );
-    // disable disconnect function for sv testing.
-    //BC_MOTOCON_PRINTF( "%s, disconnect ble.\r\n", __FUNCTION__ );
-    //HCI_le_disconnect_ble();
+    BC_MOTOCON_PRINTF( "%s, disconnect ble.\r\n", __FUNCTION__ );
+    HCI_le_disconnect_ble();
     }
 else
     {
@@ -456,23 +454,7 @@ bc_motocon_send_result_t BC_motocon_send_can_related_data
     void ( *result_callback ) ( const bc_motocon_send_result_t )
     )
 {
-#ifndef BC_DEBUG
-uint32_t index = 0;
-BC_MOTOCON_PRINTF( "Response to APP-RSPCMD: %02x \r\n", command );
-BC_MOTOCON_PRINTF( "Rseposne to APP-Datalen: %d \r\n", size );
-BC_MOTOCON_PRINTF("Response to APP-data:");
-
-for(; index < size; index++)
-    {
-    BC_MOTOCON_PRINTF( " %02x", data[index]);
-    if( index % 30 == 0 )
-        {
-        BC_MOTOCON_PRINTF("\r\n");
-        }
-    }
-    BC_MOTOCON_PRINTF( " \r\n");
-#endif
-
+BC_MOTOCON_PRINTF( "%s, command: %d, size: %d\r\n", __FUNCTION__, command, size );
 if( command == BC_MOTOCON_COMMAND_CODE_AUTHENTICATION_V2_RESPONSE )
     {
     uint8_t data[3];
@@ -518,7 +500,7 @@ if( !bc_motocon_connected )
     {
     return BC_MOTOCON_SEND_RESULT_BLE_ERROR;
     }
-BC_MOTOCON_PRINTF( "%s, size: %d\r\n", __FUNCTION__, size );
+BC_MOTOCON_PERIODIC_PRINTF( "%s, size: %d\r\n", __FUNCTION__, size );
 return bc_motocon_ddt_send_ddt_to_phone_data( BC_MOTOCON_COMMAND_CODE_CAN_RESPONSE, data, size, result_callback );
 }
 
@@ -821,12 +803,12 @@ bc_motocon_send_result_t bc_motocon_send_data
     const uint32_t               length
     )
 {
-BC_MOTOCON_PRINTF( "%s, type: %d, length: %d, content:", __FUNCTION__, type, length );
+BC_MOTOCON_PERIODIC_PRINTF( "%s, type: %d, length: %d, content:", __FUNCTION__, type, length );
 for( int i = 0; i < length; i++ )
     {
-    BC_MOTOCON_PRINTF( " %2X", bytes[i] );
+    BC_MOTOCON_PERIODIC_PRINTF( " %2X", bytes[i] );
     }
-BC_MOTOCON_PRINTF( "\r\n" );
+BC_MOTOCON_PERIODIC_PRINTF( "\r\n" );
 #if( ENABLE_MOTOCON_HCI_LINK )
     int result = ERR_NONE;
     switch( type )
@@ -953,7 +935,7 @@ void BC_motocon_read_request_received_callback
     const uint16_t handle
     )
 {
-BC_MOTOCON_PRINTF( "%s\r\n", __FUNCTION__ );
+BC_MOTOCON_PERIODIC_PRINTF( "%s\r\n", __FUNCTION__ );
 #if( ENABLE_MOTOCON_HCI_LINK )
     reset_alive_timer();
     if( handle == HDLC_MOTOCONSDK_DDT_TO_VEHICLE_STATUS_VALUE )
@@ -978,7 +960,7 @@ void BC_motocon_write_request_received_callback
     const uint16_t length
     )
 {
-BC_MOTOCON_PRINTF( "%s\r\n", __FUNCTION__ );
+BC_MOTOCON_PERIODIC_PRINTF( "%s\r\n", __FUNCTION__ );
 #if( ENABLE_MOTOCON_HCI_LINK )
     reset_alive_timer();
     switch( handle )
@@ -1006,19 +988,19 @@ BC_MOTOCON_PRINTF( "%s\r\n", __FUNCTION__ );
 
         case HDLC_MOTOCONSDK_DDT_TO_PHONE_STATUS_VALUE:
         case HDLC_MOTOCONSDK_DDT_TO_PHONE_DATA_VALUE:
-            BC_MOTOCON_PRINTF( "%s, DDT_TO_PHONE ack\r\n", __FUNCTION__ );
+            BC_MOTOCON_DDT_PRINTF( "%s, DDT_TO_PHONE ack\r\n", __FUNCTION__ );
             bc_motocon_ddt_received_ddt_to_phone_ack( BC_MOTOCON_DDT_TO_PHONE );
             break;
 
         case HDLC_MOTOCONSDK_DDT_VEHICLE_INFORMATION_STATUS_VALUE:
         case HDLC_MOTOCONSDK_DDT_VEHICLE_INFORMATION_DATA_VALUE:
-            BC_MOTOCON_PRINTF( "%s, DDT_VEHICLE_INFORMATION ack\r\n", __FUNCTION__ );
+            BC_MOTOCON_DDT_PRINTF( "%s, DDT_VEHICLE_INFORMATION ack\r\n", __FUNCTION__ );
             bc_motocon_ddt_received_ddt_to_phone_ack( BC_MOTOCON_DDT_VEHICLE_INFORMATION );
             break;
 
         case HDLC_MOTOCONSDK_DDT_CAN_STATUS_VALUE:
         case HDLC_MOTOCONSDK_DDT_CAN_DATA_VALUE:
-            BC_MOTOCON_PRINTF( "%s, DDT_CAN ack\r\n", __FUNCTION__ );
+            BC_MOTOCON_DDT_PRINTF( "%s, DDT_CAN ack\r\n", __FUNCTION__ );
             bc_motocon_ddt_received_ddt_to_phone_ack( BC_MOTOCON_DDT_CAN );
             break;
 

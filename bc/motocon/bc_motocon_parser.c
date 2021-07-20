@@ -585,7 +585,7 @@ bc_motocon_parse_result_t bc_motocon_parser_can_request
     void
     )
 {
-BC_MOTOCON_PRINTF( "%s\r\n", __FUNCTION__ );
+BC_MOTOCON_PERIODIC_PRINTF( "%s\r\n", __FUNCTION__ );
 for( int i = 0; i < BC_MOTOCON_CALLBACK_MAX; i++ )
     {
     if( NULL != bc_motocon_callbacks[i] &&
@@ -1245,7 +1245,7 @@ bc_motocon_parse_result_t bc_motocon_parser_alive_response
 {
 if( length == 3 )
     {
-    BC_MOTOCON_PRINTF( "%s, id: %d\r\n", __FUNCTION__, bytes[2] );
+    BC_MOTOCON_PERIODIC_PRINTF( "%s, id: %d\r\n", __FUNCTION__, bytes[2] );
     return BC_MOTOCON_PARSE_SUCCESS;
     }
 return BC_MOTOCON_PARSE_INVALID_INPUT;

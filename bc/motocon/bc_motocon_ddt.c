@@ -178,7 +178,7 @@ const uint8_t* bc_motocon_ddt_set_ddt_to_vehicle_status
     const uint8_t* bytes
     )
 {
-BC_MOTOCON_PRINTF( "%s, %x\r\n", __FUNCTION__, bytes );
+BC_MOTOCON_DDT_PRINTF( "%s, %x\r\n", __FUNCTION__, bytes );
 ddt_to_vehicle_status[0] = bytes[0] == BC_MOTOCON_DDT_INACTIVE_ID ? 0 : 1;
 ddt_to_vehicle_status[1] = bytes[0];
 ddt_to_vehicle_data_size = THREE_BYTE_BIG( bytes, 1 );
@@ -209,7 +209,7 @@ const uint8_t* bc_motocon_ddt_insert_ddt_to_vehicle_data
     const uint32_t length
     )
 {
-BC_MOTOCON_PRINTF( "%s, %d\r\n", __FUNCTION__, length );
+BC_MOTOCON_DDT_PRINTF( "%s, %d\r\n", __FUNCTION__, length );
 
 const uint8_t  session_id = bytes[0];
 const uint32_t data_position = THREE_BYTE_BIG( bytes, 1 );
@@ -294,7 +294,7 @@ bc_motocon_send_result_t bc_motocon_ddt_send_ddt_to_phone_data
     void ( *result_callback ) ( const bc_motocon_send_result_t )
     )
 {
-BC_MOTOCON_PRINTF( "%s, command_code: %d, length: %d\r\n", __FUNCTION__, command, length );
+BC_MOTOCON_DDT_PRINTF( "%s, command_code: %d, length: %d\r\n", __FUNCTION__, command, length );
 // find channel
 bc_motocon_ddt_to_phone_t* ddt = &ddt_to_phone;
 switch( command )
