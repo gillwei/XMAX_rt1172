@@ -22,7 +22,7 @@
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
-#define NUM_OF_LICENSE          ( 8 )
+#define NUM_OF_LICENSE          ( 10 )
 #define LEN_OF_LICENSE_NAME     ( 32 )
 #define LEN_OF_LICENSE_CONTENT  ( 192 )
 
@@ -43,6 +43,7 @@
 --------------------------------------------------------------------*/
 static const char license_title[NUM_OF_LICENSE][LEN_OF_LICENSE_NAME] =
     {
+    "FreeRTOS",
     "libjpeg",
     "ricmoo_qrcode",
     "nanopb",
@@ -50,14 +51,17 @@ static const char license_title[NUM_OF_LICENSE][LEN_OF_LICENSE_NAME] =
     "NotoSansCJKtc-Medium.otf",
     "NotoSansDevanagari-Medium.ttf",
     "NotoSans-Medium.ttf",
-    "NotoSansThai-Medium.ttf"
+    "NotoSansThai-Medium.ttf",
+    "NotoSans-Bold.ttf"
     };
 
 static const char license_content[NUM_OF_LICENSE][LEN_OF_LICENSE_CONTENT] =
     {
+    "Copyright © 2020 Amazon.com, Inc. or its affiliates.",
     "Copyright © 2020 JPEG Reference",
     "Copyright © 2017 Richard Moore     (https://github.com/ricmoo/QRCode)\nCopyright © 2017 Project Nayuki    (https://www.nayuki.io/page/qr-code-generator-library)",
     "Copyright © 2011 Petteri Aimonen <jpa at nanopb.mail.kapsi.fi>",
+    "SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007",
     "SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007",
     "SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007",
     "SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007",
