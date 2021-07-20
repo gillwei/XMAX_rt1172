@@ -19,6 +19,7 @@
 #include "test_priv.h"
 #include "PERIPHERAL_pub.h"
 #include "EEPM_pub.h"
+#include "EW_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -182,6 +183,15 @@ for( int32_t i = 0; i < QRCODE_FUSED_DATA_LENGTH; i++ )
     PRINTF( "%02x ", unit_id[i] );
     }
 PRINTF( "\r\n" );
+
+result = EW_get_unit_id_ccuid( &unit_id );
+PRINTF( "result: %d, ccuid: %s\r\n", result, unit_id );
+
+result = EW_get_unit_id_dummy( &unit_id );
+PRINTF( "result: %d, dummy: %s\r\n", result, unit_id );
+
+result = EW_get_unit_id_passkey( &unit_id );
+PRINTF( "result: %d, passkey: %s\r\n", result, unit_id );
 }
 
 /*********************************************************************
@@ -197,7 +207,7 @@ static void clear_unit_id
     void
     )
 {
-uint8_t empty_unit_id[8] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF,0xFF, 0xFF, 0xFF};
+uint8_t empty_unit_id[QRCODE_FUSED_DATA_LENGTH] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 EEPM_set_qrcode_fused_data_1( empty_unit_id, eepm_test_write_cb );
 EEPM_set_qrcode_fused_data_2( empty_unit_id, eepm_test_write_cb );
 EEPM_set_qrcode_fused_data_3( empty_unit_id, eepm_test_write_cb );

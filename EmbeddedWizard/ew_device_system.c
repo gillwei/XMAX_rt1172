@@ -1501,6 +1501,34 @@ return esn;
 /*********************************************************************
 *
 * @private
+* is_eeprom_data_valid
+*
+* Check if data read from EEPROM is valid
+*
+* @param data Pointer to data
+* @param length Data length
+*
+*********************************************************************/
+static bool is_eeprom_data_valid
+    (
+    const uint8_t* data,
+    const uint32_t length
+    )
+{
+bool valid = false;
+for( int32_t i = 0; i < length; i++ )
+    {
+    if( EEPROM_INVALID_VAL_1_BYTE != data[i] )
+        {
+        valid = true;
+        }
+    }
+return valid;
+}
+
+/*********************************************************************
+*
+* @private
 * EW_get_unit_id_ccuid
 *
 * Get CCUID
@@ -1514,13 +1542,13 @@ bool EW_get_unit_id_ccuid
     uint8_t** ccuid
     )
 {
-bool result = false;
+bool valid = false;
 if( UNIT_ID_READ_OK == unit_id_read_status )
     {
     *ccuid = &unit_id_plaintext[UNIT_ID_CCUID_IDX];
-    result = true;
+    valid = is_eeprom_data_valid( &unit_id_plaintext[UNIT_ID_CCUID_IDX], CCUID_LENGTH );
     }
-return result;
+return valid;
 }
 
 /*********************************************************************
@@ -1539,13 +1567,13 @@ bool EW_get_unit_id_passkey
     uint8_t** passkey
     )
 {
-bool result = false;
+bool valid = false;
 if( UNIT_ID_READ_OK == unit_id_read_status )
     {
     *passkey = &unit_id_plaintext[UNIT_ID_PASSKEY_IDX];
-    result = true;
+    valid = is_eeprom_data_valid( &unit_id_plaintext[UNIT_ID_PASSKEY_IDX], PASSKEY_LENGTH );
     }
-return result;
+return valid;
 }
 
 /*********************************************************************
