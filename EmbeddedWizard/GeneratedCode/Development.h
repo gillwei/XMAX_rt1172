@@ -42,6 +42,7 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
+#include "_DevelopmentDEV_AncsCategory.h"
 #include "_DevelopmentDEV_Bluetooth.h"
 #include "_DevelopmentDEV_EEPROMTest.h"
 #include "_DevelopmentDEV_FontMenu.h"

@@ -14,6 +14,9 @@
 extern "C"{
 #endif
 
+bool BC_ancs_is_category_enabled( const uint8_t category_id );
+void BC_ancs_set_notification_category_enabled( const uint8_t category_id, const uint8_t enabled );
+
 #ifdef __cplusplus
 }
 #endif

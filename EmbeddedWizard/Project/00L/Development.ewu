@@ -6,6 +6,7 @@ inline Inline
   #include "TEST_pub.h"
   #include "VI_pub.h"
   #include "ew_priv.h"
+  #include "BC_ancs_pub.h"
 }
 
 $rect <20,60,260,100>
@@ -82,8 +83,9 @@ class DEV_Main : Menu::BaseMenuView
         }
       }
       case 13: PresentDialog( new Navigation::NAV03_TBTListView, null, null, null, null, null, null, null, null, false );
-      case 14:PresentDialog( new Navigation::NAV05_TBTView, null, null, null, null, null, null, null, null, false );
+      case 14: PresentDialog( new Navigation::NAV05_TBTView, null, null, null, null, null, null, null, null, false );
       case 15: PresentDialog( new Weather::WEA01_Main, null, null, null, null, null, null, null, null, false );
+      case 16: PresentDialog( new Development::DEV_AncsCategory, null, null, null, null, null, null, null, null, false );
       default:;
     }
   }
@@ -107,10 +109,11 @@ class DEV_Main : Menu::BaseMenuView
     preset NoOfItems = ItemTitleArray.size;
     preset ItemHeight = Menu::ItemHeightSmall;
     preset ItemNumPerPage = 4;
+    preset ArrowScrollBarVisible = true;
   }
 
   $rect <730,60,930,100>
-  array string ItemTitleArray[ 16 ] =
+  array string ItemTitleArray[ 17 ] =
   (
     Default[0] = "Factory Mode";
     Default[1] = "Hopper Test Mode";
@@ -128,6 +131,7 @@ class DEV_Main : Menu::BaseMenuView
     Default[13] = "TBT List Test";
     Default[14] = "TBT View Test";
     Default[15] = "Weather View Test";
+    Default[16] = "ANCS category";
   );
 
   $reorder HideFocusFrameTimer 1
@@ -969,4 +973,153 @@ class DEV_LanguageTest : Menu::BaseMenuView
   {
     CurrentLanguage = (Enum::Language)DeviceInterface::SystemDevice.GetSystemStatus( Enum::SystemStatus.LANGUAGE );
   }
+}
+
+$rect <310,260,550,300>
+$output false
+class DEV_AncsCategory : Menu::BaseMenuView
+{
+  $rect <10,300,210,340>
+  inherited property Bounds = <0,0,480,272>;
+
+  $rect <230,300,460,340>
+  inherited method OnShortHomeKeyActivated()
+  {
+    Owner.DismissDialog( this, null, null, null, null, null, false );
+  }
+
+  $rect <510,10,710,50>
+  inherited method LoadItemClass()
+  {
+    // suppress warning
+    if( aItemNo >= 0 )
+    {
+      // empty body
+    }
+    return Menu::ItemCheckbox;
+  }
+
+  $rect <510,60,710,100>
+  inherited method LoadItemTitle()
+  {
+    var string Title = "";
+    if( aItemNo < CategoryList.size )
+    {
+      Title = CategoryList[aItemNo];
+    }
+    return Title;
+  }
+
+  $rect <510,160,710,200>
+  inherited method OnItemActivate()
+  {
+    // suppress warning
+    aMenuItem;
+    aItemNo;
+
+    $if !$prototyper
+      var bool IsChecked = false;
+      var Menu::ItemCheckbox CheckBoxItem = ( Menu::ItemCheckbox )aMenuItem;
+      if( null != CheckBoxItem )
+      {
+        IsChecked = CheckBoxItem.Checked;
+      }
+
+      var int32 CategoryNum = CategoryList.size - 1;
+      native( aItemNo, IsChecked, CategoryNum )
+      {
+        if( 0 == aItemNo )
+        {
+          for( int32_t i = 0; i < CategoryNum; i++ )
+          {
+            BC_ancs_set_notification_category_enabled( i, IsChecked );
+          }
+        }
+        else
+        {
+          // offset 1 for the toggle all option
+          BC_ancs_set_notification_category_enabled( aItemNo - 1 , IsChecked );
+        }
+      }
+
+      if( 0 == aItemNo )
+      {
+        Menu.InvalidateItems( 1, Menu.NoOfItems - 1 );
+      }
+    $endif
+  }
+
+  $rect <510,110,710,150>
+  inherited method LoadItemChecked()
+  {
+    var bool IsChecked = false;
+    $if !$prototyper
+      if( 0 == aItemNo ) /* check if all categories are enabled */
+      {
+        var bool IsCategoryEnabled;
+        var bool IsAllEnabled = true;
+        var int32 i;
+        for( i = 0; i < CategoryList.size - 1; i++ )
+        {
+          native( IsCategoryEnabled, i )
+          {
+            IsCategoryEnabled = BC_ancs_is_category_enabled( i );
+          }
+
+          if( !IsCategoryEnabled )
+          {
+            IsAllEnabled = false;
+            break;
+          }
+        }
+        IsChecked = IsAllEnabled;
+      }
+      else
+      {
+        var int32 CategoryIdx = aItemNo - 1;
+        native( IsChecked, CategoryIdx )
+        {
+          IsChecked = BC_ancs_is_category_enabled( CategoryIdx );
+        }
+      }
+    $else
+      aItemNo; // suppress warning
+    $endif
+    return IsChecked;
+  }
+
+  $rect <20,20,160,60>
+  inherited object Menu
+  {
+    preset NoOfItems = CategoryList.size;
+    preset ItemHeight = Menu::ItemHeightSmall;
+    preset ItemNumPerPage = 4;
+    preset ScrollbarVisible = false;
+  }
+
+  // The sequence is the same as the Enum::VehicleSupportedFunction.
+  $rect <730,60,930,100>
+  array string CategoryList[ 13 ] =
+  (
+    Default[0] = "Toggle All";
+    Default[1] = "Other";
+    Default[2] = "Incoming Call";
+    Default[3] = "Missed Call";
+    Default[4] = "Voice Mail";
+    Default[5] = "Social";
+    Default[6] = "Schedule";
+    Default[7] = "Email";
+    Default[8] = "News";
+    Default[9] = "Health & Fitness";
+    Default[10] = "Business & Finance";
+    Default[11] = "Location";
+    Default[12] = "Entertainment";
+  );
+
+  $reorder SlideInDialog 4
+  $reorder LoadItemClass 4
+  $reorder LoadItemTitle 4
+  $reorder OnItemActivate 4
+  $reorder LoadItemChecked 4
+  $reorder CategoryList 1
 }

@@ -204,14 +204,14 @@ static notification_time_t phone_connected_time;
 
 /*********************************************************************
 *
-* @private
-* is_category_enabled
+* @public
+* BC_ancs_is_category_enabled
 *
 * @param category_id ANCS notification category id
 * @return Enabled/disable status of the notification category
 *
 *********************************************************************/
-static bool is_category_enabled
+bool BC_ancs_is_category_enabled
     (
     const uint8_t category_id
     )
@@ -221,6 +221,7 @@ bool enabled = false;
 switch( category_id )
     {
     case ANCS_CATEGORY_ID_OTHER:
+        enabled = category_filter.other;
         break;
     case ANCS_CATEGORY_ID_INCOMING_CALL:
         enabled = category_filter.incoming_call;
@@ -264,6 +265,67 @@ return enabled;
 
 /*********************************************************************
 *
+* @public
+* BC_ancs_set_notification_category_enabled
+*
+* Enable/disable ANCS notification category
+*
+* @param category_id ANCS notification category id
+* @param enabled Enabled/disable ANCS notification
+*
+*********************************************************************/
+void BC_ancs_set_notification_category_enabled
+    (
+    const uint8_t category_id,
+    const uint8_t enabled
+    )
+{
+BC_ANCS_PRINTF( "%s %d %d\r\n", __FUNCTION__, category_id, enabled );
+switch( category_id )
+    {
+    case ANCS_CATEGORY_ID_OTHER:
+        category_filter.other = enabled;
+        break;
+    case ANCS_CATEGORY_ID_INCOMING_CALL:
+        category_filter.incoming_call = enabled;
+        break;
+    case ANCS_CATEGORY_ID_MISSED_CALL:
+        category_filter.missed_call = enabled;
+        break;
+    case ANCS_CATEGORY_ID_VOICE_MAIL:
+        category_filter.voice_mail = enabled;
+        break;
+    case ANCS_CATEGORY_ID_SOCIAL:
+        category_filter.social = enabled;
+        break;
+    case ANCS_CATEGORY_ID_SCHEDULE:
+        category_filter.schedule = enabled;
+        break;
+    case ANCS_CATEGORY_ID_EMAIL:
+        category_filter.email = enabled;
+        break;
+    case ANCS_CATEGORY_ID_NEWS:
+        category_filter.news = enabled;
+        break;
+    case ANCS_CATEGORY_ID_HEALTH_AND_FITNESS:
+        category_filter.healthAndFitness = enabled;
+        break;
+    case ANCS_CATEGORY_ID_BUSINESS_AND_FINANCE:
+        category_filter.businessAndFinance = enabled;
+        break;
+    case ANCS_CATEGORY_ID_LOCATION:
+        category_filter.location = enabled;
+        break;
+    case ANCS_CATEGORY_ID_ENTERTAINMENT:
+        category_filter.entertainment = enabled;
+        break;
+    default:
+        break;
+    }
+}
+
+/*********************************************************************
+*
 * @private
 * is_received_after_connected
 *
@@ -276,46 +338,62 @@ static bool is_received_after_connected
     const notification_time_t received_time
     )
 {
-bool result = true;
+bool result = false;
 
-if( phone_connected_time.year > received_time.year )
+if( received_time.year > phone_connected_time.year )
     {
-    result = false;
+    result = true;
     }
-else
+else if( received_time.year == phone_connected_time.year )
     {
-    if( phone_connected_time.month > received_time.month )
+    if( received_time.month > phone_connected_time.month )
         {
-        result = false;
+        result = true;
         }
-    else
+    else if( received_time.month == phone_connected_time.month )
         {
-        if( phone_connected_time.day > received_time.day )
+        if( received_time.day > phone_connected_time.day )
             {
-            result = false;
+            result = true;
             }
-        else
+        else if( received_time.day == phone_connected_time.day )
             {
-            if( phone_connected_time.hour > received_time.hour )
+            if( received_time.hour > phone_connected_time.hour )
                 {
-                result = false;
+                result = true;
                 }
-            else
+            else if( received_time.hour == phone_connected_time.hour )
                 {
-                if( phone_connected_time.minute > received_time.minute )
+                if( received_time.minute > phone_connected_time.minute )
                     {
-                    result = false;
+                    result = true;
+                    }
+                else if( received_time.minute == phone_connected_time.minute )
+                    {
+                    if( received_time.second > phone_connected_time.second )
+                        {
+                        result = true;
+                        }
                     }
                 else
                     {
-                    if( phone_connected_time.second > received_time.second )
-                        {
-                        result = false;
-                        }
+                    /* empty */
                     }
                 }
             }
+        else
+            {
+            /* empty */
+            }
         }
+    else
+        {
+        /* empty */
+        }
+    }
+else
+    {
+    /* empty */
     }
 
 return result;
@@ -754,7 +832,7 @@ while( i < length )
                 memcpy( message_size, &data[i+3], copy_length );
                 message_size[copy_length] = '\0';
                 }
-            BC_ANCS_PRINTF( "\tattr %d: len: %d, message_size: %s\r\n", attribute_id, attribute_len, message_size );
+            BC_ANCS_PRINTF( "\tattr %d: len: %d, msg len: %s\r\n", attribute_id, attribute_len, message_size );
             break;
 
         case ANCS_NOTIFICATION_ATTR_ID_DATE:
@@ -800,8 +878,8 @@ while( i < length )
 
 if( ERR_NONE == get_category_from_dictionary( notification_uid, &category_id ) )
     {
-    BC_ANCS_PRINTF( "%s uid: %d, cat: %d (%d)\r\n", __FUNCTION__, notification_uid, category_id, is_category_enabled( category_id ) );
-    if( is_category_enabled( category_id ) )
+    BC_ANCS_PRINTF( "%s uid: %u, cat: %d (%d)\r\n", __FUNCTION__, notification_uid, category_id, BC_ancs_is_category_enabled( category_id ) );
+    if( BC_ancs_is_category_enabled( category_id ) )
         {
         if( ANCS_CATEGORY_ID_INCOMING_CALL == category_id )
             {

@@ -23,7 +23,7 @@ class NTF01_NotificationList : Menu::BaseMenuView
   $rect <520,70,720,110>
   inherited method LoadItemTitle()
   {
-    var string Title;
+    var string Sender;
 
     if( DeviceInterface::NotificationDevice.NotificationNum > 0 )
     {
@@ -32,35 +32,29 @@ class NTF01_NotificationList : Menu::BaseMenuView
       var uint32 NotificationIdx = DeviceInterface::NotificationDevice.NotificationNum - aItemNo - 1;
       NotificationData = DeviceInterface::NotificationDevice.GetNotificationAtItem( NotificationIdx );
 
+      /* set title/subtitle/--- as the sender */
       if( 0 < NotificationData.Title.length )
       {
-        Title = NotificationData.Title;
+        Sender = NotificationData.Title;
       }
-
-      // display title followed by subtitle
-      if( 0 < NotificationData.Subtitle.length )
+      else if( 0 < NotificationData.Subtitle.length )
       {
-        if( 0 < Title.length )
-        {
-          Title += " ";
-        }
-        Title += NotificationData.Subtitle;
+        Sender = NotificationData.Subtitle;
       }
-
-      if( 0 == Title.length )
+      else
       {
-        Title = Strings::GEN_THREE_HYPHENS;
+        Sender = Strings::GEN_THREE_HYPHENS;
       }
 
       // append (call repetition count) at the end of title
       if( Enum::NotificationCategory.MISSED_CALL == NotificationData.Category &&
           1 < NotificationData.CallRepetition )
       {
-        Title += "(" + string( NotificationData.CallRepetition ) + ")";
+        Sender += "(" + string( NotificationData.CallRepetition ) + ")";
       }
     }
 
-    return Title;
+    return Sender;
   }
 
   $rect <520,170,730,210>
@@ -538,17 +532,11 @@ class NotificationDetailText : Core::Group
       {
         TitleText.String = value.Title;
       }
-
-      if( 0 < value.Subtitle.length )
+      else if( 0 < value.Subtitle.length )
       {
-        if(  0 < TitleText.String.length )
-        {
-          TitleText.String += " ";
-        }
-        TitleText.String += value.Subtitle;
+        TitleText.String = value.Subtitle;
       }
-
-      if( 0 == TitleText.String.length )
+      else
       {
         TitleText.String = Strings::GEN_THREE_HYPHENS;
       }

@@ -45,6 +45,7 @@ typedef struct
 /*--------------------------------------------------------------------
                            MEMORY CONSTANTS
 --------------------------------------------------------------------*/
+#define MAX_DUMP_LENGTH     ( 150 )
 
 /*--------------------------------------------------------------------
                                VARIABLES
@@ -63,10 +64,43 @@ static TimerHandle_t phone_call_state_timer_handle = NULL;
 /*--------------------------------------------------------------------
                                 MACROS
 --------------------------------------------------------------------*/
+#define MIN(a,b)    ( ( a < b ) ? a : b )
 
 /*--------------------------------------------------------------------
                               PROCEDURES
 --------------------------------------------------------------------*/
+#if( ENABLE_NTF_DEBUG_LOG )
+    /*********************************************************************
+    *
+    * @private
+    * dump_hexadecimal
+    *
+    * Dump hexadecimal data
+    *
+    * @param description Description of the data
+    * @param data Data to dump
+    * @param data_len Data length to dump
+    *
+    *********************************************************************/
+    static void dump_hexadecimal
+        (
+        const uint8_t* description,
+        const uint8_t* data,
+        const uint32_t data_len
+        )
+    {
+    int32_t i;
+    int32_t length = MIN( data_len, MAX_DUMP_LENGTH );
+
+    NTF_PRINTF( "%s\r\n", description );
+    for( i = 0; i < length; i++ )
+        {
+        NTF_PRINTF( "%02x ", data[i] );
+        }
+    NTF_PRINTF( "%\r\n" );
+    }
+#endif
+
 /*********************************************************************
 *
 * @private
@@ -254,7 +288,11 @@ int NTF_add_notification
     )
 {
 int result = ERR_NONE;
-NTF_PRINTF( "%s %d %s %d\r\n", __FUNCTION__, uid, title, category );
+NTF_PRINTF( "%s %u %d\r\n", __FUNCTION__, uid, category );
+#if( ENABLE_NTF_DEBUG_LOG )
+    dump_hexadecimal( "title", title, strlen( title ) );
+    dump_hexadecimal( "detail", message, strlen( message ) );
+#endif
 
 if( BC_motocon_is_connected() )
     {

@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _DevelopmentDEV_Main_H
-#define _DevelopmentDEV_Main_H
+#ifndef _DevelopmentDEV_AncsCategory_H
+#define _DevelopmentDEV_AncsCategory_H
 
 #ifdef __cplusplus
   extern "C"
@@ -87,10 +87,10 @@
 #define _CoreView_
 #endif
 
-/* Forward declaration of the class Development::DEV_Main */
-#ifndef _DevelopmentDEV_Main_
-  EW_DECLARE_CLASS( DevelopmentDEV_Main )
-#define _DevelopmentDEV_Main_
+/* Forward declaration of the class Development::DEV_AncsCategory */
+#ifndef _DevelopmentDEV_AncsCategory_
+  EW_DECLARE_CLASS( DevelopmentDEV_AncsCategory )
+#define _DevelopmentDEV_AncsCategory_
 #endif
 
 /* Forward declaration of the class Effects::Fader */
@@ -112,13 +112,13 @@
 #endif
 
 
-/* Deklaration of class : 'Development::DEV_Main' */
-EW_DEFINE_FIELDS( DevelopmentDEV_Main, MenuBaseMenuView )
-  EW_ARRAY   ( ItemTitleArray,  XString, [17])
-EW_END_OF_FIELDS( DevelopmentDEV_Main )
+/* Deklaration of class : 'Development::DEV_AncsCategory' */
+EW_DEFINE_FIELDS( DevelopmentDEV_AncsCategory, MenuBaseMenuView )
+  EW_ARRAY   ( CategoryList,    XString, [13])
+EW_END_OF_FIELDS( DevelopmentDEV_AncsCategory )
 
-/* Virtual Method Table (VMT) for the class : 'Development::DEV_Main' */
-EW_DEFINE_METHODS( DevelopmentDEV_Main, MenuBaseMenuView )
+/* Virtual Method Table (VMT) for the class : 'Development::DEV_AncsCategory' */
+EW_DEFINE_METHODS( DevelopmentDEV_AncsCategory, MenuBaseMenuView )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -163,7 +163,7 @@ EW_DEFINE_METHODS( DevelopmentDEV_Main, MenuBaseMenuView )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseMainBG _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( DevelopmentDEV_AncsCategory _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
@@ -172,11 +172,14 @@ EW_DEFINE_METHODS( DevelopmentDEV_Main, MenuBaseMenuView )
   EW_METHOD( OnSetDDModeEnabled, void )( MenuBaseMenuView _this, XBool value )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
-  EW_METHOD( LoadItemClass,     XClass )( DevelopmentDEV_Main _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemTitle,     XString )( DevelopmentDEV_Main _this, XInt32 aItemNo )
-  EW_METHOD( OnItemActivate,    void )( DevelopmentDEV_Main _this, XInt32 aItemNo, 
-    MenuItemBase aMenuItem )
-  EW_METHOD( LoadItemChecked,   XBool )( DevelopmentDEV_Main _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemClass,     XClass )( DevelopmentDEV_AncsCategory _this, XInt32 
+    aItemNo )
+  EW_METHOD( LoadItemTitle,     XString )( DevelopmentDEV_AncsCategory _this, XInt32 
+    aItemNo )
+  EW_METHOD( OnItemActivate,    void )( DevelopmentDEV_AncsCategory _this, XInt32 
+    aItemNo, MenuItemBase aMenuItem )
+  EW_METHOD( LoadItemChecked,   XBool )( DevelopmentDEV_AncsCategory _this, XInt32 
+    aItemNo )
   EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemBaseValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemMessage,   XString )( MenuBaseMenuView _this, XInt32 aItemNo )
@@ -194,25 +197,31 @@ EW_DEFINE_METHODS( DevelopmentDEV_Main, MenuBaseMenuView )
   EW_METHOD( LoadPoiListItemUnit, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemIcon1Visible, XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemIcon2Visible, XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
-EW_END_OF_METHODS( DevelopmentDEV_Main )
+EW_END_OF_METHODS( DevelopmentDEV_AncsCategory )
 
-/* 'C' function for method : 'Development::DEV_Main.LoadItemClass()' */
-XClass DevelopmentDEV_Main_LoadItemClass( DevelopmentDEV_Main _this, XInt32 aItemNo );
+/* 'C' function for method : 'Development::DEV_AncsCategory.OnShortHomeKeyActivated()' */
+void DevelopmentDEV_AncsCategory_OnShortHomeKeyActivated( DevelopmentDEV_AncsCategory _this );
 
-/* 'C' function for method : 'Development::DEV_Main.LoadItemTitle()' */
-XString DevelopmentDEV_Main_LoadItemTitle( DevelopmentDEV_Main _this, XInt32 aItemNo );
+/* 'C' function for method : 'Development::DEV_AncsCategory.LoadItemClass()' */
+XClass DevelopmentDEV_AncsCategory_LoadItemClass( DevelopmentDEV_AncsCategory _this, 
+  XInt32 aItemNo );
 
-/* 'C' function for method : 'Development::DEV_Main.OnItemActivate()' */
-void DevelopmentDEV_Main_OnItemActivate( DevelopmentDEV_Main _this, XInt32 aItemNo, 
-  MenuItemBase aMenuItem );
+/* 'C' function for method : 'Development::DEV_AncsCategory.LoadItemTitle()' */
+XString DevelopmentDEV_AncsCategory_LoadItemTitle( DevelopmentDEV_AncsCategory _this, 
+  XInt32 aItemNo );
 
-/* 'C' function for method : 'Development::DEV_Main.LoadItemChecked()' */
-XBool DevelopmentDEV_Main_LoadItemChecked( DevelopmentDEV_Main _this, XInt32 aItemNo );
+/* 'C' function for method : 'Development::DEV_AncsCategory.OnItemActivate()' */
+void DevelopmentDEV_AncsCategory_OnItemActivate( DevelopmentDEV_AncsCategory _this, 
+  XInt32 aItemNo, MenuItemBase aMenuItem );
+
+/* 'C' function for method : 'Development::DEV_AncsCategory.LoadItemChecked()' */
+XBool DevelopmentDEV_AncsCategory_LoadItemChecked( DevelopmentDEV_AncsCategory _this, 
+  XInt32 aItemNo );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _DevelopmentDEV_Main_H */
+#endif /* _DevelopmentDEV_AncsCategory_H */
 
 /* Embedded Wizard */
