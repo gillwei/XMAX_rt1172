@@ -15,6 +15,7 @@
 #include <string.h>
 #include "HCI_pub.h"
 #include "bt_spp_iap2.h"
+#include "EW_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
@@ -26,6 +27,8 @@
 #define BC_MOTOCON_BTC_HEADER_SIZE             ( 5 )
 #define BC_MOTOCON_BTC_EOF_SIZE                ( 1 )
 #define BC_MOTOCON_BTC_DATA_SIZE               ( BC_MOTOCON_BTC_HEADER_SIZE + BC_MOTOCON_AUTHENTICATION_DATA_SIZE + BC_MOTOCON_BTC_EOF_SIZE )
+
+#define TEST_PASSKEY                           (const char []){ 'A', 'B', 'C', 'D', 'E', 'F' }
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -87,9 +90,6 @@ authentication_string[BC_MOTOCON_BTC_HEADER_SIZE] = BC_MOTOCON_COMMAND_CODE_CONN
 authentication_string[BC_MOTOCON_BTC_HEADER_SIZE +1] = BC_MOTOCON_COMMAND_CODE_CONNECT_INFORMATION_RESPONSE & 0xFF;
 authentication_string[BC_MOTOCON_BTC_DATA_SIZE - 1] = 4;
 HCI_spp_iap2_add_data_callback_y_app( BC_motocon_authentication_received_btc_data );
-// set temp key
-uint8_t passkey[6] = { 'A', 'B', 'C', 'D', 'E', 'F' };
-bc_motocon_authentication_set_data( (uint8_t*)TEST_CCUID, passkey );
 }
 
 /*********************************************************************
@@ -108,6 +108,7 @@ void bc_motocon_authentication_set_data
 {
 memcpy( ccuid_string, ccuid, BC_MOTOCON_AUTHENTICATION_CCUID_SIZE);
 memcpy( passkey_string, passkey, BC_MOTOCON_AUTHENTICATION_PASSKEY_SIZE);
+BC_MOTOCON_PRINTF( "%s: ccuid+passkey: %s\r\n", __FUNCTION__, ccuid_string );
 }
 
 /*********************************************************************
@@ -131,6 +132,36 @@ return is_ccuid_current && is_passkey_current;
 
 /*********************************************************************
 *
+* @private
+* update_authentication_data
+*
+* Update authentication data
+*
+*********************************************************************/
+static void update_authentication_data
+    (
+    void
+    )
+{
+static bool already_got = false;
+if( already_got )
+    {
+    return;
+    }
+bool result_ccuid = false;
+bool result_passkey = false;
+uint8_t* real_ccuid = NULL;
+uint8_t* real_passkey = NULL;
+result_ccuid = EW_get_unit_id_ccuid( &real_ccuid );
+BC_MOTOCON_PRINTF( "%s: ccuid %d\r\n", __FUNCTION__, result_ccuid );
+result_passkey = EW_get_unit_id_passkey( &real_passkey );
+BC_MOTOCON_PRINTF( "%s: passkey %d\r\n", __FUNCTION__, result_passkey );
+bc_motocon_authentication_set_data( result_ccuid ? real_ccuid : (uint8_t*)TEST_CCUID, result_passkey ? real_passkey : (uint8_t*)TEST_PASSKEY );
+already_got = true;
+}
+
+/*********************************************************************
+*
 * @public
 * BC_motocon_authentication_received_btc_data
 *
@@ -148,6 +179,7 @@ const bc_motocon_command_code_t command_code = TWO_BYTE_BIG( data, BC_MOTOCON_BT
 switch( command_code )
     {
     case BC_MOTOCON_COMMAND_CODE_CONNECT_INFORMATION_REQUEST:
+        update_authentication_data();
         BT_SPP_IAP2_send_y_app( BC_MOTOCON_BTC_DATA_SIZE, authentication_string );
         break;
     default:
