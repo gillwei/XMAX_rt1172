@@ -31,6 +31,8 @@
 #define ENABLE_BLE_DEBUG_LOG    ( 1 )
 #if( ENABLE_BLE_DEBUG_LOG )
     #define BLE_PRINTF  PRINTF
+    #define BLE_READ_WRITE_DEBUG_ENABLE  0
+    #define BLE_NOTIFY_DEBUG_ENABLE      0
 #else
     #define BLE_PRINTF(fmt, ...)
 #endif
@@ -321,7 +323,9 @@ switch( opcode )
     {
     case HCI_CONTROL_GATT_EVENT_COMMAND_STATUS:
         hci_gatt_receive_command_status( data[0] );
-        BLE_PRINTF( "GATT_EVENT_COMMAND_STATUS: %d\r\n", data[0] );
+        #if BLE_READ_WRITE_DEBUG_ENABLE
+            BLE_PRINTF( "GATT_EVENT_COMMAND_STATUS: %d\r\n", data[0] );
+        #endif
         break;
 
     case HCI_CONTROL_GATT_EVENT_DISCOVERY_COMPLETE:
@@ -416,8 +420,9 @@ switch( opcode )
     case HCI_CONTROL_GATT_EVENT_READ_REQUEST:
         connection_id = WORD_LITTLE( data[0], data[1] );
         handle = WORD_LITTLE( data[2], data[3] );
-        BLE_PRINTF( "GATT EVENT_READ_REQUEST, conn:%x, attr handle:%x\r\n", connection_id, handle );
-
+        #if BLE_READ_WRITE_DEBUG_ENABLE
+            BLE_PRINTF( "GATT EVENT_READ_REQUEST, conn:%x, attr handle:%x\r\n", connection_id, handle );
+        #endif
         if( handle >= ble_servers[0].start_handle &&
             handle <= ble_servers[0].end_handle )
             {
@@ -446,7 +451,9 @@ switch( opcode )
     case HCI_CONTROL_GATT_EVENT_WRITE_REQUEST:
         connection_id = WORD_LITTLE( data[0], data[1] );
         handle = WORD_LITTLE( data[2], data[3] );
-        BLE_PRINTF( "GATT EVENT_WRITE_REQUEST, conn:%x, attr handle:%x, len: %d\r\n", connection_id, handle, length );
+        #if BLE_READ_WRITE_DEBUG_ENABLE
+            BLE_PRINTF( "GATT EVENT_WRITE_REQUEST, conn:%x, attr handle:%x, len: %d\r\n", connection_id, handle, length );
+        #endif
         if( handle >= ble_servers[0].start_handle &&
             handle <= ble_servers[0].end_handle )
             {
@@ -473,7 +480,9 @@ switch( opcode )
         break;
 
     case HCI_CONTROL_GATT_EVENT_WRITE_RESPONSE:
-        BLE_PRINTF( "GATT_EVENT_WRITE_RESPONSE, conn handle: 0x%x, result: 0x%x\r\n", WORD_LITTLE( data[0], data[1] ), data[2] );
+        #if BLE_READ_WRITE_DEBUG_ENABLE
+            BLE_PRINTF( "GATT_EVENT_WRITE_RESPONSE, conn handle: 0x%x, result: 0x%x\r\n", WORD_LITTLE( data[0], data[1] ), data[2] );
+        #endif
         gatt_write_request_state = GATT_WRITE_REQUEST_STATE_IDLE;
         if( GATT_WRITE_REQUEST_QUEUE_LENGTH > uxQueueSpacesAvailable( gatt_write_quest_queue_handle ) )
             {
@@ -487,7 +496,9 @@ switch( opcode )
 
     case HCI_CONTROL_GATT_EVENT_NOTIFICATION:
         handle = WORD_LITTLE( data[2], data[3] );
-        BLE_PRINTF( "GATT_EVENT_NOTIFICATION, conn: 0x%x, handle: 0x%x, len: %d\r\n", WORD_LITTLE( data[0], data[1] ), handle, length );
+        #if BLE_NOTIFY_DEBUG_ENABLE
+            BLE_PRINTF( "GATT_EVENT_NOTIFICATION, conn: 0x%x, handle: 0x%x, len: %d\r\n", WORD_LITTLE( data[0], data[1] ), handle, length );
+        #endif
         for( service_idx = 0; service_idx < BLE_CLIENT_TOTAL; service_idx++ )
             {
             if( handle >= ble_clients[service_idx].start_handle &&
@@ -536,9 +547,9 @@ static int send_gatt_write_request
 {
 int result = ERR_NONE;
 uint8_t send_data[GATT_WRITE_REQUEST_HEADER_LENGTH + BLE_GATT_WRITE_REQUEST_DATA_MAX_LEN];
-
-BLE_PRINTF( "%s handle: 0x%x, len: %d\r\n", __FUNCTION__, handle, length );
-
+#if BLE_READ_WRITE_DEBUG_ENABLE
+    BLE_PRINTF( "%s handle: 0x%x, len: %d\r\n", __FUNCTION__, handle, length );
+#endif
 if( BLE_GATT_WRITE_REQUEST_DATA_MAX_LEN >= length )
     {
     send_data[0] = ble_connection_handle & 0xff;
@@ -583,9 +594,9 @@ int HCI_le_send_gatt_server_data
 {
 int result = ERR_NONE;
 uint8_t send_data[4 + length];
-
-BLE_PRINTF( "%s handle: %x, len: %d\r\n", __FUNCTION__, handle, length );
-
+#if BLE_READ_WRITE_DEBUG_ENABLE
+    BLE_PRINTF( "%s handle: %x, len: %d\r\n", __FUNCTION__, handle, length );
+#endif
 if( ( HCI_CONTROL_GATT_COMMAND_READ_RESPONSE != opcode ) && ( HCI_CONTROL_GATT_COMMAND_NOTIFY != opcode ) )
     {
     BLE_PRINTF( "ERROR opcode 0x%x\r\n", opcode );
