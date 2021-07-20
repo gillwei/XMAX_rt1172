@@ -595,9 +595,24 @@ BaseType_t HCI_LE_send_advertising_cmd
     ble_advertising_type_t ble_advertising_type
     )
 {
-uint8_t ble_adv_data[CCUID_LENGTH+1];
+uint8_t  ble_adv_data[CCUID_LENGTH+1];
+uint8_t* unit_id_part;
+bool     result;
+
 ble_adv_data[0] = ble_advertising_type;
-memcpy( &(ble_adv_data[1]), TEST_CCUID, CCUID_LENGTH );
+result = EW_get_unit_id_ccuid( &unit_id_part );
+
+if( true == result )
+    {
+    memcpy( &(ble_adv_data[1]), unit_id_part, CCUID_LENGTH );
+    }
+else
+    {
+    // Get CCUID fail, using constant character array
+    memcpy( &(ble_adv_data[1]), TEST_CCUID, CCUID_LENGTH );
+    PRINTF( "%s: get ccuid fail\r\n", __FUNCTION__ );
+    }
+
 return HCI_wiced_send_command( HCI_CONTROL_MISC_COMMAND_MISC_LE_ADV, ble_adv_data, CCUID_LENGTH+1 );
 }
 
