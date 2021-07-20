@@ -353,7 +353,12 @@ void StatusBarMain_UpdateMotoConConnectionStatus( StatusBarMain _this )
     ViewsImage_OnSetVisible( &_this->SignalLevelIcon, 0 );
   }
   else
+  {
     StatusBarMain_UpdateAppIcon( _this );
+    StatusBarMain_UpdateBatteryIcon( _this );
+    StatusBarMain_UpdateHeadsetIcon( _this );
+    StatusBarMain_UpdatePhoneCellSignalLevelIcon( _this );
+  }
 }
 
 /* 'C' function for method : 'StatusBar::Main.UpdateBatteryIcon()' */

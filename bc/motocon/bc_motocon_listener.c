@@ -555,9 +555,13 @@ void bc_motocon_listener_battery
     const bc_motocon_battery_t battery_type
     )
 {
-phone_battery_percentage = battery;
-phone_battery_charging_status = battery_type;
-EW_notify_motocon_event_received( EnumMotoConRxEventPHONE_BATTERY );
+if( phone_battery_percentage != battery ||
+    phone_battery_charging_status != battery_type )
+    {
+    phone_battery_percentage = battery;
+    phone_battery_charging_status = battery_type;
+    EW_notify_motocon_event_received( EnumMotoConRxEventPHONE_BATTERY );
+    }
 }
 
 /*********************************************************************
@@ -575,8 +579,11 @@ void bc_motocon_listener_phone_thermal
     const bc_motocon_thermal_state_t thermal_state
     )
 {
-phone_thermal_state = thermal_state;
-EW_notify_motocon_event_received( EnumMotoConRxEventPHONE_THERMAL );
+if( phone_thermal_state != thermal_state )
+    {
+    phone_thermal_state = thermal_state;
+    EW_notify_motocon_event_received( EnumMotoConRxEventPHONE_THERMAL );
+    }
 }
 
 /*********************************************************************
@@ -594,8 +601,11 @@ void bc_motocon_listener_phone_signal_level
     const uint8_t level
     )
 {
-phone_cell_signal_level = level;
-EW_notify_motocon_event_received( EnumMotoConRxEventPHONE_CELL_SIGNAL_LEVEL );
+if( phone_cell_signal_level != level )
+    {
+    phone_cell_signal_level = level;
+    EW_notify_motocon_event_received( EnumMotoConRxEventPHONE_CELL_SIGNAL_LEVEL );
+    }
 }
 
 /*********************************************************************
@@ -613,8 +623,11 @@ void bc_motocon_listener_bt_headset_state
     const bc_motocon_bt_headset_state_t headset_state
     )
 {
-phone_headset_state = headset_state;
-EW_notify_motocon_event_received( EnumMotoConRxEventPHONE_HEADSET );
+if( phone_headset_state != headset_state )
+    {
+    phone_headset_state = headset_state;
+    EW_notify_motocon_event_received( EnumMotoConRxEventPHONE_HEADSET );
+    }
 }
 
 /*********************************************************************
