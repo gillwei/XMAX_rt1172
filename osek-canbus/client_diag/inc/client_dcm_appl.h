@@ -89,7 +89,8 @@ typedef enum
 {
 E_PARSE_FAILED = 0,
 E_SUCCESS,
-E_PARAMETER_ERROR
+E_PARAMETER_ERROR,
+E_ERROR_SNS
 }E_reuset_type;
 
 typedef enum
@@ -109,6 +110,26 @@ CMD_RSP_TIMEOUT,
 CMD_RSP_DONE,
 CMD_RSP_MAX
 }client_appl_cmd_rsp_state_type;
+
+
+typedef enum
+{
+SERVICE_INIT = 0,
+SERVICE_SUPPORT,
+SERVICE_NOT_SUPPORT,
+SERVICE_STATE_MAX
+}client_appl_service_support_type;
+
+typedef enum
+{
+DIAG_SERVICE_SESSION_CONTORL_10H = 0,
+DIAG_SERVICE_READ_DTC_18H,
+DiAG_SERVICE_READ_COMMON_ID_22H,
+DIAG_SERVICE_READ_LOCAL_ID_21H,
+DIAG_SERVICE_READ_FFD_12H,
+DIAG_SUPPORT_SERVICE_MAX
+}client_appl_service_support_id_type;
+
 
 typedef enum
 {

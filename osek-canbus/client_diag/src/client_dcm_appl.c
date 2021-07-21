@@ -58,7 +58,7 @@ static client_appl_cmd_rsp_state_type client_app_cmd_rsp_state = CMD_RSP_IDLE;
 static uint8 current_connect_server_id   = 0xFF;
 static uint8 default_server_list_detect_amount = 0x00;
 static uint8 extend_server_list_detect_amount = 0x00;
-static uint32 connected_server_list[SUPPORT_SERVER_NUM] = {0};
+
 static const uint16 server_ecu_identifier[SUPPORT_SERVER_NUM] = SERVER_ECU_LIST;
 static client_appl_server_detect_step_type server_detect_step = SERVER_DETECT_INIT;
 static client_appl_server_list_detect_type server_list_detect_infos[SUPPORT_SERVER_NUM] = {0};
@@ -78,7 +78,7 @@ static const uint8 support_market_data_id_list[SUPPORT_MARKET_COUNT]= SUPPORT_MA
 static uint8 rx_monitor_data_id_list[SUPPORT_MONITOR_COUNT] = { 0 };
 static boolean support_id_received_flag[SUPPORT_MONITOR_COUNT] = { FALSE };
 /* SUPPORT_MONITOR_COUNT suuport id + 1 server code */
-static uint8 response_support_monitor_data_id_list[SUPPORT_MONITOR_COUNT] = { 0 };
+
 static const uint8 support_monitor_data_id_list[SUPPORT_MONITOR_COUNT] = SUPPORT_MONITOR_IDS_LIST;
 static client_appl_read_data_by_local_id_type read_loacl_market_infos = {0};
 static client_appl_read_data_by_local_id_type read_local_monitor_infos = {0};
@@ -133,6 +133,7 @@ char* print_end[PROCESS_RESULT_MAX] = {0};
 #endif
 
 const client_appl_ble_server_code_mapping_type client_appl_ble_server_code_mapping[SUPPORT_SERVER_NUM] = BLE_SERVER_CODE_MAPPING;
+client_appl_service_support_type client_appl_diag_service_supprot_state[SUPPORT_SERVER_NUM][DIAG_SUPPORT_SERVICE_MAX] = {SERVICE_INIT};
 
 /*------------------------------------------------------------------
 *                          MACROS
@@ -364,6 +365,12 @@ void client_appl_rsp_initial_dtc_after_ble_connect
     boolean value
     );
 
+uint8 client_appl_get_diag_service_support_state
+    (
+    uint16 channel,
+    client_appl_service_support_id_type service_id
+    );
+
 
 static client_process_flow_handler_type client_process_flow_handler[SUPPORT_FUCNTION_NUMS - 1] =
 {
@@ -449,18 +456,6 @@ else
 ble_connected_state = next_state;
 }
 
-/*!*******************************************************************
-* @public
-* Function name: client_appl_get_ble_connected_state_ptr
-* Description:  Get pointer to ble_connected_state
-*********************************************************************/
-static uint8* client_appl_get_ble_connected_state_ptr
-    (
-    void
-    )
-{
-return &ble_connected_state;
-}
 
 /*!*******************************************************************
 * @public
@@ -540,21 +535,6 @@ return ( ( data >> 8 ) |
 }
 #endif
 
-/*!*******************************************************************
-* @public
-* Function name: clent_appl_data_swap_u32
-* Description: big endian to little endian
-*********************************************************************/
-static uint32 client_app_data_swap_u32
-    (
-    uint32 data
-    )
-{
-return ( ( ( data << 24 ) & 0xFF000000 ) |
-       ( ( data << 8 ) & 0x00FF0000 )|
-       ( ( data >> 8 ) & 0x0000FF00 )|
-       ( ( data >> 24 ) & 0x000000FF ) );
-}
 /*!*******************************************************************
 * @public
 * Function name: client_appl_data_cpy
@@ -724,7 +704,55 @@ static boolean client_appl_set_current_process_flow_step
     client_process_flow_type next_process_flow
     )
 {
-client_process_flow_state = next_process_flow;
+client_appl_service_support_id_type service_id = DIAG_SUPPORT_SERVICE_MAX;
+/*Check current service whether is support*/
+switch( next_process_flow )
+    {
+    case PROCESS_FLOW_DETECT_SERVER:
+    case PROCESS_FLOW_EXTEND_SERVER:
+        service_id = DIAG_SERVICE_SESSION_CONTORL_10H;
+        break;
+
+    case PROCESS_FLOW_INIT_RDTCBS:
+        service_id = DIAG_SERVICE_READ_DTC_18H;
+        break;
+
+    case PROCESS_FLOW_RDBCID:
+        service_id = DiAG_SERVICE_READ_COMMON_ID_22H;
+        break;
+
+    case PROCESS_FLOW_MARKET:
+    case PROCESS_FLOW_MONITOR:
+        service_id = DIAG_SERVICE_READ_LOCAL_ID_21H;
+        break;
+
+    case PROCESS_FLOW_RFFD:
+        service_id = DIAG_SERVICE_READ_FFD_12H;
+        break;
+
+    default:
+        break;
+    }
+
+if( ( PROCESS_FLOW_IDLE > next_process_flow ) && ( FALSE == client_appl_get_diag_service_support_state( get_current_connect_server_id(), service_id ) ) )
+    {
+    client_process_flow_state = PROCESS_FLOW_IDLE;
+    set_current_conncet_server_id( NO_SERVER_CONNECT );
+    /*initial structure*/
+    /*clear the read_dtc_infos except the read_dtc_infos.is_storge_init_dtc*/
+    /*sizeof ( read_dtc_infos) = 12, Byte alignment */
+    (void)memset( &read_dtc_infos, 0x00, sizeof( read_dtc_infos ) - 4 );
+    (void)memset( &read_common_identifier_infos, 0x00, sizeof( read_common_identifier_infos ) );
+    (void)memset( &read_loacl_market_infos, 0x00, sizeof( read_loacl_market_infos ) );
+    (void)memset( &read_local_monitor_infos, 0x00, sizeof( read_local_monitor_infos ) );
+    (void)memset( &read_freeze_frame_data_infos, 0x00, sizeof( read_freeze_frame_data_infos ) );
+    return FALSE;
+    }
+else
+    {
+    client_process_flow_state = next_process_flow;
+    }
+
 /*5ms*20 = 100ms*/
 client_appl_set_delay_timer( 40 );
 
@@ -736,10 +764,10 @@ switch( client_process_flow_state )
         /*clear the read_dtc_infos except the read_dtc_infos.is_storge_init_dtc*/
         /*sizeof ( read_dtc_infos) = 12, Byte alignment */
         (void)memset( &read_dtc_infos, 0x00, sizeof( read_dtc_infos ) - 4 );
-        (void)memset( &read_common_identifier_infos, 0x00, sizeof( read_common_identifier_infos ));
+        (void)memset( &read_common_identifier_infos, 0x00, sizeof( read_common_identifier_infos ) );
         (void)memset( &read_loacl_market_infos, 0x00, sizeof( read_loacl_market_infos ) );
-        (void)memset( &read_local_monitor_infos, 0x00, sizeof( read_local_monitor_infos ));
-        (void)memset( &read_freeze_frame_data_infos,0x00, sizeof( read_freeze_frame_data_infos ));
+        (void)memset( &read_local_monitor_infos, 0x00, sizeof( read_local_monitor_infos ) );
+        (void)memset( &read_freeze_frame_data_infos, 0x00, sizeof( read_freeze_frame_data_infos ) );
         set_client_app_cmd_rsp_state( CMD_RSP_IDLE );
         break;
 
@@ -832,6 +860,9 @@ for( ; index < SUPPORT_SERVER_NUM; index++ )
     server_list_detect_infos[index].server_connect_status_default = SERVER_UN_CONNECT;
     server_list_detect_infos[index].server_connect_status_extend = SERVER_UN_CONNECT;
     }
+
+(void)memset( &client_appl_diag_service_supprot_state, SERVICE_INIT, sizeof( client_appl_diag_service_supprot_state ));
+
 
 server_detect_step = SERVER_DETECT_INIT;
 default_server_list_detect_amount = 0x00;
@@ -1753,7 +1784,6 @@ void client_appl_ble_rsp_connect_server_list
     )
 {
 uint8 index = 0x00;
-uint32 server_code = 0;
 uint32 resp_data_length = 0;
 
 if( FALSE == check_result )
@@ -1883,7 +1913,7 @@ return TRUE;
 * Description  : this function will read and handle repeat type data
 * NoteL: This is a callback function
 *********************************************************************************/
-boolean read_bytes
+bool read_bytes
 (
     pb_istream_t*     stream,
     const pb_field_t* field,
@@ -1921,11 +1951,12 @@ uint32 interval_time = 0;
 /*Command type: 0x0105 */
 if ( FALSE == is_request_interval )
     {
-    uint8 sdata[5] = {0x18,0xE0,0x09,0x20,0x01};
-    uint8 sdata_len = 5;
+
     McMalfunctionRequest mal_fucntion_requset_pb = McMalfunctionRequest_init_zero;
 
     #if ( TRUE == SIMULATE_INPUT_DEBUG )
+    uint8 sdata[5] = {0x18,0xE0,0x09,0x20,0x01};
+    uint8 sdata_len = 5;
     pb_istream_t stream = pb_istream_from_buffer( sdata, sdata_len );
     #else
     pb_istream_t stream = pb_istream_from_buffer( data, data_size );
@@ -1946,10 +1977,10 @@ else
 /*For Command: MALFUNCTION REQUEST INTERVAL*/
 /*Command type: 0x0109 */
     {
-    uint8 sdata[8] = {0x18,0xE0,0x09,0x20,0x01,0x28,0xE0,0x09};
-    uint8 sdata_len = 8;
     McMalfunctionIntervalRequest mal_fucntion_interval_requset_pb = McMalfunctionIntervalRequest_init_zero;
     #if ( TRUE == SIMULATE_INPUT_DEBUG )
+    uint8 sdata[8] = {0x18,0xE0,0x09,0x20,0x01,0x28,0xE0,0x09};
+    uint8 sdata_len = 8;
     pb_istream_t stream = pb_istream_from_buffer( sdata, sdata_len );
     #else
     pb_istream_t stream = pb_istream_from_buffer( data, data_size );
@@ -2019,11 +2050,12 @@ else
 read_dtc_infos.connected_server_id = channel_id;
 read_dtc_infos.current_STADTC = status_code;
 set_current_conncet_server_id( channel_id );
-client_appl_set_current_process_flow_step( PROCESS_FLOW_INIT_RDTCBS );
+if( FALSE == client_appl_set_current_process_flow_step( PROCESS_FLOW_INIT_RDTCBS ) )
+    {
+    return E_ERROR_SNS;
+    }
 
 g_McMalfunctionResponse_list.count = 0;
-
-
 return E_SUCCESS;
 }
 
@@ -2044,9 +2076,6 @@ uint8 index = 0;
 uint8 channel_id = NO_SERVER_CONNECT;
 uint32 server_code = 0;
 boolean read_all_id = FALSE;
-
-uint8 sdata[13] = { 0x18, 0xE0, 0x09, 0x22, 0x06, 0x03, 0x8E, 0x02 ,0x9E ,0xA7 ,0x05, 0x28, 0x01 };
-uint16 sdata_len = 13;
 McVehicleIdentificationRequest mc_vehicle_iden_req_fb = McVehicleIdentificationRequest_init_zero;
 
 /*Shall reset current id number when received a new command*/
@@ -2059,6 +2088,8 @@ mc_vehicle_iden_req_fb.id_list.funcs.decode = read_bytes;
 
 
 #if ( TRUE == SIMULATE_INPUT_DEBUG )
+    uint8 sdata[13] = { 0x18, 0xE0, 0x09, 0x22, 0x06, 0x03, 0x8E, 0x02 ,0x9E ,0xA7 ,0x05, 0x28, 0x01 };
+    uint16 sdata_len = 13;
     pb_istream_t stream = pb_istream_from_buffer( sdata, sdata_len );
 #else
     pb_istream_t stream = pb_istream_from_buffer( data, data_size );
@@ -2084,13 +2115,16 @@ if( NO_SERVER_CONNECT == channel_id )
 /*command data handle*/
 if( TRUE == read_all_id )
     {
-    client_appl_set_current_process_flow_step( PROCESS_FLOW_RDBCID );
     set_current_conncet_server_id( channel_id );
     read_common_identifier_infos.connected_server_id = channel_id;
     read_common_identifier_infos.common_id_list = (uint16*)support_common_data_id_list;
     read_common_identifier_infos.common_data_amount = SUPPORT_COMMON_COUNT;
     read_common_identifier_infos.current_common_data_index = 0x00;
 
+    if( FALSE == client_appl_set_current_process_flow_step( PROCESS_FLOW_RDBCID ) )
+        {
+        return E_ERROR_SNS;
+        }
     g_IdDataList.count = 0;
     g_IdDataList.fields = McVehicleIdentificationResponse_IdData_fields;
     return E_SUCCESS;
@@ -2101,13 +2135,15 @@ else
         {
         rx_comman_data_id_list[index] = (uint16)vehicle_iden_list.id_list_array[index];
         }
-
-    client_appl_set_current_process_flow_step( PROCESS_FLOW_RDBCID );
     set_current_conncet_server_id( channel_id );
     read_common_identifier_infos.connected_server_id = channel_id;
     read_common_identifier_infos.common_id_list = rx_comman_data_id_list;
     read_common_identifier_infos.common_data_amount = vehicle_iden_list.id_list_num;
     read_common_identifier_infos.current_common_data_index = 0x00;
+    if( FALSE == client_appl_set_current_process_flow_step( PROCESS_FLOW_RDBCID ) )
+        {
+        return E_ERROR_SNS;
+        }
 
     g_IdDataList.count = 0;
     g_IdDataList.fields = McVehicleIdentificationResponse_IdData_fields;
@@ -2132,9 +2168,6 @@ uint8 index = 0;
 uint8 channel_id = NO_SERVER_CONNECT;
 uint32 server_code = 0;
 boolean read_all_id = FALSE;
-
-uint8 sdata[11] = { 0x18, 0xE0, 0x09, 0x22, 0x06, 0x03, 0x8E, 0x02 ,0x9E ,0xA7 ,0x05 };
-uint16 sdata_len = 11;
 McMarketDataRequest mc_market_data_req_fb = McMarketDataRequest_init_zero;
 
 
@@ -2145,8 +2178,9 @@ void* pointer = &market_data_list;
 mc_market_data_req_fb.id_list.arg = &pointer;
 mc_market_data_req_fb.id_list.funcs.decode = read_bytes;
 
-
 #if ( TRUE == SIMULATE_INPUT_DEBUG )
+    uint8 sdata[11] = { 0x18, 0xE0, 0x09, 0x22, 0x06, 0x03, 0x8E, 0x02 ,0x9E ,0xA7 ,0x05 };
+    uint16 sdata_len = 11;
     pb_istream_t stream = pb_istream_from_buffer( sdata, sdata_len );
 #else
     pb_istream_t stream = pb_istream_from_buffer( data, data_size );
@@ -2172,13 +2206,15 @@ if( NO_SERVER_CONNECT == channel_id )
 /*command data handle*/
 if( TRUE == read_all_id )
     {
-    client_appl_set_current_process_flow_step( PROCESS_FLOW_MARKET );
     set_current_conncet_server_id( channel_id );
     read_loacl_market_infos.connected_server_id = channel_id;
     read_loacl_market_infos.local_id_list = (uint8*)support_market_data_id_list;
     read_loacl_market_infos.amount_local_data = SUPPORT_MARKET_COUNT;
     read_loacl_market_infos.current_local_data_index = 0x00;
-
+    if( FALSE == client_appl_set_current_process_flow_step( PROCESS_FLOW_MARKET ) )
+        {
+        return E_ERROR_SNS;
+        }
     g_IdDataList.count = 0;
     g_IdDataList.fields = McMarketDataResponse_IdData_fields;
     return E_SUCCESS;
@@ -2189,12 +2225,15 @@ else
         {
         rx_market_data_id_list[index] = (uint8)market_data_list.id_list_array[index];
         }
-    client_appl_set_current_process_flow_step( PROCESS_FLOW_MARKET );
     set_current_conncet_server_id( channel_id );
     read_loacl_market_infos.connected_server_id = channel_id;
     read_loacl_market_infos.local_id_list = rx_market_data_id_list;
     read_loacl_market_infos.amount_local_data = market_data_list.id_list_num;
     read_loacl_market_infos.current_local_data_index = 0x00;
+    if( FALSE == client_appl_set_current_process_flow_step( PROCESS_FLOW_MARKET ) )
+        {
+        return E_ERROR_SNS;
+        }
 
     g_IdDataList.count = 0;
     g_IdDataList.fields = McMarketDataResponse_IdData_fields;
@@ -2241,9 +2280,13 @@ if( NO_SERVER_CONNECT == channel_id )
     return E_PARAMETER_ERROR;
     }
 
-client_appl_set_current_process_flow_step( PROCESS_FLOW_MONITOR );
 set_current_conncet_server_id( channel_id );
 read_local_monitor_infos.connected_server_id = channel_id;
+if( FALSE == client_appl_set_current_process_flow_step( PROCESS_FLOW_MONITOR ) )
+    {
+    return E_ERROR_SNS;
+    }
+
 read_local_monitor_infos.local_id_list = (uint8*)support_monitor_data_id_list;
 read_local_monitor_infos.amount_local_data = SUPPORT_MONITOR_COUNT;
 read_local_monitor_infos.current_local_data_index = 0x00;
@@ -2279,11 +2322,7 @@ uint32 server_code = 0;
 if( FALSE == is_request_interval )
     {
     /*--------------------------------command parse--------------------------------------------*/
-    uint8 sdata[13] = { 0x18, 0xE0, 0x09, 0x22, 0x06, 0x03, 0x8E, 0x02 ,0x9E ,0xA7 ,0x05, 0x28, 0x00 };
-    uint16 sdata_len = 13;
     McLocalRecordVehicleInformationRequest mc_vehicle_info_req_fb = McLocalRecordVehicleInformationRequest_init_zero;
-
-
     /*Shall reset current id number when received a new command*/
     vhicle_information_list.id_list_num = 0;
     client_appl_set_curr_id_list_ptr( &vhicle_information_list );
@@ -2293,6 +2332,8 @@ if( FALSE == is_request_interval )
 
 
 #if ( TRUE == SIMULATE_INPUT_DEBUG )
+    uint8 sdata[13] = { 0x18, 0xE0, 0x09, 0x22, 0x06, 0x03, 0x8E, 0x02 ,0x9E ,0xA7 ,0x05, 0x28, 0x00 };
+    uint16 sdata_len = 13;
     pb_istream_t stream = pb_istream_from_buffer( sdata, sdata_len );
 #else
     pb_istream_t stream = pb_istream_from_buffer( data, data_size );
@@ -2321,11 +2362,14 @@ if( FALSE == is_request_interval )
         read_local_monitor_infos.cycle_tarns_interval_time = STOP_INTER_TIME;
         read_local_monitor_infos.local_id_list = (uint8*)support_monitor_data_id_list;
         read_local_monitor_infos.amount_local_data = SUPPORT_MONITOR_COUNT;
-        client_appl_set_current_process_flow_step( PROCESS_FLOW_MONITOR );
         read_local_monitor_infos.current_local_data_index = 0x00;
         read_local_monitor_infos.is_request_support_list_flow = FALSE;
         read_local_monitor_infos.connected_server_id = channel_id;
         set_current_conncet_server_id( channel_id );
+        if( FALSE == client_appl_set_current_process_flow_step( PROCESS_FLOW_MONITOR ) )
+            {
+            return E_ERROR_SNS;
+            }
 
         g_IdDataList.count = 0;
         g_IdDataList.fields = McLocalRecordVehicleInformationResponse_fields;
@@ -2341,10 +2385,14 @@ if( FALSE == is_request_interval )
         read_local_monitor_infos.cycle_tarns_interval_time = STOP_INTER_TIME;
         read_local_monitor_infos.local_id_list = (uint8*)rx_monitor_data_id_list;
         read_local_monitor_infos.amount_local_data =  vhicle_information_list.id_list_num;
-        client_appl_set_current_process_flow_step( PROCESS_FLOW_MONITOR );
         read_local_monitor_infos.current_local_data_index = 0x00;
         read_local_monitor_infos.is_request_support_list_flow = FALSE;
         read_local_monitor_infos.connected_server_id = channel_id;
+        set_current_conncet_server_id( channel_id );
+        if( FALSE == client_appl_set_current_process_flow_step( PROCESS_FLOW_MONITOR ) )
+            {
+            return E_ERROR_SNS;
+            }
 
         g_IdDataList.count = 0;
         g_IdDataList.fields = McLocalRecordVehicleInformationResponse_fields;
@@ -2363,10 +2411,7 @@ if( FALSE == is_request_interval )
 if( TRUE == is_request_interval )
     {
     /*--------------------------------command parse--------------------------------------------*/
-    uint8 sdata[16] = { 0x18, 0xE0, 0x09, 0x22, 0x06, 0x03, 0x8E, 0x02 ,0x9E ,0xA7 ,0x05, 0x28, 0x01, 0x30, 0xE0, 0x09};
-    uint16 sdata_len = 16;
     McLocalRecordVehicleInformationIntervalRequest mc_vehicle_info_inter_req_fb = McLocalRecordVehicleInformationIntervalRequest_init_zero;
-
 
     /*Shall reset current id number when received a new command*/
     vhicle_information_list.id_list_num = 0;
@@ -2377,6 +2422,8 @@ if( TRUE == is_request_interval )
 
 
 #if ( TRUE == SIMULATE_INPUT_DEBUG )
+    uint8 sdata[16] = { 0x18, 0xE0, 0x09, 0x22, 0x06, 0x03, 0x8E, 0x02 ,0x9E ,0xA7 ,0x05, 0x28, 0x01, 0x30, 0xE0, 0x09};
+    uint16 sdata_len = 16;
     pb_istream_t stream = pb_istream_from_buffer( sdata, sdata_len );
 #else
     pb_istream_t stream = pb_istream_from_buffer( data, data_size );
@@ -2415,11 +2462,14 @@ if( TRUE == is_request_interval )
 
         read_local_monitor_infos.local_id_list = (uint8*)support_monitor_data_id_list;
         read_local_monitor_infos.amount_local_data = SUPPORT_MONITOR_COUNT;
-        client_appl_set_current_process_flow_step( PROCESS_FLOW_MONITOR );
         read_local_monitor_infos.current_local_data_index = 0x00;
         read_local_monitor_infos.is_request_support_list_flow = FALSE;
         read_local_monitor_infos.connected_server_id = channel_id;
         set_current_conncet_server_id( channel_id );
+        if( FALSE == client_appl_set_current_process_flow_step( PROCESS_FLOW_MONITOR ) )
+            {
+            return E_ERROR_SNS;
+            }
 
         g_IdDataList.count = 0;
         g_IdDataList.fields = McLocalRecordVehicleInformationResponse_fields;
@@ -2444,10 +2494,14 @@ if( TRUE == is_request_interval )
             }
         read_local_monitor_infos.local_id_list = (uint8*)rx_monitor_data_id_list;
         read_local_monitor_infos.amount_local_data =  vhicle_information_list.id_list_num;
-        client_appl_set_current_process_flow_step( PROCESS_FLOW_MONITOR );
         read_local_monitor_infos.current_local_data_index = 0x00;
         read_local_monitor_infos.is_request_support_list_flow = FALSE;
         read_local_monitor_infos.connected_server_id = channel_id;
+        set_current_conncet_server_id( channel_id );
+        if( FALSE == client_appl_set_current_process_flow_step( PROCESS_FLOW_MONITOR ) )
+            {
+            return E_ERROR_SNS;
+            }
 
         g_IdDataList.count = 0;
         g_IdDataList.fields = McLocalRecordVehicleInformationResponse_fields;
@@ -2501,11 +2555,13 @@ if( NO_SERVER_CONNECT == channel_id )
     return E_PARAMETER_ERROR;
     }
 
-client_appl_set_current_process_flow_step( PROCESS_FLOW_RFFD );
 set_current_conncet_server_id( channel_id );
 read_freeze_frame_data_infos.connected_server_id = channel_id;
 g_McFfdResponse_data_list.count = 0;
-
+if( FALSE == client_appl_set_current_process_flow_step( PROCESS_FLOW_RFFD ) )
+    {
+    return E_ERROR_SNS;
+    }
 return E_SUCCESS;
 }
 
@@ -2647,7 +2703,6 @@ void client_appl_rsp_server_list_after_ble_connect
     )
 {
 uint8 index = 0x00;
-uint8 resp_data_pos = 0x00;
 uint32 resp_data_length = 0x00;
 
 
@@ -2882,10 +2937,10 @@ static void client_appl_ble_rsp_request_support_monitor_list
     )
 {
 uint8 index = 0x00;
-uint16 server_code = 0x0000;
-uint32* data_ptr = &response_support_monitor_data_id_list[BYTE_NUM_1];
-uint8 data_length = 0x00;
-uint8 server_id = 0;
+
+
+
+
 uint8 monitor_id = 0;
 uint32 resp_data_len = 0;
 
@@ -2934,46 +2989,12 @@ void client_appl_cmd_rsp_result_notify
     const uint8 vlaue
     )
 {
-client_process_flow_type process_flow = client_get_current_process_flow();
-
-
 if( CMD_RSP_PROCESSING != get_client_app_cmd_rsp_state() )
     {
     return;
     }
 
 set_client_app_cmd_rsp_state( CMD_RSP_DONE );
-
-
-#if 0
-switch( process_flow )
-    {
-    case PROCESS_FLOW_DETECT_SERVER:
-        (void)memset( connected_server_list, 0x00, sizeof(connected_server_list) );
-        set_client_app_cmd_rsp_state( CMD_RSP_DONE );
-        break;
-
-    case PROCESS_FLOW_INIT_RDTCBS:
-        if( TRUE == read_dtc_infos.is_storge_init_dtc )
-            {
-            client_mem_reset_data();
-            }
-        set_client_app_cmd_rsp_state( CMD_RSP_DONE );
-        break;
-
-    case PROCESS_FLOW_RDBCID:
-    case PROCESS_FLOW_MARKET:
-    case PROCESS_FLOW_MONITOR:
-    case PROCESS_FLOW_RFFD:
-        client_mem_reset_data();
-
-        break;
-
-    default:
-        set_client_app_cmd_rsp_state( CMD_RSP_IDLE );
-        break;
-    }
-#endif
 }
 
 
@@ -3116,6 +3137,9 @@ switch( current_flow )
             g_McFfdResponse_data_list.count = 0;
             }
     break;
+
+    default:
+        break;
     }
 }
 
@@ -3170,6 +3194,59 @@ switch( process_flow )
 
 }
 
+
+
+/*For detect current service whether is support*/
+void client_appl_set_diag_service_support_state
+    (
+    uint16 channel,
+    client_appl_service_support_id_type service_id,
+    client_appl_service_support_type support_state
+    )
+{
+if( channel >= SUPPORT_SERVER_NUM )
+    {
+    return;
+    }
+
+if( service_id >= DIAG_SUPPORT_SERVICE_MAX )
+    {
+    return;
+    }
+
+if( support_state >= SERVICE_STATE_MAX )
+    {
+    return;
+    }
+client_appl_diag_service_supprot_state[channel][service_id] = support_state;
+}
+
+
+uint8 client_appl_get_diag_service_support_state
+    (
+    uint16 channel,
+    client_appl_service_support_id_type service_id
+    )
+{
+if( channel >= SUPPORT_SERVER_NUM )
+    {
+    return 0x02;
+    }
+
+if( service_id >= DIAG_SUPPORT_SERVICE_MAX )
+    {
+    return 0x02;
+    }
+
+if( SERVICE_NOT_SUPPORT > client_appl_diag_service_supprot_state[channel][service_id] )
+    {
+    return TRUE;
+    }
+else
+    {
+    return FALSE;
+    }
+}
 /**************************Dividing line***************************/
 /********************For server detect*****************************/
  /*!******************************************************************************
@@ -3628,7 +3705,7 @@ static void client_appl_req_initial_dtc_status_handler_5ms
     void
     )
 {
-uint32 server_code = 0;
+
 uint32 resp_data_len = 0;
 
 switch( read_dtc_infos.next_req_dtc_status_frame )
@@ -3702,7 +3779,6 @@ if( PROCESS_RESULT_INIT != read_dtc_infos.process_result )
 
             if( PROCESS_RESULT_END == read_dtc_infos.process_result )
                 {
-                server_code =  client_appl_ble_server_code_mapping[read_dtc_infos.connected_server_id].ble_server_code ;
                 if( 0 == g_McMalfunctionResponse_list.count )
                     {
                     client_appl_response_can_related_data( BLE_RSP_CMD_MALFUNCTION, BLE_RSP_CMD_NO_VALID_DATA_LENGTH, NULL , &client_appl_cmd_rsp_result_notify );
@@ -3780,17 +3856,18 @@ if( channel_id != read_dtc_infos.connected_server_id )
     return;
     }
 
-if( 2 >= resp_lenth )
-    {
-    read_dtc_infos.process_result = PROCESS_RESULT_INVALID_DATA;
-    }
-
 connect_server_id = get_current_connect_server_id();
 
 switch( read_dtc_infos.curr_dtc_status_frame )
     {
     case REQ_ORIGINAL_FRAME:
     case REQ_RESEND_FRAME:
+        if( 2 >= resp_lenth )
+            {
+            read_dtc_infos.process_result = PROCESS_RESULT_INVALID_DATA;
+            }
+            client_appl_set_diag_service_support_state( read_dtc_infos.connected_server_id, \
+                    DIAG_SERVICE_READ_DTC_18H, SERVICE_SUPPORT );
         if( FALSE == read_dtc_infos.is_storge_init_dtc )
             {
             client_mem_storage_init_dtc_data( connect_server_id, resp_lenth,  resp_data );
@@ -3803,9 +3880,7 @@ switch( read_dtc_infos.curr_dtc_status_frame )
             /*  1 bytes SID  + n #DTC     + n *(2 bytes DTC + 1 bytes status)*/
             dtc_number = resp_data[BYTE_NUM_1];
 
-
             server_code = client_appl_ble_server_code_mapping[connect_server_id].ble_server_code ;
-
             if( ( 0 == dtc_number ) && ( 0x02 == resp_lenth ) )
                 {
                 McMalfunctionResponse_list_add_data( &g_McMalfunctionResponse_list, server_code, 0x0000, read_dtc_infos.current_STADTC );
@@ -3886,6 +3961,8 @@ switch( read_dtc_infos.curr_dtc_status_frame )
             if( REC_MAX_SNS <= read_dtc_infos.receive_SNS_timer )
                 {
                 read_dtc_infos.process_result = PROCESS_RESULT_NRC_SNS;
+                client_appl_set_diag_service_support_state( read_dtc_infos.connected_server_id, \
+                    DIAG_SERVICE_READ_DTC_18H, SERVICE_NOT_SUPPORT );
                 }
             else
                 {
@@ -4035,13 +4112,23 @@ if( PROCESS_RESULT_INIT != read_common_identifier_infos.process_result )
     {
     if( read_common_identifier_infos.current_common_data_index != ( read_common_identifier_infos.common_data_amount - 1 ) )
         {
-        /*go on request the next common identifier data*/
-        read_common_identifier_infos.current_common_data_index++;
-        read_common_identifier_infos.process_result = PROCESS_RESULT_INIT;
-        read_common_identifier_infos.next_req_frame = REQ_ORIGINAL_FRAME;
-        read_common_identifier_infos.curr_req_frame = REQ_NO_FRAME;
-        read_common_identifier_infos.receive_SNS_timer = 0x00;
-        read_common_identifier_infos.resend_timer = 0x00;
+        /*current service is not support*/
+        if( FALSE == client_appl_get_diag_service_support_state( read_common_identifier_infos.connected_server_id, DiAG_SERVICE_READ_COMMON_ID_22H ) )
+            {
+            g_IdDataList.count = 0;
+            client_appl_set_current_process_flow_step( PROCESS_FLOW_IDLE );
+            client_appl_response_can_related_data( BLE_RSP_CMD_VEHICLE_IDENTIFICATION, 0, NULL , NULL );
+            }
+        else
+            {
+            /*go on request the next common identifier data*/
+            read_common_identifier_infos.current_common_data_index++;
+            read_common_identifier_infos.process_result = PROCESS_RESULT_INIT;
+            read_common_identifier_infos.next_req_frame = REQ_ORIGINAL_FRAME;
+            read_common_identifier_infos.curr_req_frame = REQ_NO_FRAME;
+            read_common_identifier_infos.receive_SNS_timer = 0x00;
+            read_common_identifier_infos.resend_timer = 0x00;
+            }
         }
     else
         {
@@ -4093,31 +4180,32 @@ static void client_appl_read_data_by_common_identifier_positive_response_handler
  uint8 channel_id
 )
 {
-uint8 connect_server_id = 0;
+
 uint16 resp_identifier = 0x0000;
-uint32 resp_swap_id_u32 = 0;
-uint32 server_code = 0;
+
 
 if( channel_id != read_common_identifier_infos.connected_server_id )
     {
     return;
     }
 
-if( 3 >= resp_lenth )
-    {
-    read_common_identifier_infos.process_result = PROCESS_RESULT_INVALID_DATA;
-    return;
-    };
-
 switch( read_common_identifier_infos.curr_req_frame )
     {
     case REQ_ORIGINAL_FRAME:
     case REQ_RESEND_FRAME:
+        if( 3 >= resp_lenth )
+            {
+            read_common_identifier_infos.process_result = PROCESS_RESULT_INVALID_DATA;
+            return;
+            };
+
          resp_identifier = (uint16)( resp_data[BYTE_NUM_1] << 8 | resp_data[BYTE_NUM_2] );
          if( resp_identifier == read_common_identifier_infos.common_id_list[read_common_identifier_infos.current_common_data_index] )
             {
             IdDataList_add_IdData( &g_IdDataList, (uint32)resp_identifier, ( resp_data + 3 ), (uint32)(resp_lenth - 3 ) );
             read_common_identifier_infos.process_result = PROCESS_RESULT_SUCCESS;
+            client_appl_set_diag_service_support_state( read_common_identifier_infos.connected_server_id,\
+                    DiAG_SERVICE_READ_COMMON_ID_22H, SERVICE_SUPPORT );
             }
          else
             {
@@ -4186,6 +4274,8 @@ switch( read_common_identifier_infos.curr_req_frame )
             if( REC_MAX_SNS <= read_common_identifier_infos.receive_SNS_timer )
                 {
                 read_common_identifier_infos.process_result = PROCESS_RESULT_NRC_SNS;
+                client_appl_set_diag_service_support_state( read_common_identifier_infos.connected_server_id,\
+                    DiAG_SERVICE_READ_COMMON_ID_22H, SERVICE_NOT_SUPPORT );
                 }
             else
                 {
@@ -4330,13 +4420,22 @@ if( PROCESS_RESULT_INIT != read_loacl_market_infos.process_result )
     {
     if( read_loacl_market_infos.current_local_data_index != read_loacl_market_infos.amount_local_data - 1 )
         {
-        /*go on request the next common identifier data*/
-        read_loacl_market_infos.current_local_data_index++;
-        read_loacl_market_infos.process_result = PROCESS_RESULT_INIT;
-        read_loacl_market_infos.next_req_frame = REQ_ORIGINAL_FRAME;
-        read_loacl_market_infos.curr_req_frame = REQ_NO_FRAME;
-        read_loacl_market_infos.receive_SNS_timer =0x00;
-        read_loacl_market_infos.resend_timer = 0x00;
+        if( FALSE == client_appl_get_diag_service_support_state( read_loacl_market_infos.connected_server_id, DIAG_SERVICE_READ_LOCAL_ID_21H ) )
+            {
+            g_IdDataList.count = 0;
+            client_appl_response_can_related_data( BLE_RSP_CMD_MARKET_DATA, 0, NULL , NULL );
+            client_appl_set_current_process_flow_step(PROCESS_FLOW_IDLE);
+            }
+        else
+            {
+            /*go on request the next common identifier data*/
+            read_loacl_market_infos.current_local_data_index++;
+            read_loacl_market_infos.process_result = PROCESS_RESULT_INIT;
+            read_loacl_market_infos.next_req_frame = REQ_ORIGINAL_FRAME;
+            read_loacl_market_infos.curr_req_frame = REQ_NO_FRAME;
+            read_loacl_market_infos.receive_SNS_timer =0x00;
+            read_loacl_market_infos.resend_timer = 0x00;
+            }
         }
     else
         {
@@ -4386,16 +4485,10 @@ static void client_appl_read_data_by_local_identifier_market_positive_response_h
 )
 {
 uint8 resp_identifier = 0x00;
-uint32 resp_id_swap_u32 = 0;
+
 
 if( channel_id != read_loacl_market_infos.connected_server_id )
     {
-    return;
-    }
-
-if( 2 >= resp_lenth )
-    {
-    read_loacl_market_infos.process_result = PROCESS_RESULT_INVALID_DATA;
     return;
     }
 
@@ -4403,6 +4496,11 @@ switch( read_loacl_market_infos.curr_req_frame )
     {
     case REQ_ORIGINAL_FRAME:
     case REQ_RESEND_FRAME:
+        if( 2 >= resp_lenth )
+            {
+            read_loacl_market_infos.process_result = PROCESS_RESULT_INVALID_DATA;
+            return;
+            }
         resp_identifier = resp_data[BYTE_NUM_1];
 
          if(  resp_identifier == read_loacl_market_infos.local_id_list[read_loacl_market_infos.current_local_data_index])
@@ -4410,14 +4508,13 @@ switch( read_loacl_market_infos.curr_req_frame )
             g_IdDataList.fields = McMarketDataResponse_IdData_fields;
             IdDataList_add_IdData( &g_IdDataList, (uint32)resp_identifier, ( resp_data + 2 ), (uint32)(resp_lenth - 2 ) );
             read_loacl_market_infos.process_result = PROCESS_RESULT_SUCCESS;
+            client_appl_set_diag_service_support_state( read_loacl_market_infos.connected_server_id, \
+                    DIAG_SERVICE_READ_LOCAL_ID_21H, SERVICE_SUPPORT );
             }
          else
             {
             read_loacl_market_infos.process_result = PROCESS_RESULT_INVALID_DATA;
             }
-
-        read_loacl_market_infos.receive_SNS_timer = 0x00;
-        read_loacl_market_infos.resend_timer = 0x00;
         break;
 
     case REQ_DEFAULT_SESSION_FRAME:
@@ -4475,6 +4572,8 @@ switch( read_loacl_market_infos.curr_req_frame )
             if( REC_MAX_SNS <= read_loacl_market_infos.receive_SNS_timer )
                 {
                 read_loacl_market_infos.process_result = PROCESS_RESULT_NRC_SNS;
+                client_appl_set_diag_service_support_state( read_loacl_market_infos.connected_server_id, \
+                    DIAG_SERVICE_READ_LOCAL_ID_21H, SERVICE_NOT_SUPPORT );
                 }
             else
                 {
@@ -4620,13 +4719,22 @@ if( PROCESS_RESULT_INIT != read_local_monitor_infos.process_result )
     {
     if( read_local_monitor_infos.current_local_data_index != read_local_monitor_infos.amount_local_data - 1 )
         {
-        /*go on request the next common identifier data*/
-        read_local_monitor_infos.current_local_data_index++;
-        read_local_monitor_infos.process_result = PROCESS_RESULT_INIT;
-        read_local_monitor_infos.next_req_frame = REQ_ORIGINAL_FRAME;
-        read_local_monitor_infos.curr_req_frame = REQ_NO_FRAME;
-        read_local_monitor_infos.receive_SNS_timer =0x00;
-        read_local_monitor_infos.resend_timer = 0x00;
+        if( FALSE == client_appl_get_diag_service_support_state( read_local_monitor_infos.connected_server_id, DIAG_SERVICE_READ_LOCAL_ID_21H ) )
+            {
+            g_IdDataList.count = 0;
+            client_appl_response_can_related_data( BLE_RSP_CMD_VEHICLE_INFORMATION, 0, NULL , NULL );
+            client_appl_set_current_process_flow_step( PROCESS_FLOW_IDLE );
+            }
+        else
+            {
+            /*go on request the next common identifier data*/
+            read_local_monitor_infos.current_local_data_index++;
+            read_local_monitor_infos.process_result = PROCESS_RESULT_INIT;
+            read_local_monitor_infos.next_req_frame = REQ_ORIGINAL_FRAME;
+            read_local_monitor_infos.curr_req_frame = REQ_NO_FRAME;
+            read_local_monitor_infos.receive_SNS_timer =0x00;
+            read_local_monitor_infos.resend_timer = 0x00;
+            }
         }
     else
         {
@@ -4693,19 +4801,8 @@ static void client_appl_read_data_by_local_identifier_monitor_positive_response_
  uint8 channel_id
 )
 {
-uint8 connect_channel_id = 0;
-uint32 server_code = 0;
-
-uint32 resp_id_swap_u32 = 0;
-
 if( channel_id != read_local_monitor_infos.connected_server_id )
     {
-    return;
-    }
-
-if( 2 >= resp_lenth )
-    {
-    read_local_monitor_infos.process_result = PROCESS_RESULT_INVALID_DATA;
     return;
     }
 
@@ -4713,9 +4810,17 @@ switch( read_local_monitor_infos.curr_req_frame )
     {
     case REQ_ORIGINAL_FRAME:
     case REQ_RESEND_FRAME:
+         if( 2 >= resp_lenth )
+            {
+            read_local_monitor_infos.process_result = PROCESS_RESULT_INVALID_DATA;
+            return;
+            }
+
         if( resp_data[BYTE_NUM_1] == read_local_monitor_infos.local_id_list[read_local_monitor_infos.current_local_data_index] )
             {
             read_local_monitor_infos.process_result = PROCESS_RESULT_SUCCESS;
+            client_appl_set_diag_service_support_state( read_local_monitor_infos.connected_server_id, \
+                    DIAG_SERVICE_READ_LOCAL_ID_21H, SERVICE_SUPPORT );
 
             if( read_local_monitor_infos.current_local_data_index == read_local_monitor_infos.amount_local_data - 1 )
                 {
@@ -4728,8 +4833,6 @@ switch( read_local_monitor_infos.curr_req_frame )
                 }
             else
                 {
-                connect_channel_id = get_current_connect_server_id();
-                server_code = client_appl_ble_server_code_mapping[connect_channel_id].ble_server_code ;
                 IdDataList_add_IdData( &g_IdDataList, (uint32)resp_data[BYTE_NUM_1], resp_data + 2 , (uint32)( resp_lenth  - 2 ) );
                 }
             }
@@ -4795,6 +4898,8 @@ switch( read_local_monitor_infos.curr_req_frame )
             if( REC_MAX_SNS <= read_local_monitor_infos.receive_SNS_timer )
                 {
                 read_local_monitor_infos.process_result = PROCESS_RESULT_NRC_SNS;
+                client_appl_set_diag_service_support_state( read_local_monitor_infos.connected_server_id, \
+                    DIAG_SERVICE_READ_LOCAL_ID_21H, SERVICE_NOT_SUPPORT );
                 }
             else
                 {
@@ -5018,31 +5123,25 @@ static void client_appl_read_freeze_frame_data_positive_response_handler
     )
 {
 uint8 amount_of_list = 0;
-uint8 connect_channel_id = 0;
-uint32 server_code = 0;
-uint32 resp_len = 0;
-
 
 if( channel_id != read_freeze_frame_data_infos.connected_server_id )
     {
     return;
     }
 
-if( 2 >= resp_lenth  )
-    {
-    return;
-    }
-
-connect_channel_id = get_current_connect_server_id();
-server_code = client_appl_ble_server_code_mapping[connect_channel_id].ble_server_code ;
-
 switch( read_freeze_frame_data_infos.curr_request_frame )
     {
     case REQ_ORIGINAL_FRAME:
+        if( 2 >= resp_lenth  )
+            {
+            return;
+            }
         /*for example:response message: 06 52 02 11 12 01 00, the get id is 0x11 and 0x12*/
         amount_of_list = (uint8)(resp_lenth - 0x04);
         read_freeze_frame_data_infos.requset_id_list_amount = amount_of_list;
         client_appl_data_cpy( read_freeze_frame_data_infos.request_id_list, ( resp_data + 2 ), amount_of_list );
+        client_appl_set_diag_service_support_state( read_freeze_frame_data_infos.connected_server_id,\
+            DIAG_SERVICE_READ_FFD_12H, SERVICE_SUPPORT );
         client_appl_set_next_ffd_frame_frame( REQ_FFD_FRAME );
         /*when receive a positive response for original message, shall request FFD message consecutive*/
         read_freeze_frame_data_infos.current_request_id = 0x00;
@@ -5191,6 +5290,8 @@ switch( read_freeze_frame_data_infos.curr_request_frame )
             if( REC_MAX_SNS <= read_freeze_frame_data_infos.receive_SNS_timer )
                 {
                 read_freeze_frame_data_infos.process_result = PROCESS_RESULT_NRC_SNS;
+                client_appl_set_diag_service_support_state( read_freeze_frame_data_infos.connected_server_id,\
+            DIAG_SERVICE_READ_FFD_12H, SERVICE_NOT_SUPPORT );
                 }
             else
                 {
@@ -5231,6 +5332,8 @@ switch( read_freeze_frame_data_infos.curr_request_frame )
                     if( REC_MAX_SNS <= read_freeze_frame_data_infos.receive_SNS_timer )
                         {
                         read_freeze_frame_data_infos.process_result = PROCESS_RESULT_NRC_SNS;
+                        client_appl_set_diag_service_support_state( read_freeze_frame_data_infos.connected_server_id,\
+                        DIAG_SERVICE_READ_FFD_12H, SERVICE_NOT_SUPPORT );
                         }
                     else
                         {
