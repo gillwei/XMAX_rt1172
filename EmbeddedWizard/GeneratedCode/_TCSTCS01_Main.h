@@ -178,7 +178,7 @@ EW_DEFINE_METHODS( TCSTCS01_Main, MenuBaseMenuView )
   EW_METHOD( OnItemActivate,    void )( TCSTCS01_Main _this, XInt32 aItemNo, MenuItemBase 
     aMenuItem )
   EW_METHOD( LoadItemChecked,   XBool )( TCSTCS01_Main _this, XInt32 aItemNo )
-  EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemEnabled,   XBool )( TCSTCS01_Main _this, XInt32 aItemNo )
   EW_METHOD( LoadItemBaseValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemMessage,   XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemReceivedTime, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
@@ -214,6 +214,9 @@ void TCSTCS01_Main_OnItemActivate( TCSTCS01_Main _this, XInt32 aItemNo, MenuItem
 
 /* 'C' function for method : 'TCS::TCS01_Main.LoadItemChecked()' */
 XBool TCSTCS01_Main_LoadItemChecked( TCSTCS01_Main _this, XInt32 aItemNo );
+
+/* 'C' function for method : 'TCS::TCS01_Main.LoadItemEnabled()' */
+XBool TCSTCS01_Main_LoadItemEnabled( TCSTCS01_Main _this, XInt32 aItemNo );
 
 /* 'C' function for method : 'TCS::TCS01_Main.LoadItemToggle()' */
 XBool TCSTCS01_Main_LoadItemToggle( TCSTCS01_Main _this, XInt32 aItemNo );

@@ -36,6 +36,16 @@
 #include "Strings.h"
 #include "TCS.h"
 
+/* Compressed strings for the language 'Default'. */
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
+{
+  0x00000014, /* ratio 140.00 % */
+  0xB8001100, 0x800A8452, 0x00A60021, 0x06200180, 0x01108780, 0x00000404, 0x00000000
+};
+
+/* Constant values used in this 'C' module only. */
+static const XStringRes _Const0000 = { _StringsDefault0, 0x0002 };
+
 /* Initializer for the class 'TCS::TCS01_Main' */
 void TCSTCS01_Main__Init( TCSTCS01_Main _this, XObject aLink, XHandle aArg )
 {
@@ -97,6 +107,7 @@ void TCSTCS01_Main_Init( TCSTCS01_Main _this, XHandle aArg )
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aArg );
 
+  EwTrace( "%s", EwLoadString( &_Const0000 ));
   VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
   DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeTC_MODE );
 
@@ -107,23 +118,21 @@ void TCSTCS01_Main_Init( TCSTCS01_Main _this, XHandle aArg )
 /* 'C' function for method : 'TCS::TCS01_Main.LoadItemClass()' */
 XClass TCSTCS01_Main_LoadItemClass( TCSTCS01_Main _this, XInt32 aItemNo )
 {
-  XClass ClassType = 0;
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+  EW_UNUSED_ARG( aItemNo );
 
-  if ( aItemNo < _this->Super1.Menu.NoOfItems )
-    ClassType = EW_CLASS( MenuItemCheckbox );
-
-  return ClassType;
+  return EW_CLASS( MenuItemCheckbox );
 }
 
 /* 'C' function for method : 'TCS::TCS01_Main.LoadItemTitle()' */
 XString TCSTCS01_Main_LoadItemTitle( TCSTCS01_Main _this, XInt32 aItemNo )
 {
-  XString title = 0;
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+  EW_UNUSED_ARG( aItemNo );
 
-  if ( aItemNo < _this->Super1.Menu.NoOfItems )
-    title = EwGetVariantOfString( &StringsTCS01_TCS );
-
-  return title;
+  return EwGetVariantOfString( &StringsTCS01_TCS );
 }
 
 /* 'C' function for method : 'TCS::TCS01_Main.OnItemActivate()' */
@@ -157,12 +166,21 @@ void TCSTCS01_Main_OnItemActivate( TCSTCS01_Main _this, XInt32 aItemNo, MenuItem
 /* 'C' function for method : 'TCS::TCS01_Main.LoadItemChecked()' */
 XBool TCSTCS01_Main_LoadItemChecked( TCSTCS01_Main _this, XInt32 aItemNo )
 {
-  XBool IsChecked = 0;
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( aItemNo );
 
-  if ( aItemNo < _this->Super1.Menu.NoOfItems )
-    IsChecked = _this->IsTCSEnabled;
+  return _this->IsTCSEnabled;
+}
 
-  return IsChecked;
+/* 'C' function for method : 'TCS::TCS01_Main.LoadItemEnabled()' */
+XBool TCSTCS01_Main_LoadItemEnabled( TCSTCS01_Main _this, XInt32 aItemNo )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+  EW_UNUSED_ARG( aItemNo );
+
+  return (XBool)!DeviceInterfaceVehicleDeviceClass_OnGetIsTimeoutError2Detected( 
+    EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ));
 }
 
 /* 'C' function for method : 'TCS::TCS01_Main.LoadItemToggle()' */
@@ -186,23 +204,30 @@ void TCSTCS01_Main_OnVehicleDataReceivedSlot( TCSTCS01_Main _this, XObject sende
 
   VehicleData = EwCastObject( _this->VehicleDataReceivedEventHandler.Context, DeviceInterfaceVehicleDataClass );
 
-  if (( VehicleData != 0 ) && ( EnumVehicleRxTypeTC_MODE == VehicleData->RxType ))
-  {
-    VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
-    DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeTC_MODE );
-
-    if ( 1 == VehicleData->DataUInt32 )
+  if ( VehicleData != 0 )
+    switch ( VehicleData->RxType )
     {
-      _this->IsTCSEnabled = 1;
-      MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 0 );
-    }
-    else
-      if ( 0 == VehicleData->DataUInt32 )
+      case EnumVehicleRxTypeTC_MODE :
       {
-        _this->IsTCSEnabled = 0;
+        VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( EwGetAutoObject( 
+        &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), EnumVehicleRxTypeTC_MODE );
+
+        if ( 1 == VehicleData->DataUInt32 )
+          _this->IsTCSEnabled = 1;
+        else
+          if ( 0 == VehicleData->DataUInt32 )
+            _this->IsTCSEnabled = 0;
+
         MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 0 );
       }
-  }
+      break;
+
+      case EnumVehicleRxTypeTIMEOUT_ERROR2_UPDATED :
+        MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 0 );
+      break;
+
+      default :; 
+    }
 }
 
 /* Variants derived from the class : 'TCS::TCS01_Main' */
@@ -260,7 +285,7 @@ EW_DEFINE_CLASS( TCSTCS01_Main, MenuBaseMenuView, VehicleDataReceivedEventHandle
   TCSTCS01_Main_LoadItemTitle,
   TCSTCS01_Main_OnItemActivate,
   TCSTCS01_Main_LoadItemChecked,
-  MenuBaseMenuView_LoadItemEnabled,
+  TCSTCS01_Main_LoadItemEnabled,
   MenuBaseMenuView_LoadItemBaseValue,
   MenuBaseMenuView_LoadItemMessage,
   MenuBaseMenuView_LoadItemReceivedTime,

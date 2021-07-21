@@ -1,12 +1,13 @@
-﻿$version 10.00
+﻿$version 11.00
 
 $rect <20,20,220,60>
 $output false
 class TCS01_Main : Menu::BaseMenuView
 {
-  $rect <260,300,460,340>
+  $rect <20,290,220,330>
   inherited method Init()
   {
+    trace "TCS01";
     var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.TC_MODE );
     if( null != VehicleData )
     {
@@ -14,35 +15,31 @@ class TCS01_Main : Menu::BaseMenuView
     }
   }
 
-  $rect <20,350,220,390>
+  $rect <20,340,220,380>
   inherited property DDModeEnabled = true;
 
-  $rect <20,400,220,440>
+  $rect <20,390,220,430>
   inherited var SlideOutEffectEnabled = true;
 
   $rect <520,30,720,70>
   inherited method LoadItemClass()
   {
-    var class ClassType = null;
-    if( aItemNo < Menu.NoOfItems )
-    {
-      ClassType = Menu::ItemCheckbox;
-    }
-    return ClassType;
+    // suppress warning
+    aItemNo;
+
+    return Menu::ItemCheckbox;
   }
 
   $rect <520,80,720,120>
   inherited method LoadItemTitle()
   {
-    var string title = "";
-    if( aItemNo < Menu.NoOfItems )
-    {
-      title = Strings::TCS01_TCS;
-    }
-    return title;
+    // suppress warning
+    aItemNo;
+
+    return Strings::TCS01_TCS;
   }
 
-  $rect <520,230,720,270>
+  $rect <520,280,720,320>
   inherited method OnItemActivate()
   {
     aItemNo; // suppress warning
@@ -65,12 +62,19 @@ class TCS01_Main : Menu::BaseMenuView
   $rect <520,130,720,170>
   inherited method LoadItemChecked()
   {
-    var bool IsChecked = false;
-    if( aItemNo < Menu.NoOfItems )
-    {
-      IsChecked = IsTCSEnabled;
-    }
-    return IsChecked;
+    // suppress warning
+    aItemNo;
+
+    return IsTCSEnabled;
+  }
+
+  $rect <520,230,720,270>
+  inherited method LoadItemEnabled()
+  {
+    // suppress warning
+    aItemNo;
+
+    return !DeviceInterface::VehicleDevice.IsTimeoutError2Detected;
   }
 
   $rect <20,20,160,60>
@@ -100,28 +104,37 @@ class TCS01_Main : Menu::BaseMenuView
   slot OnVehicleDataReceivedSlot
   {
     var DeviceInterface::VehicleDataClass VehicleData = (DeviceInterface::VehicleDataClass)VehicleDataReceivedEventHandler.Context;
-    if( null != VehicleData &&
-        Enum::VehicleRxType.TC_MODE == VehicleData.RxType )
+    if( null != VehicleData )
     {
-      VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.TC_MODE );
-      if( TCS::TCS_ON == VehicleData.DataUInt32 )
+      switch( VehicleData.RxType )
       {
-        IsTCSEnabled = true;
-        Menu.InvalidateItems( 0, 0 );
-      }
-      else if( TCS::TCS_OFF == VehicleData.DataUInt32 )
-      {
-        IsTCSEnabled = false;
-        Menu.InvalidateItems( 0, 0 );
-      }
-      else
-      {
-        // ignore
+        case Enum::VehicleRxType.TC_MODE:
+        {
+          VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.TC_MODE );
+          if( TCS::TCS_ON == VehicleData.DataUInt32 )
+          {
+            IsTCSEnabled = true;
+          }
+          else if( TCS::TCS_OFF == VehicleData.DataUInt32 )
+          {
+            IsTCSEnabled = false;
+          }
+          else
+          {
+            /* empty */
+          }
+          Menu.InvalidateItems( 0, 0 );
+        }
+        case Enum::VehicleRxType.TIMEOUT_ERROR2_UPDATED:
+        {
+          Menu.InvalidateItems( 0, 0 );
+        }
+        default:;
       }
     }
   }
 
-  $rect <20,300,220,340>
+  $rect <250,290,450,330>
   var bool IsTCSEnabled;
 }
 
