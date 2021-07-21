@@ -935,7 +935,7 @@
 &lt;memory id="RAM" size="1792" type="RAM"/&gt;&#13;
 &lt;memoryInstance derived_from="Flash" driver="MIMXRT1170_SFDP_QSPI.cfx" edited="true" id="BOARD_FLASH" location="0x30202000" size="0x13fe000"/&gt;&#13;
 &lt;memoryInstance derived_from="Flash" edited="true" id="BOARD_FLASH_BTFW" location="0x31600000" size="0x200000"/&gt;&#13;
-&lt;memoryInstance derived_from="Flash" edited="true" id="BOARD_FLASH_OTHER" location="0x31800000" size="0x3000000"/&gt;&#13;
+&lt;memoryInstance derived_from="Flash" edited="true" id="BOARD_FLASH_OTHER" location="0x31800000" size="0x2800000"/&gt;&#13;
 &lt;memoryInstance derived_from="RAM" edited="true" id="SRAM_DTC_cm7" location="0x20000000" size="0x40000"/&gt;&#13;
 &lt;memoryInstance derived_from="RAM" edited="true" id="SRAM_ITC_cm7" location="0x0" size="0x40000"/&gt;&#13;
 &lt;memoryInstance derived_from="RAM" edited="true" id="SRAM_OC1" location="0x20240000" size="0x80000"/&gt;&#13;
