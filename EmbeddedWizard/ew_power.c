@@ -132,24 +132,6 @@ EW_power_update_ignoff_task_status( IGN_OFF_TASK_WRITE_LANGUAGE );
 /*********************************************************************
 *
 * @private
-* ew_power_ignition_status
-*
-* Return the ignition status
-*
-* @return Ignition status
-*
-*********************************************************************/
-inline int ew_power_ignition_status
-    (
-    void
-    )
-{
-return ew_ignition_status;
-}
-
-/*********************************************************************
-*
-* @private
 * ew_save_last_status
 *
 * Save the last status including last page, language and trip time

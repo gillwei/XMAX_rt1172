@@ -79,7 +79,6 @@ bool ew_is_operation_mode_ready( void );
 int  ew_handle_special_characters( const uint8_t* in_str, uint8_t** out_str );
 
 void ew_power_init( void );
-int  ew_power_ignition_status( void );
 void ew_save_last_status( void );
 
 XBool ew_is_debug_build( void );

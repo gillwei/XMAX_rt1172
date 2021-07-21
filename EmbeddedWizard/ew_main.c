@@ -351,11 +351,6 @@ else
     EwBspEventWait( EwNextTimerExpiration() );
     }
 
-if( PM_IGN_OFF == ew_power_ignition_status() )
-    {
-    keep_processing = 0;
-    }
-
 return keep_processing;
 }
 
