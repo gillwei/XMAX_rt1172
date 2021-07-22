@@ -15,7 +15,7 @@ product: Clocks v7.0
 processor: MIMXRT1172xxxxx
 package_id: MIMXRT1172AVM8A
 mcu_data: ksdk2_0
-processor_version: 9.0.2
+processor_version: 9.0.1
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 
 #include "clock_config.h"

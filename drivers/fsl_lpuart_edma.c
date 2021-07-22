@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2015, Freescale Semiconductor, Inc.
- * Copyright 2016-2019 NXP
+ * Copyright 2016-2018 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -25,7 +25,7 @@ typedef struct _lpuart_edma_private_handle
 } lpuart_edma_private_handle_t;
 
 /* LPUART EDMA transfer handle. */
-enum
+enum _lpuart_edma_tansfer_states
 {
     kLPUART_TxIdle, /* TX idle. */
     kLPUART_TxBusy, /* TX busy. */
@@ -122,11 +122,6 @@ static void LPUART_SendEDMACallback(edma_handle_t *handle, void *param, bool tra
     if (transferDone)
     {
         LPUART_TransferAbortSendEDMA(lpuartPrivateHandle->base, lpuartPrivateHandle->handle);
-
-        /* Ensure all the data in the transmit buffer are sent out to bus. */
-        while (0U == (lpuartPrivateHandle->base->STAT & LPUART_STAT_TC_MASK))
-        {
-        }
 
         if (NULL != lpuartPrivateHandle->handle->callback)
         {

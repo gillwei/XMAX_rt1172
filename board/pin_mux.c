@@ -10,7 +10,7 @@ product: Pins v9.0
 processor: MIMXRT1172xxxxx
 package_id: MIMXRT1172AVM8A
 mcu_data: ksdk2_0
-processor_version: 9.0.2
+processor_version: 9.0.1
 pin_labels:
 - {pin_num: B15, pin_signal: GPIO_SD_B1_04, label: BT_RST_N_2, identifier: BT_RST_N_2}
 - {pin_num: C15, pin_signal: GPIO_SD_B1_02, label: TFT_CONNECTED, identifier: TFT_CONNECTED}

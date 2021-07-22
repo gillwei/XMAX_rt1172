@@ -19,6 +19,52 @@
 #define SRC_GLOBAL_SYSTEM_RESET_BEHAVIOR_CONFIG(resetSource, resetMode) \
     ((uint32_t)(resetMode) << (uint32_t)(resetSource))
 
+#define SRC_WHITE_LIST_VALUE(coreName)  (1UL << (uint32_t)(coreName))
+#define SRC_ASSIGN_LIST_VALUE(coreName) (1UL << (uint32_t)(coreName))
+
+#define SRC_SLICE_AUTHEN_DOMAIN_MODE_MASK   (0x1U)
+#define SRC_SLICE_AUTHEN_SETPOINT_MODE_MASK (0x2U)
+
+#define SRC_SLICE_AUTHEN_LOCK_MODE_MASK  (0x80U)
+#define SRC_SLICE_AUTHEN_LOCK_MODE_SHIFT (7U)
+#define SRC_SLICE_AUTHEN_LOCK_MODE(x) \
+    (((uint32_t)(((uint32_t)(x)) << SRC_SLICE_AUTHEN_LOCK_MODE_SHIFT)) & SRC_SLICE_AUTHEN_LOCK_MODE_MASK)
+
+#define SRC_SLICE_AUTHEN_ASSIGN_LIST_MASK  (0xF00U)
+#define SRC_SLICE_AUTHEN_ASSIGN_LIST_SHIFT (8U)
+#define SRC_SLICE_AUTHEN_ASSIGN_LIST(x) \
+    (((uint32_t)(((uint32_t)(x)) << SRC_SLICE_AUTHEN_ASSIGN_LIST_SHIFT)) & SRC_SLICE_AUTHEN_ASSIGN_LIST_MASK)
+
+#define SRC_SLICE_AUTHEN_LOCK_ASSIGN_MASK  (0x8000U)
+#define SRC_SLICE_AUTHEN_LOCK_ASSIGN_SHIFT (15)
+#define SRC_SLICE_AUTHEN_LOCK_ASSIGN(x) \
+    (((uint32_t)(((uint32_t)(x)) << SRC_SLICE_AUTHEN_LOCK_ASSIGN_SHIFT)) & SRC_SLICE_AUTHEN_LOCK_ASSIGN_MASK)
+
+#define SRC_SLICE_AUTHEN_WHITE_LIST_MASK  (0xF0000U)
+#define SRC_SLICE_AUTHEN_WHITE_LIST_SHIFT (16U)
+#define SRC_SLICE_AUTHEN_WHITE_LIST(x) \
+    (((uint32_t)(((uint32_t)(x)) << SRC_SLICE_AUTHEN_WHITE_LIST_SHIFT)) & SRC_SLICE_AUTHEN_WHITE_LIST_MASK)
+
+#define SRC_SLICE_AUTHEN_LOCK_LIST_MASK  (0x800000U)
+#define SRC_SLICE_AUTHEN_LOCK_LIST_SHIFT (23U)
+#define SRC_SLICE_AUTHEN_LOCK_LIST(x) \
+    (((uint32_t)(((uint32_t)(x)) << SRC_SLICE_AUTHEN_LOCK_LIST_SHIFT)) & SRC_SLICE_AUTHEN_LOCK_LIST_MASK)
+
+#define SRC_SLICE_AUTHEN_USER_MASK  (0x1000000U)
+#define SRC_SLICE_AUTHEN_USER_SHIFT (24U)
+#define SRC_SLICE_AUTHEN_USER(x) \
+    (((uint32_t)(((uint32_t)(x)) << SRC_SLICE_AUTHEN_USER_SHIFT)) & SRC_SLICE_AUTHEN_USER_MASK)
+
+#define SRC_SLICE_AUTHEN_NONSECURE_MASK  (0x2000000U)
+#define SRC_SLICE_AUTHEN_NONSECURE_SHIFT (25U)
+#define SRC_SLICE_AUTHEN_NONSECURE(x) \
+    (((uint32_t)(((uint32_t)(x)) << SRC_SLICE_AUTHEN_NONSECURE_SHIFT)) & SRC_SLICE_AUTHEN_NONSECURE_MASK)
+
+#define SRC_SLICE_AUTHEN_LOCK_SETTING_MASK  (0x80000000U)
+#define SRC_SLICE_AUTHEN_LOCK_SETTING_SHIFT (31U)
+#define SRC_SLICE_AUTHEN_LOCK_SETTING(x) \
+    (((uint32_t)(((uint32_t)(x)) << SRC_SLICE_AUTHEN_LOCK_SETTING_SHIFT)) & SRC_SLICE_AUTHEN_LOCK_SETTING_MASK)
+
 #define SRC_SLICE_CTRL_SW_RESET_MASK (0x1U)
 
 /*******************************************************************************
@@ -97,6 +143,102 @@ void SRC_AssertSliceSoftwareReset(SRC_Type *base, src_reset_slice_name_t sliceNa
     {
         ;
     }
+}
+
+/*!
+ * brief Sets setpoint authentication for the selected reset slice.
+ *
+ * param base SRC peripheral base address.
+ * param sliceName The selected reset slice. See @ref src_reset_slice_name_t for more details.
+ * param authentication Pointer to the structure. See @ref src_setpoint_authentication_t for more details.
+ */
+void SRC_SetSliceSetPointAuthentication(SRC_Type *base,
+                                        src_reset_slice_name_t sliceName,
+                                        src_setpoint_authentication_t *authentication)
+{
+    uint32_t authenticationRegAddress;
+    uint32_t authenticationRegValue;
+
+    authenticationRegAddress =
+        SRC_GET_SLICE_REGISTER_ADDRESS(base, sliceName, SRC_SLICE_AUTHENTICATION_REGISTER_OFFSET);
+
+    authenticationRegValue = *(uint32_t *)authenticationRegAddress;
+
+    if (authentication->enableSetpointTranferReset)
+    {
+        if ((authenticationRegValue & SRC_SLICE_AUTHEN_LOCK_LIST_MASK) == 0UL)
+        {
+            authenticationRegValue &= ~SRC_SLICE_AUTHEN_WHITE_LIST_MASK;
+            authenticationRegValue |= SRC_SLICE_AUTHEN_WHITE_LIST(authentication->whiteList) |
+                                      SRC_SLICE_AUTHEN_LOCK_LIST(authentication->lockWhiteList);
+        }
+
+        if ((authenticationRegValue & SRC_SLICE_AUTHEN_LOCK_SETTING_MASK) == 0UL)
+        {
+            authenticationRegValue &= ~(SRC_SLICE_AUTHEN_USER_MASK | SRC_SLICE_AUTHEN_NONSECURE_MASK);
+            authenticationRegValue |= SRC_SLICE_AUTHEN_USER(authentication->allowUserModeAccess) |
+                                      SRC_SLICE_AUTHEN_NONSECURE(authentication->allowNonSecureModeAccess) |
+                                      SRC_SLICE_AUTHEN_LOCK_SETTING(authentication->lockSetting);
+        }
+
+        if ((authenticationRegValue & SRC_SLICE_AUTHEN_LOCK_MODE_MASK) == 0UL)
+        {
+            authenticationRegValue |= SRC_SLICE_AUTHEN_SETPOINT_MODE_MASK;
+        }
+    }
+    else
+    {
+        if ((authenticationRegValue & SRC_SLICE_AUTHEN_LOCK_MODE_MASK) == 0UL)
+        {
+            authenticationRegValue &= ~SRC_SLICE_AUTHEN_SETPOINT_MODE_MASK;
+        }
+    }
+
+    *(volatile uint32_t *)authenticationRegAddress = authenticationRegValue;
+}
+
+/*!
+ * brief Sets domain mode authentication for the selected reset slice.
+ *
+ * param base SRC peripheral base address.
+ * param sliceName The selected reset slice. See @ref src_reset_slice_name_t for more details.
+ * param authentication Pointer to the structure. See @ref src_domain_mode_authentication_t for more details.
+ */
+void SRC_SetSliceDomainModeAuthentication(SRC_Type *base,
+                                          src_reset_slice_name_t sliceName,
+                                          src_domain_mode_authentication_t *authentication)
+{
+    uint32_t authenticationRegAddress;
+    uint32_t authenticationRegValue;
+
+    authenticationRegAddress =
+        SRC_GET_SLICE_REGISTER_ADDRESS(base, sliceName, SRC_SLICE_AUTHENTICATION_REGISTER_OFFSET);
+
+    authenticationRegValue = *(uint32_t *)authenticationRegAddress;
+
+    if (authentication->enableDomainModeTransferReset)
+    {
+        if ((authenticationRegValue & SRC_SLICE_AUTHEN_LOCK_ASSIGN_MASK) == 0UL)
+        {
+            authenticationRegValue &= ~SRC_SLICE_AUTHEN_ASSIGN_LIST_MASK;
+            authenticationRegValue |= SRC_SLICE_AUTHEN_ASSIGN_LIST(authentication->assignList);
+            authenticationRegValue |= SRC_SLICE_AUTHEN_LOCK_ASSIGN(authentication->lockAssignList);
+        }
+
+        if ((authenticationRegValue & SRC_SLICE_AUTHEN_LOCK_MODE_MASK) == 0UL)
+        {
+            authenticationRegValue |= SRC_SLICE_AUTHEN_DOMAIN_MODE_MASK;
+        }
+    }
+    else
+    {
+        if ((authenticationRegValue & SRC_SLICE_AUTHEN_LOCK_MODE_MASK) == 0UL)
+        {
+            authenticationRegValue &= ~SRC_SLICE_AUTHEN_DOMAIN_MODE_MASK;
+        }
+    }
+
+    *(volatile uint32_t *)authenticationRegAddress = authenticationRegValue;
 }
 
 /*!

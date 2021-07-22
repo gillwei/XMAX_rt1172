@@ -15,6 +15,7 @@
 #include "event_groups.h"
 #include "task.h"
 #include "semphr.h"
+#include "ewrte.h"
 #include "fsl_debug_console.h"
 #include "fsl_debug_console_conf.h"
 #include "fsl_gpt.h"
