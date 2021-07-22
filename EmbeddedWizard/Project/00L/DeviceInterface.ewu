@@ -1723,6 +1723,21 @@ class NavigationDeviceClass : Templates::DeviceClass
       }
     $endif
   }
+
+  $rect <970,870,1170,910>
+  method bool GetAppInitStatus()
+  {
+    $if !$prototyper
+      var bool IsNaviAppInit= false;
+      native( IsNaviAppInit )
+      {
+        IsNaviAppInit = NAVI_get_app_init_status();
+      }
+      return IsNaviAppInit;
+    $else
+      return false;
+    $endif
+  }
 }
 
 $rect <20,340,230,380>

@@ -1872,6 +1872,19 @@ void DeviceInterfaceNavigationDeviceClass_RemoveSpeedingAlert( DeviceInterfaceNa
   NAVI_remove_specified_event( EnumNaviAlertTypeSPEED, EnumNaviCameraTypeTYPE_UNDEFINED );
 }
 
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetAppInitStatus()' */
+XBool DeviceInterfaceNavigationDeviceClass_GetAppInitStatus( DeviceInterfaceNavigationDeviceClass _this )
+{
+  XBool IsNaviAppInit;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  IsNaviAppInit = 0;
+  IsNaviAppInit = NAVI_get_app_init_status();
+  return IsNaviAppInit;
+}
+
 /* Variants derived from the class : 'DeviceInterface::NavigationDeviceClass' */
 EW_DEFINE_CLASS_VARIANTS( DeviceInterfaceNavigationDeviceClass )
 EW_END_OF_CLASS_VARIANTS( DeviceInterfaceNavigationDeviceClass )

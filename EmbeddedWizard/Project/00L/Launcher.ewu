@@ -280,7 +280,7 @@ class LNC_Main : Components::BaseComponent
         {
           ItemDialog = new Pop::POP09_POP14_BleConnectionErrorUI;
         }
-        else if( !DeviceInterface::NavigationDevice.GetNaviConnectStatus() )
+        else if( !DeviceInterface::NavigationDevice.GetAppInitStatus() || !DeviceInterface::NavigationDevice.GetNaviConnectStatus() )
         {
           ItemDialog = new Pop::POP17_AppInitSettingError;
         }

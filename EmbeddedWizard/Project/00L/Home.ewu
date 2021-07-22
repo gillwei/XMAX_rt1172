@@ -795,7 +795,7 @@ class BaseHome : Components::BaseMainBG
         {
           NextHomeType = Enum::HomeType.VEHICLE_INFO;
         }
-        else if( !DeviceInterface::NavigationDevice.GetNaviConnectStatus() )
+        else if( !DeviceInterface::NavigationDevice.GetAppInitStatus() || !DeviceInterface::NavigationDevice.GetNaviConnectStatus() )
         {
           NextHomeType = Enum::HomeType.VEHICLE_INFO;
         }

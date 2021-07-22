@@ -394,6 +394,9 @@ void DeviceInterfaceNavigationDeviceClass_EnableAlertDisplayFlag( DeviceInterfac
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.RemoveSpeedingAlert()' */
 void DeviceInterfaceNavigationDeviceClass_RemoveSpeedingAlert( DeviceInterfaceNavigationDeviceClass _this );
 
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetAppInitStatus()' */
+XBool DeviceInterfaceNavigationDeviceClass_GetAppInitStatus( DeviceInterfaceNavigationDeviceClass _this );
+
 #ifdef __cplusplus
   }
 #endif

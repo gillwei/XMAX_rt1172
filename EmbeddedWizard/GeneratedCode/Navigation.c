@@ -688,7 +688,9 @@ void NavigationNAV01_DefaultView_OnLongEnterKeyActivated( NavigationNAV01_Defaul
       CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( PopPOP09_POP14_BleConnectionErrorUI, 
       0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
     else
-      if ( !DeviceInterfaceNavigationDeviceClass_GetNaviConnectStatus( EwGetAutoObject( 
+      if ( !DeviceInterfaceNavigationDeviceClass_GetAppInitStatus( EwGetAutoObject( 
+          &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )) 
+          || !DeviceInterfaceNavigationDeviceClass_GetNaviConnectStatus( EwGetAutoObject( 
           &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )))
         CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( PopPOP17_AppInitSettingError, 
         0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
@@ -946,39 +948,42 @@ void NavigationNAV01_DefaultView_OnSpeedLimitUpdateSlot( NavigationNAV01_Default
 void NavigationNAV01_DefaultView_OnNavigationAlertUpdateSlot( NavigationNAV01_DefaultView _this, 
   XObject sender )
 {
-  DeviceInterfaceNaviDataClass NaviData;
-
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  NaviData = DeviceInterfaceNavigationDeviceClass_GetNaviData( EwGetAutoObject( 
-  &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ), EnumNaviDataTypeNAVI_EVENT );
-
-  if (( NaviData != 0 ) && NaviData->NaviEventVisibility )
+  if ( DeviceInterfaceNavigationDeviceClass_IsRouteGuidanceStarted( EwGetAutoObject( 
+      &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )))
   {
-    if ( DeviceInterfaceNavigationDeviceClass_IsSpeedingAlertReceived( EwGetAutoObject( 
-        &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )))
-      NavigationNAV01_DefaultView_OnSetSpeedingEventStatus( _this, 1 );
+    DeviceInterfaceNaviDataClass NaviData = DeviceInterfaceNavigationDeviceClass_GetNaviData( 
+      EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ), 
+      EnumNaviDataTypeNAVI_EVENT );
 
-    if ( DeviceInterfaceNavigationDeviceClass_IsReRouteAlertReceived( EwGetAutoObject( 
-        &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )))
+    if (( NaviData != 0 ) && NaviData->NaviEventVisibility )
     {
-      NavigationReRoute_OnSetMessage( &_this->ReRouteObject, DeviceInterfaceNavigationDeviceClass_GetRerouteAlertMessage( 
-      EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )));
-      CoreGroup__OnSetVisible( &_this->ReRouteObject, 1 );
-      NavigationNAV01_DefaultView_OnSetReRouteEventStatus( _this, 1 );
-    }
-    else
-      if ( !DeviceInterfaceNavigationDeviceClass_GetAlertDisplayStatus( EwGetAutoObject( 
+      if ( DeviceInterfaceNavigationDeviceClass_IsSpeedingAlertReceived( EwGetAutoObject( 
+          &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )))
+        NavigationNAV01_DefaultView_OnSetSpeedingEventStatus( _this, 1 );
+
+      if ( DeviceInterfaceNavigationDeviceClass_IsReRouteAlertReceived( EwGetAutoObject( 
           &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )))
       {
-        DeviceInterfaceNavigationDeviceClass_EnableAlertDisplayFlag( EwGetAutoObject( 
-        &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ));
-        NavigationNaviAlert_SetAlert( &_this->NaviEventObject, NaviData->NaviEventType, 
-        NaviData->NaviCameraType, NaviData->NaviEventSpeed, NaviData->NaviEventDist );
-        EffectsEffect_OnSetEnabled((EffectsEffect)&_this->NaviEventEnLargeEffect, 
-        1 );
+        NavigationReRoute_OnSetMessage( &_this->ReRouteObject, DeviceInterfaceNavigationDeviceClass_GetRerouteAlertMessage( 
+        EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )));
+        CoreGroup__OnSetVisible( &_this->ReRouteObject, 1 );
+        NavigationNAV01_DefaultView_OnSetReRouteEventStatus( _this, 1 );
       }
+      else
+        if ( !DeviceInterfaceNavigationDeviceClass_GetAlertDisplayStatus( EwGetAutoObject( 
+            &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )))
+        {
+          DeviceInterfaceNavigationDeviceClass_EnableAlertDisplayFlag( EwGetAutoObject( 
+          &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ));
+          NavigationNaviAlert_SetAlert( &_this->NaviEventObject, NaviData->NaviEventType, 
+          NaviData->NaviCameraType, NaviData->NaviEventSpeed, NaviData->NaviEventDist );
+          EffectsEffect_OnSetEnabled((EffectsEffect)&_this->NaviEventEnLargeEffect, 
+          1 );
+        }
+    }
   }
 }
 
@@ -3555,7 +3560,9 @@ void NavigationNAV05_TBTView_OnLongEnterKeyActivated( NavigationNAV05_TBTView _t
       CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( PopPOP09_POP14_BleConnectionErrorUI, 
       0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
     else
-      if ( !DeviceInterfaceNavigationDeviceClass_GetNaviConnectStatus( EwGetAutoObject( 
+      if ( !DeviceInterfaceNavigationDeviceClass_GetAppInitStatus( EwGetAutoObject( 
+          &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )) 
+          || !DeviceInterfaceNavigationDeviceClass_GetNaviConnectStatus( EwGetAutoObject( 
           &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )))
         CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( PopPOP17_AppInitSettingError, 
         0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
@@ -4304,7 +4311,9 @@ void NavigationNAV03_TBTListView_OnLongEnterKeyActivated( NavigationNAV03_TBTLis
       CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( PopPOP09_POP14_BleConnectionErrorUI, 
       0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
     else
-      if ( !DeviceInterfaceNavigationDeviceClass_GetNaviConnectStatus( EwGetAutoObject( 
+      if ( !DeviceInterfaceNavigationDeviceClass_GetAppInitStatus( EwGetAutoObject( 
+          &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )) 
+          || !DeviceInterfaceNavigationDeviceClass_GetNaviConnectStatus( EwGetAutoObject( 
           &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )))
         CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( PopPOP17_AppInitSettingError, 
         0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );

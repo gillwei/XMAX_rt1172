@@ -511,7 +511,9 @@ void LauncherLNC_Main_OnSelectedAnimationFinishedSlot( LauncherLNC_Main _this, X
         ItemDialog = ((ComponentsBaseComponent)EwNewObject( PopPOP09_POP14_BleConnectionErrorUI, 
         0 ));
       else
-        if ( !DeviceInterfaceNavigationDeviceClass_GetNaviConnectStatus( EwGetAutoObject( 
+        if ( !DeviceInterfaceNavigationDeviceClass_GetAppInitStatus( EwGetAutoObject( 
+            &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )) 
+            || !DeviceInterfaceNavigationDeviceClass_GetNaviConnectStatus( EwGetAutoObject( 
             &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )))
           ItemDialog = ((ComponentsBaseComponent)EwNewObject( PopPOP17_AppInitSettingError, 
           0 ));

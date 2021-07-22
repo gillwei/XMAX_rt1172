@@ -29,6 +29,7 @@
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
 #define DIALOG_TIME_DURATION_MS     ( 1000 )
+#define APP_INIT_DONE               ( 1 )
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -57,6 +58,7 @@ typedef bool ( *active_tbt_item_update )( navilite_callback_func_activetbtitem c
 typedef bool ( *tbt_list_update )( navilite_callback_func_nexttbtlist cb );
 typedef bool ( *poi_list_update )( navilite_callback_func_nexttpoilist cb );
 typedef bool ( *bt_throughput_update )( navilite_callback_func_content_mode_switch cb );
+typedef bool ( *navi_init_setting_update )( navilite_callback_func_appsetting cb );
 
 /*--------------------------------------------------------------------
                            PROJECT INCLUDES
@@ -93,12 +95,14 @@ static generic_fc_ptr navi_funtion_table[NAVILITE_FUNC_CNT] =
     (generic_fc_ptr)NAVILITE_register_update_callback_tbtlist,
     (generic_fc_ptr)NAVILITE_register_update_callback_favlist,
     (generic_fc_ptr)NAVILITE_register_update_callback_gaslist,
-    (generic_fc_ptr)NAVILITE_register_update_callback_content_mode_switch
+    (generic_fc_ptr)NAVILITE_register_update_callback_content_mode_switch,
+    (generic_fc_ptr)NAVILITE_register_update_callback_appsetting
     };
 
 static navi_data_type navi_data_obj;
 static navi_dialog_type navi_dialog_obj;
 static bool is_navi_app_connected;
+static bool is_navi_app_init;
 static EnumNaviZoomInOutStatusType zoom_inout_status = EnumNaviZoomInOutStatusTypeNORMAL;
 static EnumNaviBtThroughputUIMode navi_bt_throughput_ui_mode = EnumNaviBtThroughputUIModeTOTAL;
 static TimerHandle_t dialog_timer_handle;
@@ -353,6 +357,31 @@ char esn_decimal[ESN_STR_MAX_LEN + 1];
 sprintf( esn_decimal, "%010u", esn );
 PRINTF( "%s: ESN: %s \r\n", __FUNCTION__, esn_decimal );
 NAVILITE_report_app_esn( ( uint8_t* )esn_decimal );
+}
+
+/*********************************************************************
+*
+* @private
+* navi_app_init_update
+*
+* Notify navigation module that navi app is initialized.
+*
+*********************************************************************/
+static void navi_app_init_update
+    (
+    uint16_t app_setting_status
+    )
+{
+PRINTF( "%s: %d\r\n", __FUNCTION__, app_setting_status );
+int app_init_state = app_setting_status & ( 1 << 0 );
+if( APP_INIT_DONE == app_init_state )
+    {
+    is_navi_app_init = true;
+    }
+else
+    {
+    is_navi_app_init = false;
+    }
 }
 
 /*********************************************************************
@@ -1060,6 +1089,23 @@ return is_navi_app_connected;
 /*********************************************************************
 *
 * @public
+* NAVI_get_app_init_status
+*
+* Get navi app init status
+*
+*********************************************************************/
+bool NAVI_get_app_init_status
+    (
+    void
+    )
+{
+PRINTF( "%s\r\n", __FUNCTION__ );
+return is_navi_app_init;
+}
+
+/*********************************************************************
+*
+* @public
 * NAVI_get_zoom_inout_status
 *
 * Get the current zoom in/out button status
@@ -1353,6 +1399,9 @@ for( int i = 0; i < NAVILITE_FUNC_CNT; i++ )
             break;
         case NAVILITE_FUNC_BT_THROUGHPUT_UPDATE:
             result = ( (bt_throughput_update)navi_funtion_table[i] )( navi_bt_throughput_update );
+            break;
+        case NAVILITE_FUNC_INIT_UPDATE:
+            result = ( (navi_init_setting_update)navi_funtion_table[i] )( navi_app_init_update );
             break;
         default:
             PRINTF( "Unexpected navilite function.\r\n" );

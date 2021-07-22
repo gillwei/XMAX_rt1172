@@ -1186,7 +1186,9 @@ XEnum HomeBaseHome_GetNextHomeType( HomeBaseHome _this, XEnum aCurrentHomeType )
           &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )))
         NextHomeType = EnumHomeTypeVEHICLE_INFO;
       else
-        if ( !DeviceInterfaceNavigationDeviceClass_GetNaviConnectStatus( EwGetAutoObject( 
+        if ( !DeviceInterfaceNavigationDeviceClass_GetAppInitStatus( EwGetAutoObject( 
+            &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )) 
+            || !DeviceInterfaceNavigationDeviceClass_GetNaviConnectStatus( EwGetAutoObject( 
             &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )))
           NextHomeType = EnumHomeTypeVEHICLE_INFO;
         else
