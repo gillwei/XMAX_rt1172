@@ -3087,6 +3087,9 @@ void HomeTachoColor__Init( HomeTachoColor _this, XObject aLink, XHandle aArg )
   ViewsImage_OnSetBitmap( &_this->DownColorbaseImg, ((ResourcesBitmap)EwGetAutoObject( 
   &ResourceExternTachoDownColorbase, ResourcesExternBitmap )));
   ViewsImage_OnSetBitmap( &_this->Front, EwLoadResource( &ResourceTachoFront, ResourcesBitmap ));
+
+  /* Call the user defined constructor */
+  HomeTachoColor_Init( _this, aArg );
 }
 
 /* Re-Initializer for the class 'Home::TachoColor' */
@@ -3126,6 +3129,17 @@ void HomeTachoColor__Done( HomeTachoColor _this )
 
   /* Don't forget to deinitialize the super class ... */
   CoreGroup__Done( &_this->_.Super );
+}
+
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void HomeTachoColor_Init( HomeTachoColor _this, XHandle aArg )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( aArg );
+
+  HomeTachoColor_UpdateYMask( _this, 0 );
 }
 
 /* 'C' function for method : 'Home::TachoColor.OnSetApsAngle()' */
@@ -3203,7 +3217,7 @@ void HomeTachoColor_UpdateColorbase( HomeTachoColor _this, XInt32 aApsAngle )
   if ( 0 > ColorRect.Point1.Y )
     ColorRect.Point1.Y = 0;
 
-  DownHalfHeight = (XInt32)( 1.212500f * aApsAngle );
+  DownHalfHeight = (XInt32)( 1.250000f * aApsAngle );
   ColorRect.Point2.Y = (( 137 + DownHalfHeight ) + 46 );
 
   if ( EwGetRectH( _this->Super2.Bounds ) < ColorRect.Point2.Y )

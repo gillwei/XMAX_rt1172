@@ -158,6 +158,11 @@ EW_DEFINE_METHODS( HomeTachoColor, CoreGroup )
     aOrder )
 EW_END_OF_METHODS( HomeTachoColor )
 
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void HomeTachoColor_Init( HomeTachoColor _this, XHandle aArg );
+
 /* 'C' function for method : 'Home::TachoColor.OnSetApsAngle()' */
 void HomeTachoColor_OnSetApsAngle( HomeTachoColor _this, XInt32 value );
 

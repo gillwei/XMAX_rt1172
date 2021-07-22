@@ -2001,6 +2001,12 @@ $rect <30,210,230,250>
 $output false
 class TachoColor : Core::Group
 {
+  $rect <240,200,420,240>
+  inherited method Init()
+  {
+    UpdateYMask( 0 );
+  }
+
   $rect <0,250,200,290>
   inherited property Bounds = <0,0,223,234>;
 
@@ -2036,7 +2042,6 @@ class TachoColor : Core::Group
     if( pure ApsAngle != value )
     {
       pure ApsAngle = value;
-
       UpdateYMask( value );
     }
   }
@@ -2047,7 +2052,7 @@ class TachoColor : Core::Group
     /* upper mask y1, y2:
        for aps angle   0: y2 = 88,
        for aps angle 80: y2 = 9
-       (88-9)/(80-0) = 1 */
+       (88-9)/(80-0) = 0.9875 */
     var float ApsToYspacingScale = 0.9875;
 
     var int32 UpperMaskY2 = (int32)( Home::TACHO_UPPER_MASK_Y_MAX - ApsToYspacingScale * aApsAngle );
@@ -2107,9 +2112,9 @@ class TachoColor : Core::Group
       ColorRect.y1 = 0;
     }
 
-    /* for down height, 0 deg: 0px, 80 deg: 97px
-       => 97 / 80 = 1.2125 */
-    var int32 DownHalfHeight = (int32)( 1.2125 * aApsAngle );
+    /* for down height, 0 deg: 0px, 80 deg: 100px
+       => 100 / 80 = 1.25 */
+    var int32 DownHalfHeight = (int32)( 1.25 * aApsAngle );
     ColorRect.y2 = Home::TACHO_LOWER_MASK_Y_MIN + DownHalfHeight + Home::TACHO_X_MASK_HEIGHT;
     if( Bounds.h < ColorRect.y2 )
     {
