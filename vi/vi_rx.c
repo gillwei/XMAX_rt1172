@@ -1741,6 +1741,7 @@ if( pdTRUE == xSemaphoreTake( supported_function_semaphore_handle, ticks_to_wait
         rx_vehicle_supported_functions = ( supported_functions[5] << 24 ) | ( supported_functions[4] << 16 ) |
                                          ( supported_functions[3] << 8 ) | supported_functions[2];
 
+        PRINTF( "tacho fs: %d, red: %d\r\n", rx_tacho_setting.fullscale, rx_tacho_setting.redzone_begin );
         if( is_tacho_setting_changed )
             {
             EW_notify_vi_data_received( EnumVehicleRxTypeTACHO_SETTING );
@@ -1841,8 +1842,8 @@ void VI_rx_support_function_received
 uint8_t  supported_functions[SUPPORTED_FUNCTION_LENGTH];
 uint32_t sfl = 0;
 
-PRINTF( "%s, grip warmer: %d\r\n", __FUNCTION__, support_functions->sfl.bit.grip_warmer );
-PRINTF( "%s, seat heater: %d\r\n", __FUNCTION__, support_functions->sfl.bit.seat_heater );
+PRINTF( "%s, tcfs: %d\r\n", __FUNCTION__, support_functions->tcfs );
+PRINTF( "%s, brzegr: %d\r\n", __FUNCTION__, support_functions->brzegr );
 
 set_sfl( &sfl, EnumVehicleSupportedFunctionTRIP1, support_functions->sfl.bit.trip1 );
 set_sfl( &sfl, EnumVehicleSupportedFunctionTRIP2, support_functions->sfl.bit.trip2 );

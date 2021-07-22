@@ -49,6 +49,8 @@
 
 #define TACHO_COLORBASE_RGB888_SIZE         ( TACHO_COLORBASE_WIDTH * TACHO_COLORBASE_HEIGHT * 3 )
 #define TACHO_FULLSCALE_NUM                 ( 2 )
+#define TACHO_SUPPORTED_FULLSCALE_10000     ( 10000 )
+#define TACHO_SUPPORTED_FULLSCALE_15000     ( 15000 )
 #define TACHO_1000RPM_REDZONE_BEGIN_NUM     ( 5 )
 #define TACHO_1500RPM_REDZONE_BEGIN_NUM     ( 11 )
 
@@ -69,7 +71,6 @@ typedef struct
 /*--------------------------------------------------------------------
                            MEMORY CONSTANTS
 --------------------------------------------------------------------*/
-static const uint32_t supported_fullscale[TACHO_FULLSCALE_NUM] = { 10000, 15000 };
 static const uint32_t supported_10000rpm_redzone_begin[TACHO_1000RPM_REDZONE_BEGIN_NUM] = { 8000, 8500, 9000, 9500, 10000 };
 static const uint32_t supported_15000rpm_redzone_begin[TACHO_1500RPM_REDZONE_BEGIN_NUM] = { 10000, 10500, 11000, 11500, 12000, 12500, 13000, 13500, 14000, 14500, 15000 };
 
@@ -180,37 +181,20 @@ static EnumTachoFullScale get_fullscale
     void
     )
 {
-EnumTachoFullScale fullscale;
-uint32_t fullscale_value;
-bool     is_supported = false;
+EnumTachoFullScale fullscale = 0;
+uint32_t fullscale_value = 0;
 
 VI_get_rx_data_uint( EnumVehicleRxTypeTACHO_FULLSCALE, &fullscale_value );
 
-for( int i = 0; i < TACHO_FULLSCALE_NUM; i++ )
+if( TACHO_SUPPORTED_FULLSCALE_10000 >= fullscale_value )
     {
-    if( supported_fullscale[i] == fullscale_value )
-        {
-        is_supported = true;
-        break;
-        }
-    }
-
-if( is_supported )
-    {
-    if( 10000 == fullscale_value )
-        {
-        fullscale = EnumTachoFullScaleRPM10000;
-        }
-    else
-        {
-        fullscale = EnumTachoFullScaleRPM15000;
-        }
+    fullscale = EnumTachoFullScaleRPM10000;
     }
 else
     {
-    fullscale = TACHO_DEFAULT_FULLSCALE;
+    fullscale = EnumTachoFullScaleRPM15000;
     }
-
+PRINTF( "%s %d %d\r\n", __FUNCTION__, fullscale_value, fullscale );
 return fullscale;
 }
 
@@ -231,9 +215,9 @@ static uint32_t get_redzone_begin
     )
 {
 uint32_t redzone_begin = TACHO_DEFAULT_REDZONE_BEGIN;
-uint32_t max_regzone_begin;
+uint32_t max_regzone_begin = 0;
 bool     is_supported = false;
-int      redzone_begin_num;
+int      redzone_begin_num = 0;
 const uint32_t* supported_redzone_begin;
 
 VI_get_rx_data_uint( EnumVehicleRxTypeTACHO_REDZONE_BEGIN, &redzone_begin );
@@ -246,11 +230,10 @@ switch( fullscale )
         redzone_begin_num = TACHO_1000RPM_REDZONE_BEGIN_NUM;
         break;
     case EnumTachoFullScaleRPM15000:
+    default:
         supported_redzone_begin = supported_15000rpm_redzone_begin;
         max_regzone_begin = supported_15000rpm_redzone_begin[ TACHO_1500RPM_REDZONE_BEGIN_NUM - 1 ];
         redzone_begin_num = TACHO_1500RPM_REDZONE_BEGIN_NUM;
-        break;
-    default:
         break;
     }
 
@@ -262,6 +245,7 @@ for( int i = 0; i < redzone_begin_num; i++ )
         break;
         }
     }
+PRINTF( "%s %d %d\r\n", __FUNCTION__, redzone_begin, is_supported );
 
 if( !is_supported )
     {
