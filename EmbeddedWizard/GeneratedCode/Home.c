@@ -3876,6 +3876,7 @@ void HomeHOM11_TachoVisualizer_OnVehicleDataReceivedSlot( HomeHOM11_TachoVisuali
     switch ( VehicleData->RxType )
     {
       case EnumVehicleRxTypeVVA_INDICATOR :
+      case EnumVehicleRxTypeTIMEOUT_ERROR2_UPDATED :
         HomeHOM11_TachoVisualizer_UpdateVVAIndicator( _this );
       break;
 
@@ -3897,14 +3898,18 @@ void HomeHOM11_TachoVisualizer_OnVehicleDataReceivedSlot( HomeHOM11_TachoVisuali
 /* 'C' function for method : 'Home::HOM11_TachoVisualizer.UpdateVVAIndicator()' */
 void HomeHOM11_TachoVisualizer_UpdateVVAIndicator( HomeHOM11_TachoVisualizer _this )
 {
-  DeviceInterfaceVehicleDataClass VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( 
-    EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
-    EnumVehicleRxTypeVVA_INDICATOR );
+  if ( !DeviceInterfaceVehicleDeviceClass_OnGetIsTimeoutError2Detected( EwGetAutoObject( 
+      &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )))
+  {
+    DeviceInterfaceVehicleDataClass VehicleData = DeviceInterfaceVehicleDeviceClass_GetData( 
+      EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass ), 
+      EnumVehicleRxTypeVVA_INDICATOR );
 
-  if ( 1 == VehicleData->DataUInt32 )
-    ViewsImage_OnSetVisible( &_this->VVAIndicatorImage, 1 );
-  else
-    ViewsImage_OnSetVisible( &_this->VVAIndicatorImage, 0 );
+    if ( 1 == VehicleData->DataUInt32 )
+      ViewsImage_OnSetVisible( &_this->VVAIndicatorImage, 1 );
+    else
+      ViewsImage_OnSetVisible( &_this->VVAIndicatorImage, 0 );
+  }
 }
 
 /* Variants derived from the class : 'Home::HOM11_TachoVisualizer' */

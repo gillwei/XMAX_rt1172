@@ -2098,7 +2098,7 @@ class TachoColor : Core::Group
       ColorRect.h = Bounds.h;
     }
 
-    /* for up height, 0 deg: 0px, 80 deg: 91px 
+    /* for up height, 0 deg: 0px, 80 deg: 91px
        => 91 / 80 = 1.1375 */
     var int32 UpHalfHeight = (int32)( 1.1375 * aApsAngle );
     ColorRect.y1 = Home::TACHO_UPPER_MASK_Y_MAX - UpHalfHeight - Home::TACHO_X_MASK_HEIGHT;
@@ -2107,7 +2107,7 @@ class TachoColor : Core::Group
       ColorRect.y1 = 0;
     }
 
-    /* for down height, 0 deg: 0px, 80 deg: 97px 
+    /* for down height, 0 deg: 0px, 80 deg: 97px
        => 97 / 80 = 1.2125 */
     var int32 DownHalfHeight = (int32)( 1.2125 * aApsAngle );
     ColorRect.y2 = Home::TACHO_LOWER_MASK_Y_MIN + DownHalfHeight + Home::TACHO_X_MASK_HEIGHT;
@@ -2746,7 +2746,11 @@ class HOM11_TachoVisualizer : Home::BaseHome
     {
       switch( VehicleData.RxType )
       {
-        case Enum::VehicleRxType.VVA_INDICATOR: UpdateVVAIndicator();
+        case Enum::VehicleRxType.VVA_INDICATOR,
+             Enum::VehicleRxType.TIMEOUT_ERROR2_UPDATED:
+        {
+          UpdateVVAIndicator();
+        }
         case Enum::VehicleRxType.TACHO_SETTING:
         {
           FullScaleType = (Enum::TachoFullScale)DeviceInterface::SystemDevice.GetSystemStatus( Enum::SystemStatus.TACHO_FULLSCALE );
@@ -2760,14 +2764,17 @@ class HOM11_TachoVisualizer : Home::BaseHome
   $rect <740,380,940,420>
   method void UpdateVVAIndicator()
   {
-    var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.VVA_INDICATOR );
-    if( Home::VVA_INDICATOR_VALUE == VehicleData.DataUInt32 )
+    if( !DeviceInterface::VehicleDevice.IsTimeoutError2Detected )
     {
-      VVAIndicatorImage.Visible = true;
-    }
-    else
-    {
-      VVAIndicatorImage.Visible = false;
+      var DeviceInterface::VehicleDataClass VehicleData = DeviceInterface::VehicleDevice.GetData( Enum::VehicleRxType.VVA_INDICATOR );
+      if( Home::VVA_INDICATOR_ON == VehicleData.DataUInt32 )
+      {
+        VVAIndicatorImage.Visible = true;
+      }
+      else
+      {
+        VVAIndicatorImage.Visible = false;
+      }
     }
   }
 
@@ -2847,7 +2854,7 @@ const int32 TACHO_X_MASK_HEIGHT = 46;
 
 $rect <30,810,360,850>
 $output false
-const int32 VVA_INDICATOR_VALUE = 1;
+const int32 VVA_INDICATOR_ON = 1;
 
 // ECO Visualizer
 note group Note4
