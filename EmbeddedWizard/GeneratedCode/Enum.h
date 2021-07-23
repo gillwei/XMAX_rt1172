@@ -766,9 +766,7 @@ typedef enum
   EnumSystemRxEventQRCODE_READY         = 11,
   EnumSystemRxEventLANGUAGE_CHANGED     = 12,
   EnumSystemRxEventPHONE_LANGUAGE_RECEIVED = 13,
-  EnumSystemRxEventLAST_PAGE_READ       = 14,
-  EnumSystemRxEventSTART_OPENING        = 15,
-  EnumSystemRxEventESN_READY            = 16
+  EnumSystemRxEventTOTAL                = 14
 } EnumSystemRxEvent;
 
 /* User defined enumeration: 'Enum::MotoConTx' */
@@ -816,26 +814,20 @@ typedef enum
   EnumSystemTxCmdDISABLE_TFT_BRIGHTNESS_MANUAL_ADJ = 1,
   EnumSystemTxCmdADJ_TFT_BRIGHTNESS_LEVEL_UP = 2,
   EnumSystemTxCmdADJ_TFT_BRIGHTNESS_LEVEL_DOWN = 3,
-  EnumSystemTxCmdSTART_OTA              = 4,
-  EnumSystemTxCmdREBOOT_SYSTEM          = 5,
-  EnumSystemTxCmdSAVE_LAST_STATUS       = 6
+  EnumSystemTxCmdTOTAL                  = 4
 } EnumSystemTxCmd;
 
 /* User defined enumeration: 'Enum::SystemStatus' */
 typedef enum
 {
-  EnumSystemStatusIS_DEBUG_BUILD        = 0,
-  EnumSystemStatusIS_CLK_AUTO_ADJ       = 1,
-  EnumSystemStatusIS_TFT_BRIGHTNESS_LEVEL_MAX = 2,
-  EnumSystemStatusIS_TFT_BRIGHTNESS_LEVEL_MIN = 3,
-  EnumSystemStatusIS_TFT_DERATING_ON    = 4,
-  EnumSystemStatusIS_TFT_BACKLIGHT_ON   = 5,
-  EnumSystemStatusIS_QRCODE_READY       = 6,
-  EnumSystemStatusLANGUAGE              = 7,
-  EnumSystemStatusTACHO_FULLSCALE       = 8,
-  EnumSystemStatusTACHO_REDZONE_BEGIN   = 9,
-  EnumSystemStatusIS_OP_MODE_READY      = 10,
-  EnumSystemStatusIS_SW_UPDATE_ENABLED  = 11
+  EnumSystemStatusIS_TFT_BRIGHTNESS_LEVEL_MAX = 0,
+  EnumSystemStatusIS_TFT_BRIGHTNESS_LEVEL_MIN = 1,
+  EnumSystemStatusIS_TFT_DERATING_ON    = 2,
+  EnumSystemStatusIS_QRCODE_READY       = 3,
+  EnumSystemStatusLANGUAGE              = 4,
+  EnumSystemStatusTACHO_FULLSCALE       = 5,
+  EnumSystemStatusTACHO_REDZONE_BEGIN   = 6,
+  EnumSystemStatusTOTAL                 = 7
 } EnumSystemStatus;
 
 /* User defined enumeration: 'Enum::NotificationNativeCall' */

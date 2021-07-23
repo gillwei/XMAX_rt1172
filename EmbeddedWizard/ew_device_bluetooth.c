@@ -155,6 +155,9 @@ void ew_device_bluetooth_init
        variable to access the driver class during the runtime.
     */
     EwLockObject( device_object );
+
+    motocon_rx_event_queue_handle = xQueueCreate( MOTOCON_RX_EVENT_QUEUE_SIZE, sizeof( EnumMotoConRxEvent ) );
+    configASSERT( NULL != motocon_rx_event_queue_handle );
 #endif
 }
 
@@ -841,25 +844,5 @@ switch( command )
         break;
     default:
         break;
-    }
-}
-
-/*********************************************************************
-*
-* @private
-* ew_device_bluetooth_create_queue
-*
-* Create queue for EW device interface bluetooth
-*
-*********************************************************************/
-void ew_device_bluetooth_create_queue
-    (
-    void
-    )
-{
-if( NULL == motocon_rx_event_queue_handle )
-    {
-    motocon_rx_event_queue_handle = xQueueCreate( MOTOCON_RX_EVENT_QUEUE_SIZE, sizeof( EnumMotoConRxEvent ) );
-    configASSERT( NULL != motocon_rx_event_queue_handle );
     }
 }

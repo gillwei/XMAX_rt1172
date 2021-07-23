@@ -113,7 +113,7 @@
 /* Compressed strings for the language 'Default'. */
 EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
-  0x00000364, /* ratio 46.08 % */
+  0x00000366, /* ratio 45.98 % */
   0xB8001100, 0x800A6452, 0x00A80022, 0x06200180, 0x09028780, 0x90A8441A, 0x00878CE1,
   0x983C1622, 0x1A002170, 0xEC4E3518, 0xC846B178, 0x02291B81, 0xA4E388B8, 0x2F0A8E44,
   0xB29970E6, 0x10874823, 0x098C8E51, 0x024606E0, 0xDCD01528, 0x4FC6D1E9, 0x021F0C94,
@@ -124,11 +124,11 @@ EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
   0x377DBDDE, 0x58833D93, 0x92B14748, 0x036E5337, 0xCA5F8EE0, 0x6E20596F, 0xDEEDFA0D,
   0xFAC56FB8, 0xAFB9BBDE, 0x9FCF000B, 0x9AA0F43F, 0x7DBF6BB5, 0xADB00393, 0xC9E6B710,
   0x072F7800, 0x5D8C7DAF, 0x6721C4DE, 0x7AA1A8C7, 0xB59DD7EB, 0x1B9C4773, 0x90DFF8BC,
-  0x000733BD, 0x8BD1347A, 0x00F00149, 0x2780714A, 0xF5665916, 0x7E701625, 0x7F96D5E5,
-  0x1175494F, 0x05492A84, 0x491D8512, 0x100015B5, 0x6C9994A0, 0x96642990, 0x6651E641,
-  0x89A06816, 0x2042A185, 0x6151984D, 0x57F5462C, 0x88BD568C, 0x18004D95, 0x828CA2B5,
-  0x47DA48D9, 0xD208ED87, 0x65123E69, 0x3D228052, 0x4986D205, 0x4E1264AA, 0x23984645,
-  0x04065446, 0x00000000
+  0x000733BD, 0x8BD1347A, 0xC1000149, 0x01458D62, 0xE57610DE, 0xC663D6F5, 0x7F96D75D,
+  0x1175494F, 0x05492A84, 0x491D8512, 0x288095B5, 0x641B2665, 0x9065990A, 0x05999479,
+  0x6162681A, 0x134810A8, 0x8AD85466, 0xA305FD51, 0x65622E55, 0xA9460013, 0x3560A318,
+  0x61D1F692, 0x5A74823A, 0x1499448F, 0x814F48A0, 0x2A9221B4, 0x91138499, 0xD188E211,
+  0x00010194, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -185,31 +185,31 @@ static const XStringRes _Const0031 = { _StringsDefault0, 0x011B };
 static const XStringRes _Const0032 = { _StringsDefault0, 0x0123 };
 static const XRect _Const0033 = {{ 10, 131 }, { 470, 255 }};
 static const XRect _Const0034 = {{ 193, 36 }, { 287, 130 }};
-static const XStringRes _Const0035 = { _StringsDefault0, 0x0132 };
-static const XStringRes _Const0036 = { _StringsDefault0, 0x013A };
+static const XStringRes _Const0035 = { _StringsDefault0, 0x0133 };
+static const XStringRes _Const0036 = { _StringsDefault0, 0x013B };
 static const XRect _Const0037 = {{ 10, 45 }, { 470, 76 }};
 static const XRect _Const0038 = {{ 10, 107 }, { 470, 138 }};
 static const XRect _Const0039 = {{ 10, 76 }, { 470, 107 }};
 static const XRect _Const003A = {{ 10, 138 }, { 470, 169 }};
 static const XRect _Const003B = {{ 95, 176 }, { 385, 259 }};
-static const XStringRes _Const003C = { _StringsDefault0, 0x0142 };
+static const XStringRes _Const003C = { _StringsDefault0, 0x0143 };
 static const XRect _Const003D = {{ 0, 0 }, { 388, 211 }};
 static const XRect _Const003E = {{ 0, 0 }, { 388, 31 }};
 static const XRect _Const003F = {{ 0, 61 }, { 388, 1301 }};
-static const XStringRes _Const0040 = { _StringsDefault0, 0x014A };
-static const XStringRes _Const0041 = { _StringsDefault0, 0x015A };
-static const XStringRes _Const0042 = { _StringsDefault0, 0x0162 };
-static const XStringRes _Const0043 = { _StringsDefault0, 0x016A };
-static const XStringRes _Const0044 = { _StringsDefault0, 0x0172 };
+static const XStringRes _Const0040 = { _StringsDefault0, 0x014B };
+static const XStringRes _Const0041 = { _StringsDefault0, 0x015B };
+static const XStringRes _Const0042 = { _StringsDefault0, 0x0163 };
+static const XStringRes _Const0043 = { _StringsDefault0, 0x016B };
+static const XStringRes _Const0044 = { _StringsDefault0, 0x0173 };
 static const XRect _Const0045 = {{ 10, 40 }, { 470, 168 }};
-static const XStringRes _Const0046 = { _StringsDefault0, 0x017A };
+static const XStringRes _Const0046 = { _StringsDefault0, 0x017B };
 static const XRect _Const0047 = {{ 10, 156 }, { 470, 227 }};
-static const XStringRes _Const0048 = { _StringsDefault0, 0x0182 };
-static const XStringRes _Const0049 = { _StringsDefault0, 0x018A };
-static const XStringRes _Const004A = { _StringsDefault0, 0x0192 };
-static const XStringRes _Const004B = { _StringsDefault0, 0x019A };
-static const XStringRes _Const004C = { _StringsDefault0, 0x01A2 };
-static const XStringRes _Const004D = { _StringsDefault0, 0x01AA };
+static const XStringRes _Const0048 = { _StringsDefault0, 0x0183 };
+static const XStringRes _Const0049 = { _StringsDefault0, 0x018B };
+static const XStringRes _Const004A = { _StringsDefault0, 0x0193 };
+static const XStringRes _Const004B = { _StringsDefault0, 0x019B };
+static const XStringRes _Const004C = { _StringsDefault0, 0x01A3 };
+static const XStringRes _Const004D = { _StringsDefault0, 0x01AB };
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.
@@ -3712,6 +3712,7 @@ void SettingsSET30_QRCode_Init( SettingsSET30_QRCode _this, XHandle aArg )
   if ( !!DeviceInterfaceSystemDeviceClass_GetSystemStatus( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
       DeviceInterfaceSystemDeviceClass ), EnumSystemStatusIS_QRCODE_READY ))
   {
+    EwTrace( "%s", EwLoadString( &_Const0032 ));
     ViewsImage_OnSetBitmap( &_this->QrCodeImage, ((ResourcesBitmap)EwGetAutoObject( 
     &ResourceQrCodeExternBitmap, ResourcesExternBitmap )));
     ResourcesExternBitmap_OnSetName( EwGetAutoObject( &ResourceQrCodeExternBitmap, 
@@ -3719,8 +3720,6 @@ void SettingsSET30_QRCode_Init( SettingsSET30_QRCode _this, XHandle aArg )
     ResourcesExternBitmap_Reload( EwGetAutoObject( &ResourceQrCodeExternBitmap, 
     ResourcesExternBitmap ));
   }
-  else
-    EwTrace( "%s", EwLoadString( &_Const0032 ));
 
   DeviceInterfaceSystemDeviceClass_SendSystemCommand( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
   DeviceInterfaceSystemDeviceClass ), EnumSystemTxCmdENABLE_TFT_BRIGHTNESS_MANUAL_ADJ );
@@ -5135,8 +5134,8 @@ void SettingsSET42_ResetCompleted_OnSystemEventReceived( SettingsSET42_ResetComp
       case EnumSystemRxEventREBOOT_ACCEPTED :
       case EnumSystemRxEventREBOOT_REJECTED :
         if ( _this->IsHoldTimerFinished )
-          DeviceInterfaceSystemDeviceClass_SendSystemCommand( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
-          DeviceInterfaceSystemDeviceClass ), EnumSystemTxCmdREBOOT_SYSTEM );
+          DeviceInterfaceSystemDeviceClass_RebootSystem( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+          DeviceInterfaceSystemDeviceClass ));
         else
           _this->IsRebootResponseReceived = 1;
       break;
@@ -5154,8 +5153,8 @@ void SettingsSET42_ResetCompleted_OnHoldTimerFinishedSlot( SettingsSET42_ResetCo
 
   if ( _this->IsRebootResponseReceived || DeviceInterfaceVehicleDeviceClass_OnGetIsResReprogramInfoTimeoutErr1Detected( 
       EwGetAutoObject( &DeviceInterfaceVehicleDevice, DeviceInterfaceVehicleDeviceClass )))
-    DeviceInterfaceSystemDeviceClass_SendSystemCommand( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
-    DeviceInterfaceSystemDeviceClass ), EnumSystemTxCmdREBOOT_SYSTEM );
+    DeviceInterfaceSystemDeviceClass_RebootSystem( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+    DeviceInterfaceSystemDeviceClass ));
   else
     _this->IsHoldTimerFinished = 1;
 }
@@ -6154,8 +6153,8 @@ void SettingsSET27_ConfirmUpdate_Init( SettingsSET27_ConfirmUpdate _this, XHandl
   EW_UNUSED_ARG( aArg );
 
   EwTrace( "%s", EwLoadString( &_Const0046 ));
-  DeviceInterfaceSystemDeviceClass_SendSystemCommand( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
-  DeviceInterfaceSystemDeviceClass ), EnumSystemTxCmdSAVE_LAST_STATUS );
+  DeviceInterfaceSystemDeviceClass_SaveLastStatus( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+  DeviceInterfaceSystemDeviceClass ));
 }
 
 /* 'C' function for method : 'Settings::SET27_ConfirmUpdate.OnOkActivatedSlot()' */
@@ -6226,8 +6225,8 @@ void SettingsSET27_ConfirmUpdate_OnHoldTimerSlot( SettingsSET27_ConfirmUpdate _t
   EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( sender );
 
-  DeviceInterfaceSystemDeviceClass_SendSystemCommand( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
-  DeviceInterfaceSystemDeviceClass ), EnumSystemTxCmdSTART_OTA );
+  DeviceInterfaceSystemDeviceClass_StartOTA( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
+  DeviceInterfaceSystemDeviceClass ));
 }
 
 /* Variants derived from the class : 'Settings::SET27_ConfirmUpdate' */

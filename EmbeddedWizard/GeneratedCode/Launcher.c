@@ -26,7 +26,6 @@
 
 #include "ewlocale.h"
 #include "_ComponentsBaseComponent.h"
-#include "_ComponentsBaseText.h"
 #include "_CoreGroup.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
@@ -74,8 +73,9 @@
 /* Compressed strings for the language 'Default'. */
 EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
-  0x00000010, /* ratio 150.00 % */
-  0xB8000D00, 0x00098452, 0x00860027, 0x4010C858, 0x00000040, 0x00000000
+  0x0000003E, /* ratio 90.32 % */
+  0xB8000D00, 0x00098452, 0x00860027, 0x60617858, 0xD2002211, 0xA0039800, 0x1889C44D,
+  0xC8B9A215, 0x00190006, 0x01862510, 0x800DF1D0, 0x2C411833, 0x2030B95C, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -86,22 +86,23 @@ static const XRect _Const0003 = {{ 0, 38 }, { 134, 272 }};
 static const XRect _Const0004 = {{ -134, 38 }, { 0, 272 }};
 static const XRect _Const0005 = {{ 0, 38 }, { 480, 49 }};
 static const XStringRes _Const0006 = { _StringsDefault0, 0x0002 };
-static const XRect _Const0007 = {{ 0, 0 }, { 134, 234 }};
-static const XRect _Const0008 = {{ -81, -143 }, { -31, -93 }};
-static const XRect _Const0009 = {{ 9, 10 }, { 59, 60 }};
-static const XRect _Const000A = {{ 27, 88 }, { 77, 138 }};
-static const XRect _Const000B = {{ 9, 166 }, { 59, 216 }};
-static const XRect _Const000C = {{ -81, 231 }, { -31, 281 }};
-static const XRect _Const000D = {{ 0, 0 }, { 0, 0 }};
-static const XRect _Const000E = {{ -1, 249 }, { 41, 291 }};
-static const XRect _Const000F = {{ 13, 74 }, { 91, 152 }};
-static const XRect _Const0010 = {{ 0, 70 }, { 122, 156 }};
-static const XRect _Const0011 = {{ 0, 0 }, { 480, 234 }};
-static const XRect _Const0012 = {{ 0, 58 }, { 480, 168 }};
-static const XRect _Const0013 = {{ 138, 92 }, { 469, 135 }};
-static const XRect _Const0014 = {{ 121, 17 }, { 439, 50 }};
-static const XColor _Const0015 = { 0x6B, 0x6B, 0x6B, 0xFF };
-static const XRect _Const0016 = {{ 121, 173 }, { 439, 206 }};
+static const XStringRes _Const0007 = { _StringsDefault0, 0x0008 };
+static const XRect _Const0008 = {{ 0, 0 }, { 134, 234 }};
+static const XRect _Const0009 = {{ -81, -143 }, { -31, -93 }};
+static const XRect _Const000A = {{ 9, 10 }, { 59, 60 }};
+static const XRect _Const000B = {{ 27, 88 }, { 77, 138 }};
+static const XRect _Const000C = {{ 9, 166 }, { 59, 216 }};
+static const XRect _Const000D = {{ -81, 231 }, { -31, 281 }};
+static const XRect _Const000E = {{ 0, 0 }, { 0, 0 }};
+static const XRect _Const000F = {{ -1, 249 }, { 41, 291 }};
+static const XRect _Const0010 = {{ 13, 74 }, { 91, 152 }};
+static const XRect _Const0011 = {{ 0, 70 }, { 122, 156 }};
+static const XRect _Const0012 = {{ 0, 0 }, { 480, 234 }};
+static const XRect _Const0013 = {{ 0, 58 }, { 480, 168 }};
+static const XRect _Const0014 = {{ 138, 92 }, { 469, 135 }};
+static const XRect _Const0015 = {{ 121, 17 }, { 439, 50 }};
+static const XColor _Const0016 = { 0x6B, 0x6B, 0x6B, 0xFF };
+static const XRect _Const0017 = {{ 121, 173 }, { 439, 206 }};
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.
@@ -596,8 +597,12 @@ void LauncherLNC_Main_OnSlideOutFinishedSlot( LauncherLNC_Main _this, XObject se
 void LauncherLNC_Main_DismissChildDialogs( LauncherLNC_Main _this )
 {
   while ( CoreGroup_CountDialogs((CoreGroup)_this ) > 0 )
+  {
+    EwTrace( "%s%$", EwLoadString( &_Const0007 ), EwClassOf(((XObject)CoreGroup_GetDialogAtIndex((CoreGroup)_this, 
+      0 ))));
     CoreGroup_DismissDialog((CoreGroup)_this, CoreGroup_GetDialogAtIndex((CoreGroup)_this, 
     0 ), 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+  }
 }
 
 /* 'C' function for method : 'Launcher::LNC_Main.GetVehicleSupportedFeature()' */
@@ -792,51 +797,51 @@ void LauncherLNC_RotaryPlate__Init( LauncherLNC_RotaryPlate _this, XObject aLink
   _this->_.VMT = EW_CLASS( LauncherLNC_RotaryPlate );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const0007 );
+  CoreRectView__OnSetBounds( _this, _Const0008 );
   _this->RotationDirection = EnumRotationDirectionCLOCKWISE;
-  _this->IconPositions[ 0 ] = _Const0008;
-  _this->IconPositions[ 1 ] = _Const0009;
-  _this->IconPositions[ 2 ] = _Const000A;
-  _this->IconPositions[ 3 ] = _Const000B;
-  _this->IconPositions[ 4 ] = _Const000C;
+  _this->IconPositions[ 0 ] = _Const0009;
+  _this->IconPositions[ 1 ] = _Const000A;
+  _this->IconPositions[ 2 ] = _Const000B;
+  _this->IconPositions[ 3 ] = _Const000C;
+  _this->IconPositions[ 4 ] = _Const000D;
   _this->SelectedIconIdx = 1;
   EffectsEffect_OnSetNoOfCycles((EffectsEffect)&_this->RectEffect0, 1 );
   EffectsEffect_OnSetCycleDuration((EffectsEffect)&_this->RectEffect0, 150 );
-  _this->RectEffect0.Value2 = _Const000D;
-  _this->RectEffect0.Value1 = _Const000D;
+  _this->RectEffect0.Value2 = _Const000E;
+  _this->RectEffect0.Value1 = _Const000E;
   EffectsEffect_OnSetNoOfCycles((EffectsEffect)&_this->RectEffect1, 1 );
   EffectsEffect_OnSetCycleDuration((EffectsEffect)&_this->RectEffect1, 150 );
-  _this->RectEffect1.Value2 = _Const000D;
-  _this->RectEffect1.Value1 = _Const000D;
+  _this->RectEffect1.Value2 = _Const000E;
+  _this->RectEffect1.Value1 = _Const000E;
   EffectsEffect_OnSetNoOfCycles((EffectsEffect)&_this->RectEffect2, 1 );
   EffectsEffect_OnSetCycleDuration((EffectsEffect)&_this->RectEffect2, 150 );
-  _this->RectEffect2.Value2 = _Const000D;
-  _this->RectEffect2.Value1 = _Const000D;
+  _this->RectEffect2.Value2 = _Const000E;
+  _this->RectEffect2.Value1 = _Const000E;
   EffectsEffect_OnSetNoOfCycles((EffectsEffect)&_this->RectEffect3, 1 );
   EffectsEffect_OnSetCycleDuration((EffectsEffect)&_this->RectEffect3, 150 );
-  _this->RectEffect3.Value2 = _Const000D;
-  _this->RectEffect3.Value1 = _Const000D;
+  _this->RectEffect3.Value2 = _Const000E;
+  _this->RectEffect3.Value1 = _Const000E;
   CoreTimer_OnSetPeriod( &_this->SelectedAnimationTimer, 100 );
-  CoreRectView__OnSetBounds( &_this->BaseImage, _Const0007 );
+  CoreRectView__OnSetBounds( &_this->BaseImage, _Const0008 );
   CoreView_OnSetLayout((CoreView)&_this->Icon0, CoreLayoutAlignToLeft | CoreLayoutAlignToTop );
-  CoreRectView__OnSetBounds( &_this->Icon0, _Const0009 );
+  CoreRectView__OnSetBounds( &_this->Icon0, _Const000A );
   ViewsImage_OnSetFrameNumber( &_this->Icon0, 1 );
   CoreView_OnSetLayout((CoreView)&_this->Icon1, CoreLayoutAlignToLeft | CoreLayoutAlignToTop );
-  CoreRectView__OnSetBounds( &_this->Icon1, _Const000A );
+  CoreRectView__OnSetBounds( &_this->Icon1, _Const000B );
   ViewsImage_OnSetFrameNumber( &_this->Icon1, 1 );
   ViewsImage_OnSetVisible( &_this->Icon1, 0 );
   CoreView_OnSetLayout((CoreView)&_this->Icon2, CoreLayoutAlignToLeft | CoreLayoutAlignToTop );
-  CoreRectView__OnSetBounds( &_this->Icon2, _Const000B );
+  CoreRectView__OnSetBounds( &_this->Icon2, _Const000C );
   ViewsImage_OnSetFrameNumber( &_this->Icon2, 1 );
   CoreView_OnSetLayout((CoreView)&_this->Icon3, CoreLayoutAlignToLeft | CoreLayoutAlignToTop );
-  CoreRectView__OnSetBounds( &_this->Icon3, _Const000E );
+  CoreRectView__OnSetBounds( &_this->Icon3, _Const000F );
   ViewsImage_OnSetFrameNumber( &_this->Icon3, 1 );
   CoreView_OnSetLayout((CoreView)&_this->IconSelectedLarge, CoreLayoutAlignToLeft 
   | CoreLayoutAlignToTop );
-  CoreRectView__OnSetBounds( &_this->IconSelectedLarge, _Const000F );
+  CoreRectView__OnSetBounds( &_this->IconSelectedLarge, _Const0010 );
   ViewsImage_OnSetFrameNumber( &_this->IconSelectedLarge, 1 );
   ViewsImage_OnSetVisible( &_this->IconSelectedLarge, 1 );
-  CoreRectView__OnSetBounds( &_this->HighlightImage, _Const0010 );
+  CoreRectView__OnSetBounds( &_this->HighlightImage, _Const0011 );
   ViewsImage_OnSetVisible( &_this->HighlightImage, 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->BaseImage ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Icon0 ), 0 );
@@ -1387,9 +1392,9 @@ void LauncherLNC_Base__Init( LauncherLNC_Base _this, XObject aLink, XHandle aArg
   /* ... then construct all embedded objects */
   ViewsWallpaper__Init( &_this->Background, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->ImgLCBlueline, &_this->_.XObject, 0 );
-  ComponentsBaseText__Init( &_this->CurrentItemTitleText, &_this->_.XObject, 0 );
-  ComponentsBaseText__Init( &_this->PreviousItemTitleText, &_this->_.XObject, 0 );
-  ComponentsBaseText__Init( &_this->NextItemTitleText, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->CurrentItemTitleText, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->PreviousItemTitleText, &_this->_.XObject, 0 );
+  ViewsText__Init( &_this->NextItemTitleText, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_.VMT = EW_CLASS( LauncherLNC_Base );
@@ -1397,21 +1402,21 @@ void LauncherLNC_Base__Init( LauncherLNC_Base _this, XObject aLink, XHandle aArg
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0001 );
   CoreView_OnSetLayout((CoreView)&_this->Background, CoreLayoutAlignToBottom | CoreLayoutAlignToLeft );
-  CoreRectView__OnSetBounds( &_this->Background, _Const0011 );
-  CoreRectView__OnSetBounds( &_this->ImgLCBlueline, _Const0012 );
-  CoreRectView__OnSetBounds( &_this->CurrentItemTitleText, _Const0013 );
-  ViewsText_OnSetAlignment((ViewsText)&_this->CurrentItemTitleText, ViewsTextAlignmentAlignHorzLeft 
+  CoreRectView__OnSetBounds( &_this->Background, _Const0012 );
+  CoreRectView__OnSetBounds( &_this->ImgLCBlueline, _Const0013 );
+  CoreRectView__OnSetBounds( &_this->CurrentItemTitleText, _Const0014 );
+  ViewsText_OnSetAlignment( &_this->CurrentItemTitleText, ViewsTextAlignmentAlignHorzLeft 
   | ViewsTextAlignmentAlignVertCenter );
-  CoreRectView__OnSetBounds( &_this->PreviousItemTitleText, _Const0014 );
-  ViewsText_OnSetAlignment((ViewsText)&_this->PreviousItemTitleText, ViewsTextAlignmentAlignHorzLeft 
+  CoreRectView__OnSetBounds( &_this->PreviousItemTitleText, _Const0015 );
+  ViewsText_OnSetAlignment( &_this->PreviousItemTitleText, ViewsTextAlignmentAlignHorzLeft 
   | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString((ViewsText)&_this->PreviousItemTitleText, 0 );
-  ViewsText_OnSetColor((ViewsText)&_this->PreviousItemTitleText, _Const0015 );
-  CoreRectView__OnSetBounds( &_this->NextItemTitleText, _Const0016 );
-  ViewsText_OnSetAlignment((ViewsText)&_this->NextItemTitleText, ViewsTextAlignmentAlignHorzLeft 
+  ViewsText_OnSetString( &_this->PreviousItemTitleText, 0 );
+  ViewsText_OnSetColor( &_this->PreviousItemTitleText, _Const0016 );
+  CoreRectView__OnSetBounds( &_this->NextItemTitleText, _Const0017 );
+  ViewsText_OnSetAlignment( &_this->NextItemTitleText, ViewsTextAlignmentAlignHorzLeft 
   | ViewsTextAlignmentAlignVertCenter );
-  ViewsText_OnSetString((ViewsText)&_this->NextItemTitleText, 0 );
-  ViewsText_OnSetColor((ViewsText)&_this->NextItemTitleText, _Const0015 );
+  ViewsText_OnSetString( &_this->NextItemTitleText, 0 );
+  ViewsText_OnSetColor( &_this->NextItemTitleText, _Const0016 );
   CoreGroup__Add( _this, ((CoreView)&_this->Background ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->ImgLCBlueline ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->CurrentItemTitleText ), 0 );
@@ -1421,11 +1426,11 @@ void LauncherLNC_Base__Init( LauncherLNC_Base _this, XObject aLink, XHandle aArg
   ResourcesBitmap ));
   ViewsImage_OnSetBitmap( &_this->ImgLCBlueline, EwLoadResource( &ResourceLCBlueline, 
   ResourcesBitmap ));
-  ViewsText_OnSetFont((ViewsText)&_this->CurrentItemTitleText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+  ViewsText_OnSetFont( &_this->CurrentItemTitleText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
   ResourcesFont ));
-  ViewsText_OnSetFont((ViewsText)&_this->PreviousItemTitleText, EwLoadResource( 
-  &FontsNotoSansCjkJpMedium24pt, ResourcesFont ));
-  ViewsText_OnSetFont((ViewsText)&_this->NextItemTitleText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ViewsText_OnSetFont( &_this->PreviousItemTitleText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+  ResourcesFont ));
+  ViewsText_OnSetFont( &_this->NextItemTitleText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
 }
 
@@ -1438,9 +1443,12 @@ void LauncherLNC_Base__ReInit( LauncherLNC_Base _this )
   /* ... then re-construct all embedded objects */
   ViewsWallpaper__ReInit( &_this->Background );
   ViewsImage__ReInit( &_this->ImgLCBlueline );
-  ComponentsBaseText__ReInit( &_this->CurrentItemTitleText );
-  ComponentsBaseText__ReInit( &_this->PreviousItemTitleText );
-  ComponentsBaseText__ReInit( &_this->NextItemTitleText );
+  ViewsText__ReInit( &_this->CurrentItemTitleText );
+  ViewsText__ReInit( &_this->PreviousItemTitleText );
+  ViewsText__ReInit( &_this->NextItemTitleText );
+
+  /* Call the user defined re-constructor of the class */
+  LauncherLNC_Base_ReInit( _this );
 }
 
 /* Finalizer method for the class 'Launcher::LNC_Base' */
@@ -1452,12 +1460,40 @@ void LauncherLNC_Base__Done( LauncherLNC_Base _this )
   /* Finalize all embedded objects */
   ViewsWallpaper__Done( &_this->Background );
   ViewsImage__Done( &_this->ImgLCBlueline );
-  ComponentsBaseText__Done( &_this->CurrentItemTitleText );
-  ComponentsBaseText__Done( &_this->PreviousItemTitleText );
-  ComponentsBaseText__Done( &_this->NextItemTitleText );
+  ViewsText__Done( &_this->CurrentItemTitleText );
+  ViewsText__Done( &_this->PreviousItemTitleText );
+  ViewsText__Done( &_this->NextItemTitleText );
 
   /* Don't forget to deinitialize the super class ... */
   CoreGroup__Done( &_this->_.Super );
+}
+
+/* 'C' function for method : 'Launcher::LNC_Base.ReInit()' */
+void LauncherLNC_Base_ReInit( LauncherLNC_Base _this )
+{
+  switch ( EwGetLanguage())
+  {
+    case TraditionalChinese :
+    {
+      ViewsText_OnSetFont( &_this->PreviousItemTitleText, EwLoadResource( &FontsNotoSansCjkTcMedium24pt, 
+      ResourcesFont ));
+      ViewsText_OnSetFont( &_this->CurrentItemTitleText, EwLoadResource( &FontsNotoSansCjkTcMedium28pt, 
+      ResourcesFont ));
+      ViewsText_OnSetFont( &_this->NextItemTitleText, EwLoadResource( &FontsNotoSansCjkTcMedium24pt, 
+      ResourcesFont ));
+    }
+    break;
+
+    default : 
+    {
+      ViewsText_OnSetFont( &_this->PreviousItemTitleText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+      ResourcesFont ));
+      ViewsText_OnSetFont( &_this->CurrentItemTitleText, EwLoadResource( &FontsNotoSansCjkJpMedium28pt, 
+      ResourcesFont ));
+      ViewsText_OnSetFont( &_this->NextItemTitleText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
+      ResourcesFont ));
+    }
+  }
 }
 
 /* 'C' function for method : 'Launcher::LNC_Base.GetStringOfLauncherItem()' */
@@ -1527,18 +1563,18 @@ XString LauncherLNC_Base_GetStringOfLauncherItem( LauncherLNC_Base _this, XEnum
 void LauncherLNC_Base_SetItems( LauncherLNC_Base _this, XEnum aPreviousItem, XEnum 
   aCurrentItem, XEnum aNextItem )
 {
-  ViewsText_OnSetString((ViewsText)&_this->PreviousItemTitleText, LauncherLNC_Base_GetStringOfLauncherItem( 
+  ViewsText_OnSetString( &_this->PreviousItemTitleText, LauncherLNC_Base_GetStringOfLauncherItem( 
   _this, aPreviousItem ));
-  ViewsText_OnSetString((ViewsText)&_this->CurrentItemTitleText, LauncherLNC_Base_GetStringOfLauncherItem( 
+  ViewsText_OnSetString( &_this->CurrentItemTitleText, LauncherLNC_Base_GetStringOfLauncherItem( 
   _this, aCurrentItem ));
-  ViewsText_OnSetString((ViewsText)&_this->NextItemTitleText, LauncherLNC_Base_GetStringOfLauncherItem( 
+  ViewsText_OnSetString( &_this->NextItemTitleText, LauncherLNC_Base_GetStringOfLauncherItem( 
   _this, aNextItem ));
-  LauncherLNC_Base_SetTextColor( _this, aPreviousItem, ((ViewsText)&_this->PreviousItemTitleText ), 
-  _Const0015, ColorGRAY_FOR_DISABLED );
-  LauncherLNC_Base_SetTextColor( _this, aCurrentItem, ((ViewsText)&_this->CurrentItemTitleText ), 
+  LauncherLNC_Base_SetTextColor( _this, aPreviousItem, &_this->PreviousItemTitleText, 
+  _Const0016, ColorGRAY_FOR_DISABLED );
+  LauncherLNC_Base_SetTextColor( _this, aCurrentItem, &_this->CurrentItemTitleText, 
   ColorWHITE, ColorGRAY_FOR_DISABLED );
-  LauncherLNC_Base_SetTextColor( _this, aNextItem, ((ViewsText)&_this->NextItemTitleText ), 
-  _Const0015, ColorGRAY_FOR_DISABLED );
+  LauncherLNC_Base_SetTextColor( _this, aNextItem, &_this->NextItemTitleText, _Const0016, 
+  ColorGRAY_FOR_DISABLED );
 }
 
 /* 'C' function for method : 'Launcher::LNC_Base.SetTextColor()' */

@@ -54,6 +54,10 @@
     static int ew_system_quit_test( void );
 #endif
 
+#ifdef _DeviceInterfaceSystemDeviceClass__NotifyEsnRead_
+    static int ew_system_notify_esn( void );
+#endif
+
 #ifdef _DeviceInterfaceSystemDeviceClass__StartBurnInTest_
     static int ew_start_burn_in_test( void );
 #endif
@@ -68,6 +72,10 @@
 
 #ifdef _DeviceInterfaceSystemDeviceClass__NotifyInspectionRequest_
     static int ew_notify_inspection_mode_request( void );
+#endif
+
+#ifdef _DeviceInterfaceSystemDeviceClass__NotifyLastPageRead_
+    static int ew_notify_last_page_read( void );
 #endif
 
 #define UPDATE_TIME_TASK_PRIORITY       ( tskIDLE_PRIORITY )
@@ -126,6 +134,9 @@ static void ew_get_info_from_eeprom( void );
         #ifdef _DeviceInterfaceSystemDeviceClass__QuitTest_
             ew_system_quit_test,
         #endif
+        #ifdef _DeviceInterfaceSystemDeviceClass__NotifyEsnRead_
+            ew_system_notify_esn,
+        #endif
         #ifdef _DeviceInterfaceSystemDeviceClass__StartBurnInTest_
             ew_start_burn_in_test,
         #endif
@@ -136,7 +147,10 @@ static void ew_get_info_from_eeprom( void );
             ew_show_burn_in_test_result,
         #endif
         #ifdef _DeviceInterfaceSystemDeviceClass__NotifyInspectionRequest_
-            ew_notify_inspection_mode_request
+            ew_notify_inspection_mode_request,
+        #endif
+        #ifdef _DeviceInterfaceSystemDeviceClass__NotifyLastPageRead_
+            ew_notify_last_page_read
         #endif
         };
     const int num_of_system_func = sizeof( system_function_lookup_table )/sizeof( system_device_function* );
@@ -152,15 +166,17 @@ static void ew_get_info_from_eeprom( void );
     static TickType_t update_time_period_ticks = pdMS_TO_TICKS( UPDATE_TIME_PERIOD_MS );
 
     static bool     is_inspection_request_received = false;
-    static EnumInspectionMode    inspection_mode = 0;
+    static EnumInspectionMode inspection_mode = 0;
     static EnumInspectionDisplay inspection_display_pattern = 0;
 
+    static int is_esn_read = 0;
     static int is_qrcode_ready = 0;
     static EnumOperationMode operation_mode = EnumOperationModeNORMAL;
     static EnumOperationMode operation_mode_in_eep = EnumOperationModeNORMAL;
     static bool     is_running_production_test;
     static bool     is_tft_backlight_on;
     static bool     is_op_mode_ready;
+    static bool     is_last_page_read;
     static bool     clk_auto_adj_status;
     static uint8_t  clk_auto_adj_status_in_eep = 0;
     static uint32_t eeprom_read_status = 0;
@@ -577,29 +593,9 @@ void EW_read_esn_callback
 esn = *(uint32_t*)value;
 if( EEPROM_INVALID_VAL_4_BYTE != esn )
     {
-    EW_notify_system_event_received( EnumSystemRxEventESN_READY );
+    is_esn_read = 1;
     }
 eeprom_read_status |= EEPROM_READ_STATUS_ESN;
-}
-
-/*********************************************************************
-*
-* @private
-* ew_get_esn_string
-*
-* Get ESN string
-*
-* @return ESN string
-*
-*********************************************************************/
-XString ew_get_esn_string
-    (
-    void
-    )
-{
-char esn_decimal[ESN_STR_MAX_LEN + 1];
-sprintf( esn_decimal, "%u", esn );
-return EwNewStringAnsi( esn_decimal );
 }
 
 /*********************************************************************
@@ -720,8 +716,7 @@ if( result )
         home_group = ( last_page >> LAST_PAGE_HOME_GROUP_SHIFT ) & LAST_PAGE_HOME_GROUP_MASK;
         navigation_view_setting = ( last_page >> LAST_PAGE_NAVI_SETTING_SHIFT ) & LAST_PAGE_NAVIGATION_SETTING_MASK;
         meter_display_setting   = last_page & LAST_PAGE_METER_DISP_SETTING_MASK;
-
-        EW_notify_system_event_received( EnumSystemRxEventLAST_PAGE_READ );
+        is_last_page_read = true;
         }
     }
 else
@@ -844,9 +839,30 @@ else
 /*********************************************************************
 *
 * @private
-* read_unit_id_from_eeprom
+* ew_get_esn
 *
-* Read UNIT id from EEPROM
+* Get ESN from EEPROM.
+*
+*********************************************************************/
+void ew_get_esn
+    (
+    void
+    )
+{
+#ifdef _DeviceInterfaceSystemDeviceClass_
+if( pdFALSE == EEPM_get_ESN( &EW_read_esn_callback ) )
+    {
+    EwPrint( "%s false\r\n", __FUNCTION__ );
+    }
+#endif
+}
+
+/*********************************************************************
+*
+* @private
+* ew_get_info_from_eeprom
+*
+* Get info from EEPROM
 *
 *********************************************************************/
 static void read_unit_id_from_eeprom
@@ -993,6 +1009,28 @@ else
 /*********************************************************************
 *
 * @private
+* ew_is_debug_build
+*
+* Return if the current build is debug build
+*
+* @retVal true if debug build; false if release build
+*
+*********************************************************************/
+XBool ew_is_debug_build
+    (
+    void
+    )
+{
+#ifdef NDEBUG
+    return false;
+#else
+    return true;
+#endif
+}
+
+/*********************************************************************
+*
+* @private
 * ew_handle_special_characters
 *
 * Stuff '%' before '%', '^', '~'
@@ -1118,7 +1156,7 @@ switch( phone_language )
         break;
     }
 
-ew_system_set_language( LANGUAGE_SRC_PRIORITY_PHONE, language );
+    ew_system_set_language( LANGUAGE_SRC_PRIORITY_PHONE, language );
 }
 
 /*********************************************************************
@@ -1293,6 +1331,50 @@ return need_update;
 /*********************************************************************
 *
 * @private
+* ew_system_notify_esn
+*
+* Notify EW GUI to quit test
+*
+*********************************************************************/
+#ifdef _DeviceInterfaceSystemDeviceClass__NotifyEsnRead_
+    static int ew_system_notify_esn
+        (
+        void
+        )
+    {
+    int need_update = 0;
+    if( is_esn_read )
+        {
+        is_esn_read = 0;
+        char esn_decimal[ESN_STR_MAX_LEN + 1];
+        sprintf( esn_decimal, "%u", esn );
+        XString esn_str = EwNewStringAnsi( esn_decimal );
+        DeviceInterfaceSystemDeviceClass__NotifyEsnRead( device_object, esn_str );
+        need_update = 1;
+        }
+    return need_update;
+    }
+#endif
+
+/*********************************************************************
+*
+* @private
+* ew_reboot_system
+*
+* Device interface to trigger system reboot
+*
+*********************************************************************/
+void ew_reboot_system
+    (
+    void
+    )
+{
+PM_system_reset();
+}
+
+/*********************************************************************
+*
+* @private
 * ew_set_operation_mode
 *
 * Set operation mode
@@ -1375,6 +1457,25 @@ bool EW_get_operation_mode
     )
 {
 *mode = operation_mode;
+return is_op_mode_ready;
+}
+
+/*********************************************************************
+*
+* @private
+* ew_is_operation_mode_ready
+*
+* Check if the operation mode is read from EEPROM
+*
+* @return True if the operation mode is read from EEPROM
+*
+*********************************************************************/
+bool ew_is_operation_mode_ready
+    (
+    void
+    )
+{
+PRINTF( "%s %d\r\n", __FUNCTION__, operation_mode );
 return is_op_mode_ready;
 }
 
@@ -1527,6 +1628,31 @@ return result;
 
 /*********************************************************************
 *
+* @private
+* ew_notify_last_page_read
+*
+* Notify EW UI the last page has been read from EEPROM
+*
+*********************************************************************/
+#ifdef _DeviceInterfaceSystemDeviceClass__NotifyLastPageRead_
+    static int ew_notify_last_page_read
+        (
+        void
+        )
+    {
+    int need_update = 0;
+    if( is_last_page_read )
+        {
+        is_last_page_read = false;
+        DeviceInterfaceSystemDeviceClass__NotifyLastPageRead( device_object );
+        need_update = 1;
+        }
+    return need_update;
+    }
+#endif
+
+/*********************************************************************
+*
 * @public
 * EW_test_display_pattern
 *
@@ -1634,6 +1760,45 @@ void EW_show_burn_in_result
 
 /*********************************************************************
 *
+* @private
+* start_opening
+*
+* Start opening
+*
+*********************************************************************/
+static void start_opening
+    (
+    void
+    )
+{
+PRINTF( "%s\r\n", __FUNCTION__ );
+#ifdef _DeviceInterfaceSystemDeviceClass__StartOpening_
+    DeviceInterfaceSystemDeviceClass__StartOpening( device_object );
+#endif
+}
+
+/*********************************************************************
+*
+* @private
+* ew_start_ota
+*
+* Start OTA
+*
+*********************************************************************/
+void ew_start_ota
+    (
+    void
+    )
+{
+PRINTF( "%s\r\n", __FUNCTION__ );
+
+bc_motocon_ota_update_info_t* ota_info = BC_motocon_get_ota_update_info();
+OTA_set_update_packet( ota_info->enable, ota_info->new_firmware_ver, ota_info->total_size, ota_info->number_of_packages );
+OTA_jump_to_bootloader();
+}
+
+/*********************************************************************
+*
 * @public
 * EW_notify_opening_event
 *
@@ -1655,7 +1820,7 @@ if( OPENING_EVENT_TFT_BACKLIGHT_ON == event )
 
 if( is_tft_backlight_on && is_op_mode_ready )
     {
-    EW_notify_system_event_received( EnumSystemRxEventSTART_OPENING );
+    start_opening();
     VI_set_tx_data( EnumVehicleTxTypeSYSTEM_STATUS_READY, 0 );
     }
 }
@@ -1682,25 +1847,6 @@ void EW_notify_inspection_request
     is_inspection_request_received = true;
     EwBspEventTrigger();
 #endif
-}
-
-/*********************************************************************
-*
-* @private
-* is_sw_update_enabled
-*
-* Get if software update is enabled from MotoCon
-*
-* @return Is software update enabled
-*
-*********************************************************************/
-static bool is_sw_update_enabled
-    (
-    void
-    )
-{
-bc_motocon_ota_update_info_t* ota_update_info = BC_motocon_get_ota_update_info();
-return ota_update_info->enable;
 }
 
 /*********************************************************************
@@ -1738,9 +1884,9 @@ else
 * @private
 * ew_send_system_command
 *
-* Run system command
+* Enqueue the received system event
 *
-* @param command System command
+* @param system_rx_event Received system event
 *
 *********************************************************************/
 void ew_send_system_command
@@ -1762,16 +1908,6 @@ switch( command )
     case EnumSystemTxCmdADJ_TFT_BRIGHTNESS_LEVEL_DOWN:
         DISP_adjust_tft_brightness_level_down();
         break;
-    case EnumSystemTxCmdSTART_OTA:
-        PRINTF( "start ota\r\n", __FUNCTION__ );
-        bc_motocon_ota_update_info_t* ota_info = BC_motocon_get_ota_update_info();
-        OTA_set_update_packet( ota_info->enable, ota_info->new_firmware_ver, ota_info->total_size, ota_info->number_of_packages );
-        OTA_jump_to_bootloader();
-        break;
-    case EnumSystemTxCmdREBOOT_SYSTEM:
-        PRINTF( "reboot\r\n", __FUNCTION__ );
-        PM_system_reset();
-        break;
     default:
         break;
     }
@@ -1792,29 +1928,10 @@ int32_t ew_system_get_status
     const EnumSystemStatus status_type
     )
 {
-int32_t status = 0;
+int32_t status;
 
 switch( status_type )
     {
-    case EnumSystemStatusIS_DEBUG_BUILD:
-        #ifdef NDEBUG
-            status = false;
-        #else
-            status = true;
-        #endif
-        break;
-    case EnumSystemStatusIS_OP_MODE_READY:
-        status = is_op_mode_ready;
-        break;
-    case EnumSystemStatusIS_CLK_AUTO_ADJ:
-        status = EW_get_clk_auto_adj();
-        break;
-    case EnumSystemStatusIS_QRCODE_READY:
-        status = is_qrcode_ready;
-        break;
-    case EnumSystemStatusIS_SW_UPDATE_ENABLED:
-        status = is_sw_update_enabled();
-        break;
     case EnumSystemStatusLANGUAGE:
         status = ew_language;
         break;
@@ -1827,9 +1944,8 @@ switch( status_type )
     case EnumSystemStatusIS_TFT_DERATING_ON:
         status = DISP_is_tft_derating_on();
         break;
-    case EnumSystemStatusIS_TFT_BACKLIGHT_ON:
-        status = display_is_tft_backlight_on();
-        break;
+    case EnumSystemStatusIS_QRCODE_READY:
+        status = is_qrcode_ready;
     case EnumSystemStatusTACHO_FULLSCALE:
         status = ew_tacho_get_fullscale();
         break;

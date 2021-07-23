@@ -225,6 +225,7 @@ if( is_rx_type_queued )
             {
             ew_tacho_load_colorbase();
             }
+
         DeviceInterfaceVehicleDeviceClass_NotifyDataReceived( device_object, rx_type );
         }
 
