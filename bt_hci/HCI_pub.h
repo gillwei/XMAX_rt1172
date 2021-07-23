@@ -37,7 +37,7 @@ extern "C" {
 #define BLE_GATT_CLIENT_CONFIG_INDICATION   ( 0x0002 )
 #define BLE_GATT_WRITE_REQUEST_DATA_MAX_LEN ( 28 )
 
-#define TEST_CCUID    (const char [])       { 'T', 'E', 'S', 'T', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' }
+#define TEST_CCUID    (const char [])       { '0', '0', '0', '6', '0', '3', '0', '0', '0', '6', '1', 'A', '7', 'F', '3' }
 
 /*--------------------------------------------------------------------
                         TYPES

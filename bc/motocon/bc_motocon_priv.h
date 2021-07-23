@@ -154,6 +154,7 @@ void bc_motocon_listener_init( void );
 void bc_motocon_authentication_init( void );
 void bc_motocon_authentication_set_data( const uint8_t* ccuid, const uint8_t* passkey );
 bool bc_motocon_authentication_verify_data( const uint8_t* ccuid, const uint8_t* passkey );
+void bc_motocon_authentication_update_data( void );
 
 #ifdef __cplusplus
 }

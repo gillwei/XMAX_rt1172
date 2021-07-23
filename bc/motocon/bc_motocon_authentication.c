@@ -28,7 +28,7 @@
 #define BC_MOTOCON_BTC_EOF_SIZE                ( 1 )
 #define BC_MOTOCON_BTC_DATA_SIZE               ( BC_MOTOCON_BTC_HEADER_SIZE + BC_MOTOCON_AUTHENTICATION_DATA_SIZE + BC_MOTOCON_BTC_EOF_SIZE )
 
-#define TEST_PASSKEY                           (const char []){ 'A', 'B', 'C', 'D', 'E', 'F' }
+#define TEST_PASSKEY                           (const char []){ '9', '9', '9', '9', '9', '9' }
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -133,12 +133,12 @@ return is_ccuid_current && is_passkey_current;
 /*********************************************************************
 *
 * @private
-* update_authentication_data
+* bc_motocon_authentication_update_data
 *
 * Update authentication data
 *
 *********************************************************************/
-static void update_authentication_data
+void bc_motocon_authentication_update_data
     (
     void
     )
@@ -179,7 +179,7 @@ const bc_motocon_command_code_t command_code = TWO_BYTE_BIG( data, BC_MOTOCON_BT
 switch( command_code )
     {
     case BC_MOTOCON_COMMAND_CODE_CONNECT_INFORMATION_REQUEST:
-        update_authentication_data();
+        bc_motocon_authentication_update_data();
         BT_SPP_IAP2_send_y_app( BC_MOTOCON_BTC_DATA_SIZE, authentication_string );
         break;
     default:

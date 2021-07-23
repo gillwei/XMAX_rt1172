@@ -898,6 +898,7 @@ void BC_motocon_ble_connected_callback
     )
 {
 BC_MOTOCON_PRINTF( "%s\r\n", __FUNCTION__ );
+bc_motocon_authentication_update_data();
 }
 
 /*********************************************************************
