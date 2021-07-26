@@ -221,7 +221,7 @@ class NAV01_DefaultView : Home::BaseHome
   {
     preset Bounds = <411,164,473,226>;
     preset Bitmap = Resource::SpeedLimitIcon;
-    preset Visible = true;
+    preset Visible = false;
   }
 
   $rect <20,20,160,60>
@@ -231,7 +231,7 @@ class NAV01_DefaultView : Home::BaseHome
     preset String = "";
     preset Font = Fonts::NotoSansBold24pt;
     preset Color = #000000FF;
-    preset Visible = true;
+    preset Visible = false;
   }
 
   $rect <20,20,160,60>
@@ -318,27 +318,7 @@ class NAV01_DefaultView : Home::BaseHome
         signal OnNaviDialogEventUpdateSlot;
       }
 
-      if( DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() )
-      {
-        IsJcvDisplayed = DeviceInterface::NavigationDevice.IsJcvReceived();
-      }
-      else
-      {
-        ZoomInButton.Visible = true;
-        ZoomOutButton.Visible = true;
-
-        var DeviceInterface::NaviDataClass NaviData = DeviceInterface::NavigationDevice.GetNaviData( Enum::NaviDataType.SPEED_LIMIT );
-        if( NaviData.SpeedLimit > 0 )
-        {
-          SpeedLimitIcon.Visible = true;
-          SpeedLimitText.Visible = true;
-        }
-        else
-        {
-          SpeedLimitIcon.Visible = false;
-          SpeedLimitText.Visible = false;
-        }
-      }
+      IsJcvDisplayed = DeviceInterface::NavigationDevice.IsJcvReceived();
 
       MapFrameIdx = MapFrameIdx + 1;
       Resource::ExternBitmap.Name = "Map" + string( MapFrameIdx );
@@ -514,7 +494,13 @@ class NAV01_DefaultView : Home::BaseHome
   {
     var DeviceInterface::NaviDataClass NaviData = DeviceInterface::NavigationDevice.GetNaviData( Enum::NaviDataType.SPEED_LIMIT );
 
-    if( NaviData.SpeedLimit > 0 && !DeviceInterface::NavigationDevice.IsJcvReceived() )
+    var bool JcvStatus = false;
+    if( DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() )
+    {
+      JcvStatus = DeviceInterface::NavigationDevice.IsJcvReceived();
+    }
+
+    if( NaviData.SpeedLimit > 0 && !JcvStatus )
     {
       SpeedLimitIcon.Visible = true;
       SpeedLimitText.String = string( NaviData.SpeedLimit );
@@ -690,8 +676,16 @@ class NAV01_DefaultView : Home::BaseHome
   $rect <720,940,920,980>
   slot OnSpeedLimitFlickeringSlot
   {
-    SpeedLimitIcon.Visible = !SpeedLimitIcon.Visible;
-    SpeedLimitText.Visible = !SpeedLimitText.Visible;
+    if( DeviceInterface::NavigationDevice.IsJcvReceived() )
+    {
+      SpeedLimitIcon.Visible = false;
+      SpeedLimitText.Visible = false;
+    }
+    else
+    {
+      SpeedLimitIcon.Visible = !SpeedLimitIcon.Visible;
+      SpeedLimitText.Visible = !SpeedLimitText.Visible;
+    }
   }
 
   // Variable
@@ -823,8 +817,20 @@ class NAV01_DefaultView : Home::BaseHome
       // Remember the property's new value.
       pure IsJcvDisplayed = value;
 
-      SpeedLimitText.Visible = !value;
-      SpeedLimitIcon.Visible = !value;
+      var DeviceInterface::NaviDataClass NaviData = DeviceInterface::NavigationDevice.GetNaviData( Enum::NaviDataType.SPEED_LIMIT );
+
+      if( NaviData.SpeedLimit > 0 && !IsJcvDisplayed )
+      {
+        SpeedLimitIcon.Visible = true;
+        SpeedLimitText.String = string( NaviData.SpeedLimit );
+        SpeedLimitText.Visible = true;
+      }
+      else
+      {
+        SpeedLimitIcon.Visible = false;
+        SpeedLimitText.Visible = false;
+      }
+
       ZoomInButton.Visible = !value;
       ZoomOutButton.Visible = !value;
     }
@@ -944,8 +950,6 @@ class NAV01_DefaultView : Home::BaseHome
   $rect <720,1110,920,1150>
   slot OnDisableFlickeringSlot
   {
-    SpeedLimitIcon.Visible = false;
-    SpeedLimitText.Visible = false;
     SpeedingEventStatus = false;
 
 

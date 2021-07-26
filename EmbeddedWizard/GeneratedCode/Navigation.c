@@ -318,11 +318,11 @@ void NavigationNAV01_DefaultView__Init( NavigationNAV01_DefaultView _this, XObje
   CoreRectView__OnSetBounds( &_this->ZoomOutButton, _Const000B );
   ViewsImage_OnSetVisible( &_this->ZoomOutButton, 1 );
   CoreRectView__OnSetBounds( &_this->SpeedLimitIcon, _Const000C );
-  ViewsImage_OnSetVisible( &_this->SpeedLimitIcon, 1 );
+  ViewsImage_OnSetVisible( &_this->SpeedLimitIcon, 0 );
   CoreRectView__OnSetBounds( &_this->SpeedLimitText, _Const000D );
   ViewsText_OnSetString( &_this->SpeedLimitText, 0 );
   ViewsText_OnSetColor( &_this->SpeedLimitText, _Const0001 );
-  ViewsText_OnSetVisible( &_this->SpeedLimitText, 1 );
+  ViewsText_OnSetVisible( &_this->SpeedLimitText, 0 );
   CoreRectView__OnSetBounds( &_this->NaviEventObject, _Const000E );
   CoreRectView__OnSetBounds( &_this->ReRouteObject, _Const000F );
   CoreGroup__OnSetVisible( &_this->ReRouteObject, 0 );
@@ -745,31 +745,8 @@ void NavigationNAV01_DefaultView_OnMapUpdateSlot( NavigationNAV01_DefaultView _t
         ((XObject)_this ));
     }
 
-    if ( DeviceInterfaceNavigationDeviceClass_IsRouteGuidanceStarted( EwGetAutoObject( 
-        &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )))
-      NavigationNAV01_DefaultView_OnSetIsJcvDisplayed( _this, DeviceInterfaceNavigationDeviceClass_IsJcvReceived( 
-      EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )));
-    else
-    {
-      DeviceInterfaceNaviDataClass NaviData;
-      ViewsImage_OnSetVisible( &_this->ZoomInButton, 1 );
-      ViewsImage_OnSetVisible( &_this->ZoomOutButton, 1 );
-      NaviData = DeviceInterfaceNavigationDeviceClass_GetNaviData( EwGetAutoObject( 
-      &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ), 
-      EnumNaviDataTypeSPEED_LIMIT );
-
-      if ( NaviData->SpeedLimit > 0 )
-      {
-        ViewsImage_OnSetVisible( &_this->SpeedLimitIcon, 1 );
-        ViewsText_OnSetVisible( &_this->SpeedLimitText, 1 );
-      }
-      else
-      {
-        ViewsImage_OnSetVisible( &_this->SpeedLimitIcon, 0 );
-        ViewsText_OnSetVisible( &_this->SpeedLimitText, 0 );
-      }
-    }
-
+    NavigationNAV01_DefaultView_OnSetIsJcvDisplayed( _this, DeviceInterfaceNavigationDeviceClass_IsJcvReceived( 
+    EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )));
     _this->MapFrameIdx = _this->MapFrameIdx + 1;
     ResourcesExternBitmap_OnSetName( EwGetAutoObject( &ResourceExternBitmap, ResourcesExternBitmap ), 
     EwConcatString( EwLoadString( &_Const0017 ), EwNewStringInt( _this->MapFrameIdx, 
@@ -920,15 +897,21 @@ void NavigationNAV01_DefaultView_OnSpeedLimitUpdateSlot( NavigationNAV01_Default
   XObject sender )
 {
   DeviceInterfaceNaviDataClass NaviData;
+  XBool JcvStatus;
 
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
   NaviData = DeviceInterfaceNavigationDeviceClass_GetNaviData( EwGetAutoObject( 
   &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ), EnumNaviDataTypeSPEED_LIMIT );
+  JcvStatus = 0;
 
-  if (( NaviData->SpeedLimit > 0 ) && !DeviceInterfaceNavigationDeviceClass_IsJcvReceived( 
-      EwGetAutoObject( &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )))
+  if ( DeviceInterfaceNavigationDeviceClass_IsRouteGuidanceStarted( EwGetAutoObject( 
+      &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass )))
+    JcvStatus = DeviceInterfaceNavigationDeviceClass_IsJcvReceived( EwGetAutoObject( 
+    &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ));
+
+  if (( NaviData->SpeedLimit > 0 ) && !JcvStatus )
   {
     ViewsImage_OnSetVisible( &_this->SpeedLimitIcon, 1 );
     ViewsText_OnSetString( &_this->SpeedLimitText, EwNewStringInt( NaviData->SpeedLimit, 
@@ -1079,10 +1062,19 @@ void NavigationNAV01_DefaultView_OnSpeedLimitFlickeringSlot( NavigationNAV01_Def
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  ViewsImage_OnSetVisible( &_this->SpeedLimitIcon, (XBool)!ViewsImage_OnGetVisible( 
-  &_this->SpeedLimitIcon ));
-  ViewsText_OnSetVisible( &_this->SpeedLimitText, (XBool)!ViewsText_OnGetVisible( 
-  &_this->SpeedLimitText ));
+  if ( DeviceInterfaceNavigationDeviceClass_IsJcvReceived( EwGetAutoObject( &DeviceInterfaceNavigationDevice, 
+      DeviceInterfaceNavigationDeviceClass )))
+  {
+    ViewsImage_OnSetVisible( &_this->SpeedLimitIcon, 0 );
+    ViewsText_OnSetVisible( &_this->SpeedLimitText, 0 );
+  }
+  else
+  {
+    ViewsImage_OnSetVisible( &_this->SpeedLimitIcon, (XBool)!ViewsImage_OnGetVisible( 
+    &_this->SpeedLimitIcon ));
+    ViewsText_OnSetVisible( &_this->SpeedLimitText, (XBool)!ViewsText_OnGetVisible( 
+    &_this->SpeedLimitText ));
+  }
 }
 
 /* 'C' function for method : 'Navigation::NAV01_DefaultView.SetItemBounds()' */
@@ -1189,9 +1181,24 @@ void NavigationNAV01_DefaultView_OnSetIsJcvDisplayed( NavigationNAV01_DefaultVie
 {
   if ( _this->IsJcvDisplayed != value )
   {
+    DeviceInterfaceNaviDataClass NaviData;
     _this->IsJcvDisplayed = value;
-    ViewsText_OnSetVisible( &_this->SpeedLimitText, (XBool)!value );
-    ViewsImage_OnSetVisible( &_this->SpeedLimitIcon, (XBool)!value );
+    NaviData = DeviceInterfaceNavigationDeviceClass_GetNaviData( EwGetAutoObject( 
+    &DeviceInterfaceNavigationDevice, DeviceInterfaceNavigationDeviceClass ), EnumNaviDataTypeSPEED_LIMIT );
+
+    if (( NaviData->SpeedLimit > 0 ) && !_this->IsJcvDisplayed )
+    {
+      ViewsImage_OnSetVisible( &_this->SpeedLimitIcon, 1 );
+      ViewsText_OnSetString( &_this->SpeedLimitText, EwNewStringInt( NaviData->SpeedLimit, 
+      0, 10 ));
+      ViewsText_OnSetVisible( &_this->SpeedLimitText, 1 );
+    }
+    else
+    {
+      ViewsImage_OnSetVisible( &_this->SpeedLimitIcon, 0 );
+      ViewsText_OnSetVisible( &_this->SpeedLimitText, 0 );
+    }
+
     ViewsImage_OnSetVisible( &_this->ZoomInButton, (XBool)!value );
     ViewsImage_OnSetVisible( &_this->ZoomOutButton, (XBool)!value );
   }
@@ -1322,8 +1329,6 @@ void NavigationNAV01_DefaultView_OnDisableFlickeringSlot( NavigationNAV01_Defaul
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  ViewsImage_OnSetVisible( &_this->SpeedLimitIcon, 0 );
-  ViewsText_OnSetVisible( &_this->SpeedLimitText, 0 );
   NavigationNAV01_DefaultView_OnSetSpeedingEventStatus( _this, 0 );
 }
 
