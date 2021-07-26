@@ -1738,6 +1738,17 @@ class NavigationDeviceClass : Templates::DeviceClass
       return false;
     $endif
   }
+
+  $rect <970,910,1170,950>
+  method void ResetDialogObject()
+  {
+    $if !$prototyper
+      native
+      {
+        NAVI_reset_dialog_object();
+      }
+    $endif
+  }
 }
 
 $rect <20,340,230,380>

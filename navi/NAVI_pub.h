@@ -156,6 +156,7 @@ EnumNaviBtThroughputUIMode NAVI_get_navi_bt_throughput_ui_mode( void );
 void NAVI_start_content_update( void );
 void NAVI_stop_content_update( void );
 bool NAVI_get_app_init_status( void );
+void NAVI_reset_dialog_object( void );
 
 #ifdef __cplusplus
 }

@@ -1885,6 +1885,15 @@ XBool DeviceInterfaceNavigationDeviceClass_GetAppInitStatus( DeviceInterfaceNavi
   return IsNaviAppInit;
 }
 
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.ResetDialogObject()' */
+void DeviceInterfaceNavigationDeviceClass_ResetDialogObject( DeviceInterfaceNavigationDeviceClass _this )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  NAVI_reset_dialog_object();
+}
+
 /* Variants derived from the class : 'DeviceInterface::NavigationDeviceClass' */
 EW_DEFINE_CLASS_VARIANTS( DeviceInterfaceNavigationDeviceClass )
 EW_END_OF_CLASS_VARIANTS( DeviceInterfaceNavigationDeviceClass )

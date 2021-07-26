@@ -28,7 +28,6 @@
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
-#define DIALOG_TIME_DURATION_MS     ( 1000 )
 #define APP_INIT_DONE               ( 1 )
 
 /*--------------------------------------------------------------------
@@ -100,12 +99,10 @@ static generic_fc_ptr navi_funtion_table[NAVILITE_FUNC_CNT] =
     };
 
 static navi_data_type navi_data_obj;
-static navi_dialog_type navi_dialog_obj;
 static bool is_navi_app_connected;
 static bool is_navi_app_init;
 static EnumNaviZoomInOutStatusType zoom_inout_status = EnumNaviZoomInOutStatusTypeNORMAL;
 static EnumNaviBtThroughputUIMode navi_bt_throughput_ui_mode = EnumNaviBtThroughputUIModeTOTAL;
-static TimerHandle_t dialog_timer_handle;
 
 /*--------------------------------------------------------------------
                                 MACROS
@@ -152,83 +149,6 @@ navi_data_type* NAVI_get_navi_obj
     )
 {
 return &navi_data_obj;
-}
-
-/*********************************************************************
-*
-* @public
-* NAVI_get_navi_dialog_obj
-*
-* Get navi dialog object.
-*
-*********************************************************************/
-navi_dialog_type* NAVI_get_navi_dialog_obj
-    (
-    void
-    )
-{
-return &navi_dialog_obj;
-}
-
-/*********************************************************************
-*
-* @private
-* navi_start_dialog_timer
-*
-* Start timer to update dialog time.
-*
-*********************************************************************/
-static void navi_start_dialog_timer
-    (
-    void
-    )
-{
-PRINTF( "%s\r\n", __FUNCTION__ );
-BaseType_t result = xTimerStart( dialog_timer_handle, 0 );
-configASSERT( result == pdPASS );
-}
-
-/*********************************************************************
-*
-* @private
-* navi_stop_dialog_timer
-*
-* Stop timer to stop the update of dialog time.
-*
-*********************************************************************/
-static void navi_stop_dialog_timer
-    (
-    void
-    )
-{
-PRINTF( "%s\r\n", __FUNCTION__ );
-BaseType_t result = xTimerStop( dialog_timer_handle, 0 );
-configASSERT( result == pdPASS );
-}
-
-/*********************************************************************
-*
-* @private
-* dialog_timer_callback
-*
-* A timer callback function which calls time update function.
-*
-* @param timer_handle The handle of dialog timer.
-*
-*********************************************************************/
-static void dialog_timer_callback
-    (
-    TimerHandle_t timer_handle
-    )
-{
-if( navi_dialog_obj.timeout > 0 )
-    {
-    navi_dialog_obj.timeout--;
-    }
-else
-    {
-    navi_stop_dialog_timer();
-    }
 }
 
 /*********************************************************************
@@ -658,45 +578,8 @@ static void navi_dialog_event_update
     uint8_t default_choice
     )
 {
-PRINTF( "%s: Message: %s\r\n", __FUNCTION__, ( char* )message );
-
-navi_dialog_obj.dialog_id = dialog_id;
-navi_dialog_obj.dialog_type = dialog_type;
-strncpy( navi_dialog_obj.dialog_message, ( char* )message, MAX_DIALOG_DESCRIPTION_SIZE );
-if( MAX_DIALOG_DESCRIPTION_SIZE > message_size )
-    {
-    navi_dialog_obj.dialog_message[message_size] = '\0';
-    }
-else
-    {
-    navi_dialog_obj.dialog_message[MAX_DIALOG_DESCRIPTION_SIZE-1] = '\0';
-    }
-
-navi_dialog_obj.timeout = timeout;
-switch( default_choice )
-    {
-    case NAVILITE_BUTTON_OK:
-        navi_dialog_obj.default_selected_button = EnumNaviButtonTypeOK;
-        break;
-    case NAVILITE_BUTTON_CANCEL:
-        navi_dialog_obj.default_selected_button = EnumNaviButtonTypeCANCEL;
-        break;
-    case NAVILITE_BUTTON_YES:
-        navi_dialog_obj.default_selected_button = EnumNaviButtonTypeYES;
-        break;
-    case NAVILITE_BUTTON_NO:
-        navi_dialog_obj.default_selected_button = EnumNaviButtonTypeNO;
-        break;
-    default:
-        PRINTF( "%s: Unknown button type\r\n", __FUNCTION__ );
-        break;
-    }
-if( NAVILITE_DIALOGTYPE_YES_NO == dialog_type )
-    {
-    navi_start_dialog_timer();
-    }
-
-EW_notify_dialog_event_update();
+PRINTF( "%s\r\n", __FUNCTION__ );
+navi_add_dialog( dialog_id, dialog_type, (char*)message, message_size, timeout, default_choice );
 }
 
 /*********************************************************************
@@ -909,62 +792,6 @@ bool NAVI_get_navigation_status
 {
 PRINTF( "%s: %d\r\n", __FUNCTION__, navi_data_obj.is_navigating );
 return navi_data_obj.is_navigating? true : false;
-}
-
-/*********************************************************************
-*
-* @public
-* NAVI_get_dialog_type
-*
-* Obtain navi dialog type.
-*
-*********************************************************************/
-EnumNaviDialogType NAVI_get_dialog_type
-    (
-    void
-    )
-{
-PRINTF( "%s\r\n", __FUNCTION__ );
-EnumNaviDialogType navi_dialog_type = EnumNaviDialogTypeDIALOG_TOTAL;
-switch( navi_dialog_obj.dialog_type )
-    {
-    case NAVILITE_DIALOGTYPE_OK:
-        navi_dialog_type = EnumNaviDialogTypeDIALOG_OK;
-        break;
-    case NAVILITE_DIALOGTYPE_OK_CANCEL:
-        navi_dialog_type = EnumNaviDialogTypeDIALOG_OK_CANCEL;
-        break;
-    case NAVILITE_DIALOGTYPE_YES_NO:
-        navi_dialog_type = EnumNaviDialogTypeDIALOG_YES_NO;
-        break;
-    case NAVILITE_DIALOGTYPE_YES_NO_CANCEL:
-        navi_dialog_type = EnumNaviDialogTypeDIALOG_YES_NO_CANCEL;
-        break;
-    case NAVILITE_DIALOGTYPE_DISMISS_DIALOG:
-        navi_dialog_type = EnumNaviDialogTypeDIALOG_DISMISS;
-        break;
-    default:
-        PRINTF( "%s: Unknown dialog type\r\n", __FUNCTION__ );
-        break;
-    }
-return navi_dialog_type;
-}
-
-/*********************************************************************
-*
-* @public
-* NAVI_get_dialog_message
-*
-* Obtain the content of dialog
-*
-*********************************************************************/
-void NAVI_get_dialog_message
-    (
-    char** dialog_message
-    )
-{
-PRINTF( "%s\r\n", __FUNCTION__ );
-*dialog_message = navi_dialog_obj.dialog_message;
 }
 
 /*********************************************************************
@@ -1219,42 +1046,6 @@ NAVILITE_request_app_zoomout();
 /*********************************************************************
 *
 * @public
-* NAVI_send_selected_dialog
-*
-* Send selected dialog id and its button type
-*
-* @param button_type Type of button on the selected dialog.
-*
-*********************************************************************/
-void NAVI_send_selected_dialog
-    (
-    EnumNaviButtonType button_type
-    )
-{
-PRINTF( "%s\r\n", __FUNCTION__ );
-switch( button_type )
-    {
-    case EnumNaviButtonTypeOK:
-        NAVILITE_report_app_dialog_select( navi_dialog_obj.dialog_id, NAVILITE_BUTTON_OK );
-        break;
-    case EnumNaviButtonTypeCANCEL:
-        NAVILITE_report_app_dialog_select( navi_dialog_obj.dialog_id, NAVILITE_BUTTON_CANCEL );
-        break;
-    case EnumNaviButtonTypeYES:
-        NAVILITE_report_app_dialog_select( navi_dialog_obj.dialog_id, NAVILITE_BUTTON_YES );
-        break;
-    case EnumNaviButtonTypeNO:
-        NAVILITE_report_app_dialog_select( navi_dialog_obj.dialog_id, NAVILITE_BUTTON_NO );
-        break;
-    default:
-        PRINTF( "%s: Unknown button type\r\n", __FUNCTION__ );
-        break;
-    }
-}
-
-/*********************************************************************
-*
-* @public
 * NAVI_send_start_route_request
 *
 * Send request to start route guidance.
@@ -1324,8 +1115,7 @@ bool result;
 navi_event_init();
 navi_tbt_init();
 navi_poi_init();
-dialog_timer_handle = xTimerCreate( "elapsed_timer", pdMS_TO_TICKS( DIALOG_TIME_DURATION_MS ), pdTRUE, ( void * ) 0, dialog_timer_callback );
-configASSERT( NULL != dialog_timer_handle );
+navi_dialog_init();
 
 for( int i = 0; i < NAVILITE_FUNC_CNT; i++ )
     {

@@ -397,6 +397,9 @@ void DeviceInterfaceNavigationDeviceClass_RemoveSpeedingAlert( DeviceInterfaceNa
 /* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.GetAppInitStatus()' */
 XBool DeviceInterfaceNavigationDeviceClass_GetAppInitStatus( DeviceInterfaceNavigationDeviceClass _this );
 
+/* 'C' function for method : 'DeviceInterface::NavigationDeviceClass.ResetDialogObject()' */
+void DeviceInterfaceNavigationDeviceClass_ResetDialogObject( DeviceInterfaceNavigationDeviceClass _this );
+
 #ifdef __cplusplus
   }
 #endif

@@ -9,14 +9,12 @@ class NAV01_DefaultView : Home::BaseHome
   inherited method Init()
   {
     trace "NAV01";
-
     SetItemBounds();
     signal OnCurRdUpdateSlot;
     signal OnETAUpdateSlot;
     signal OnDayNightModeUpdateSlot;
     signal OnSpeedLimitUpdateSlot;
     signal OnNavigationAlertUpdateSlot;
-    signal OnNaviBtThroughputStatusUpdateSlot;
 
     if( DeviceInterface::NavigationDevice.IsNaviLoadingDialogDisplayed )
     {
@@ -115,6 +113,9 @@ class NAV01_DefaultView : Home::BaseHome
         // Leave navigation home screen so that stop map frame request.
         DeviceInterface::NavigationDevice.StopMapFrameRequest();
         DeviceInterface::NavigationDevice.StopContentRequest();
+        // Adjust mask bounds.
+        DialogMask.Bounds = <0,38,480,272>;
+        BtLoadingMask.Bounds = <0,38,480,272>;
         PresentDialog( new Navigation::NAV06_NaviSettingMenu, null, null, null, null, null, null, null, null, false );
       }
     }
@@ -256,7 +257,15 @@ class NAV01_DefaultView : Home::BaseHome
   }
 
   $rect <20,20,160,60>
-  object Views::Rectangle Mask
+  object Views::Rectangle BtLoadingMask
+  {
+    preset Bounds = <0,0,480,272>;
+    preset Color = #00000080;
+    preset Visible = false;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Rectangle DialogMask
   {
     preset Bounds = <0,0,480,272>;
     preset Color = #00000080;
@@ -315,8 +324,10 @@ class NAV01_DefaultView : Home::BaseHome
       if( AccessNaviView )
       {
         AccessNaviView = false;
+        signal OnNaviBtThroughputStatusUpdateSlot;
         signal OnNaviDialogEventUpdateSlot;
       }
+
 
       IsJcvDisplayed = DeviceInterface::NavigationDevice.IsJcvReceived();
 
@@ -749,14 +760,16 @@ class NAV01_DefaultView : Home::BaseHome
   $rect <750,540,950,580>
   slot OnNaviDialogEventUpdateSlot
   {
-    if( IsCurrentDialog() )
+    if( IsCurrentDialog() && !LoadingAnimation.Visible )
     {
+      DialogMask.Bounds = <0,0,480,272>;
       var Enum::NaviDialogType NaviDialogType = DeviceInterface::NavigationDevice.GetNaviDialogType();
       var string NaviDialogMessage = DeviceInterface::NavigationDevice.GetNaviDialogMessage();
       switch( NaviDialogType )
       {
         case Enum::NaviDialogType.DIALOG_YES_NO:
         {
+          trace "YES NO dialog";
           var Navigation::NaviDialog Dialog = new Navigation::NaviDialog;
           Dialog.DialogType = Enum::NaviDialogType.DIALOG_YES_NO;
           Dialog.DialogButton = Menu::UpDownPushButtonSet;
@@ -764,17 +777,18 @@ class NAV01_DefaultView : Home::BaseHome
           Dialog.OnDialogDismiss = OnNaviDialogDismissSlot;
           PresentDialog( Dialog, null, null, null, null, null, null, null, null, false );
           Dialog.CountDownTimer.Enabled = true;
-          Mask.Visible = true;
+          DialogMask.Visible = true;
         }
         case Enum::NaviDialogType.DIALOG_OK:
         {
+          trace "OK dialog";
           var Navigation::NaviDialog Dialog = new Navigation::NaviDialog;
           Dialog.DialogType = Enum::NaviDialogType.DIALOG_OK;
           Dialog.DialogButton = Menu::PushButton;
           Dialog.DialogMessage = NaviDialogMessage;
           Dialog.OnDialogDismiss = OnNaviDialogDismissSlot;
           PresentDialog( Dialog, null, null, null, null, null, null, null, null, false );
-          Mask.Visible = true;
+          DialogMask.Visible = true;
         }
         default:;
       }
@@ -784,7 +798,8 @@ class NAV01_DefaultView : Home::BaseHome
   $rect <930,940,1130,980>
   slot OnNaviDialogDismissSlot
   {
-    Mask.Visible = false;
+    DialogMask.Visible = false;
+    DeviceInterface::NavigationDevice.ResetDialogObject();
 
   }
 
@@ -1019,44 +1034,48 @@ class NAV01_DefaultView : Home::BaseHome
   $rect <740,660,940,700>
   slot OnNaviBtThroughputStatusUpdateSlot
   {
-    var Enum::NaviBtThroughputUIMode BtThroughputUIMode = DeviceInterface::NavigationDevice.GetBtThroughputUIMode();
-
-    if( DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() )
+    if( IsCurrentDialog() && !LoadingAnimation.Visible )
     {
-      switch( BtThroughputUIMode )
+      BtLoadingMask.Bounds = <0,0,480,272>;
+      var Enum::NaviBtThroughputUIMode BtThroughputUIMode = DeviceInterface::NavigationDevice.GetBtThroughputUIMode();
+
+      if( DeviceInterface::NavigationDevice.IsRouteGuidanceStarted() )
       {
-        case Enum::NaviBtThroughputUIMode.BUSY: IsBtLoading = true;
-        case Enum::NaviBtThroughputUIMode.TBT:
+        switch( BtThroughputUIMode )
         {
-          IsBtLoading = false;
-          if( IsCurrentDialog() )
+          case Enum::NaviBtThroughputUIMode.BUSY: IsBtLoading = true;
+          case Enum::NaviBtThroughputUIMode.TBT:
           {
-            var Application::Application App = ( Application::Application )GetRoot();
-            if( null != App )
+            IsBtLoading = false;
+            if( IsCurrentDialog() )
             {
-              DeviceInterface::NavigationDevice.CurrentHome = Enum::HomeType.NAVI_NEXT_TURN;
-              DeviceInterface::NavigationDevice.IsBtThoughputModeActivateFromMap = true;
-              App.SwitchToHome( DeviceInterface::NavigationDevice.CurrentHome );
+              var Application::Application App = ( Application::Application )GetRoot();
+              if( null != App )
+              {
+                DeviceInterface::NavigationDevice.CurrentHome = Enum::HomeType.NAVI_NEXT_TURN;
+                DeviceInterface::NavigationDevice.IsBtThoughputModeActivateFromMap = true;
+                App.SwitchToHome( DeviceInterface::NavigationDevice.CurrentHome );
+              }
             }
           }
+          default:;
         }
-        default:;
       }
-    }
-    else
-    {
-      switch( BtThroughputUIMode )
+      else
       {
-        case Enum::NaviBtThroughputUIMode.BUSY,
-             Enum::NaviBtThroughputUIMode.TBT:
+        switch( BtThroughputUIMode )
         {
-          IsBtLoading = true;
+          case Enum::NaviBtThroughputUIMode.BUSY,
+               Enum::NaviBtThroughputUIMode.TBT:
+          {
+            IsBtLoading = true;
+          }
+          case Enum::NaviBtThroughputUIMode.MAP:
+          {
+            IsBtLoading = false;
+          }
+          default:;
         }
-        case Enum::NaviBtThroughputUIMode.MAP:
-        {
-          IsBtLoading = false;
-        }
-        default:;
       }
     }
   }
@@ -1074,7 +1093,7 @@ class NAV01_DefaultView : Home::BaseHome
 
       BtLoadingAnimation.Visible = value;
       BtLoadingAnimation.Animated = value;
-      Mask.Visible = value;
+      BtLoadingMask.Visible = value;
     }
   }
 
@@ -1094,7 +1113,8 @@ class NAV01_DefaultView : Home::BaseHome
   $reorder NaviEventObject 17
   $reorder ReRouteObject 17
   $reorder StatusBarShadowImage 17
-  $reorder Mask 17
+  $reorder BtLoadingMask 17
+  $reorder DialogMask 17
   $reorder BtLoadingAnimation 17
 }
 
