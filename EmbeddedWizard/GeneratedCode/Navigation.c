@@ -215,7 +215,7 @@ static const XRect _Const0062 = {{ 10, 50 }, { 470, 236 }};
 static const XStringRes _Const0063 = { _StringsDefault0, 0x014C };
 static const XStringRes _Const0064 = { _StringsDefault0, 0x0157 };
 static const XRect _Const0065 = {{ 144, 209 }, { 336, 249 }};
-static const XRect _Const0066 = {{ 105, 83 }, { 375, 189 }};
+static const XRect _Const0066 = {{ 18, 83 }, { 462, 189 }};
 static const XRect _Const0067 = {{ 0, 0 }, { 70, 34 }};
 static const XRect _Const0068 = {{ 0, 3 }, { 70, 24 }};
 static const XRect _Const0069 = {{ 10, 6 }, { 34, 30 }};
@@ -2705,7 +2705,7 @@ void NavigationNaviAlert_SetAlert( NavigationNaviAlert _this, XEnum aNaviEventTy
       NavigationNaviAlertMessage_OnSetIsSpeedDisplayed( &_this->AlertMessage, 0 );
       NavigationNaviAlertMessage_OnSetIcon( &_this->AlertMessage, EwLoadResource( 
       &ResourceSafeCamSchoolZone, ResourcesBitmap ));
-      NavigationNaviAlertMessage_OnSetMessage( &_this->AlertMessage, EwLoadString( 
+      NavigationNaviAlertMessage_OnSetMessage( &_this->AlertMessage, EwGetVariantOfString( 
       &StringsNAV01_SCHOOL_ZONE ));
       NavigationNaviAlertMessage_OnSetColor( &_this->AlertMessage, ColorNAVI_ORANGE );
       ViewsRectangle_OnSetColor( &_this->NaviDistBg, ColorNAVI_ORANGE );
@@ -2784,7 +2784,7 @@ void NavigationNaviAlert_SetCamera( NavigationNaviAlert _this, XEnum aNaviCamera
     {
       NavigationNaviAlertMessage_OnSetIcon( &_this->AlertMessage, EwLoadResource( 
       &ResourceSafeCamEU, ResourcesBitmap ));
-      NavigationNaviAlertMessage_OnSetMessage( &_this->AlertMessage, EwLoadString( 
+      NavigationNaviAlertMessage_OnSetMessage( &_this->AlertMessage, EwGetVariantOfString( 
       &StringsNAV01_CHECK_FIXED ));
     }
     break;
@@ -2793,7 +2793,7 @@ void NavigationNaviAlert_SetCamera( NavigationNaviAlert _this, XEnum aNaviCamera
     {
       NavigationNaviAlertMessage_OnSetIcon( &_this->AlertMessage, EwLoadResource( 
       &ResourceSafeCamTempEU, ResourcesBitmap ));
-      NavigationNaviAlertMessage_OnSetMessage( &_this->AlertMessage, EwLoadString( 
+      NavigationNaviAlertMessage_OnSetMessage( &_this->AlertMessage, EwGetVariantOfString( 
       &StringsNAV01_CHECK_TEMPORARY ));
     }
     break;
@@ -2802,7 +2802,7 @@ void NavigationNaviAlert_SetCamera( NavigationNaviAlert _this, XEnum aNaviCamera
     {
       NavigationNaviAlertMessage_OnSetIcon( &_this->AlertMessage, EwLoadResource( 
       &ResourceSafeCamMobileEU, ResourcesBitmap ));
-      NavigationNaviAlertMessage_OnSetMessage( &_this->AlertMessage, EwLoadString( 
+      NavigationNaviAlertMessage_OnSetMessage( &_this->AlertMessage, EwGetVariantOfString( 
       &StringsNAV01_MOBILE ));
     }
     break;
@@ -2811,7 +2811,7 @@ void NavigationNaviAlert_SetCamera( NavigationNaviAlert _this, XEnum aNaviCamera
     {
       NavigationNaviAlertMessage_OnSetIcon( &_this->AlertMessage, EwLoadResource( 
       &ResourceSafeAvrgCamEU, ResourcesBitmap ));
-      NavigationNaviAlertMessage_OnSetMessage( &_this->AlertMessage, EwLoadString( 
+      NavigationNaviAlertMessage_OnSetMessage( &_this->AlertMessage, EwGetVariantOfString( 
       &StringsNAV01_AVERAGE ));
     }
     break;
@@ -2820,7 +2820,7 @@ void NavigationNaviAlert_SetCamera( NavigationNaviAlert _this, XEnum aNaviCamera
     {
       NavigationNaviAlertMessage_OnSetIcon( &_this->AlertMessage, EwLoadResource( 
       &ResourceSafeCamVariableEU, ResourcesBitmap ));
-      NavigationNaviAlertMessage_OnSetMessage( &_this->AlertMessage, EwLoadString( 
+      NavigationNaviAlertMessage_OnSetMessage( &_this->AlertMessage, EwGetVariantOfString( 
       &StringsNAV01_VARIABLE ));
     }
     break;
@@ -2829,7 +2829,7 @@ void NavigationNaviAlert_SetCamera( NavigationNaviAlert _this, XEnum aNaviCamera
     {
       NavigationNaviAlertMessage_OnSetIcon( &_this->AlertMessage, EwLoadResource( 
       &ResourceSafeCamRedLight, ResourcesBitmap ));
-      NavigationNaviAlertMessage_OnSetMessage( &_this->AlertMessage, EwLoadString( 
+      NavigationNaviAlertMessage_OnSetMessage( &_this->AlertMessage, EwGetVariantOfString( 
       &StringsNAV01_RED_LIGHT ));
     }
     break;
@@ -2838,7 +2838,7 @@ void NavigationNaviAlert_SetCamera( NavigationNaviAlert _this, XEnum aNaviCamera
     {
       NavigationNaviAlertMessage_OnSetIcon( &_this->AlertMessage, EwLoadResource( 
       &ResourceSafeCamRealTimeEU, ResourcesBitmap ));
-      NavigationNaviAlertMessage_OnSetMessage( &_this->AlertMessage, EwLoadString( 
+      NavigationNaviAlertMessage_OnSetMessage( &_this->AlertMessage, EwGetVariantOfString( 
       &StringsNAV01_USER ));
     }
     break;
@@ -2847,7 +2847,7 @@ void NavigationNaviAlert_SetCamera( NavigationNaviAlert _this, XEnum aNaviCamera
     {
       NavigationNaviAlertMessage_OnSetIcon( &_this->AlertMessage, EwLoadResource( 
       &ResourceSafeCamLifemobileEU, ResourcesBitmap ));
-      NavigationNaviAlertMessage_OnSetMessage( &_this->AlertMessage, EwLoadString( 
+      NavigationNaviAlertMessage_OnSetMessage( &_this->AlertMessage, EwGetVariantOfString( 
       &StringsNAV01_MOBILE_ZONE ));
     }
     break;
@@ -2857,7 +2857,7 @@ void NavigationNaviAlert_SetCamera( NavigationNaviAlert _this, XEnum aNaviCamera
     {
       NavigationNaviAlertMessage_OnSetIcon( &_this->AlertMessage, EwLoadResource( 
       &ResourceSafeCamRiskZone, ResourcesBitmap ));
-      NavigationNaviAlertMessage_OnSetMessage( &_this->AlertMessage, EwLoadString( 
+      NavigationNaviAlertMessage_OnSetMessage( &_this->AlertMessage, EwGetVariantOfString( 
       &StringsNAV01_DANGEROUS_ZONE ));
     }
     break;
@@ -2866,7 +2866,7 @@ void NavigationNaviAlert_SetCamera( NavigationNaviAlert _this, XEnum aNaviCamera
     {
       NavigationNaviAlertMessage_OnSetIcon( &_this->AlertMessage, EwLoadResource( 
       &ResourceSafeCamRiskZone, ResourcesBitmap ));
-      NavigationNaviAlertMessage_OnSetMessage( &_this->AlertMessage, EwLoadString( 
+      NavigationNaviAlertMessage_OnSetMessage( &_this->AlertMessage, EwGetVariantOfString( 
       &StringsNAV01_RISK_ZONE ));
     }
     break;
@@ -2875,7 +2875,7 @@ void NavigationNaviAlert_SetCamera( NavigationNaviAlert _this, XEnum aNaviCamera
     {
       NavigationNaviAlertMessage_OnSetIcon( &_this->AlertMessage, EwLoadResource( 
       &ResourceSafeCamMobileNA, ResourcesBitmap ));
-      NavigationNaviAlertMessage_OnSetMessage( &_this->AlertMessage, EwLoadString( 
+      NavigationNaviAlertMessage_OnSetMessage( &_this->AlertMessage, EwGetVariantOfString( 
       &StringsNAV01_UNKNOWN ));
     }
     break;
@@ -2884,7 +2884,7 @@ void NavigationNaviAlert_SetCamera( NavigationNaviAlert _this, XEnum aNaviCamera
     {
       NavigationNaviAlertMessage_OnSetIcon( &_this->AlertMessage, EwLoadResource( 
       &ResourceSafeBorder, ResourcesBitmap ));
-      NavigationNaviAlertMessage_OnSetMessage( &_this->AlertMessage, EwLoadString( 
+      NavigationNaviAlertMessage_OnSetMessage( &_this->AlertMessage, EwGetVariantOfString( 
       &StringsNAV01_STATE_BORDER ));
     }
     break;
@@ -2893,7 +2893,7 @@ void NavigationNaviAlert_SetCamera( NavigationNaviAlert _this, XEnum aNaviCamera
     {
       NavigationNaviAlertMessage_OnSetIcon( &_this->AlertMessage, EwLoadResource( 
       &ResourceSafeBorder, ResourcesBitmap ));
-      NavigationNaviAlertMessage_OnSetMessage( &_this->AlertMessage, EwLoadString( 
+      NavigationNaviAlertMessage_OnSetMessage( &_this->AlertMessage, EwGetVariantOfString( 
       &StringsNAV01_COUNTRY_BORDER ));
     }
     break;
@@ -6240,9 +6240,9 @@ void NavigationNaviTbtListDataEmptyDialog__Init( NavigationNaviTbtListDataEmptyD
   ViewsRectangle_OnSetColor( &_this->BlackBG, _Const0001 );
   CoreRectView__OnSetBounds( &_this->PushButton, _Const0065 );
   CoreGroup__OnSetVisible( &_this->PushButton, 1 );
-  MenuPushButton_OnSetTitle( &_this->PushButton, EwLoadString( &StringsNAV03_VIEW_MAP ));
+  MenuPushButton_OnSetTitle( &_this->PushButton, EwGetVariantOfString( &StringsNAV03_VIEW_MAP ));
   CoreRectView__OnSetBounds( &_this->DataErrorMessage, _Const0066 );
-  ViewsText_OnSetString( &_this->DataErrorMessage, EwLoadString( &StringsNAV03_NOT_ON_A_ROUTE ));
+  ViewsText_OnSetString( &_this->DataErrorMessage, EwGetVariantOfString( &StringsNAV03_NOT_ON_A_ROUTE ));
   ViewsText_OnSetVisible( &_this->DataErrorMessage, 1 );
   CoreGroup__Add( _this, ((CoreView)&_this->BlackBG ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->PushButton ), 0 );

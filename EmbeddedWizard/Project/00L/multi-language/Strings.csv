@@ -160,23 +160,23 @@ MNT01_OIL,OIL,,,,,,,,,,,,,,,,,
 MNT01_V_BELT,V-BELT,,,,,,,,,,,,,,,,,
 MNT01_FREE1,FREE 1,,,,,,,,,,,,,,,,,
 MNT01_FREE2,FREE 2,,,,,,,,,,,,,,,,,
-NAV01_CHECK_FIXED,Fixed Camera,,,,,,,,,,,,,,,,,
-NAV01_CHECK_TEMPORARY,Temporary Camera,,,,,,,,,,,,,,,,,
-NAV01_MOBILE,Mobile Speed Camera,,,,,,,,,,,,,,,,,
-NAV01_AVERAGE,Average Speed Camera,,,,,,,,,,,,,,,,,
-NAV01_VARIABLE,Variable Speed Camera,,,,,,,,,,,,,,,,,
-NAV01_RED_LIGHT,Red Light Camera,,,,,,,,,,,,,,,,,
-NAV01_USER,Mobile Camera,,,,,,,,,,,,,,,,,
-NAV01_MOBILE_ZONE,Mobile Speed Camera,,,,,,,,,,,,,,,,,
-NAV01_DANGEROUS_ZONE,Danger Zone,,,,,,,,,,,,,,,,,
-NAV01_RISK_ZONE,Risk Zone,,,,,,,,,,,,,,,,,
-NAV01_UNKNOWN,Speed Alert,,,,,,,,,,,,,,,,,
-NAV01_STATE_BORDER,State Border,,,,,,,,,,,,,,,,,
-NAV01_COUNTRY_BORDER,Country Border,,,,,,,,,,,,,,,,,
-NAV01_SCHOOL_ZONE,School Zone,,,,,,,,,,,,,,,,,
+NAV01_CHECK_FIXED,Fixed Camera,固定カメラ,Zone de danger fixe,Radar fijo,Autovelox fisso,Permanente Kamera,固定式照相機,固定摄像头,Σταθερή κάμερα,Kiinteä kamera,स्थिर कैमरा,Kamera Tetap,Kamera stacjonarna,Câmera fixa,กล้องคงที่,Camera cố định,고정식 카메라,Kamera Tetap
+NAV01_CHECK_TEMPORARY,Temporary Camera,テンポラリーカメラ,Alerte temporaire,Radar temporal,Autovelox temporaneo,Temporäre Kamera,臨時照相機,临时摄像头,Προσωρινή κάμερα,Väliaikainen kamera,अस्थायी कैमरा,Kamera Temporer,Kamera czasowa,Câmera temporária,กล้องชั่วคราว,Camera tạm thời,임시 카메라,Kamera Sementara
+NAV01_MOBILE,Mobile Speed Camera,移動式スピードカメラ,Alerte radar mobile,Radar velocidad móvil,Autovelox mobile,Mobile Radarkontrolle,移動式測速照相,移动式测速,Φορητή κάμερα ταχ.,Siirr. nop.valv.kamera,मोबाइल गति कैम,Kamera Kec. Bergerak,Fotoradar przenośny,Câmera veloc. Móvel,กล้องจับความเร็วแบบเคลื่อนที่,Camera tốc độ di động,이동식 속도 위반 카메라,Kam Kelajuan Mdh Alih
+NAV01_AVERAGE,Average Speed Camera,平均速度取締カメラ,Zne danger vit. moy.,Radar de tramo,Tutor,Section Control,均速測速照相,区间测速摄像头,Κάμερα μέσης ταχ.,Keskinopeuskamera,औसत गति कैमरा,Kamera Kec. Rata2,Kamera śred. Prędkości,Radar vel. Média,กล้องจับความเร็วเฉลี่ย,Camera tốc độ tr.bình,일반 속도 감시 카메라,Kamera Kelajuan Prt
+NAV01_VARIABLE,Variable Speed Camera,可変式スピードカメラ,Zne de danger variable,Radar veloc variable,Autovelox variabile,Variable Radarkontrolle,可變式測速照相,变速摄像头,Κάμερα μεταβλ. ταχ.,Vaiht. nop.raj. valv.kam.,अस्थिर गति कैम,Kamera Kec. Variabel,Fotoradar zmienny,Radar veloc. Variável,กล้องจับความเร็วผันแปร,Camera tốc độ biến đổi,가변식 속도 위반 카메라,Kam Kelajuan Variabel
+NAV01_RED_LIGHT,Red Light Camera,信号無視抑止カメラ,Alrte Garmin feu rge,Rad. semáforo rojo,Zona semafori cont.,Ampelblitzer,闖紅燈照相,红灯摄像头,Κάμ. παραβ. Κόκκινου,Liikennevalokamera,रेड लाइट कैमरा,Kamera Lampu Merah,Kamera na światłach,Câm. farol vermelho,กล้องตรวจจับไฟแดง,Camera ánh sáng đỏ,신호 위반 카메라,Kamera Lampu Merah
+NAV01_USER,Mobile Camera,可動式カメラ,Alerte Garmin mobile,Radar móvil,Autovelox mobile,Mobile Kamera,移動式照相機,移动摄像头,Φορητή κάμερα,Liikkuva kamera,मोबाइल कैमरा,Kamera Bergerak,Kamera mobilna,Radar móvel,กล้องเคลื่อนที่,Camera di động,이동식 카메라,Kamera Mudah Alih
+NAV01_MOBILE_ZONE,Mobile Speed Camera,移動式スピードカメラ,Alerte radar mobile,Radar velocidad móvil,Autovelox mobile,Mobile Radarkontrolle,移動式測速照相,移动式测速,Φορητή κάμερα ταχ.,Siirr. nop.valv.kamera,मोबाइल गति कैम,Kamera Kec. Bergerak,Fotoradar przenośny,Câmera veloc. Móvel,กล้องจับความเร็วแบบเคลื่อนที่,Camera tốc độ di động,이동식 속도 위반 카메라,Kam Kelajuan Mdh Alih
+NAV01_DANGEROUS_ZONE,Danger Zone,危険区域,Zone de danger,Zona peligrosa,Zona pericolo,Gefahrenbereich,危險區域,危险区域,Επικίνδυνη ζώνη,Vaaravyöhyke,डेंजर ज़ोन,Zona Bahaya,Strefa niebezpieczna,Zona de perigo,โซนอันตราย,Khu vực nguy hiểm,위험 지역,Zon Bahaya
+NAV01_RISK_ZONE,Risk Zone,スピードカメラゾーン,Zone à risque,Zona de riesgo,Zona pericolosa,Gefahrenzone,危險區域,危险区域,Ζώνη κινδύνου,Riskialue,जोखिम क्षेत्र,Zona Berisiko,Strefa zagrożenia,Área de risco,เขตเสี่ยง,Vùng rủi ro,위험 구역,Zon Berisiko
+NAV01_UNKNOWN,Speed Alert,スピードアラート,Alarme de vitesse,Alerta de velocidad,Limite Velocità,Geschwindigkeitsalarm,速限警示,超速提醒,Ειδοποίηση ταχύτητας,Nopeusvaroitus,गति चेतवानी,Peringatan Kecepatan,Alert prędkości,Alerta de velocidade,การเตือนความเร็ว,Cảnh báo Tốc độ,속도 알람,Awasan Kelajuan
+NAV01_STATE_BORDER,State Border,州の境界,Frontière d'Etat,Frontera regional,Confine di Stato,Bundesland-/Provinzgr.,縣市邊界,省市边界,Όρια πολιτείας,Osavaltion raja,राज्य सीमा,Perbatasan Ngr Bgn,Granica stanu,Fronteira do estado,ชายแดนรัฐ,Biên giới tiểu bang,주 경계,Sempadan Negeri
+NAV01_COUNTRY_BORDER,Country Border,国境,Frontière du pays,Frontera del país,Confini di Stato,Ländergrenze,國家邊界,县市界,Σύνορα χώρας,Maan raja,देश सीमा,Perbatasan Negara,Granica państwa,Fronteira do país,ชายแดนประเทศ,Biên giới quốc gia,국경,Sempadan Negara
+NAV01_SCHOOL_ZONE,School Zone,スクールゾーン,Zone près d'une école,Zona escolar,Scuole,Schulbereich,學校區域,学校,Σχολική ζώνη,Koulualue,स्कूल ज़ोन,Zona Sekolah,Strefa wokół szkoły,Área escolar,เขตโรงเรียน,Khu vực trường học,어린이 보호구역,Zon Sekolah
 NAV01_NO_DESTINATION,No possible route to this destination.,,,,,,,,,,,,,,,,,
-NAV03_NOT_ON_A_ROUTE,You are not on a route.,,,,,,,,,,,,,,,,,
-NAV03_VIEW_MAP,View Map,,,,,,,,,,,,,,,,,
+NAV03_NOT_ON_A_ROUTE,Route navigation unavailable.,ルートが表示できません。,,,,,,,,,,,,,,,,
+NAV03_VIEW_MAP,View Map,地図表示,,,,,,,,,,,,,,,,
 NAV06_STOP_NAVIGATION,Stop navigation,案内中止,Arrêter la navigation,Detener navegación,Ferma navigazione,Navigation stoppen,停止導航,停止导航,Διακοπή πλοήγησης,Lopeta navigointi,नेविगेशन रोकें,Hentikan navigasi,Zatrzymaj nawigację,Parar navegação,หยุดการนำทาง,Dừng điều hướng,내비게이션 중지,Henti navigasi
 NAV06_SKIP_NEXT_STOP,Skip next stop,次の経由地をスキップ,Ignorer le prochain arrêt,Omitir la próxima parada,Salta prossima tappa,Nächsten Stopp überspringen,跳過下一站,跳过下一站,Παράλειψη επόμενης στάσης,Ohita seuraava pysähdys,अगला स्टॉप छोड़ें,Lewati perhentian berikutnya,Pomiń następny krok,Pular próxima parada,ข้ามจุดจอดถัดไป,Bỏ qua điểm dừng tiếp theo,다음 종착지 건너뛰기,Langkau hentian seterusnya
 NAV06_GO_HOME,Go home,自宅,Retourner à la maison,Ir a casa,Vai a casa,Nach Hause fahren,住家,回家,Μετάβαση στο σπίτι,Mene kotiin,घर जाएं,Ke rumah,Jedź do domu,Ir para casa,ไปบ้าน,Về nhà,집으로,Pulang ke rumah

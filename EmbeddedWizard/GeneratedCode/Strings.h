@@ -43,7 +43,7 @@
 #endif
 
 /* This file is generated automatically.
-   Generated: 2021/07/20 21:11:57 */
+   Generated: 2021/07/27 14:31:06 */
 extern const XStringRes StringsARGUMENT_STR;
 
 /* User defined constant: 'Strings::GEN_OK' */
@@ -242,52 +242,52 @@ extern const XStringRes StringsMNT01_FREE1;
 extern const XStringRes StringsMNT01_FREE2;
 
 /* User defined constant: 'Strings::NAV01_CHECK_FIXED' */
-extern const XStringRes StringsNAV01_CHECK_FIXED;
+EW_DECLARE_CONST( StringsNAV01_CHECK_FIXED )
 
 /* User defined constant: 'Strings::NAV01_CHECK_TEMPORARY' */
-extern const XStringRes StringsNAV01_CHECK_TEMPORARY;
+EW_DECLARE_CONST( StringsNAV01_CHECK_TEMPORARY )
 
 /* User defined constant: 'Strings::NAV01_MOBILE' */
-extern const XStringRes StringsNAV01_MOBILE;
+EW_DECLARE_CONST( StringsNAV01_MOBILE )
 
 /* User defined constant: 'Strings::NAV01_AVERAGE' */
-extern const XStringRes StringsNAV01_AVERAGE;
+EW_DECLARE_CONST( StringsNAV01_AVERAGE )
 
 /* User defined constant: 'Strings::NAV01_VARIABLE' */
-extern const XStringRes StringsNAV01_VARIABLE;
+EW_DECLARE_CONST( StringsNAV01_VARIABLE )
 
 /* User defined constant: 'Strings::NAV01_RED_LIGHT' */
-extern const XStringRes StringsNAV01_RED_LIGHT;
+EW_DECLARE_CONST( StringsNAV01_RED_LIGHT )
 
 /* User defined constant: 'Strings::NAV01_USER' */
-extern const XStringRes StringsNAV01_USER;
+EW_DECLARE_CONST( StringsNAV01_USER )
 
 /* User defined constant: 'Strings::NAV01_MOBILE_ZONE' */
-extern const XStringRes StringsNAV01_MOBILE_ZONE;
+EW_DECLARE_CONST( StringsNAV01_MOBILE_ZONE )
 
 /* User defined constant: 'Strings::NAV01_DANGEROUS_ZONE' */
-extern const XStringRes StringsNAV01_DANGEROUS_ZONE;
+EW_DECLARE_CONST( StringsNAV01_DANGEROUS_ZONE )
 
 /* User defined constant: 'Strings::NAV01_RISK_ZONE' */
-extern const XStringRes StringsNAV01_RISK_ZONE;
+EW_DECLARE_CONST( StringsNAV01_RISK_ZONE )
 
 /* User defined constant: 'Strings::NAV01_UNKNOWN' */
-extern const XStringRes StringsNAV01_UNKNOWN;
+EW_DECLARE_CONST( StringsNAV01_UNKNOWN )
 
 /* User defined constant: 'Strings::NAV01_STATE_BORDER' */
-extern const XStringRes StringsNAV01_STATE_BORDER;
+EW_DECLARE_CONST( StringsNAV01_STATE_BORDER )
 
 /* User defined constant: 'Strings::NAV01_COUNTRY_BORDER' */
-extern const XStringRes StringsNAV01_COUNTRY_BORDER;
+EW_DECLARE_CONST( StringsNAV01_COUNTRY_BORDER )
 
 /* User defined constant: 'Strings::NAV01_SCHOOL_ZONE' */
-extern const XStringRes StringsNAV01_SCHOOL_ZONE;
+EW_DECLARE_CONST( StringsNAV01_SCHOOL_ZONE )
 
 /* User defined constant: 'Strings::NAV03_NOT_ON_A_ROUTE' */
-extern const XStringRes StringsNAV03_NOT_ON_A_ROUTE;
+EW_DECLARE_CONST( StringsNAV03_NOT_ON_A_ROUTE )
 
 /* User defined constant: 'Strings::NAV03_VIEW_MAP' */
-extern const XStringRes StringsNAV03_VIEW_MAP;
+EW_DECLARE_CONST( StringsNAV03_VIEW_MAP )
 
 /* User defined constant: 'Strings::NAV06_STOP_NAVIGATION' */
 EW_DECLARE_CONST( StringsNAV06_STOP_NAVIGATION )

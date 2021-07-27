@@ -4377,7 +4377,7 @@ class NaviTbtListDataEmptyDialog : Core::Group
   $rect <20,20,160,60>
   object Views::Text DataErrorMessage
   {
-    preset Bounds = <105,83,375,189>;
+    preset Bounds = <18,83,462,189>;
     preset String = Strings::NAV03_NOT_ON_A_ROUTE;
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
     preset Visible = true;
