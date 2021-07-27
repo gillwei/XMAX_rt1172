@@ -51,7 +51,7 @@
 /* Compressed strings for the language 'Default'. */
 EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
-  0x00000252, /* ratio 52.53 % */
+  0x000002B0, /* ratio 50.58 % */
   0xB8002500, 0x000A6452, 0x00C2003A, 0x80107390, 0x16750010, 0x20037002, 0x540044C9,
   0x30019400, 0x000021A7, 0x04160619, 0x1BC00680, 0x421C7700, 0x22D14894, 0x3B1B8CC5,
   0x91A29422, 0x0D364AE3, 0xF1000075, 0x9103C011, 0xBC264843, 0x9326A678, 0xEA8B14A1,
@@ -60,10 +60,11 @@ EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
   0xB7002D97, 0x6CACC538, 0xD82E6003, 0xEEC962BA, 0x644109EC, 0x15380011, 0x1779B1C2,
   0x1BC254EB, 0x206802F3, 0x864AC892, 0xA49EE10A, 0xC12CF9A8, 0x6E0D1727, 0x6710F844,
   0xF951D5C4, 0x514C7D0A, 0x8BAE60A1, 0x2BD8563F, 0x9555AA95, 0x040C8D08, 0xE8611060,
-  0x33351D95, 0x3830F910, 0x6A56004A, 0x81ECD432, 0x50DFDF77, 0x19AE8E84, 0x9C4E2154,
-  0xEC2287C5, 0x5DB0F42A, 0x523F6300, 0xF7D59EB0, 0x6553A3D5, 0x6002A802, 0x95E3D8F2,
-  0xBF607E3F, 0x8BF6BB16, 0x190779E4, 0x06B95174, 0x95856600, 0x3D625447, 0x001014F5,
-  0x00000000
+  0x33351D95, 0x3830F910, 0x6A56004A, 0x814CD432, 0xCDDFDF77, 0x3E2E1001, 0xE4C46114,
+  0xB06C01B9, 0xD5F7D59E, 0x6E2FA3A0, 0x3D3BD31C, 0x15DFE3F7, 0x81E00533, 0x50DFDAFC,
+  0x3AEFA684, 0xF7CE2714, 0x15F7F10D, 0x547D8951, 0xC950411D, 0x4755DF76, 0x0013254D,
+  0xD9300055, 0xF655C758, 0x99F607D1, 0x257E4007, 0x7F5857ED, 0x95174190, 0x64D5DA6B,
+  0xF6168118, 0x004051F4, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -79,8 +80,10 @@ static const XStringRes _Const0008 = { _StringsDefault0, 0x009F };
 static const XStringRes _Const0009 = { _StringsDefault0, 0x00B7 };
 static const XStringRes _Const000A = { _StringsDefault0, 0x00CC };
 static const XStringRes _Const000B = { _StringsDefault0, 0x00D8 };
-static const XStringRes _Const000C = { _StringsDefault0, 0x00F6 };
-static const XStringRes _Const000D = { _StringsDefault0, 0x010A };
+static const XStringRes _Const000C = { _StringsDefault0, 0x00EC };
+static const XStringRes _Const000D = { _StringsDefault0, 0x0107 };
+static const XStringRes _Const000E = { _StringsDefault0, 0x0125 };
+static const XStringRes _Const000F = { _StringsDefault0, 0x0139 };
 
 /* User defined inline code: 'DeviceInterface::Inline' */
 #include <stddef.h>
@@ -2702,6 +2705,41 @@ void DeviceInterfaceBluetoothDeviceClass_TriggerConnectionTimeoutTimer( DeviceIn
   BTM_start_btm_timeout_timer( BTM_BLE_PAIR_TIMEOUT );
 }
 
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.NotifyBtmStatus()' */
+void DeviceInterfaceBluetoothDeviceClass_NotifyBtmStatus( DeviceInterfaceBluetoothDeviceClass _this, 
+  XEnum status )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  EwTrace( "%s%e", EwLoadString( &_Const000B ), status );
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::BluetoothDeviceClass.NotifyBtmStatus()' */
+void DeviceInterfaceBluetoothDeviceClass__NotifyBtmStatus( void* _this, XEnum status )
+{
+  DeviceInterfaceBluetoothDeviceClass_NotifyBtmStatus((DeviceInterfaceBluetoothDeviceClass)_this
+  , status );
+}
+
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.NotifyConnectionStatus()' */
+void DeviceInterfaceBluetoothDeviceClass_NotifyConnectionStatus( DeviceInterfaceBluetoothDeviceClass _this, 
+  XEnum status, XUInt32 data )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  EwTrace( "%s%e%u", EwLoadString( &_Const000C ), status, data );
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::BluetoothDeviceClass.NotifyConnectionStatus()' */
+void DeviceInterfaceBluetoothDeviceClass__NotifyConnectionStatus( void* _this, XEnum 
+  status, XUInt32 data )
+{
+  DeviceInterfaceBluetoothDeviceClass_NotifyConnectionStatus((DeviceInterfaceBluetoothDeviceClass)_this
+  , status, data );
+}
+
 /* Default onget method for the property 'BtFwStatus' */
 XEnum DeviceInterfaceBluetoothDeviceClass_OnGetBtFwStatus( DeviceInterfaceBluetoothDeviceClass _this )
 {
@@ -4185,7 +4223,7 @@ XBool DeviceInterfaceNotificationDeviceClass__IsPhoneCallStateActive( void* _thi
    about a particular system event. */
 void DeviceInterfaceNotificationDeviceClass_NotifyPhoneCallStateChanged( DeviceInterfaceNotificationDeviceClass _this )
 {
-  EwTrace( "%s", EwLoadString( &_Const000B ));
+  EwTrace( "%s", EwLoadString( &_Const000D ));
   CoreSystemEvent_Trigger( &_this->PhoneCallStateChangedSystemEvent, 0, 0 );
 }
 
@@ -4199,7 +4237,7 @@ void DeviceInterfaceNotificationDeviceClass__NotifyPhoneCallStateChanged( void* 
    about a particular system event. */
 void DeviceInterfaceNotificationDeviceClass_NotifyListUpdated( DeviceInterfaceNotificationDeviceClass _this )
 {
-  EwTrace( "%s", EwLoadString( &_Const000C ));
+  EwTrace( "%s", EwLoadString( &_Const000E ));
   CoreSystemEvent_Trigger( &_this->NotificationListUpdatedSystemEvent, 0, 0 );
 }
 
@@ -4402,7 +4440,7 @@ void DeviceInterfaceNotificationDeviceClass_PhoneCallVolumeControl( DeviceInterf
    about a particular system event. */
 void DeviceInterfaceNotificationDeviceClass_NotifyPhoneCallVolumeChanged( DeviceInterfaceNotificationDeviceClass _this )
 {
-  EwTrace( "%s", EwLoadString( &_Const000D ));
+  EwTrace( "%s", EwLoadString( &_Const000F ));
   CoreSystemEvent_Trigger( &_this->PhoneCallVolumeChangedSystemEvent, 0, 0 );
 }
 

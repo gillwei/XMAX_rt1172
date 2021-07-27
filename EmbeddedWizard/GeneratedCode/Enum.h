@@ -888,6 +888,32 @@ typedef enum
   EnumNaviZoomActionTypeZOOM_OUT        = 1
 } EnumNaviZoomActionType;
 
+/* User defined enumeration: 'Enum::ConnectionStatus' */
+typedef enum
+{
+  EnumConnectionStatusPAIRING_FAILED    = 0,
+  EnumConnectionStatusCONFIRM_PASSKEY   = 1,
+  EnumConnectionStatusWAIT_APP_CONNECTION = 2,
+  EnumConnectionStatusNAVI_APP_CONNECTED = 3,
+  EnumConnectionStatusYAMAHA_APP_CONNECTED = 4,
+  EnumConnectionStatusBOTH_APP_CONNECTED = 5,
+  EnumConnectionStatusCONNECTION_FAILED = 6,
+  EnumConnectionStatusAUTHENTICATION_ERR = 7,
+  EnumConnectionStatusCONNECTED_APP_CHANGED = 8,
+  EnumConnectionStatusPAIRED_DEVICE_CHANGED = 9
+} EnumConnectionStatus;
+
+/* User defined enumeration: 'Enum::BtmStatus' */
+typedef enum
+{
+  EnumBtmStatusENABLED                  = 0,
+  EnumBtmStatusUPDATE_START             = 1,
+  EnumBtmStatusUPDATE_ABORT             = 2,
+  EnumBtmStatusUPDATE_FINISH            = 3,
+  EnumBtmStatusDISABLED                 = 4,
+  EnumBtmStatusFACTORY_RESET_COMPLETED  = 5
+} EnumBtmStatus;
+
 #ifdef __cplusplus
   }
 #endif

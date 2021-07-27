@@ -1439,7 +1439,7 @@ enum NaviCameraType
   item TYPE_UNDEFINED;
 }
 
-$rect <30,630,230,670>
+$rect <30,620,230,660>
 $output false
 enum TimeType
 {
@@ -1732,7 +1732,7 @@ enum MotoConTx
   item TOTAL;
 }
 
-$rect <30,690,230,730>
+$rect <30,670,230,710>
 enum WeatherIconType
 {
   $rect <10,10,210,50>
@@ -1964,4 +1964,62 @@ enum NaviZoomActionType
 
   $rect <220,10,420,50>
   item ZOOM_OUT;
+}
+
+$rect <30,720,230,760>
+$output false
+enum ConnectionStatus
+{
+  $rect <10,10,260,50>
+  item PAIRING_FAILED;
+
+  $rect <10,60,260,100>
+  item CONFIRM_PASSKEY;
+
+  $rect <10,110,260,150>
+  item WAIT_APP_CONNECTION;
+
+  $rect <10,160,260,200>
+  item NAVI_APP_CONNECTED;
+
+  $rect <10,210,260,250>
+  item YAMAHA_APP_CONNECTED;
+
+  $rect <10,260,260,300>
+  item BOTH_APP_CONNECTED;
+
+  $rect <10,310,260,350>
+  item CONNECTION_FAILED;
+
+  $rect <10,360,260,400>
+  item AUTHENTICATION_ERR;
+
+  $rect <10,410,260,450>
+  item CONNECTED_APP_CHANGED;
+
+  $rect <10,460,260,500>
+  item PAIRED_DEVICE_CHANGED;
+}
+
+$rect <30,770,230,810>
+$output false
+enum BtmStatus
+{
+  $rect <10,10,210,50>
+  item ENABLED;
+
+  $rect <10,160,210,200>
+  item UPDATE_START;
+
+  $rect <10,210,210,250>
+  item UPDATE_ABORT;
+
+  $rect <10,260,210,300>
+  item UPDATE_FINISH;
+
+  $rect <10,60,210,100>
+  item DISABLED;
+
+  $rect <10,110,270,150>
+  item FACTORY_RESET_COMPLETED;
 }

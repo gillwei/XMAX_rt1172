@@ -2565,6 +2565,20 @@ class BluetoothDeviceClass : Templates::DeviceClass
       }
     $endif
   }
+
+  $rect <690,760,910,800>
+  $output true
+  method void NotifyBtmStatus( arg Enum::BtmStatus status )
+  {
+    trace "NotifyBtmStatus: ", status;
+  }
+
+  $rect <690,810,910,850>
+  $output true
+  method void NotifyConnectionStatus( arg Enum::ConnectionStatus status, arg uint32 data )
+  {
+    trace "NotifyConnectionStatus: ", status, data;
+  }
 }
 
 $rect <810,110,1010,150>

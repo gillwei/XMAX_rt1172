@@ -212,6 +212,27 @@ XBool DeviceInterfaceBluetoothDeviceClass_IsPairingDeviceYamahaAppSPPConnected( 
 /* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.TriggerConnectionTimeoutTimer()' */
 void DeviceInterfaceBluetoothDeviceClass_TriggerConnectionTimeoutTimer( DeviceInterfaceBluetoothDeviceClass _this );
 
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.NotifyBtmStatus()' */
+void DeviceInterfaceBluetoothDeviceClass_NotifyBtmStatus( DeviceInterfaceBluetoothDeviceClass _this, 
+  XEnum status );
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::BluetoothDeviceClass.NotifyBtmStatus()' */
+void DeviceInterfaceBluetoothDeviceClass__NotifyBtmStatus( void* _this, XEnum status );
+
+/* The following define announces the presence of the method DeviceInterface::BluetoothDeviceClass.NotifyBtmStatus(). */
+#define _DeviceInterfaceBluetoothDeviceClass__NotifyBtmStatus_
+
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.NotifyConnectionStatus()' */
+void DeviceInterfaceBluetoothDeviceClass_NotifyConnectionStatus( DeviceInterfaceBluetoothDeviceClass _this, 
+  XEnum status, XUInt32 data );
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::BluetoothDeviceClass.NotifyConnectionStatus()' */
+void DeviceInterfaceBluetoothDeviceClass__NotifyConnectionStatus( void* _this, XEnum 
+  status, XUInt32 data );
+
+/* The following define announces the presence of the method DeviceInterface::BluetoothDeviceClass.NotifyConnectionStatus(). */
+#define _DeviceInterfaceBluetoothDeviceClass__NotifyConnectionStatus_
+
 /* Default onget method for the property 'BtFwStatus' */
 XEnum DeviceInterfaceBluetoothDeviceClass_OnGetBtFwStatus( DeviceInterfaceBluetoothDeviceClass _this );
 

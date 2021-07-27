@@ -81,6 +81,8 @@ void EW_update_burn_in_time( const uint32_t time_sec );
 void EW_show_burn_in_result( const bool result );
 void EW_notify_inspection_request( EnumInspectionMode mode, EnumInspectionDisplay display_pattern );
 
+void EW_notify_connection_status( const EnumConnectionStatus status, const uint32_t data );
+void EW_notify_btm_status( const EnumBtmStatus status );
 void EW_notify_bt_paired_device_status_changed( void );
 void EW_notify_bt_connection_result( const EnumBtDeviceConnectionResult result );
 void EW_notify_bt_passkey_generated( const uint8_t* device_name, const uint32_t passkey );

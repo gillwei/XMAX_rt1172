@@ -798,6 +798,42 @@ return btc_passkey;
 
 /*********************************************************************
 * @public
+* EW_notify_connection_status
+*
+* Notify EW GUI the bt/app connection status
+*
+* @param status BT/App connection status
+* @param data Additional data for passkey
+*
+*********************************************************************/
+void EW_notify_connection_status
+    (
+    const EnumConnectionStatus status,
+    const uint32_t data
+    )
+{
+PRINTF( "%s, %u\r\n", __FUNCTION__, data );
+}
+
+/*********************************************************************
+* @public
+* EW_notify_btm_status
+*
+* Notify EW GUI the BT manager status
+*
+* @param status BT manager status
+*
+*********************************************************************/
+void EW_notify_btm_status
+    (
+    const EnumBtmStatus status
+    )
+{
+PRINTF( "%s\r\n", __FUNCTION__ );
+}
+
+/*********************************************************************
+* @public
 * EW_notify_motocon_event_received
 *
 * Notify EW GUI the MotoCon event
