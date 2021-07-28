@@ -40,6 +40,8 @@
 #include "WEA_pub.h"
 #include "NTF_pub.h"
 #include "OTA_pub.h"
+#include "CM_pub.h"
+
 #if( RTOS_STAT_ENABLE == 1)
     #include "FRTOS_pub.h"
 #endif

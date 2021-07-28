@@ -189,6 +189,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/weather}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/notification}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/ota}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/cm/include/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/cm/include/private}&quot;"/>
 								</option>
 								<option id="gnu.c.compiler.option.include.files.312516120" name="Include files (-include)" superClass="gnu.c.compiler.option.include.files" useByScannerDiscovery="false"/>
 								<option id="com.crt.advproject.gcc.exe.debug.option.optimization.level.1617258062" name="Optimization Level" superClass="com.crt.advproject.gcc.exe.debug.option.optimization.level" useByScannerDiscovery="true"/>
@@ -438,6 +440,7 @@
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="bt/src/le"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="bt_hci"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="btm"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="cm"/>
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="component"/>
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="device"/>
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="drivers"/>
@@ -655,6 +658,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/weather}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/notification}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/ota}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/cm/include/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/cm/include/private}&quot;"/>
 								</option>
 								<option id="gnu.c.compiler.option.include.files.62835457" name="Include files (-include)" superClass="gnu.c.compiler.option.include.files" useByScannerDiscovery="false"/>
 								<option id="gnu.c.compiler.option.optimization.flags.140772290" name="Other optimization flags" superClass="gnu.c.compiler.option.optimization.flags" useByScannerDiscovery="false" value="-fno-common" valueType="string"/>
@@ -904,6 +909,7 @@
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="bt/src/le"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="bt_hci"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="btm"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="cm"/>
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="component"/>
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="device"/>
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="drivers"/>
