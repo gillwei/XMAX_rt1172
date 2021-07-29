@@ -22,7 +22,7 @@ extern "C" {
                         LITERAL CONSTANTS
 --------------------------------------------------------------------*/
 #define BT_DEVICE_ADDRESS_LEN    ( 6 )
-#define BT_DEVICE_NAME_LEN       ( 20 )
+#define BT_DEVICE_NAME_LEN       ( 32 )
 #define BT_SW_VERSION_LEN        ( 2 )
 #define BT_CONNECTION_HANDLE_LEN ( 2 )
 
@@ -138,11 +138,6 @@ typedef enum BT_transport_type
     BT_TRANSPORT_TYPE_INVALID = BT_TRANSPORT_TYPE_CNT
     } BT_transport_type_e;
 
-// Note:
-//   1. The struct used to store paired device info MUST be synchronous between MCU and Cypress
-//      module. Do NOT modify the content without informing another side.
-//   2. Since Cypress module will send the paired device list in ONE hci event. The struct size
-//      is limited to HCI_PAYLOAD_MAX_SIZE. Do NOT increase the struct size.
 typedef struct BT_device_info
     {
     uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN];

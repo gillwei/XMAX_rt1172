@@ -128,6 +128,11 @@ const char* BT_util_get_spp_connection_type_string
     const BT_spp_connection_type_e connection_type
     );
 
+const char* BT_util_get_transport_type_string
+    (
+    const BT_transport_type_e transport_type
+    );
+
 // LE
 const char* BLE_util_get_advertising_mode_string
     (

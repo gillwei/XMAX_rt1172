@@ -623,8 +623,6 @@ bool BT_update_start( void )
 bool ret = false;
 uint8_t retry_times = 0;
 
-// TODO: Notify HMI the update progress and result
-
 while( ( false == ret ) && ( retry_times < FIRMWARE_UPDATE_RETRY_MAX_TIMES ) )
     {
     BT_LOG_INFO( "Firmware update: Start: retry_times=%u", retry_times );

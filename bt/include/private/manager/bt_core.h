@@ -29,6 +29,8 @@ typedef enum BT_pairing_status
     BT_PAIRING_NONE = 0,
     BT_PAIRING_USER_CONFIRMING,
     BT_PAIRING_CONFIRMED_WAITING,
+    BT_PAIRING_SUCCEEDED,
+    BT_PAIRING_FAILED,
 
     BT_PAIRING_STATUS_CNT,
     BT_PAIRING_STATUS_INVALID = BT_PAIRING_STATUS_CNT
@@ -117,6 +119,11 @@ bool BT_core_is_paired_device_auth_lost
 
 bool BT_core_is_paired_device_max_num_reached( void );
 
+bool BT_core_is_paired_le_device
+    (
+    const uint8_t* bd_addr
+    );
+
 bool BT_core_send_standard_hci_command
     (
     const uint16_t op_code,
@@ -182,17 +189,26 @@ void BT_core_handle_device_event_paired_device_deleted
 
 void BT_core_handle_device_event_paired_device_list
     (
-    const uint8_t* raw_device_list
+    const uint8_t num_devices,
+    const uint8_t device_num,
+    const uint8_t* bd_addr,
+    const uint8_t* device_name,
+    const BT_device_type_e device_type,
+    const bool auth_lost,
+    const bool iap_support
     );
 
 void BT_core_handle_device_event_pairing_complete
     (
-    const uint8_t result
+    const uint8_t result,
+    const uint8_t* bd_addr,
+    const BT_transport_type_e transport_type
     );
 
 void BT_core_handle_device_event_user_confirmation
     (
     const uint8_t* bd_addr,
+    const uint8_t* device_name,
     const uint32_t passkey
     );
 

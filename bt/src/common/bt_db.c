@@ -293,9 +293,9 @@ bool BT_db_set_local_device_address
     const uint8_t* bd_addr
     )
 {
-if( ( NULL == bd_addr ) || ( BT_DEVICE_ADDRESS_LEN != strlen( (const char*)bd_addr ) ) )
+if( NULL == bd_addr )
     {
-    BT_LOG_ERROR( "Invalid BD address" );
+    BT_LOG_ERROR( "NULL BD address" );
     return false;
     }
 

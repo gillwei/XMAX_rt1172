@@ -144,6 +144,8 @@ switch( pairing_status )
     case BT_PAIRING_NONE:              return "None";
     case BT_PAIRING_USER_CONFIRMING:   return "User Confirming";
     case BT_PAIRING_CONFIRMED_WAITING: return "Confirmed Waiting";
+    case BT_PAIRING_SUCCEEDED:         return "Succeeded";
+    case BT_PAIRING_FAILED:            return "Failed";
     case BT_PAIRING_STATUS_INVALID:
     default:                           return "Unknown";
     }
@@ -208,6 +210,26 @@ switch( connection_type )
     case BT_SPP_CONNECTION_IAP:          return "iAP";
     case BT_SPP_CONNECTION_TYPE_INVALID:
     default:                             return "Unknown";
+    }
+}
+
+/*================================================================================================
+@brief   Convert the transport type to string
+@details Convert the transport type to string
+@return  None
+@retval  String of the transport type
+================================================================================================*/
+const char* BT_util_get_transport_type_string
+    (
+    const BT_transport_type_e transport_type
+    )
+{
+switch( transport_type )
+    {
+    case BT_TRANSPORT_BREDR:        return "BREDR";
+    case BT_TRANSPORT_LE:           return "LE";
+    case BT_TRANSPORT_TYPE_INVALID:
+    default:                        return "Unknown";
     }
 }
 

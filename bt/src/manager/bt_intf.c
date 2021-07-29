@@ -110,19 +110,19 @@ BT_request_t request = { 0 };
 
 FUNC_ENTRY_PRINT();
 
-if( BT_POWER_ON_READY != BT_core_get_power_status() )
-    {
-    FUNC_NOT_READY_PRINT();
-    return BT_STATUS_NOT_READY;
-    }
-
-if( ( NULL == bd_addr ) || ( strlen( (const char*)bd_addr ) != BT_DEVICE_ADDRESS_LEN ) )
+if( NULL == bd_addr )
     {
     FUNC_INVALID_PARAM_PRINT();
     return BT_STATUS_INVALID_PARAMETER;
     }
 
 FUNC_ENTRY_PRINT( "( bd_addr=%02x:%02x:%02x:%02x:%02x:%02x )", BD_ADDR_PRINT( bd_addr ) );
+
+if( BT_POWER_ON_READY != BT_core_get_power_status() )
+    {
+    FUNC_NOT_READY_PRINT();
+    return BT_STATUS_NOT_READY;
+    }
 
 if( false == BT_core_is_paired_device( bd_addr ) )
     {
@@ -234,16 +234,18 @@ BT_status_e BT_get_num_paired_devices
 {
 FUNC_ENTRY_PRINT();
 
-if( BT_POWER_ON_READY != BT_core_get_power_status() )
-    {
-    FUNC_NOT_READY_PRINT();
-    return BT_STATUS_NOT_READY;
-    }
-
 if( NULL == num_devices )
     {
     FUNC_INVALID_PARAM_PRINT();
     return BT_STATUS_INVALID_PARAMETER;
+    }
+
+*num_devices = 0;
+
+if( BT_POWER_ON_READY != BT_core_get_power_status() )
+    {
+    FUNC_NOT_READY_PRINT();
+    return BT_STATUS_NOT_READY;
     }
 
 *num_devices = BT_core_get_num_paired_devices();
@@ -265,16 +267,18 @@ BT_status_e BT_get_paired_device_info
 {
 FUNC_ENTRY_PRINT( "( device_idx=%u )", device_idx );
 
-if( BT_POWER_ON_READY != BT_core_get_power_status() )
-    {
-    FUNC_NOT_READY_PRINT();
-    return BT_STATUS_NOT_READY;
-    }
-
 if( ( NULL == device_info ) || ( device_idx >= BT_core_get_num_paired_devices() ) )
     {
     FUNC_INVALID_PARAM_PRINT();
     return BT_STATUS_INVALID_PARAMETER;
+    }
+
+memset( device_info, 0, sizeof( BT_device_info_t ) );
+
+if( BT_POWER_ON_READY != BT_core_get_power_status() )
+    {
+    FUNC_NOT_READY_PRINT();
+    return BT_STATUS_NOT_READY;
     }
 
 const BT_device_info_t* core_device_info = BT_core_get_paired_device_info( device_idx );
@@ -303,6 +307,9 @@ if( ( NULL == major_version ) || ( NULL == minor_version ) )
     FUNC_INVALID_PARAM_PRINT();
     return BT_STATUS_INVALID_PARAMETER;
     }
+
+*major_version = 0;
+*minor_version = 0;
 
 if( false == BT_core_get_sw_version( major_version, minor_version ) )
     {
@@ -342,6 +349,40 @@ return BT_STATUS_OK;
 }
 
 /*================================================================================================
+@brief   Check whether or not this is a paired BR/EDR device
+@details Directly get the info of whether or not this is a paired BR/EDR device
+@return  paired: whether or not this is a paired BR/EDR device
+@retval  The error code specified in BT_status_e
+================================================================================================*/
+BT_status_e BT_is_paired_device
+    (
+    const uint8_t* bd_addr,
+    bool* paired
+    )
+{
+FUNC_ENTRY_PRINT();
+
+if( ( NULL == bd_addr ) || ( NULL == paired ) )
+    {
+    FUNC_INVALID_PARAM_PRINT();
+    return BT_STATUS_INVALID_PARAMETER;
+    }
+
+FUNC_ENTRY_PRINT( "( bd_addr=%02x:%02x:%02x:%02x:%02x:%02x )", BD_ADDR_PRINT( bd_addr ) );
+*paired = false;
+
+if( BT_POWER_ON_READY != BT_core_get_power_status() )
+    {
+    FUNC_NOT_READY_PRINT();
+    return BT_STATUS_NOT_READY;
+    }
+
+*paired = BT_core_is_paired_device( bd_addr );
+
+return BT_STATUS_OK;
+}
+
+/*================================================================================================
 @brief   Check whether or not the paired device has lost its authentication data
 @details Directly get the info of whether or not the paired device has lost its authentication data
 @return  auth_lost: whether or not the paired device has lost its authentication data
@@ -355,19 +396,20 @@ BT_status_e BT_is_paired_device_auth_lost
 {
 FUNC_ENTRY_PRINT();
 
-if( BT_POWER_ON_READY != BT_core_get_power_status() )
-    {
-    FUNC_NOT_READY_PRINT();
-    return BT_STATUS_NOT_READY;
-    }
-
-if( ( NULL == auth_lost ) || ( NULL == bd_addr ) || ( strlen( (const char*)bd_addr ) != BT_DEVICE_ADDRESS_LEN ) )
+if( ( NULL == bd_addr ) || ( NULL == auth_lost ) )
     {
     FUNC_INVALID_PARAM_PRINT();
     return BT_STATUS_INVALID_PARAMETER;
     }
 
 FUNC_ENTRY_PRINT( "( bd_addr=%02x:%02x:%02x:%02x:%02x:%02x )", BD_ADDR_PRINT( bd_addr ) );
+*auth_lost = false;
+
+if( BT_POWER_ON_READY != BT_core_get_power_status() )
+    {
+    FUNC_NOT_READY_PRINT();
+    return BT_STATUS_NOT_READY;
+    }
 
 if( false == BT_core_is_paired_device( bd_addr ) )
     {
@@ -393,19 +435,55 @@ BT_status_e BT_is_paired_device_max_num_reached
 {
 FUNC_ENTRY_PRINT();
 
-if( BT_POWER_ON_READY != BT_core_get_power_status() )
-    {
-    FUNC_NOT_READY_PRINT();
-    return BT_STATUS_NOT_READY;
-    }
-
 if( NULL == max_num_reached )
     {
     FUNC_INVALID_PARAM_PRINT();
     return BT_STATUS_INVALID_PARAMETER;
     }
 
+*max_num_reached = false;
+
+if( BT_POWER_ON_READY != BT_core_get_power_status() )
+    {
+    FUNC_NOT_READY_PRINT();
+    return BT_STATUS_NOT_READY;
+    }
+
 *max_num_reached = BT_core_is_paired_device_max_num_reached();
+
+return BT_STATUS_OK;
+}
+
+/*================================================================================================
+@brief   Check whether or not this is a paired LE device
+@details Directly get the info of whether or not this is a paired LE device
+@return  paired: whether or not this is a paired LE device
+@retval  The error code specified in BT_status_e
+================================================================================================*/
+BT_status_e BT_is_paired_le_device
+    (
+    const uint8_t* bd_addr,
+    bool* paired
+    )
+{
+FUNC_ENTRY_PRINT();
+
+if( ( NULL == bd_addr ) || ( NULL == paired ) )
+    {
+    FUNC_INVALID_PARAM_PRINT();
+    return BT_STATUS_INVALID_PARAMETER;
+    }
+
+FUNC_ENTRY_PRINT( "( bd_addr=%02x:%02x:%02x:%02x:%02x:%02x )", BD_ADDR_PRINT( bd_addr ) );
+*paired = false;
+
+if( BT_POWER_ON_READY != BT_core_get_power_status() )
+    {
+    FUNC_NOT_READY_PRINT();
+    return BT_STATUS_NOT_READY;
+    }
+
+*paired = BT_core_is_paired_le_device( bd_addr );
 
 return BT_STATUS_OK;
 }
@@ -529,19 +607,19 @@ const uint8_t* cur_bd_addr = BT_core_get_local_device_address();
 
 FUNC_ENTRY_PRINT();
 
-if( BT_POWER_ON_READY != BT_core_get_power_status() )
-    {
-    FUNC_NOT_READY_PRINT();
-    return BT_STATUS_NOT_READY;
-    }
-
-if( ( NULL == bd_addr ) || ( strlen( (const char*)bd_addr ) != BT_DEVICE_ADDRESS_LEN ) )
+if( NULL == bd_addr )
     {
     FUNC_INVALID_PARAM_PRINT();
     return BT_STATUS_INVALID_PARAMETER;
     }
 
 FUNC_ENTRY_PRINT( "( bd_addr=%02x:%02x:%02x:%02x:%02x:%02x )", BD_ADDR_PRINT( bd_addr ) );
+
+if( BT_POWER_ON_READY != BT_core_get_power_status() )
+    {
+    FUNC_NOT_READY_PRINT();
+    return BT_STATUS_NOT_READY;
+    }
 
 if( 0 == memcmp( cur_bd_addr, bd_addr, BT_DEVICE_ADDRESS_LEN ) )
     {
@@ -638,16 +716,16 @@ BT_request_t request = { 0 };
 
 FUNC_ENTRY_PRINT( "( enable=%d, channel_type=%d )", enable, channel_type );
 
-if( BT_POWER_ON_READY != BT_core_get_power_status() )
-    {
-    FUNC_NOT_READY_PRINT();
-    return BT_STATUS_NOT_READY;
-    }
-
 if( ( channel_type < 0 ) || ( channel_type >= BT_TX_CH_TYPE_INVALID ) )
     {
     FUNC_INVALID_PARAM_PRINT();
     return BT_STATUS_INVALID_PARAMETER;
+    }
+
+if( BT_POWER_ON_READY != BT_core_get_power_status() )
+    {
+    FUNC_NOT_READY_PRINT();
+    return BT_STATUS_NOT_READY;
     }
 
 request.type = BT_REQUEST_SET_TX_CARRIER_MODE;

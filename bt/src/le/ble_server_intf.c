@@ -52,6 +52,40 @@ extern "C"{
                         PROCEDURES
 --------------------------------------------------------------------*/
 /*================================================================================================
+@brief   Disconnect the LE Server from the client
+@details Send the request of disconnecting the LE Server from the client to Bluetooth Manager.
+@return  None
+@retval  The error code specified in BT_status_e
+================================================================================================*/
+BT_status_e BLE_server_disconnect( void )
+{
+BT_request_t request = { 0 };
+
+FUNC_ENTRY_PRINT();
+
+if( BT_POWER_ON_READY != BT_core_get_power_status() )
+    {
+    FUNC_NOT_READY_PRINT();
+    return BT_STATUS_NOT_READY;
+    }
+
+if( false == BLE_core_server_get_connection_status() )
+    {
+    FUNC_NO_CONNECTION_PRINT();
+    return BT_STATUS_NO_CONNECTION;
+    }
+
+request.type = BT_REQUEST_LE_SERVER_DISCONNECT;
+if( false == BT_tsk_send_request( &request ) )
+    {
+    FUNC_QUEUE_FULL_PRINT();
+    return BT_STATUS_QUEUE_FULL;
+    }
+
+return BT_STATUS_OK;
+}
+
+/*================================================================================================
 @brief   Get the LE Server's advertising mode
 @details Directly get the LE Server's advertising mode
 @return  None
@@ -82,17 +116,17 @@ BT_request_t request = { 0 };
 
 FUNC_ENTRY_PRINT( "( handle=0x%x, data_len=%u )", handle, data_len );
 
-if( BT_POWER_ON_READY != BT_core_get_power_status() )
-    {
-    FUNC_NOT_READY_PRINT();
-    return BT_STATUS_NOT_READY;
-    }
-
 if( ( NULL == data ) || ( 0 == data_len ) || ( data_len > GATT_DATA_MAX_SIZE ) ||
     ( BLE_SERVER_TYPE_INVALID == BLE_core_server_find_handle_owner( handle ) ) )
     {
     FUNC_INVALID_PARAM_PRINT();
     return BT_STATUS_INVALID_PARAMETER;
+    }
+
+if( BT_POWER_ON_READY != BT_core_get_power_status() )
+    {
+    FUNC_NOT_READY_PRINT();
+    return BT_STATUS_NOT_READY;
     }
 
 if( false == BLE_core_server_get_connection_status() )
@@ -133,17 +167,17 @@ BT_request_t request = { 0 };
 
 FUNC_ENTRY_PRINT( "( handle=0x%x, data_len=%u )", handle, data_len );
 
-if( BT_POWER_ON_READY != BT_core_get_power_status() )
-    {
-    FUNC_NOT_READY_PRINT();
-    return BT_STATUS_NOT_READY;
-    }
-
 if( ( NULL == data ) || ( 0 == data_len ) || ( data_len > GATT_DATA_MAX_SIZE ) ||
     ( BLE_SERVER_TYPE_INVALID == BLE_core_server_find_handle_owner( handle ) ) )
     {
     FUNC_INVALID_PARAM_PRINT();
     return BT_STATUS_INVALID_PARAMETER;
+    }
+
+if( BT_POWER_ON_READY != BT_core_get_power_status() )
+    {
+    FUNC_NOT_READY_PRINT();
+    return BT_STATUS_NOT_READY;
     }
 
 if( false == BLE_core_server_get_connection_status() )
@@ -217,18 +251,18 @@ FUNC_ENTRY_PRINT( "( advertising_mode=%s, data_type=%d, data_len=%u )",
                   data_type,
                   data_len );
 
-if( BT_POWER_ON_READY != BT_core_get_power_status() )
-    {
-    FUNC_NOT_READY_PRINT();
-    return BT_STATUS_NOT_READY;
-    }
-
 if( ( advertising_mode < 0 ) || ( advertising_mode >= BLE_ADVERTISING_MODE_INVALID ) ||
     ( data_type < 0 ) || ( data_type >= BLE_ADVERTISING_DATA_TYPE_INVALID ) ||
     ( NULL == data ) || ( 0 == data_len ) || ( data_len > BLE_ADVERTISING_DATA_MAX_SIZE ) )
     {
     FUNC_INVALID_PARAM_PRINT();
     return BT_STATUS_INVALID_PARAMETER;
+    }
+
+if( BT_POWER_ON_READY != BT_core_get_power_status() )
+    {
+    FUNC_NOT_READY_PRINT();
+    return BT_STATUS_NOT_READY;
     }
 
 if( advertising_mode == BLE_core_server_get_advertising_mode() )

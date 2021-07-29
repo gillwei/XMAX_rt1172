@@ -232,6 +232,10 @@ while( 1 )
                                                request.param_u.le_client_write_request.data_len );
                 } break;
             // LE Server
+            case BT_REQUEST_LE_SERVER_DISCONNECT:
+                {
+                BLE_core_server_disconnect();
+                } break;
             case BT_REQUEST_LE_SERVER_NOTIFY:
                 {
                 BLE_core_server_notify( request.param_u.le_server_notify.handle,

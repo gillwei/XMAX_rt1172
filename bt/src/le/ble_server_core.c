@@ -70,6 +70,30 @@ static BLE_server_core_t s_core = { 0 };
                         PROCEDURES
 --------------------------------------------------------------------*/
 /*================================================================================================
+@brief   Disconnect the LE Server from the client
+@details Send the HCI command of disconnecting the LE Server from the client to Cypress module.
+@return  None
+@retval  Whether or not the HCI command is sent to Cypress module successfully
+================================================================================================*/
+bool BLE_core_server_disconnect( void )
+{
+bool ret = false;
+uint8_t param[BT_CONNECTION_HANDLE_LEN] = { 0 };
+
+if( false ==  BLE_core_server_get_connection_status() )
+    {
+    BT_LOG_DEBUG( "No connection" );
+    }
+else
+    {
+    INT16_TO_LITTLE_ENDIAN( s_core.connection_handle, &( param[0] ) );
+
+    ret = HCI_send_wiced_command( HCI_CONTROL_LE_COMMAND_DISCONNECT, param, sizeof( param ) );
+    }
+return ret;
+}
+
+/*================================================================================================
 @brief   Find out the LE Server who owns the attribute handle
 @details Find out the LE Server who owns the attribute handle
 @return  None

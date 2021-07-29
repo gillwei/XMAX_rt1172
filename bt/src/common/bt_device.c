@@ -59,12 +59,86 @@ static SemaphoreHandle_t s_mutex = NULL;
                         PROCEDURES
 --------------------------------------------------------------------*/
 /*================================================================================================
+@brief   Store the paired device info for further use
+@details Store the paired device info for further use
+@return  None
+@retval  Whether or not the operation is successful
+================================================================================================*/
+bool BT_device_add
+    (
+    const uint8_t idx,
+    const uint8_t* bd_addr,
+    const uint8_t* device_name,
+    const BT_device_type_e device_type,
+    const bool auth_lost,
+    const bool iap_support
+    )
+{
+bool ret = false;
+
+if( false == xSemaphoreTake( s_mutex, pdMS_TO_TICKS( MUTEX_LOCK_MS ) ) )
+    {
+    BT_LOG_ERROR( "Mutex lock timeout" );
+    }
+else
+    {
+    if( idx != s_num_paired_devices )
+        {
+        BT_LOG_ERROR( "Invalid paired device adding sequence: idx=%u, total_number=%u", idx, s_num_paired_devices );
+        }
+    else if( idx >= MAX_PAIRED_DEVICES )
+        {
+        BT_LOG_ERROR( "Maximum number of paired devices exceeded: %u (> %d)", idx, MAX_PAIRED_DEVICES );
+        }
+    else
+        {
+        memset( &( s_paired_devices[idx] ), 0, sizeof( BT_device_info_t ) );
+        memcpy( s_paired_devices[idx].bd_addr, bd_addr, BT_DEVICE_ADDRESS_LEN );
+        memcpy( s_paired_devices[idx].device_name, device_name, BT_DEVICE_NAME_LEN );
+        s_paired_devices[idx].device_type = device_type;
+        s_paired_devices[idx].auth_lost = auth_lost;
+        s_paired_devices[idx].iap_support = iap_support;
+
+        ++s_num_paired_devices;
+
+        ret = true;
+        BT_LOG_INFO( "Paired device added: idx=%u, bd_addr=%02x:%02x:%02x:%02x:%02x:%02x, total_number=%u",
+                     idx,
+                     BD_ADDR_PRINT( bd_addr ),
+                     s_num_paired_devices );
+        }
+    xSemaphoreGive( s_mutex );
+    }
+return ret;
+}
+
+/*================================================================================================
+@brief   Clear all the stored paired device info
+@details Clear all the stored paired device info
+@return  None
+@retval  None
+================================================================================================*/
+void BT_device_clear( void )
+{
+if( false == xSemaphoreTake( s_mutex, pdMS_TO_TICKS( MUTEX_LOCK_MS ) ) )
+    {
+    BT_LOG_ERROR( "Mutex lock timeout" );
+    }
+else
+    {
+    BT_LOG_DEBUG( "Paired devices all cleared" );
+    s_num_paired_devices = 0;
+    xSemaphoreGive( s_mutex );
+    }
+}
+
+/*================================================================================================
 @brief   Get the paired device's info by index
 @details Get the paired device's info by index
 @return  None
 @retval  Constant pointer to the paired device's info
 ================================================================================================*/
-const BT_device_info_t* BT_device_get_info
+const BT_device_info_t* BT_device_get
     (
     const uint8_t idx
     )
@@ -115,6 +189,45 @@ return num_devices;
 }
 
 /*================================================================================================
+@brief   Get device type of the paired device
+@details Get device type of the paired device
+@return  None
+@retval  Device type of the paired device
+================================================================================================*/
+BT_device_type_e BT_device_get_type
+    (
+    const uint8_t* bd_addr
+    )
+{
+BT_device_type_e device_type = BT_DEVICE_TYPE_INVALID;
+
+if( NULL == bd_addr )
+    {
+    BT_LOG_DEBUG( "NULL BD address" );
+    }
+else
+    {
+    if( false == xSemaphoreTake( s_mutex, pdMS_TO_TICKS( MUTEX_LOCK_MS ) ) )
+        {
+        BT_LOG_ERROR( "Mutex lock timeout" );
+        }
+    else
+        {
+        for( uint8_t i = 0; i < s_num_paired_devices; ++i )
+            {
+            if( 0 == memcmp( s_paired_devices[i].bd_addr, bd_addr, BT_DEVICE_ADDRESS_LEN ) )
+                {
+                device_type = s_paired_devices[i].device_type;
+                break;
+                }
+            }
+        xSemaphoreGive( s_mutex );
+        }
+    }
+return device_type;
+}
+
+/*================================================================================================
 @brief   Bluetooth Manager Device management initialization
 @details Bluetooth Manager Device management initialization
 @return  None
@@ -142,9 +255,9 @@ bool BT_device_is_auth_lost
 {
 bool auth_lost = false;
 
-if( ( NULL == bd_addr ) || ( BT_DEVICE_ADDRESS_LEN != strlen( (const char*)bd_addr ) ) )
+if( NULL == bd_addr )
     {
-    BT_LOG_DEBUG( "Invalid BD address" );
+    BT_LOG_DEBUG( "NULL BD address" );
     }
 else
     {
@@ -191,45 +304,6 @@ return max_num_reached;
 }
 
 /*================================================================================================
-@brief   Check whether or not this is a paired device
-@details Check whether or not this is a paired device
-@return  None
-@retval  Whether or not this is a paired device
-================================================================================================*/
-bool BT_device_is_existed
-    (
-    const uint8_t* bd_addr
-    )
-{
-bool existed = false;
-
-if( ( NULL == bd_addr ) || ( BT_DEVICE_ADDRESS_LEN != strlen( (const char*)bd_addr ) ) )
-    {
-    BT_LOG_DEBUG( "Invalid BD address" );
-    }
-else
-    {
-    if( false == xSemaphoreTake( s_mutex, pdMS_TO_TICKS( MUTEX_LOCK_MS ) ) )
-        {
-        BT_LOG_ERROR( "Mutex lock timeout" );
-        }
-    else
-        {
-        for( uint8_t i = 0; i < s_num_paired_devices; ++i )
-            {
-            if( 0 == memcmp( s_paired_devices[i].bd_addr, bd_addr, BT_DEVICE_ADDRESS_LEN ) )
-                {
-                existed = true;
-                break;
-                }
-            }
-        xSemaphoreGive( s_mutex );
-        }
-    }
-return existed;
-}
-
-/*================================================================================================
 @brief   Check whether or not the paired device supports iAP connection
 @details Check whether or not the paired device supports iAP connection
 @return  None
@@ -242,9 +316,9 @@ bool BT_device_is_iap_support
 {
 bool iap_support = false;
 
-if( ( NULL == bd_addr ) || ( BT_DEVICE_ADDRESS_LEN != strlen( (const char*)bd_addr ) ) )
+if( NULL == bd_addr )
     {
-    BT_LOG_DEBUG( "Invalid BD address" );
+    BT_LOG_DEBUG( "NULL BD address" );
     }
 else
     {
@@ -266,71 +340,6 @@ else
         }
     }
 return iap_support;
-}
-
-/*================================================================================================
-@brief   Update the local paired device list using the paired device list sent from Cypress module
-@details Update the local paired device list using the devices extracted from the paired device
-         list sent from Cypress module.
-         For easier to sync paired device info between MCU and Cypress module, we ask the module
-         to send paired device list in ONE hci event. The buffer size of hci payload defined in
-         Cypress module is 240 bytes(defined in HCI_PAYLOAD_MAX_SIZE), and we need to store at
-         most 8 paired devices(defined in MAX_PAIRED_DEVICES). It turns out that the size of the
-         struct that Cypress module uses to store paired device info(defined in BT_device_info_t)
-         is limited as below:
-           - bd_addr:      6 bytes (BT_DEVICE_ADDRESS_LEN)
-           - device_name: 20 bytes (BT_DEVICE_NAME_LEN)
-           - device type:  1 byte
-           - auth_lost:    1 byte
-           - iap_support:  1 byte
-         And the format of the paired device list sent by Cypress module is as below:
-           - Byte[0]: Number of paired devices
-           - Byte[n]: Info of paired devices, where n <= ( HCI_PAYLOAD_MAX_SIZE - 1 )
-@return  None
-@retval  Whether or not the operation is successful
-================================================================================================*/
-bool BT_device_update
-    (
-    const uint8_t* raw_device_list
-    )
-{
-bool ret = false;
-uint8_t cur_pos = 0;
-
-if( NULL == raw_device_list )
-    {
-    BT_LOG_ERROR( "NULL device list" );
-    }
-else
-    {
-    if( false == xSemaphoreTake( s_mutex, pdMS_TO_TICKS( MUTEX_LOCK_MS ) ) )
-        {
-        BT_LOG_ERROR( "Mutex lock timeout" );
-        }
-    else
-        {
-        memset( s_paired_devices, 0, sizeof( s_paired_devices ) );
-
-        s_num_paired_devices = raw_device_list[cur_pos++];
-
-        for( uint8_t i = 0; i < s_num_paired_devices; ++i )
-            {
-            memcpy( &( s_paired_devices[i] ), &( raw_device_list[cur_pos] ), sizeof( BT_device_info_t ) );
-            cur_pos += sizeof( BT_device_info_t );
-
-            BT_LOG_DEBUG( "Device[%u]: %02x:%02x:%02x:%02x:%02x:%02x, name=%s, type=%s, auth_lost=%d, iAP_support=%d",
-                          i,
-                          BD_ADDR_PRINT( s_paired_devices[i].bd_addr ),
-                          s_paired_devices[i].device_name,
-                          BT_util_get_device_type_string( s_paired_devices[i].device_type ),
-                          s_paired_devices[i].auth_lost,
-                          s_paired_devices[i].iap_support );
-            }
-        ret = true;
-        }
-    xSemaphoreGive( s_mutex );
-    }
-return ret;
 }
 
 #ifdef __cplusplus

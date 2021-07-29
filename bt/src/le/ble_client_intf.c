@@ -99,16 +99,16 @@ BT_request_t request = { 0 };
 
 FUNC_ENTRY_PRINT( "( handle=0x%x, data_len=%u )", handle, data_len );
 
-if( BT_POWER_ON_READY != BT_core_get_power_status() )
-    {
-    FUNC_NOT_READY_PRINT();
-    return BT_STATUS_NOT_READY;
-    }
-
 if( ( NULL == data ) || ( 0 == data_len ) || ( data_len > GATT_DATA_MAX_SIZE ) )
     {
     FUNC_INVALID_PARAM_PRINT();
     return BT_STATUS_INVALID_PARAMETER;
+    }
+
+if( BT_POWER_ON_READY != BT_core_get_power_status() )
+    {
+    FUNC_NOT_READY_PRINT();
+    return BT_STATUS_NOT_READY;
     }
 
 if( BLE_CLIENT_TYPE_INVALID == BLE_core_client_find_handle_owner( handle ) )

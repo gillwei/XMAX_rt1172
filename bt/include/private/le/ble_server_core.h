@@ -44,6 +44,8 @@ extern "C" {
 /*--------------------------------------------------------------------
                         PROCEDURES
 --------------------------------------------------------------------*/
+bool BLE_core_server_disconnect( void );
+
 BLE_server_type_e BLE_core_server_find_handle_owner
     (
     const uint16_t handle

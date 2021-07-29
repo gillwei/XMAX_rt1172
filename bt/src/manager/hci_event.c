@@ -12,6 +12,8 @@ extern "C"{
 /*--------------------------------------------------------------------
                         GENERAL INCLUDES
 --------------------------------------------------------------------*/
+#include <string.h>
+
 #include "bt_core.h"
 #include "bt_log.h"
 #include "bt_utils.h"
@@ -115,31 +117,59 @@ switch( GROUP_EVENT_CODE( group_code, event_code ) )
         } break;
     case HCI_CONTROL_EVENT_PAIRED_DEVICE_LIST_GARMIN:
         {
-        // Leave the parsing of paired device list in bt_device.c
-        uint8_t* raw_device_list = &( param[0] );
+        uint8_t num_devices = param[0];
+        uint8_t device_num = param[1];
+        uint8_t* bd_addr = &( param[2] );
+        uint8_t* device_name = &( param[8] );
+        BT_device_type_e device_type = param[40];
+        bool auth_lost = param[41];
+        bool iap_support = param[42];
 
-        BT_LOG_DEBUG( "Paired device list event" );
+        BT_LOG_DEBUG( "Paired device list event: number=%u of %u, bd_addr=%02x:%02x:%02x:%02x:%02x:%02x, \
+                      device_name=%s, device_type=%s, auth_lost=%d, iap_support=%d",
+                      device_num,
+                      num_devices,
+                      BD_ADDR_PRINT( bd_addr ),
+                      device_name,
+                      BT_util_get_device_type_string( device_type ),
+                      auth_lost,
+                      iap_support );
 
-        BT_core_handle_device_event_paired_device_list( raw_device_list );
+        BT_core_handle_device_event_paired_device_list( num_devices,
+                                                        device_num,
+                                                        bd_addr,
+                                                        device_name,
+                                                        device_type,
+                                                        auth_lost,
+                                                        iap_support );
         } break;
-    case HCI_CONTROL_EVENT_PAIRING_COMPLETE:
+    case HCI_CONTROL_EVENT_PAIRING_COMPLETE_GARMIN:
         {
         uint8_t result = param[0];
+        BT_transport_type_e transport_type = param[1];
+        uint8_t* bd_addr = &( param[2] );
 
-        BT_LOG_DEBUG( "Pairing complete event: result=%u", result );
+        BT_LOG_DEBUG( "Pairing complete event: result=%u, bd_addr=%02x:%02x:%02x:%02x:%02x:%02x, transport_type=%s",
+                      result,
+                      BD_ADDR_PRINT( bd_addr ),
+                      BT_util_get_transport_type_string( transport_type ) );
 
-        BT_core_handle_device_event_pairing_complete( result );
+        BT_core_handle_device_event_pairing_complete( result, bd_addr, transport_type );
         } break;
-    case HCI_CONTROL_EVENT_USER_CONFIRMATION:
+    case HCI_CONTROL_EVENT_USER_CONFIRMATION_GARMIN:
         {
         uint8_t* bd_addr = &( param[0] );
         uint32_t passkey = LITTLE_ENDIAN_TO_INT32( &( param[6] ) );
+        uint8_t device_name[BT_DEVICE_NAME_LEN] = { 0 };
 
-        BT_LOG_DEBUG( "User confirmation request event: bd_addr=%02x:%02x:%02x:%02x:%02x:%02x, passkey=%u",
+        memcpy( device_name, &( param[10] ), BT_DEVICE_NAME_LEN );
+
+        BT_LOG_DEBUG( "User confirmation request event: bd_addr=%02x:%02x:%02x:%02x:%02x:%02x, device_name=%s, passkey=%u",
                        BD_ADDR_PRINT( bd_addr ),
+                       device_name,
                        passkey );
 
-        BT_core_handle_device_event_user_confirmation( bd_addr, passkey );
+        BT_core_handle_device_event_user_confirmation( bd_addr, device_name, passkey );
         } break;
     default:
         {

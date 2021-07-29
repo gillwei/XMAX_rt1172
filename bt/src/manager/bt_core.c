@@ -17,6 +17,9 @@ extern "C"{
 #include <task.h>
 #include <string.h>
 
+#include "CM_pub.h"
+#include "EW_pub.h"
+
 #include "bt_core.h"
 #include "bt_db.h"
 #include "bt_device.h"
@@ -106,7 +109,8 @@ static void BT_core_reset_all( void );
 static bool BT_core_set_pairing_status
     (
     const BT_pairing_status_e pairing_status,
-    const uint8_t* bd_addr
+    const uint8_t* bd_addr,
+    const BT_transport_type_e transport_type
     );
 
 static bool BT_core_set_power_status
@@ -144,7 +148,7 @@ else
     ret = HCI_send_wiced_command( HCI_CONTROL_COMMAND_USER_CONFIRMATION, param, sizeof( param ) );
     if( ret )
         {
-        BT_core_set_pairing_status( BT_PAIRING_CONFIRMED_WAITING, NULL );
+        BT_core_set_pairing_status( BT_PAIRING_CONFIRMED_WAITING, NULL, BT_TRANSPORT_TYPE_INVALID );
         }
     }
 return ret;
@@ -165,11 +169,11 @@ bool ret = false;
 uint8_t param[BT_DEVICE_ADDRESS_LEN] = { 0 };
 BT_sync_event_t sync_event = { BT_SYNC_EVENT_PAIRED_DEVICE_DELETED, { { 0 } } };
 
-if( ( NULL == bd_addr ) || ( strlen( (const char*)bd_addr ) != BT_DEVICE_ADDRESS_LEN ) )
+if( NULL == bd_addr )
     {
-    BT_LOG_DEBUG( "Invalid BD address" );
+    BT_LOG_DEBUG( "NULL BD address" );
     }
-else if( false == BT_device_is_existed( bd_addr ) )
+else if( false == BT_core_is_paired_device( bd_addr ) )
     {
     BT_LOG_DEBUG( "Not paired device: %02x:%02x:%02x:%02x:%02x:%02x", BD_ADDR_PRINT( bd_addr ) );
     }
@@ -212,9 +216,9 @@ static bool BT_core_disconnect_all
 bool ret = false;
 uint8_t cur_bd_addr[BT_DEVICE_ADDRESS_LEN] = { 0 };
 
-if( ( NULL == bd_addr ) || ( strlen( (const char*)bd_addr ) != BT_DEVICE_ADDRESS_LEN ) )
+if( NULL == bd_addr )
     {
-    BT_LOG_DEBUG( "Invalid BD address" );
+    BT_LOG_DEBUG( "NULL BD address" );
     }
 else
     {
@@ -259,7 +263,12 @@ for( uint8_t i = 0; i < num_paired_devices; ++i )
         }
     }
 
-ret &= BT_core_set_enable_state( true, true );
+if( BT_POWER_OFF == BT_core_get_power_status() )
+    {
+    ret &= BT_core_set_enable_state( true, true );
+    }
+
+EW_notify_btm_status( EnumBtmStatusFACTORY_RESET_COMPLETED );
 return ret;
 }
 
@@ -318,7 +327,7 @@ const BT_device_info_t* BT_core_get_paired_device_info
     const uint8_t device_idx
     )
 {
-return BT_device_get_info( device_idx );
+return BT_device_get( device_idx );
 }
 
 /*================================================================================================
@@ -439,20 +448,6 @@ return s_core.test_mode;
 }
 
 /*================================================================================================
-@brief   Check whether or not this is a paired device
-@details Check whether or not this is a paired device
-@return  None
-@retval  Whether or not this is a paired device
-================================================================================================*/
-bool BT_core_is_paired_device
-    (
-    const uint8_t* bd_addr
-    )
-{
-return BT_device_is_existed( bd_addr );
-}
-
-/*================================================================================================
 @brief   Bluetooth Manager General Core initialization
 @details Bluetooth Manager General Core initialization
 @return  None
@@ -497,6 +492,22 @@ return ret;
 }
 
 /*================================================================================================
+@brief   Check whether or not this is a paired BR/EDR device
+@details Check whether or not this is a paired BR/EDR device
+@return  None
+@retval  Whether or not this is a paired BR/EDR device
+================================================================================================*/
+bool BT_core_is_paired_device
+    (
+    const uint8_t* bd_addr
+    )
+{
+BT_device_type_e device_type = BT_device_get_type( bd_addr );
+
+return ( ( BT_DEVICE_BREDR == device_type ) || ( BT_DEVICE_BREDR_LE == device_type ) );
+}
+
+/*================================================================================================
 @brief   Check whether or not the paired device has lost its authentication data
 @details Check whether or not the paired device has lost its authentication data
 @return  None
@@ -522,6 +533,22 @@ return BT_device_is_max_num_reached();
 }
 
 /*================================================================================================
+@brief   Check whether or not this is a paired LE device
+@details Check whether or not this is a paired LE device
+@return  None
+@retval  Whether or not this is a paired LE device
+================================================================================================*/
+bool BT_core_is_paired_le_device
+    (
+    const uint8_t* bd_addr
+    )
+{
+BT_device_type_e device_type = BT_device_get_type( bd_addr );
+
+return ( ( BT_DEVICE_LE == device_type ) || ( BT_DEVICE_BREDR_LE == device_type ) );
+}
+
+/*================================================================================================
 @brief   Reset Bluetooth Manager General Core's data
 @details Reset Bluetooth Manager General Core's data
 @return  None
@@ -529,15 +556,17 @@ return BT_device_is_max_num_reached();
 ================================================================================================*/
 static void BT_core_reset( void )
 {
-s_core.discoverable_state = true;
+
+uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN] = { 0 };
+
+s_core.discoverable_state = false;
 s_core.test_mode = false;
 s_core.auto_pairing_once = false;
 
 if( BT_PAIRING_NONE != BT_core_get_pairing_status() )
     {
-    BT_core_set_pairing_status( BT_PAIRING_NONE, NULL );
-
-    // TODO: Notify HMI the pairing result is failed
+    BT_core_get_pairing_device_address( bd_addr );
+    BT_core_set_pairing_status( BT_PAIRING_FAILED, bd_addr, BT_TRANSPORT_BREDR );
     }
 }
 
@@ -698,9 +727,9 @@ bool BT_core_set_local_device_address
 bool ret = false;
 const uint8_t* cur_bd_addr = BT_core_get_local_device_address();
 
-if( ( NULL == bd_addr ) || ( strlen( (const char*)bd_addr ) != BT_DEVICE_ADDRESS_LEN ) )
+if( NULL == bd_addr )
     {
-    BT_LOG_DEBUG( "Invalid BD address" );
+    BT_LOG_DEBUG( "NULL BD address" );
     }
 else if( 0 == memcmp( cur_bd_addr, bd_addr, BT_DEVICE_ADDRESS_LEN ) )
     {
@@ -751,7 +780,8 @@ else
 static bool BT_core_set_pairing_status
     (
     const BT_pairing_status_e pairing_status,
-    const uint8_t* bd_addr
+    const uint8_t* bd_addr,
+    const BT_transport_type_e transport_type
     )
 {
 bool ret = false;
@@ -772,18 +802,38 @@ else
                      BT_util_get_pairing_status_string( s_core.pairing_request.pairing_status ),
                      BT_util_get_pairing_status_string( pairing_status ) );
 
-        s_core.pairing_request.pairing_status = pairing_status;
-        if( BT_PAIRING_NONE == pairing_status )
+        if( ( BT_PAIRING_SUCCEEDED == pairing_status ) || ( BT_PAIRING_FAILED == pairing_status ) )
+            {
+            s_core.pairing_request.pairing_status = BT_PAIRING_NONE;
+            }
+        else
+            {
+            s_core.pairing_request.pairing_status = pairing_status;
+            }
+
+        if( BT_PAIRING_NONE == s_core.pairing_request.pairing_status )
             {
             memset( s_core.pairing_request.bd_addr, 0, BT_DEVICE_ADDRESS_LEN );
             }
-        else if( BT_PAIRING_USER_CONFIRMING == pairing_status )
+        else if( BT_PAIRING_USER_CONFIRMING == s_core.pairing_request.pairing_status )
             {
             memcpy( s_core.pairing_request.bd_addr, bd_addr, BT_DEVICE_ADDRESS_LEN );
             }
 
         ret = true;
         xSemaphoreGive( s_core.pairing_request.mutex );
+        }
+    }
+
+if( ret )
+    {
+    if( BT_PAIRING_SUCCEEDED == pairing_status )
+        {
+        CM_handle_btmgr_pairing_result( true, bd_addr, transport_type );
+        }
+    else if( BT_PAIRING_FAILED == pairing_status )
+        {
+        CM_handle_btmgr_pairing_result( false, bd_addr, transport_type );
         }
     }
 return ret;
@@ -822,6 +872,20 @@ else
 
         ret = true;
         xSemaphoreGive( s_core.power_setting.mutex );
+        }
+    }
+
+if( ret )
+    {
+    if( BT_POWER_OFF == power_status )
+        {
+        CM_handle_btmgr_enable_state_changed( false );
+        EW_notify_btm_status( EnumBtmStatusDISABLED );
+        }
+    else if( BT_POWER_ON_READY == power_status )
+        {
+        CM_handle_btmgr_enable_state_changed( true );
+        EW_notify_btm_status( EnumBtmStatusENABLED );
         }
     }
 return ret;
@@ -907,8 +971,11 @@ return ret;
 ================================================================================================*/
 bool BT_core_update_firmware( void )
 {
-bool ret = BT_update_start();
+bool ret = false;
 
+EW_notify_btm_status( EnumBtmStatusUPDATE_START );
+
+ret = BT_update_start();
 if( ret )
     {
     if( BT_POWER_ON_UPDATING == BT_core_get_power_status() )
@@ -919,6 +986,8 @@ if( ret )
     BT_core_set_enable_state( false, false );
     BT_core_set_enable_state( true, false );
     }
+
+EW_notify_btm_status( ret ? EnumBtmStatusUPDATE_FINISH : EnumBtmStatusUPDATE_ABORT );
 return ret;
 }
 
@@ -938,7 +1007,16 @@ void BT_core_handle_device_event_connection_status
     const uint8_t reason
     )
 {
-// TODO: Notify CM that the BR/EDR ACL link is disconnected with reason including Auth Lost
+bool user_disconnected = false;
+
+if( BT_TRANSPORT_BREDR == transport_type )
+    {
+    if( ( HCI_ERR_PEER_USER == reason ) || ( HCI_ERR_CONN_CAUSE_LOCAL_HOST == reason ) )
+        {
+        user_disconnected = true;
+        }
+    CM_handle_btmgr_acl_link_disconnected( bd_addr, user_disconnected );
+    }
 }
 
 /*================================================================================================
@@ -988,8 +1066,6 @@ BT_sync_event_t sync_event = { BT_SYNC_EVENT_PAIRED_DEVICE_DELETED, { { 0 } } };
 
 memcpy( sync_event.param_u.paired_device_deleted.bd_addr, bd_addr, BT_DEVICE_ADDRESS_LEN );
 BT_tsk_sync_signal( &sync_event );
-
-// TODO: Notify HMI and CM that the paired device is deleted
 }
 
 /*================================================================================================
@@ -1000,10 +1076,33 @@ BT_tsk_sync_signal( &sync_event );
 ================================================================================================*/
 void BT_core_handle_device_event_paired_device_list
     (
-    const uint8_t* raw_device_list
+    const uint8_t num_devices,
+    const uint8_t device_num,
+    const uint8_t* bd_addr,
+    const uint8_t* device_name,
+    const BT_device_type_e device_type,
+    const bool auth_lost,
+    const bool iap_support
     )
 {
-BT_device_update( raw_device_list );
+if( 1 == device_num )
+    {
+    BT_device_clear();
+    }
+
+BT_device_add( ( device_num - 1 ), bd_addr, device_name, device_type, auth_lost, iap_support );
+
+if( num_devices == device_num )
+    {
+    if( num_devices == BT_device_get_total_num() )
+        {
+        EW_notify_connection_status( EnumConnectionStatusPAIRED_DEVICE_CHANGED, 0 );
+        }
+    else
+        {
+        // TODO: Error handling for the received paired device list incompleted
+        }
+    }
 }
 
 /*================================================================================================
@@ -1014,12 +1113,12 @@ BT_device_update( raw_device_list );
 ================================================================================================*/
 void BT_core_handle_device_event_pairing_complete
     (
-    const uint8_t result
+    const uint8_t result,
+    const uint8_t* bd_addr,
+    const BT_transport_type_e transport_type
     )
 {
-BT_core_set_pairing_status( BT_PAIRING_NONE, NULL );
-
-// TODO: Notify HMI and CM the pairing result
+BT_core_set_pairing_status( ( 0 == result ? BT_PAIRING_SUCCEEDED : BT_PAIRING_FAILED ), bd_addr, transport_type );
 }
 
 /*================================================================================================
@@ -1031,6 +1130,7 @@ BT_core_set_pairing_status( BT_PAIRING_NONE, NULL );
 void BT_core_handle_device_event_user_confirmation
     (
     const uint8_t* bd_addr,
+    const uint8_t* device_name,
     const uint32_t passkey
     )
 {
@@ -1039,7 +1139,7 @@ BT_request_t request = {
     .param_u.accept_pairing.accept = true
     };
 
-BT_core_set_pairing_status( BT_PAIRING_USER_CONFIRMING, bd_addr );
+BT_core_set_pairing_status( BT_PAIRING_USER_CONFIRMING, bd_addr, BT_TRANSPORT_TYPE_INVALID );
 
 if( s_core.auto_pairing_once )
     {
@@ -1049,7 +1149,7 @@ if( s_core.auto_pairing_once )
     }
 else
     {
-    // TODO: Notify HMI the pairing request
+    EW_notify_bt_passkey_generated( device_name, passkey );
     }
 }
 

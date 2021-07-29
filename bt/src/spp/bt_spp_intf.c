@@ -130,14 +130,7 @@ BT_connection_status_e connection_status = BT_core_spp_get_connection_status( ap
 
 FUNC_ENTRY_PRINT();
 
-if( BT_POWER_ON_READY != BT_core_get_power_status() )
-    {
-    FUNC_NOT_READY_PRINT();
-    return BT_STATUS_NOT_READY;
-    }
-
-if( ( app_type < 0 ) || ( app_type >= BT_SPP_APP_TYPE_INVALID ) ||
-    ( NULL == bd_addr ) || ( strlen( (const char*)bd_addr ) != BT_DEVICE_ADDRESS_LEN ) )
+if( ( NULL == bd_addr ) || ( app_type < 0 ) || ( app_type >= BT_SPP_APP_TYPE_INVALID ) )
     {
     FUNC_INVALID_PARAM_PRINT();
     return BT_STATUS_INVALID_PARAMETER;
@@ -146,6 +139,12 @@ if( ( app_type < 0 ) || ( app_type >= BT_SPP_APP_TYPE_INVALID ) ||
 FUNC_ENTRY_PRINT( "( bd_addr=%02x:%02x:%02x:%02x:%02x:%02x, app=%s )",
                   BD_ADDR_PRINT( bd_addr ),
                   BT_util_get_spp_app_type_string( app_type ) );
+
+if( BT_POWER_ON_READY != BT_core_get_power_status() )
+    {
+    FUNC_NOT_READY_PRINT();
+    return BT_STATUS_NOT_READY;
+    }
 
 if( false == BT_core_is_paired_device( bd_addr ) )
     {
@@ -200,14 +199,7 @@ BT_connection_status_e connection_status = BT_core_spp_get_connection_status( ap
 
 FUNC_ENTRY_PRINT();
 
-if( BT_POWER_ON_READY != BT_core_get_power_status() )
-    {
-    FUNC_NOT_READY_PRINT();
-    return BT_STATUS_NOT_READY;
-    }
-
-if( ( app_type < 0 ) || ( app_type >= BT_SPP_APP_TYPE_INVALID ) ||
-    ( NULL == bd_addr ) || ( strlen( (const char*)bd_addr ) != BT_DEVICE_ADDRESS_LEN ) )
+if( ( NULL == bd_addr ) || ( app_type < 0 ) || ( app_type >= BT_SPP_APP_TYPE_INVALID ) )
     {
     FUNC_INVALID_PARAM_PRINT();
     return BT_STATUS_INVALID_PARAMETER;
@@ -216,6 +208,12 @@ if( ( app_type < 0 ) || ( app_type >= BT_SPP_APP_TYPE_INVALID ) ||
 FUNC_ENTRY_PRINT( "( bd_addr=%02x:%02x:%02x:%02x:%02x:%02x, app=%s )",
                   BD_ADDR_PRINT( bd_addr ),
                   BT_util_get_spp_app_type_string( app_type ) );
+
+if( BT_POWER_ON_READY != BT_core_get_power_status() )
+    {
+    FUNC_NOT_READY_PRINT();
+    return BT_STATUS_NOT_READY;
+    }
 
 if( BT_CONNECTION_DISCONNECTED == connection_status )
     {
@@ -295,15 +293,9 @@ BT_connection_status_e connection_status = BT_core_spp_get_connection_status( ap
 
 FUNC_ENTRY_PRINT();
 
-if( BT_POWER_ON_READY != BT_core_get_power_status() )
-    {
-    FUNC_NOT_READY_PRINT();
-    return BT_STATUS_NOT_READY;
-    }
-
-if( ( app_type < 0 ) || ( app_type >= BT_SPP_APP_TYPE_INVALID ) ||
-    ( NULL == data ) || ( 0 == data_len ) || ( data_len > SPP_DATA_MAX_SIZE ) ||
-    ( NULL == bd_addr ) || ( strlen( (const char*)bd_addr ) != BT_DEVICE_ADDRESS_LEN ) )
+if( ( NULL == bd_addr ) ||
+    ( app_type < 0 ) || ( app_type >= BT_SPP_APP_TYPE_INVALID ) ||
+    ( NULL == data ) || ( 0 == data_len ) || ( data_len > SPP_DATA_MAX_SIZE ) )
     {
     FUNC_INVALID_PARAM_PRINT();
     return BT_STATUS_INVALID_PARAMETER;
@@ -313,6 +305,12 @@ FUNC_ENTRY_PRINT( "( bd_addr=%02x:%02x:%02x:%02x:%02x:%02x, app=%s, data_len=%u 
                   BD_ADDR_PRINT( bd_addr ),
                   BT_util_get_spp_app_type_string( app_type ),
                   data_len );
+
+if( BT_POWER_ON_READY != BT_core_get_power_status() )
+    {
+    FUNC_NOT_READY_PRINT();
+    return BT_STATUS_NOT_READY;
+    }
 
 if( ( BT_CONNECTION_CONNECTED != connection_status ) ||
     ( 0 != memcmp( cur_bd_addr, bd_addr, BT_DEVICE_ADDRESS_LEN ) ) )

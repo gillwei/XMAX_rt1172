@@ -167,10 +167,31 @@ extern "C" {
 
 /*====================================================================
 @type: NEW
-@data: Byte[0]: (1-byte) Number of paired devices in the list
-       Byte[1]: (n-bytes) Data of paired devices stored as format as BT_device_info_t, where n <= ( HCI_PAYLOAD_MAX_SIZE - 1 )
+@data: Byte[0]: (1-byte) Number of total paired devices
+       Byte[1]: (1-byte) Number of current device
+       Byte[2]: (6-bytes) Bluetooth device address
+       Byte[8]: (32-bytes) Bluetooth device name
+       Byte[40]: (1-byte) Device type specified in BT_device_type_e
+       Byte[41]: (1-byte) Whether or not the device has lost its authentication
+       Byte[42]: (1-byte) Whether or not the device supports iAP connection
 ====================================================================*/
 #define HCI_CONTROL_EVENT_PAIRED_DEVICE_LIST_GARMIN ( ( HCI_CONTROL_GROUP_DEVICE << 8 ) | 0xFB )
+
+/*====================================================================
+@type: NEW
+@data: Byte[0]: (1-byte) Result
+       Byte[1]: (1-byte) Transport type specified in BT_transport_type_e
+       Byte[2]: (6-bytes) Bluetooth device address
+====================================================================*/
+#define HCI_CONTROL_EVENT_PAIRING_COMPLETE_GARMIN ( ( HCI_CONTROL_GROUP_DEVICE << 8 ) | 0xFA )
+
+/*====================================================================
+@type: NEW
+@data: Byte[0]: (6-bytes) Bluetooth device address
+       Byte[6]: (4-bytes) Numeric comparison code
+       Byte[10]: (n-bytes) Bluetooth device name, where n <= BT_DEVICE_NAME_LEN
+====================================================================*/
+#define HCI_CONTROL_EVENT_USER_CONFIRMATION_GARMIN ( ( HCI_CONTROL_GROUP_DEVICE << 8 ) | 0xF9 )
 
 /*--------------------------------------------------------------------
                         STANDARD HCI EVENTS

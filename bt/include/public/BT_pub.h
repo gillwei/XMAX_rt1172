@@ -85,6 +85,12 @@ bool BT_get_test_mode( void );
 
 BT_status_e BT_init( void );
 
+BT_status_e BT_is_paired_device
+    (
+    const uint8_t* bd_addr,
+    bool* paired
+    );
+
 BT_status_e BT_is_paired_device_auth_lost
     (
     const uint8_t* bd_addr,
@@ -94,6 +100,12 @@ BT_status_e BT_is_paired_device_auth_lost
 BT_status_e BT_is_paired_device_max_num_reached
     (
     bool* max_num_reached
+    );
+
+BT_status_e BT_is_paired_le_device
+    (
+    const uint8_t* bd_addr,
+    bool* paired
     );
 
 void BT_set_auto_pairing_once( void );
@@ -179,6 +191,8 @@ BT_status_e BLE_client_write_request
     );
 
 // LE Server
+BT_status_e BLE_server_disconnect( void );
+
 BLE_advertising_mode_e BLE_server_get_advertising_mode( void );
 
 BT_status_e BLE_server_notify

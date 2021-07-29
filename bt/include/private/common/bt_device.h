@@ -44,21 +44,33 @@ extern "C" {
 /*--------------------------------------------------------------------
                         PROCEDURES
 --------------------------------------------------------------------*/
-const BT_device_info_t* BT_device_get_info
+bool BT_device_add
+    (
+    const uint8_t idx,
+    const uint8_t* bd_addr,
+    const uint8_t* device_name,
+    const BT_device_type_e device_type,
+    const bool auth_lost,
+    const bool iap_support
+    );
+
+void BT_device_clear( void );
+
+const BT_device_info_t* BT_device_get
     (
     const uint8_t idx
     );
 
 uint8_t BT_device_get_total_num( void );
 
-void BT_device_init( void );
-
-bool BT_device_is_auth_lost
+BT_device_type_e BT_device_get_type
     (
     const uint8_t* bd_addr
     );
 
-bool BT_device_is_existed
+void BT_device_init( void );
+
+bool BT_device_is_auth_lost
     (
     const uint8_t* bd_addr
     );
@@ -69,11 +81,6 @@ bool BT_device_is_iap_support
     );
 
 bool BT_device_is_max_num_reached( void );
-
-bool BT_device_update
-    (
-    const uint8_t* raw_device_list
-    );
 
 #ifdef __cplusplus
 }

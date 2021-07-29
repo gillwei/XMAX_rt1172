@@ -17,8 +17,10 @@ extern "C"{
 #include <task.h>
 #include <string.h>
 
+#include "CM_pub.h"
 #include "factory_test.h"
 
+#include "bt_core.h"
 #include "bt_device.h"
 #include "bt_log.h"
 #include "bt_spp_core.h"
@@ -221,15 +223,15 @@ bool ret = false;
 uint8_t param[BT_DEVICE_ADDRESS_LEN + SPP_APP_TYPE_LEN] = { 0 };
 BT_connection_status_e connection_status = BT_core_spp_get_connection_status( app_type, NULL );
 
-if( ( app_type < 0 ) || ( app_type >= BT_SPP_APP_TYPE_INVALID ) )
+if( NULL == bd_addr )
+    {
+    BT_LOG_DEBUG( "NULL BD address" );
+    }
+else if( ( app_type < 0 ) || ( app_type >= BT_SPP_APP_TYPE_INVALID ) )
     {
     BT_LOG_DEBUG( "Invalid app type: %d", app_type );
     }
-else if( ( NULL == bd_addr ) || ( strlen( (const char*)bd_addr ) != BT_DEVICE_ADDRESS_LEN ) )
-    {
-    BT_LOG_DEBUG( "Invalid BD address" );
-    }
-else if( false == BT_device_is_existed( bd_addr ) )
+else if( false == BT_core_is_paired_device( bd_addr ) )
     {
     BT_LOG_DEBUG( "Not paired device: %02x:%02x:%02x:%02x:%02x:%02x", BD_ADDR_PRINT( bd_addr ) );
     }
@@ -277,13 +279,13 @@ uint8_t param[BT_CONNECTION_HANDLE_LEN + SPP_APP_TYPE_LEN] = { 0 };
 uint16_t connection_handle = BT_core_spp_get_connection_handle( app_type );
 BT_connection_status_e connection_status = BT_core_spp_get_connection_status( app_type, cur_bd_addr );
 
-if( ( app_type < 0 ) || ( app_type >= BT_SPP_APP_TYPE_INVALID ) )
+if( NULL == bd_addr )
+    {
+    BT_LOG_DEBUG( "NULL BD address" );
+    }
+else if( ( app_type < 0 ) || ( app_type >= BT_SPP_APP_TYPE_INVALID ) )
     {
     BT_LOG_DEBUG( "Invalid app type: %d", app_type );
-    }
-else if( ( NULL == bd_addr ) || ( strlen( (const char*)bd_addr ) != BT_DEVICE_ADDRESS_LEN ) )
-    {
-    BT_LOG_DEBUG( "Invalid BD address" );
     }
 else if( BT_CONNECTION_CONNECTED != connection_status )
     {
@@ -496,13 +498,13 @@ uint8_t param[BT_CONNECTION_HANDLE_LEN + SPP_APP_TYPE_LEN + data_len];
 uint16_t connection_handle = BT_core_spp_get_connection_handle( app_type );
 BT_connection_status_e connection_status = BT_core_spp_get_connection_status( app_type, cur_bd_addr );
 
-if( ( app_type < 0 ) || ( app_type >= BT_SPP_APP_TYPE_INVALID ) )
+if( NULL == bd_addr )
+    {
+    BT_LOG_DEBUG( "NULL BD address" );
+    }
+else if( ( app_type < 0 ) || ( app_type >= BT_SPP_APP_TYPE_INVALID ) )
     {
     BT_LOG_DEBUG( "Invalid app type: %d", app_type );
-    }
-else if( ( NULL == bd_addr ) || ( strlen( (const char*)bd_addr ) != BT_DEVICE_ADDRESS_LEN ) )
-    {
-    BT_LOG_DEBUG( "Invalid BD address" );
     }
 else if( ( NULL == data ) || ( 0 == data_len ) || ( data_len > SPP_DATA_MAX_SIZE ) )
     {
@@ -687,7 +689,7 @@ if( ret )
                 }
             }
 
-        // TODO: Notify CM that the SPP app is connected
+        CM_handle_btmgr_spp_connection_status_changed( true, app_type, bd_addr );
         }
     else if( BT_CONNECTION_DISCONNECTED == connection_status )
         {
@@ -702,7 +704,7 @@ if( ret )
                 }
             }
 
-        // TODO: Notify CM that the SPP app is connection failed or disconnected
+        CM_handle_btmgr_spp_connection_status_changed( false, app_type, bd_addr );
         }
     }
 return ret;
