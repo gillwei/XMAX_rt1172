@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef Development_H
-#define Development_H
+#ifndef _DeviceInterfaceConnectionStatusContext_H
+#define _DeviceInterfaceConnectionStatusContext_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,23 +42,26 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_DevelopmentDEV_AncsCategory.h"
-#include "_DevelopmentDEV_Bluetooth.h"
-#include "_DevelopmentDEV_BtLogLevel.h"
-#include "_DevelopmentDEV_EEPROMTest.h"
-#include "_DevelopmentDEV_FontMenu.h"
-#include "_DevelopmentDEV_FontTest.h"
-#include "_DevelopmentDEV_LanguageTest.h"
-#include "_DevelopmentDEV_Main.h"
-#include "_DevelopmentDEV_MotoCon.h"
-#include "_DevelopmentDEV_RealTimeClock.h"
-#include "_DevelopmentDEV_TFTBrightness.h"
-#include "_DevelopmentDEV_VehicleSupportedFunction.h"
+/* Forward declaration of the class DeviceInterface::ConnectionStatusContext */
+#ifndef _DeviceInterfaceConnectionStatusContext_
+  EW_DECLARE_CLASS( DeviceInterfaceConnectionStatusContext )
+#define _DeviceInterfaceConnectionStatusContext_
+#endif
+
+
+/* Deklaration of class : 'DeviceInterface::ConnectionStatusContext' */
+EW_DEFINE_FIELDS( DeviceInterfaceConnectionStatusContext, XObject )
+  EW_VARIABLE( Status,          XEnum )
+EW_END_OF_FIELDS( DeviceInterfaceConnectionStatusContext )
+
+/* Virtual Method Table (VMT) for the class : 'DeviceInterface::ConnectionStatusContext' */
+EW_DEFINE_METHODS( DeviceInterfaceConnectionStatusContext, XObject )
+EW_END_OF_METHODS( DeviceInterfaceConnectionStatusContext )
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* Development_H */
+#endif /* _DeviceInterfaceConnectionStatusContext_H */
 
 /* Embedded Wizard */

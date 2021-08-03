@@ -196,6 +196,7 @@ EW_DEFINE_METHODS( DevelopmentDEV_FontMenu, MenuBaseMenuView )
   EW_METHOD( LoadPoiListItemUnit, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemIcon1Visible, XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemIcon2Visible, XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemDeviceAddress, XUInt64 )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( DevelopmentDEV_FontMenu )
 
 /* 'C' function for method : 'Development::DEV_FontMenu.LoadItemClass()' */

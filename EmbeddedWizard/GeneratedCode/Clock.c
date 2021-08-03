@@ -1084,6 +1084,7 @@ EW_DEFINE_CLASS( ClockCLK01_ClockSettingMenu, MenuBaseMenuView, ClockManualAdjCo
   MenuBaseMenuView_LoadPoiListItemUnit,
   MenuBaseMenuView_LoadItemIcon1Visible,
   MenuBaseMenuView_LoadItemIcon2Visible,
+  MenuBaseMenuView_LoadItemDeviceAddress,
 EW_END_OF_CLASS( ClockCLK01_ClockSettingMenu )
 
 /* Initializer for the class 'Clock::CLK03_SetClock' */

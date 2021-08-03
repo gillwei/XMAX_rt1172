@@ -42,14 +42,20 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_ComponentsBaseMainBG.h"
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
+#include "_MenuBaseMenuView.h"
+#include "_MenuVerticalMenu.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
-#include "_ViewsText.h"
+
+/* Forward declaration of the class Components::BaseMainBG */
+#ifndef _ComponentsBaseMainBG_
+  EW_DECLARE_CLASS( ComponentsBaseMainBG )
+#define _ComponentsBaseMainBG_
+#endif
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -99,15 +105,19 @@
 #define _GraphicsCanvas_
 #endif
 
+/* Forward declaration of the class Menu::ItemBase */
+#ifndef _MenuItemBase_
+  EW_DECLARE_CLASS( MenuItemBase )
+#define _MenuItemBase_
+#endif
+
 
 /* Deklaration of class : 'Development::DEV_Bluetooth' */
-EW_DEFINE_FIELDS( DevelopmentDEV_Bluetooth, ComponentsBaseMainBG )
-  EW_OBJECT  ( BtSwVersionTitle, ViewsText )
-  EW_OBJECT  ( BtSwVersionText, ViewsText )
+EW_DEFINE_FIELDS( DevelopmentDEV_Bluetooth, MenuBaseMenuView )
 EW_END_OF_FIELDS( DevelopmentDEV_Bluetooth )
 
 /* Virtual Method Table (VMT) for the class : 'Development::DEV_Bluetooth' */
-EW_DEFINE_METHODS( DevelopmentDEV_Bluetooth, ComponentsBaseMainBG )
+EW_DEFINE_METHODS( DevelopmentDEV_Bluetooth, MenuBaseMenuView )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -158,13 +168,54 @@ EW_DEFINE_METHODS( DevelopmentDEV_Bluetooth, ComponentsBaseMainBG )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongHomeKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
+  EW_METHOD( OnSetDDModeEnabled, void )( MenuBaseMenuView _this, XBool value )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
+  EW_METHOD( LoadItemClass,     XClass )( DevelopmentDEV_Bluetooth _this, XInt32 
+    aItemNo )
+  EW_METHOD( LoadItemTitle,     XString )( DevelopmentDEV_Bluetooth _this, XInt32 
+    aItemNo )
+  EW_METHOD( OnItemActivate,    void )( DevelopmentDEV_Bluetooth _this, XInt32 aItemNo, 
+    MenuItemBase aMenuItem )
+  EW_METHOD( LoadItemChecked,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemBaseValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemMessage,   XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemReceivedTime, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemCategory,  XEnum )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemUid,       XUInt32 )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemToggle,    XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemUnit,      XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemValue,     XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( OnItemLongEnterKeyActivate, void )( MenuBaseMenuView _this, XInt32 
+    aItemNo, MenuItemBase aMenuItem )
+  EW_METHOD( LoadItemHour,      XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemMinute,    XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadPoiListItemValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadPoiListItemUnit, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemIcon1Visible, XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemIcon2Visible, XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemDeviceAddress, XUInt64 )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( DevelopmentDEV_Bluetooth )
 
 /* 'C' function for method : 'Development::DEV_Bluetooth.OnShortHomeKeyActivated()' */
 void DevelopmentDEV_Bluetooth_OnShortHomeKeyActivated( DevelopmentDEV_Bluetooth _this );
+
+/* 'C' function for method : 'Development::DEV_Bluetooth.LoadItemClass()' */
+XClass DevelopmentDEV_Bluetooth_LoadItemClass( DevelopmentDEV_Bluetooth _this, XInt32 
+  aItemNo );
+
+/* 'C' function for method : 'Development::DEV_Bluetooth.LoadItemTitle()' */
+XString DevelopmentDEV_Bluetooth_LoadItemTitle( DevelopmentDEV_Bluetooth _this, 
+  XInt32 aItemNo );
+
+/* 'C' function for method : 'Development::DEV_Bluetooth.OnItemActivate()' */
+void DevelopmentDEV_Bluetooth_OnItemActivate( DevelopmentDEV_Bluetooth _this, XInt32 
+  aItemNo, MenuItemBase aMenuItem );
+
+/* 'C' function for method : 'Development::DEV_Bluetooth.OnLogLevelChangedSlot()' */
+void DevelopmentDEV_Bluetooth_OnLogLevelChangedSlot( DevelopmentDEV_Bluetooth _this, 
+  XObject sender );
 
 #ifdef __cplusplus
   }

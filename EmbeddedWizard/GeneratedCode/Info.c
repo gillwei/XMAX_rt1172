@@ -376,6 +376,7 @@ EW_DEFINE_CLASS( InfoINF01_MeterDisplaySettingMenu, MenuBaseMenuView, CheckMarkU
   MenuBaseMenuView_LoadPoiListItemUnit,
   MenuBaseMenuView_LoadItemIcon1Visible,
   MenuBaseMenuView_LoadItemIcon2Visible,
+  MenuBaseMenuView_LoadItemDeviceAddress,
 EW_END_OF_CLASS( InfoINF01_MeterDisplaySettingMenu )
 
 /* Initializer for the class 'Info::INF26_ODO_TRIP_SettingMenu' */
@@ -896,6 +897,7 @@ EW_DEFINE_CLASS( InfoINF26_ODO_TRIP_SettingMenu, MenuBaseMenuView, CheckMarkUpda
   MenuBaseMenuView_LoadPoiListItemUnit,
   MenuBaseMenuView_LoadItemIcon1Visible,
   MenuBaseMenuView_LoadItemIcon2Visible,
+  MenuBaseMenuView_LoadItemDeviceAddress,
 EW_END_OF_CLASS( InfoINF26_ODO_TRIP_SettingMenu )
 
 /* Embedded Wizard */

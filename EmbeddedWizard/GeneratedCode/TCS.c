@@ -301,6 +301,7 @@ EW_DEFINE_CLASS( TCSTCS01_Main, MenuBaseMenuView, VehicleDataReceivedEventHandle
   MenuBaseMenuView_LoadPoiListItemUnit,
   MenuBaseMenuView_LoadItemIcon1Visible,
   MenuBaseMenuView_LoadItemIcon2Visible,
+  MenuBaseMenuView_LoadItemDeviceAddress,
 EW_END_OF_CLASS( TCSTCS01_Main )
 
 /* Embedded Wizard */

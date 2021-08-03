@@ -115,6 +115,7 @@
 /* Deklaration of class : 'Settings::SET04_BtSettingMenu' */
 EW_DEFINE_FIELDS( SettingsSET04_BtSettingMenu, MenuBaseMenuView )
   EW_ARRAY   ( ItemClassArray,  XClass, [4])
+  EW_VARIABLE( IsBtEnabled,     XBool )
 EW_END_OF_FIELDS( SettingsSET04_BtSettingMenu )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET04_BtSettingMenu' */
@@ -198,6 +199,7 @@ EW_DEFINE_METHODS( SettingsSET04_BtSettingMenu, MenuBaseMenuView )
   EW_METHOD( LoadPoiListItemUnit, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemIcon1Visible, XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemIcon2Visible, XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemDeviceAddress, XUInt64 )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( SettingsSET04_BtSettingMenu )
 
 /* The method Init() is invoked automatically after the component has been created. 

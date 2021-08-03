@@ -54,52 +54,6 @@ enum MusicControlType
   item VolumeDown;
 }
 
-$rect <30,170,230,210>
-$output false
-enum BtDeviceConnectionResult
-{
-  $rect <10,10,210,50>
-  item SUCCESS;
-
-  $rect <10,60,210,100>
-  item FAIL;
-
-  $rect <10,110,220,150>
-  item AUTHENTICATION_ERR;
-
-  $rect <10,160,300,200>
-  item ONLY_NAVI_APP_CONNECTED;
-
-  $rect <10,210,300,250>
-  item ONLY_YAMAHA_APP_CONNECTED;
-
-  $rect <10,260,300,300>
-  item BOTH_APP_CONNECTED;
-
-  $rect <10,310,300,350>
-  item YAMAHA_APP_BLE_NOT_CONNECTED;
-
-  $rect <10,360,310,400>
-  item YAMAHA_APP_CONNECTION_FAILED;
-}
-
-$rect <30,220,230,260>
-$output false
-enum BtFwStatus
-{
-  $rect <10,10,210,50>
-  item NO_UPDATE;
-
-  $rect <10,60,210,100>
-  item UPDATE_START;
-
-  $rect <10,110,210,150>
-  item UPDATE_ABORT;
-
-  $rect <10,160,210,200>
-  item UPDATE_FINISH;
-}
-
 $rect <30,421,230,461>
 $output false
 enum RotationDirection
@@ -736,29 +690,6 @@ enum HomeType
   item TOTAL;
 }
 
-$rect <30,270,230,310>
-$output false
-enum BlePairingState
-{
-  $rect <10,10,250,50>
-  item IDLE;
-
-  $rect <10,60,250,100>
-  item ADVERTISING;
-
-  $rect <10,110,250,150>
-  item SUCCESSFUL;
-
-  $rect <10,160,250,200>
-  item TIMEOUT;
-
-  $rect <10,210,250,250>
-  item FAIL;
-
-  $rect <10,260,250,300>
-  item PINCODE_GENERATED;
-}
-
 $rect <500,20,700,60>
 $output false
 enum NaviDataType
@@ -963,35 +894,6 @@ enum PressureSettingItem
 
   $rect <430,10,630,50>
   item KGF_PER_CM2;
-}
-
-$rect <30,320,230,360>
-$output false
-enum BtcPairingState
-{
-  $rect <10,10,250,50>
-  item IDLE;
-
-  $rect <10,60,250,100>
-  item DISCOVERABLE;
-
-  $rect <10,110,250,150>
-  item SUCCESSFUL;
-
-  $rect <10,160,250,200>
-  item TIMEOUT;
-
-  $rect <10,210,250,250>
-  item FAIL;
-
-  $rect <10,260,250,300>
-  item PASSKEY_GENERATED;
-
-  $rect <10,310,250,350>
-  item NAVI_APP_CONNECTED;
-
-  $rect <10,360,250,400>
-  item YAMAHA_APP_CONNECTED;
 }
 
 $rect <30,520,230,560>
@@ -1966,7 +1868,7 @@ enum NaviZoomActionType
   item ZOOM_OUT;
 }
 
-$rect <30,720,230,760>
+$rect <30,170,230,210>
 $output false
 enum ConnectionStatus
 {
@@ -1977,49 +1879,52 @@ enum ConnectionStatus
   item CONFIRM_PASSKEY;
 
   $rect <10,110,260,150>
-  item WAIT_APP_CONNECTION;
-
-  $rect <10,160,260,200>
   item NAVI_APP_CONNECTED;
 
-  $rect <10,210,260,250>
+  $rect <10,160,260,200>
   item YAMAHA_APP_CONNECTED;
 
-  $rect <10,260,260,300>
-  item BOTH_APP_CONNECTED;
+  $rect <10,210,320,250>
+  item YAMAHA_APP_BLE_CONNECTED;
+
+  $rect <10,260,320,300>
+  item YAMAHA_APP_BLE_NOT_CONNECTED;
 
   $rect <10,310,260,350>
-  item CONNECTION_FAILED;
+  item BOTH_APP_CONNECTED;
 
   $rect <10,360,260,400>
-  item AUTHENTICATION_ERR;
+  item CONNECTION_FAILED;
 
   $rect <10,410,260,450>
   item CONNECTED_APP_CHANGED;
 
   $rect <10,460,260,500>
   item PAIRED_DEVICE_CHANGED;
+
+  $rect <10,560,280,600>
+  item PAIRED_DEVICE_LIST_UPDATED;
 }
 
-$rect <30,770,230,810>
+$rect <30,220,230,260>
 $output false
 enum BtmStatus
 {
   $rect <10,10,210,50>
   item ENABLED;
 
-  $rect <10,160,210,200>
-  item UPDATE_START;
-
-  $rect <10,210,210,250>
-  item UPDATE_ABORT;
-
-  $rect <10,260,210,300>
-  item UPDATE_FINISH;
-
   $rect <10,60,210,100>
   item DISABLED;
 
-  $rect <10,110,270,150>
+  $rect <10,110,210,150>
+  item UPDATE_START;
+
+  $rect <10,160,210,200>
+  item UPDATE_ABORT;
+
+  $rect <10,210,210,250>
+  item UPDATE_FINISH;
+
+  $rect <10,260,270,300>
   item FACTORY_RESET_COMPLETED;
 }

@@ -2057,6 +2057,7 @@ EW_DEFINE_CLASS( NavigationNAV06_NaviSettingMenu, MenuBaseMenuView, NavigatingSt
   MenuBaseMenuView_LoadPoiListItemUnit,
   MenuBaseMenuView_LoadItemIcon1Visible,
   MenuBaseMenuView_LoadItemIcon2Visible,
+  MenuBaseMenuView_LoadItemDeviceAddress,
 EW_END_OF_CLASS( NavigationNAV06_NaviSettingMenu )
 
 /* Initializer for the class 'Navigation::NAV08_NaviChageViewMenu' */
@@ -2379,6 +2380,7 @@ EW_DEFINE_CLASS( NavigationNAV08_NaviChageViewMenu, MenuBaseMenuView, CheckMarkU
   MenuBaseMenuView_LoadPoiListItemUnit,
   MenuBaseMenuView_LoadItemIcon1Visible,
   MenuBaseMenuView_LoadItemIcon2Visible,
+  MenuBaseMenuView_LoadItemDeviceAddress,
 EW_END_OF_CLASS( NavigationNAV08_NaviChageViewMenu )
 
 /* Initializer for the class 'Navigation::NaviCurrentRoad' */
@@ -5972,6 +5974,7 @@ EW_DEFINE_CLASS( NavigationNAV09_NAV10_PoiList, MenuBaseMenuView, PoiListUpdateE
   NavigationNAV09_NAV10_PoiList_LoadPoiListItemUnit,
   MenuBaseMenuView_LoadItemIcon1Visible,
   MenuBaseMenuView_LoadItemIcon2Visible,
+  MenuBaseMenuView_LoadItemDeviceAddress,
 EW_END_OF_CLASS( NavigationNAV09_NAV10_PoiList )
 
 /* Initializer for the class 'Navigation::NAV11_RouteOptionMenu' */
@@ -6209,6 +6212,7 @@ EW_DEFINE_CLASS( NavigationNAV11_RouteOptionMenu, MenuBaseMenuView, _.VMT, _.VMT
   MenuBaseMenuView_LoadPoiListItemUnit,
   MenuBaseMenuView_LoadItemIcon1Visible,
   MenuBaseMenuView_LoadItemIcon2Visible,
+  MenuBaseMenuView_LoadItemDeviceAddress,
 EW_END_OF_CLASS( NavigationNAV11_RouteOptionMenu )
 
 /* User defined constant: 'Navigation::TURN_ICON_BOUNDS_W_DIST' */

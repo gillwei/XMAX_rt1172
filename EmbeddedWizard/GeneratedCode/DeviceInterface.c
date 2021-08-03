@@ -27,7 +27,9 @@
 #include "ewlocale.h"
 #include "_CoreSystemEvent.h"
 #include "_DeviceInterfaceBluetoothDeviceClass.h"
-#include "_DeviceInterfaceBluetoothPairedDeviceInfo.h"
+#include "_DeviceInterfaceBtPairedDeviceInfo.h"
+#include "_DeviceInterfaceBtmStatusContext.h"
+#include "_DeviceInterfaceConnectionStatusContext.h"
 #include "_DeviceInterfaceDateTime.h"
 #include "_DeviceInterfaceMediaManagerDeviceClass.h"
 #include "_DeviceInterfaceMotoConContext.h"
@@ -51,20 +53,18 @@
 /* Compressed strings for the language 'Default'. */
 EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
-  0x000002B0, /* ratio 50.58 % */
+  0x0000023E, /* ratio 51.57 % */
   0xB8002500, 0x000A6452, 0x00C2003A, 0x80107390, 0x16750010, 0x20037002, 0x540044C9,
   0x30019400, 0x000021A7, 0x04160619, 0x1BC00680, 0x421C7700, 0x22D14894, 0x3B1B8CC5,
   0x91A29422, 0x0D364AE3, 0xF1000075, 0x9103C011, 0xBC264843, 0x9326A678, 0xEA8B14A1,
   0x82F1F9E4, 0x1B262748, 0x066001A6, 0x008C1E40, 0xB9C422A6, 0x85496831, 0x01926B49,
   0x8627B4B0, 0x4E1151A7, 0x88357AAD, 0x1136B544, 0xA00A457A, 0x65B1C6E8, 0x093DA29B,
   0xB7002D97, 0x6CACC538, 0xD82E6003, 0xEEC962BA, 0x644109EC, 0x15380011, 0x1779B1C2,
-  0x1BC254EB, 0x206802F3, 0x864AC892, 0xA49EE10A, 0xC12CF9A8, 0x6E0D1727, 0x6710F844,
-  0xF951D5C4, 0x514C7D0A, 0x8BAE60A1, 0x2BD8563F, 0x9555AA95, 0x040C8D08, 0xE8611060,
-  0x33351D95, 0x3830F910, 0x6A56004A, 0x814CD432, 0xCDDFDF77, 0x3E2E1001, 0xE4C46114,
-  0xB06C01B9, 0xD5F7D59E, 0x6E2FA3A0, 0x3D3BD31C, 0x15DFE3F7, 0x81E00533, 0x50DFDAFC,
-  0x3AEFA684, 0xF7CE2714, 0x15F7F10D, 0x547D8951, 0xC950411D, 0x4755DF76, 0x0013254D,
-  0xD9300055, 0xF655C758, 0x99F607D1, 0x257E4007, 0x7F5857ED, 0x95174190, 0x64D5DA6B,
-  0xF6168118, 0x004051F4, 0x00000000
+  0x1BC254EB, 0x206802F3, 0x864AC892, 0xA49EE10A, 0x5EC299A8, 0xAAAD54A9, 0x20D84844,
+  0x3B2BD0C2, 0xBA70DE6A, 0xA3A0EAAF, 0x831C6E2F, 0xA1EBB73A, 0x5ECA2308, 0xED43D1FC,
+  0x42AFA9AC, 0xEBBB9A11, 0x7F389C50, 0x95FE76C3, 0xA68FE268, 0x8BE54209, 0xA9D1EFDC,
+  0x01540132, 0x74EC7930, 0x7E3F6300, 0xF556BE38, 0x0BCD92F2, 0xC00C873F, 0x119C544A,
+  0x1EAFCB31, 0x9ECF72B6, 0x00000101, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -77,24 +77,44 @@ static const XStringRes _Const0005 = { _StringsDefault0, 0x006B };
 static const XStringRes _Const0006 = { _StringsDefault0, 0x0082 };
 static const XStringRes _Const0007 = { _StringsDefault0, 0x0092 };
 static const XStringRes _Const0008 = { _StringsDefault0, 0x009F };
-static const XStringRes _Const0009 = { _StringsDefault0, 0x00B7 };
-static const XStringRes _Const000A = { _StringsDefault0, 0x00CC };
-static const XStringRes _Const000B = { _StringsDefault0, 0x00D8 };
-static const XStringRes _Const000C = { _StringsDefault0, 0x00EC };
-static const XStringRes _Const000D = { _StringsDefault0, 0x0107 };
-static const XStringRes _Const000E = { _StringsDefault0, 0x0125 };
-static const XStringRes _Const000F = { _StringsDefault0, 0x0139 };
+static const XStringRes _Const0009 = { _StringsDefault0, 0x00B3 };
+static const XStringRes _Const000A = { _StringsDefault0, 0x00CE };
+static const XStringRes _Const000B = { _StringsDefault0, 0x00EC };
+static const XStringRes _Const000C = { _StringsDefault0, 0x0100 };
+
+#ifndef EW_DONT_CHECK_INDEX
+  /* This function is used to check the indices when accessing an array.
+     If you don't want this verification add the define EW_DONT_CHECK_INDEX
+     to your Makefile or project settings. */
+  static int EwCheckIndex( int aIndex, int aRange, const char* aFile, int aLine )
+  {
+    if (( aIndex < 0 ) || ( aIndex >= aRange ))
+    {
+      EwPrint( "[FATAL ERROR in %s:%d] Array index %d out of bounds %d",
+                aFile, aLine, aIndex, aRange );
+      EwPanic();
+    }
+    return aIndex;
+  }
+
+  #define EwCheckIndex( aIndex, aRange ) \
+    EwCheckIndex( aIndex, aRange, __FILE__, __LINE__ )
+#else
+  #define EwCheckIndex( aIndex, aRange ) aIndex
+#endif
 
 /* User defined inline code: 'DeviceInterface::Inline' */
 #include <stddef.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include "ew_priv.h"
 #include "display_support.h"
 #include "EEPM_pub.h"
 #include "PERIPHERAL_pub.h"
 #include "VI_pub.h"
 #include "MM_pub_ams_type.h"
-#include "BTM_pub.h"
+#include "BT_pub.h"
+#include "CM_pub.h"
 #include "BC_motocon_pub.h"
 #include "BC_motocon_pub_type.h"
 #include "BC_ams_pub.h"
@@ -275,20 +295,6 @@ void DeviceInterfaceSystemDeviceClass_SetTFTDutyCycle( DeviceInterfaceSystemDevi
   EW_UNUSED_ARG( _this );
 
   PERIPHERAL_pwm_set_display_dutycycle( aDutyCycle );
-}
-
-/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnGetBtSoftwareVersion()' */
-XString DeviceInterfaceSystemDeviceClass_OnGetBtSoftwareVersion( DeviceInterfaceSystemDeviceClass _this )
-{
-  XString bt_sw_version = 0;
-
-  {
-    char version[8];
-    ew_get_bt_software_version( version );
-    bt_sw_version = EwNewStringAnsi( version );
-  }
-  _this->BtSoftwareVersion = EwShareString( bt_sw_version );
-  return _this->BtSoftwareVersion;
 }
 
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.StartBurnInTest()' */
@@ -1725,7 +1731,7 @@ XBool DeviceInterfaceNavigationDeviceClass_OnGetNaviAppSppConnected( DeviceInter
   EW_UNUSED_ARG( _this );
 
   IsNaviAppSppConnected = 0;
-  IsNaviAppSppConnected = BTM_is_bt_connected();
+  IsNaviAppSppConnected = CM_get_spp_connection_status( CM_APP_NAVILITE );
   return IsNaviAppSppConnected;
 }
 
@@ -2290,14 +2296,15 @@ void DeviceInterfaceBluetoothDeviceClass__Init( DeviceInterfaceBluetoothDeviceCl
   _this->_.XObject._.GCT = EW_CLASS_GCT( DeviceInterfaceBluetoothDeviceClass );
 
   /* ... then construct all embedded objects */
-  CoreSystemEvent__Init( &_this->BtcPairingChangedSystemEvent, &_this->_.XObject, 0 );
-  DeviceInterfaceBluetoothPairedDeviceInfo__Init( &_this->PairedDeviceObj, &_this->_.XObject, 0 );
   CoreSystemEvent__Init( &_this->MotoConSystemEvent, &_this->_.XObject, 0 );
-  CoreSystemEvent__Init( &_this->PairedDeviceUpdatedSystemEvent, &_this->_.XObject, 0 );
-  CoreSystemEvent__Init( &_this->BtcConnectionResultSystemEvent, &_this->_.XObject, 0 );
+  CoreSystemEvent__Init( &_this->BtmStatusEvent, &_this->_.XObject, 0 );
+  CoreSystemEvent__Init( &_this->ConnectionStatusEvent, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_.VMT = EW_CLASS( DeviceInterfaceBluetoothDeviceClass );
+
+  /* ... and initialize objects, variables, properties, etc. */
+  _this->LogLevel = 3;
 }
 
 /* Re-Initializer for the class 'DeviceInterface::BluetoothDeviceClass' */
@@ -2307,11 +2314,9 @@ void DeviceInterfaceBluetoothDeviceClass__ReInit( DeviceInterfaceBluetoothDevice
   TemplatesDeviceClass__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
-  CoreSystemEvent__ReInit( &_this->BtcPairingChangedSystemEvent );
-  DeviceInterfaceBluetoothPairedDeviceInfo__ReInit( &_this->PairedDeviceObj );
   CoreSystemEvent__ReInit( &_this->MotoConSystemEvent );
-  CoreSystemEvent__ReInit( &_this->PairedDeviceUpdatedSystemEvent );
-  CoreSystemEvent__ReInit( &_this->BtcConnectionResultSystemEvent );
+  CoreSystemEvent__ReInit( &_this->BtmStatusEvent );
+  CoreSystemEvent__ReInit( &_this->ConnectionStatusEvent );
 }
 
 /* Finalizer method for the class 'DeviceInterface::BluetoothDeviceClass' */
@@ -2321,61 +2326,49 @@ void DeviceInterfaceBluetoothDeviceClass__Done( DeviceInterfaceBluetoothDeviceCl
   _this->_.Super._.VMT = EW_CLASS( TemplatesDeviceClass );
 
   /* Finalize all embedded objects */
-  CoreSystemEvent__Done( &_this->BtcPairingChangedSystemEvent );
-  DeviceInterfaceBluetoothPairedDeviceInfo__Done( &_this->PairedDeviceObj );
   CoreSystemEvent__Done( &_this->MotoConSystemEvent );
-  CoreSystemEvent__Done( &_this->PairedDeviceUpdatedSystemEvent );
-  CoreSystemEvent__Done( &_this->BtcConnectionResultSystemEvent );
+  CoreSystemEvent__Done( &_this->BtmStatusEvent );
+  CoreSystemEvent__Done( &_this->ConnectionStatusEvent );
 
   /* Don't forget to deinitialize the super class ... */
   TemplatesDeviceClass__Done( &_this->_.Super );
 }
 
-/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.GetPairedDeviceAtItem()' */
-void DeviceInterfaceBluetoothDeviceClass_GetPairedDeviceAtItem( DeviceInterfaceBluetoothDeviceClass _this, 
-  XInt32 aItemNo )
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.GetPairedDeviceList()' */
+void DeviceInterfaceBluetoothDeviceClass_GetPairedDeviceList( DeviceInterfaceBluetoothDeviceClass _this )
 {
+  XInt32 DevIdx;
   XString DevName = 0;
-  XBool IsNaviAppConnected = 0;
-  XBool IsYamahaAppConnected = 0;
+  XUInt64 DevAddr = 0;
 
+  for ( DevIdx = 0; DevIdx < _this->PairedDeviceNum; DevIdx++ )
   {
-    uint8_t* device_name;
-    bool     is_navi_app_connected = false;
-    bool     is_yamaha_app_connected = false;
-
-    ew_bt_get_paired_device_at_index( aItemNo, &device_name, &is_navi_app_connected, &is_yamaha_app_connected );
-
-    uint8_t *stuffed_str = NULL;
-    int32_t stuffed_str_len = ew_handle_special_characters( device_name, &stuffed_str );
-    if( stuffed_str_len > 0 && stuffed_str != NULL )
+    DeviceInterfaceBtPairedDeviceInfo DevInfo;
     {
-      DevName = EwNewStringUtf8( stuffed_str, stuffed_str_len );
+      BT_device_info_t device_info;
+      uint8_t* stuffed_str = NULL;
+      int32_t  stuffed_str_len;
+
+      if( BT_STATUS_OK == BT_get_paired_device_info( DevIdx, &device_info ) )
+      {
+        stuffed_str_len = ew_handle_special_characters( device_info.device_name, &stuffed_str );
+        if( ( 0 < stuffed_str_len ) && ( NULL != stuffed_str ) )
+        {
+          DevName = EwNewStringUtf8( stuffed_str, stuffed_str_len );
+        }
+
+        DevAddr = 0;
+        for( int32_t i = 0; i < BT_DEVICE_ADDRESS_LEN; i++ )
+        {
+          DevAddr = ( DevAddr << 8 ) | device_info.bd_addr[i];
+        }
+      }
     }
-
-    IsNaviAppConnected = is_navi_app_connected;
-    IsYamahaAppConnected = is_yamaha_app_connected;
+    DevInfo = EwNewObject( DeviceInterfaceBtPairedDeviceInfo, 0 );
+    DevInfo->DeviceName = EwShareString( DevName );
+    DevInfo->DeviceAddress = DevAddr;
+    _this->PairedDeviceList[ EwCheckIndex( DevIdx, 8 )] = DevInfo;
   }
-  _this->PairedDeviceObj.DeviceName = EwShareString( DevName );
-  _this->PairedDeviceObj.IsNaviAppConnected = IsNaviAppConnected;
-  _this->PairedDeviceObj.IsYamahaAppConnected = IsYamahaAppConnected;
-}
-
-/* This method is intended to be called by the device to notify the GUI application 
-   about a particular system event. */
-void DeviceInterfaceBluetoothDeviceClass_NotifyBtcPairingStateChanged( DeviceInterfaceBluetoothDeviceClass _this, 
-  XEnum aState )
-{
-  _this->BtcPairingState = aState;
-  CoreSystemEvent_Trigger( &_this->BtcPairingChangedSystemEvent, 0, 0 );
-}
-
-/* Wrapper function for the non virtual method : 'DeviceInterface::BluetoothDeviceClass.NotifyBtcPairingStateChanged()' */
-void DeviceInterfaceBluetoothDeviceClass__NotifyBtcPairingStateChanged( void* _this, 
-  XEnum aState )
-{
-  DeviceInterfaceBluetoothDeviceClass_NotifyBtcPairingStateChanged((DeviceInterfaceBluetoothDeviceClass)_this
-  , aState );
 }
 
 /* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnSetDiscoverable()' */
@@ -2385,83 +2378,68 @@ void DeviceInterfaceBluetoothDeviceClass_OnSetDiscoverable( DeviceInterfaceBluet
   if ( _this->Discoverable != value )
   {
     _this->Discoverable = value;
-    ew_bt_set_discoverable( ( bool )value );
+    BT_set_discoverable_state( (bool)value );
   }
 }
 
-/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnSetBluetoothEnable()' */
-void DeviceInterfaceBluetoothDeviceClass_OnSetBluetoothEnable( DeviceInterfaceBluetoothDeviceClass _this, 
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnSetBluetoothEnabled()' */
+void DeviceInterfaceBluetoothDeviceClass_OnSetBluetoothEnabled( DeviceInterfaceBluetoothDeviceClass _this, 
   XBool value )
 {
-  EwTrace( "%s%b", EwLoadString( &_Const0008 ), value );
-
-  if ( _this->BluetoothEnable != value )
+  if ( _this->BluetoothEnabled != value )
   {
-    _this->BluetoothEnable = value;
-    ew_bt_set_enable( ( bool )value );
+    _this->BluetoothEnabled = value;
+    BT_set_enable_state( (bool)value );
   }
-
-  EwNotifyRefObservers( EwNewRef( _this, DeviceInterfaceBluetoothDeviceClass_OnGetBluetoothEnable, 
-    DeviceInterfaceBluetoothDeviceClass_OnSetBluetoothEnable ), 0 );
 }
 
-/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnGetBluetoothEnable()' */
-XBool DeviceInterfaceBluetoothDeviceClass_OnGetBluetoothEnable( DeviceInterfaceBluetoothDeviceClass _this )
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnGetBluetoothEnabled()' */
+XBool DeviceInterfaceBluetoothDeviceClass_OnGetBluetoothEnabled( DeviceInterfaceBluetoothDeviceClass _this )
 {
-  return _this->BluetoothEnable;
+  XBool EnableStatus = 0;
+
+  EnableStatus = BT_get_enable_state();
+  _this->BluetoothEnabled = EnableStatus;
+  return _this->BluetoothEnabled;
 }
 
 /* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnSetAutoConnect()' */
 void DeviceInterfaceBluetoothDeviceClass_OnSetAutoConnect( DeviceInterfaceBluetoothDeviceClass _this, 
   XBool value )
 {
-  _this->AutoConnect = value;
-  ew_bt_set_autoconnect( ( bool )value );
+  if ( _this->AutoConnect != value )
+  {
+    _this->AutoConnect = value;
+    CM_set_auto_connect_state( value );
+  }
 }
 
 /* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnGetAutoConnect()' */
 XBool DeviceInterfaceBluetoothDeviceClass_OnGetAutoConnect( DeviceInterfaceBluetoothDeviceClass _this )
 {
-  XBool IsAutoConnect;
+  XBool IsAutoConnect = 0;
 
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( _this );
-
-  IsAutoConnect = 0;
-  IsAutoConnect = ew_bt_get_autoconnect();
-  return IsAutoConnect;
-}
-
-/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnGetPairedDeviceNum()' */
-XInt32 DeviceInterfaceBluetoothDeviceClass_OnGetPairedDeviceNum( DeviceInterfaceBluetoothDeviceClass _this )
-{
-  XInt32 PairedDevNum;
-
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( _this );
-
-  PairedDevNum = 0;
-  PairedDevNum = ew_bt_get_paired_device_num();
-  return PairedDevNum;
+  IsAutoConnect = CM_get_auto_connect_state();
+  _this->AutoConnect = IsAutoConnect;
+  return _this->AutoConnect;
 }
 
 /* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.UnpairDevice()' */
 void DeviceInterfaceBluetoothDeviceClass_UnpairDevice( DeviceInterfaceBluetoothDeviceClass _this, 
-  XInt32 aPairedDeviceIndex )
+  XUInt64 aDeviceAddress )
 {
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( _this );
+  XUInt64 DevAddr;
 
-  ew_bt_unpair_paired_device( aPairedDeviceIndex );
-}
-
-/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.GetBluetoothEnable()' */
-void DeviceInterfaceBluetoothDeviceClass_GetBluetoothEnable( DeviceInterfaceBluetoothDeviceClass _this )
-{
-  XBool enable = 0;
-
-  enable = ew_bt_get_enable();
-  DeviceInterfaceBluetoothDeviceClass_OnSetBluetoothEnable( _this, enable );
+  DeviceInterfaceBluetoothDeviceClass_DeleteFromPairedDeviceList( _this, aDeviceAddress );
+  DevAddr = aDeviceAddress;
+  {
+    uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN];
+    for( int32_t i = 0; i < BT_DEVICE_ADDRESS_LEN; i++ )
+    {
+      bd_addr[BT_DEVICE_ADDRESS_LEN - i - 1] = DevAddr >> ( 8*i );
+    }
+    BT_delete_paired_device( bd_addr );
+  }
 }
 
 /* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnGetLocalDeviceName()' */
@@ -2474,109 +2452,75 @@ XString DeviceInterfaceBluetoothDeviceClass_OnGetLocalDeviceName( DeviceInterfac
 
   LocalDevName = 0;
   {
-    uint8_t* device_name;
-    ew_bt_get_local_device_name( &device_name );
-    LocalDevName = EwNewStringUtf8( (const unsigned char*)device_name, (int)strlen( (char*)device_name ) );
+    const uint8_t* device_name = BT_get_local_device_name();
+    LocalDevName = EwNewStringUtf8( device_name, (int)strlen( (char*)device_name ) );
   }
   return LocalDevName;
 }
 
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnGetLocalDeviceAddress()' */
+XString DeviceInterfaceBluetoothDeviceClass_OnGetLocalDeviceAddress( DeviceInterfaceBluetoothDeviceClass _this )
+{
+  XString DeviceAddr = 0;
+
+  {
+    const uint8_t* bd_addr = BT_get_local_device_address();
+    char bd_addr_display[32];
+    snprintf( bd_addr_display, 32, "%02x:%02x:%02x:%02x:%02x:%02x", bd_addr[0], bd_addr[1], bd_addr[2], bd_addr[3], bd_addr[4], bd_addr[5] );
+    DeviceAddr = EwNewStringAnsi( (const char*)bd_addr_display );
+  }
+  _this->LocalDeviceAddress = EwShareString( DeviceAddr );
+  return _this->LocalDeviceAddress;
+}
+
 /* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.ConnectPairedDevice()' */
 void DeviceInterfaceBluetoothDeviceClass_ConnectPairedDevice( DeviceInterfaceBluetoothDeviceClass _this, 
-  XInt32 aPairedDeviceIndex )
+  XUInt64 aDeviceAddress )
 {
+  XUInt64 DevAddr;
+
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
 
-  ew_bt_connect_paired_device( aPairedDeviceIndex );
+  DevAddr = aDeviceAddress;
+  {
+    uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN];
+    for( int32_t i = 0; i < BT_DEVICE_ADDRESS_LEN; i++ )
+    {
+      bd_addr[BT_DEVICE_ADDRESS_LEN - i - 1] = DevAddr >> ( 8*i );
+    }
+    CM_connect( bd_addr );
+  }
 }
 
 /* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.DisconnectPairedDevice()' */
 void DeviceInterfaceBluetoothDeviceClass_DisconnectPairedDevice( DeviceInterfaceBluetoothDeviceClass _this, 
-  XInt32 aPairedDeviceIndex )
+  XUInt64 aDeviceAddress )
 {
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( _this );
-
-  ew_bt_disconnect_paired_device( aPairedDeviceIndex );
-}
-
-/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnGetIsMaxPairedDevice()' */
-XBool DeviceInterfaceBluetoothDeviceClass_OnGetIsMaxPairedDevice( DeviceInterfaceBluetoothDeviceClass _this )
-{
-  XBool is_max_paired_device;
+  XUInt64 DevAddr;
 
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
 
-  is_max_paired_device = 0;
-  is_max_paired_device = ew_bt_is_max_paired_device_num();
-  return is_max_paired_device;
-}
-
-/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnSetBtFwStatus()' */
-void DeviceInterfaceBluetoothDeviceClass_OnSetBtFwStatus( DeviceInterfaceBluetoothDeviceClass _this, 
-  XEnum value )
-{
-  if ( _this->BtFwStatus != value )
+  DevAddr = aDeviceAddress;
   {
-    _this->BtFwStatus = value;
-    EwNotifyRefObservers( EwNewRef( _this, DeviceInterfaceBluetoothDeviceClass_OnGetBtFwStatus, 
-      DeviceInterfaceBluetoothDeviceClass_OnSetBtFwStatus ), 0 );
+    uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN];
+    for( int32_t i = 0; i < BT_DEVICE_ADDRESS_LEN; i++ )
+    {
+      bd_addr[BT_DEVICE_ADDRESS_LEN - i - 1] = DevAddr >> ( 8*i );
+    }
+    CM_disconnect( bd_addr );
   }
 }
 
-/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.NotifyBtFwStatus()' */
-void DeviceInterfaceBluetoothDeviceClass_NotifyBtFwStatus( DeviceInterfaceBluetoothDeviceClass _this, 
-  XEnum status, XString version )
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnGetIsPairedDeviceNumMax()' */
+XBool DeviceInterfaceBluetoothDeviceClass_OnGetIsPairedDeviceNumMax( DeviceInterfaceBluetoothDeviceClass _this )
 {
-  EwTrace( "%s%e", EwLoadString( &_Const0009 ), status );
-  EwTrace( "%s%s", EwLoadString( &_Const000A ), version );
-  DeviceInterfaceBluetoothDeviceClass_OnSetBtFwStatus( _this, status );
-}
+  XBool is_max_paired_device = 0;
 
-/* Wrapper function for the non virtual method : 'DeviceInterface::BluetoothDeviceClass.NotifyBtFwStatus()' */
-void DeviceInterfaceBluetoothDeviceClass__NotifyBtFwStatus( void* _this, XEnum status, 
-  XString version )
-{
-  DeviceInterfaceBluetoothDeviceClass_NotifyBtFwStatus((DeviceInterfaceBluetoothDeviceClass)_this
-  , status, version );
-}
-
-/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnSetRefreshPairedDeviceList()' */
-void DeviceInterfaceBluetoothDeviceClass_OnSetRefreshPairedDeviceList( DeviceInterfaceBluetoothDeviceClass _this, 
-  XBool value )
-{
-  _this->RefreshPairedDeviceList = value;
-  EwNotifyRefObservers( EwNewRef( _this, DeviceInterfaceBluetoothDeviceClass_OnGetRefreshPairedDeviceList, 
-    DeviceInterfaceBluetoothDeviceClass_OnSetRefreshPairedDeviceList ), 0 );
-}
-
-/* This method is intended to be called by the device to notify the GUI application 
-   about a particular system event. */
-void DeviceInterfaceBluetoothDeviceClass_NotifyPairedDeviceConnectionStatusUpdated( DeviceInterfaceBluetoothDeviceClass _this )
-{
-  DeviceInterfaceBluetoothDeviceClass_OnSetRefreshPairedDeviceList( _this, 1 );
-  CoreSystemEvent_Trigger( &_this->PairedDeviceUpdatedSystemEvent, 0, 0 );
-}
-
-/* Wrapper function for the non virtual method : 'DeviceInterface::BluetoothDeviceClass.NotifyPairedDeviceConnectionStatusUpdated()' */
-void DeviceInterfaceBluetoothDeviceClass__NotifyPairedDeviceConnectionStatusUpdated( void* _this )
-{
-  DeviceInterfaceBluetoothDeviceClass_NotifyPairedDeviceConnectionStatusUpdated((DeviceInterfaceBluetoothDeviceClass)_this );
-}
-
-/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.GetPairingFailCount()' */
-XInt32 DeviceInterfaceBluetoothDeviceClass_GetPairingFailCount( DeviceInterfaceBluetoothDeviceClass _this )
-{
-  XInt32 FailCount;
-
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( _this );
-
-  FailCount = 0;
-  FailCount = BTM_get_ble_pairing_fail_count();
-  return FailCount;
+  BT_is_paired_device_max_num_reached( (bool*)&is_max_paired_device );
+  _this->IsPairedDeviceNumMax = is_max_paired_device;
+  return _this->IsPairedDeviceNumMax;
 }
 
 /* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.IsMotoconConnected()' */
@@ -2610,23 +2554,6 @@ void DeviceInterfaceBluetoothDeviceClass__NotifyMotoConEventReceived( void* _thi
 {
   DeviceInterfaceBluetoothDeviceClass_NotifyMotoConEventReceived((DeviceInterfaceBluetoothDeviceClass)_this
   , aEvent );
-}
-
-/* This method is intended to be called by the device to notify the GUI application 
-   about a particular system event. */
-void DeviceInterfaceBluetoothDeviceClass_NotifyBtcConnectionResult( DeviceInterfaceBluetoothDeviceClass _this, 
-  XEnum aResult )
-{
-  _this->ConnectPairedDeviceResult = aResult;
-  CoreSystemEvent_Trigger( &_this->BtcConnectionResultSystemEvent, 0, 0 );
-}
-
-/* Wrapper function for the non virtual method : 'DeviceInterface::BluetoothDeviceClass.NotifyBtcConnectionResult()' */
-void DeviceInterfaceBluetoothDeviceClass__NotifyBtcConnectionResult( void* _this, 
-  XEnum aResult )
-{
-  DeviceInterfaceBluetoothDeviceClass_NotifyBtcConnectionResult((DeviceInterfaceBluetoothDeviceClass)_this
-  , aResult );
 }
 
 /* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.GetBtcPasskey()' */
@@ -2683,17 +2610,74 @@ void DeviceInterfaceBluetoothDeviceClass__SendMotoConCommand( void* _this, XEnum
   , aTxCmd );
 }
 
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.NotifyBtmStatus()' */
+void DeviceInterfaceBluetoothDeviceClass_NotifyBtmStatus( DeviceInterfaceBluetoothDeviceClass _this, 
+  XEnum aStatus )
+{
+  DeviceInterfaceBtmStatusContext BtmStatusContext;
+
+  EwTrace( "%s%e", EwLoadString( &_Const0008 ), aStatus );
+  BtmStatusContext = EwNewObject( DeviceInterfaceBtmStatusContext, 0 );
+  BtmStatusContext->Status = aStatus;
+  CoreSystemEvent_Trigger( &_this->BtmStatusEvent, ((XObject)BtmStatusContext ), 
+  0 );
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::BluetoothDeviceClass.NotifyBtmStatus()' */
+void DeviceInterfaceBluetoothDeviceClass__NotifyBtmStatus( void* _this, XEnum aStatus )
+{
+  DeviceInterfaceBluetoothDeviceClass_NotifyBtmStatus((DeviceInterfaceBluetoothDeviceClass)_this
+  , aStatus );
+}
+
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.NotifyConnectionStatus()' */
+void DeviceInterfaceBluetoothDeviceClass_NotifyConnectionStatus( DeviceInterfaceBluetoothDeviceClass _this, 
+  XEnum aStatus )
+{
+  EwTrace( "%s%e", EwLoadString( &_Const0009 ), aStatus );
+
+  switch ( aStatus )
+  {
+    case EnumConnectionStatusPAIRED_DEVICE_CHANGED :
+      EwPostSignal( EwNewSlot( _this, DeviceInterfaceBluetoothDeviceClass_OnPairedDeviceListUpdatedSlot ), 
+        ((XObject)_this ));
+    break;
+
+    case EnumConnectionStatusCONNECTED_APP_CHANGED :
+      EwPostSignal( EwNewSlot( _this, DeviceInterfaceBluetoothDeviceClass_OnConnectedAppStatusUpdatedSlot ), 
+        ((XObject)_this ));
+    break;
+
+    default : 
+    {
+      DeviceInterfaceConnectionStatusContext ConnectionStatusContext = EwNewObject( 
+        DeviceInterfaceConnectionStatusContext, 0 );
+      ConnectionStatusContext->Status = aStatus;
+      CoreSystemEvent_Trigger( &_this->ConnectionStatusEvent, ((XObject)ConnectionStatusContext ), 
+      0 );
+    }
+  }
+}
+
+/* Wrapper function for the non virtual method : 'DeviceInterface::BluetoothDeviceClass.NotifyConnectionStatus()' */
+void DeviceInterfaceBluetoothDeviceClass__NotifyConnectionStatus( void* _this, XEnum 
+  aStatus )
+{
+  DeviceInterfaceBluetoothDeviceClass_NotifyConnectionStatus((DeviceInterfaceBluetoothDeviceClass)_this
+  , aStatus );
+}
+
 /* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.IsPairingDeviceYamahaAppSPPConnected()' */
 XBool DeviceInterfaceBluetoothDeviceClass_IsPairingDeviceYamahaAppSPPConnected( DeviceInterfaceBluetoothDeviceClass _this )
 {
-  XBool IsConnected;
+  XBool Connected;
 
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
 
-  IsConnected = 0;
-  IsConnected = BTM_is_pairing_device_yapp_spp_connected();
-  return IsConnected;
+  Connected = 0;
+  Connected = CM_get_spp_connection_status( CM_APP_YCONNECT );
+  return Connected;
 }
 
 /* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.TriggerConnectionTimeoutTimer()' */
@@ -2702,54 +2686,189 @@ void DeviceInterfaceBluetoothDeviceClass_TriggerConnectionTimeoutTimer( DeviceIn
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
 
-  BTM_start_btm_timeout_timer( BTM_BLE_PAIR_TIMEOUT );
+  //BTM_start_btm_timeout_timer( BTM_BLE_PAIR_TIMEOUT );
 }
 
-/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.NotifyBtmStatus()' */
-void DeviceInterfaceBluetoothDeviceClass_NotifyBtmStatus( DeviceInterfaceBluetoothDeviceClass _this, 
-  XEnum status )
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnPairedDeviceListUpdatedSlot()' */
+void DeviceInterfaceBluetoothDeviceClass_OnPairedDeviceListUpdatedSlot( DeviceInterfaceBluetoothDeviceClass _this, 
+  XObject sender )
 {
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  _this->PairedDeviceNum = DeviceInterfaceBluetoothDeviceClass_GetPairedDeviceNum( 
+  _this );
+
+  if ( 0 < _this->PairedDeviceNum )
+  {
+    DeviceInterfaceBluetoothDeviceClass_GetPairedDeviceList( _this );
+    EwSignal( EwNewSlot( _this, DeviceInterfaceBluetoothDeviceClass_OnConnectedAppStatusUpdatedSlot ), 
+      ((XObject)_this ));
+  }
+  else
+    DeviceInterfaceBluetoothDeviceClass_NotifyConnectionStatus( _this, EnumConnectionStatusPAIRED_DEVICE_LIST_UPDATED );
+}
+
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnConnectedAppStatusUpdatedSlot()' */
+void DeviceInterfaceBluetoothDeviceClass_OnConnectedAppStatusUpdatedSlot( DeviceInterfaceBluetoothDeviceClass _this, 
+  XObject sender )
+{
+  XInt32 i;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  for ( i = 0; i < _this->PairedDeviceNum; i++ )
+  {
+    _this->PairedDeviceList[ EwCheckIndex( i, 8 )]->IsNaviAppConnected = DeviceInterfaceBluetoothDeviceClass_GetNaviAppStatus( 
+    _this, _this->PairedDeviceList[ EwCheckIndex( i, 8 )]->DeviceAddress );
+    _this->PairedDeviceList[ EwCheckIndex( i, 8 )]->IsYamahaAppConnected = DeviceInterfaceBluetoothDeviceClass_GetYamahaAppStatus( 
+    _this, _this->PairedDeviceList[ EwCheckIndex( i, 8 )]->DeviceAddress );
+  }
+
+  DeviceInterfaceBluetoothDeviceClass_NotifyConnectionStatus( _this, EnumConnectionStatusPAIRED_DEVICE_LIST_UPDATED );
+}
+
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.GetPairedDeviceNum()' */
+XInt32 DeviceInterfaceBluetoothDeviceClass_GetPairedDeviceNum( DeviceInterfaceBluetoothDeviceClass _this )
+{
+  XInt32 Num;
+
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
 
-  EwTrace( "%s%e", EwLoadString( &_Const000B ), status );
+  Num = 0;
+  {
+    uint8_t paired_device_num = 0;
+    if( BT_STATUS_OK == BT_get_num_paired_devices( &paired_device_num ) )
+    {
+      Num = paired_device_num;
+    }
+  }
+
+  if ( 8 < Num )
+    Num = 8;
+
+  return Num;
 }
 
-/* Wrapper function for the non virtual method : 'DeviceInterface::BluetoothDeviceClass.NotifyBtmStatus()' */
-void DeviceInterfaceBluetoothDeviceClass__NotifyBtmStatus( void* _this, XEnum status )
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.GetNaviAppStatus()' */
+XBool DeviceInterfaceBluetoothDeviceClass_GetNaviAppStatus( DeviceInterfaceBluetoothDeviceClass _this, 
+  XUInt64 aAddress )
 {
-  DeviceInterfaceBluetoothDeviceClass_NotifyBtmStatus((DeviceInterfaceBluetoothDeviceClass)_this
-  , status );
-}
+  XBool IsNaviAppConnected;
 
-/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.NotifyConnectionStatus()' */
-void DeviceInterfaceBluetoothDeviceClass_NotifyConnectionStatus( DeviceInterfaceBluetoothDeviceClass _this, 
-  XEnum status, XUInt32 data )
-{
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
 
-  EwTrace( "%s%e%u", EwLoadString( &_Const000C ), status, data );
+  IsNaviAppConnected = 0;
+  {
+    uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN];
+    for( int32_t i = 0; i < BT_DEVICE_ADDRESS_LEN; i++ )
+    {
+      bd_addr[i] = aAddress >> ( 8 * i );
+    }
+    IsNaviAppConnected = CM_get_app_connection_status( CM_APP_NAVILITE, bd_addr );
+  }
+  return IsNaviAppConnected;
 }
 
-/* Wrapper function for the non virtual method : 'DeviceInterface::BluetoothDeviceClass.NotifyConnectionStatus()' */
-void DeviceInterfaceBluetoothDeviceClass__NotifyConnectionStatus( void* _this, XEnum 
-  status, XUInt32 data )
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.GetYamahaAppStatus()' */
+XBool DeviceInterfaceBluetoothDeviceClass_GetYamahaAppStatus( DeviceInterfaceBluetoothDeviceClass _this, 
+  XUInt64 aAddress )
 {
-  DeviceInterfaceBluetoothDeviceClass_NotifyConnectionStatus((DeviceInterfaceBluetoothDeviceClass)_this
-  , status, data );
+  XBool IsYamahaAppConnected;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  IsYamahaAppConnected = 0;
+  {
+    uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN];
+    for( int32_t i = 0; i < BT_DEVICE_ADDRESS_LEN; i++ )
+    {
+      bd_addr[i] = aAddress >> ( 8*i );
+    }
+    IsYamahaAppConnected = CM_get_app_connection_status( CM_APP_YCONNECT, bd_addr );
+  }
+  return IsYamahaAppConnected;
 }
 
-/* Default onget method for the property 'BtFwStatus' */
-XEnum DeviceInterfaceBluetoothDeviceClass_OnGetBtFwStatus( DeviceInterfaceBluetoothDeviceClass _this )
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.ConfirmPasskey()' */
+void DeviceInterfaceBluetoothDeviceClass_ConfirmPasskey( DeviceInterfaceBluetoothDeviceClass _this, 
+  XBool aResult )
 {
-  return _this->BtFwStatus;
+  XBool aConfirmedResult;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  aConfirmedResult = aResult;
+  BT_accept_pairing( aConfirmedResult );
 }
 
-/* Default onget method for the property 'RefreshPairedDeviceList' */
-XBool DeviceInterfaceBluetoothDeviceClass_OnGetRefreshPairedDeviceList( DeviceInterfaceBluetoothDeviceClass _this )
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnGetBtSoftwareVersion()' */
+XString DeviceInterfaceBluetoothDeviceClass_OnGetBtSoftwareVersion( DeviceInterfaceBluetoothDeviceClass _this )
 {
-  return _this->RefreshPairedDeviceList;
+  XString bt_sw_version = 0;
+
+  {
+    uint8_t major = 0;
+    uint8_t minor = 0;
+    BT_get_sw_version( &major, &minor );
+
+    char version[32];
+    snprintf( version, 32, "%1u.%u", major, minor );
+    bt_sw_version = EwNewStringAnsi( version );
+  }
+  _this->BtSoftwareVersion = EwShareString( bt_sw_version );
+  return _this->BtSoftwareVersion;
+}
+
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnSetLogLevel()' */
+void DeviceInterfaceBluetoothDeviceClass_OnSetLogLevel( DeviceInterfaceBluetoothDeviceClass _this, 
+  XInt32 value )
+{
+  if ( _this->LogLevel != value )
+  {
+    XBool BtLogLevel;
+    _this->LogLevel = value;
+    BtLogLevel = !!value;
+    BT_set_log_level( BtLogLevel );
+  }
+}
+
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.DeleteFromPairedDeviceList()' */
+void DeviceInterfaceBluetoothDeviceClass_DeleteFromPairedDeviceList( DeviceInterfaceBluetoothDeviceClass _this, 
+  XUInt64 aDeviceAddress )
+{
+  XInt32 i;
+  XInt32 FoundIdx = -1;
+
+  for ( i = 0; i < _this->PairedDeviceNum; i++ )
+    if ( _this->PairedDeviceList[ EwCheckIndex( i, 8 )]->DeviceAddress == aDeviceAddress )
+    {
+      FoundIdx = i;
+      break;
+    }
+
+  if ( 0 <= FoundIdx )
+  {
+    for ( i = FoundIdx; i < ( _this->PairedDeviceNum - 1 ); i++ )
+    {
+      _this->PairedDeviceList[ EwCheckIndex( i, 8 )]->DeviceName = EwShareString( 
+      _this->PairedDeviceList[ EwCheckIndex( i + 1, 8 )]->DeviceName );
+      _this->PairedDeviceList[ EwCheckIndex( i, 8 )]->DeviceAddress = _this->PairedDeviceList[ 
+      EwCheckIndex( i + 1, 8 )]->DeviceAddress;
+      _this->PairedDeviceList[ EwCheckIndex( i, 8 )]->IsNaviAppConnected = _this->PairedDeviceList[ 
+      EwCheckIndex( i + 1, 8 )]->IsNaviAppConnected;
+      _this->PairedDeviceList[ EwCheckIndex( i, 8 )]->IsYamahaAppConnected = _this->PairedDeviceList[ 
+      EwCheckIndex( i + 1, 8 )]->IsYamahaAppConnected;
+    }
+
+    _this->PairedDeviceNum--;
+    DeviceInterfaceBluetoothDeviceClass_NotifyConnectionStatus( _this, EnumConnectionStatusPAIRED_DEVICE_LIST_UPDATED );
+  }
 }
 
 /* Variants derived from the class : 'DeviceInterface::BluetoothDeviceClass' */
@@ -2757,9 +2876,9 @@ EW_DEFINE_CLASS_VARIANTS( DeviceInterfaceBluetoothDeviceClass )
 EW_END_OF_CLASS_VARIANTS( DeviceInterfaceBluetoothDeviceClass )
 
 /* Virtual Method Table (VMT) for the class : 'DeviceInterface::BluetoothDeviceClass' */
-EW_DEFINE_CLASS( DeviceInterfaceBluetoothDeviceClass, TemplatesDeviceClass, BtcPairingChangedSystemEvent, 
-                 BtcPairingChangedSystemEvent, BtcPairingChangedSystemEvent, BtcPairingChangedSystemEvent, 
-                 ConnectPairedDeviceResult, ConnectPairedDeviceResult, "DeviceInterface::BluetoothDeviceClass" )
+EW_DEFINE_CLASS( DeviceInterfaceBluetoothDeviceClass, TemplatesDeviceClass, PairedDeviceList, 
+                 MotoConSystemEvent, MotoConSystemEvent, MotoConSystemEvent, LocalDeviceAddress, 
+                 PairedDeviceNum, "DeviceInterface::BluetoothDeviceClass" )
 EW_END_OF_CLASS( DeviceInterfaceBluetoothDeviceClass )
 
 /* User defined auto object: 'DeviceInterface::BluetoothDevice' */
@@ -2775,28 +2894,28 @@ void DeviceInterfaceBluetoothDevice__Init( DeviceInterfaceBluetoothDeviceClass _
 EW_DEFINE_AUTOOBJECT_VARIANTS( DeviceInterfaceBluetoothDevice )
 EW_END_OF_AUTOOBJECT_VARIANTS( DeviceInterfaceBluetoothDevice )
 
-/* Initializer for the class 'DeviceInterface::BluetoothPairedDeviceInfo' */
-void DeviceInterfaceBluetoothPairedDeviceInfo__Init( DeviceInterfaceBluetoothPairedDeviceInfo _this, XObject aLink, XHandle aArg )
+/* Initializer for the class 'DeviceInterface::BtPairedDeviceInfo' */
+void DeviceInterfaceBtPairedDeviceInfo__Init( DeviceInterfaceBtPairedDeviceInfo _this, XObject aLink, XHandle aArg )
 {
   /* At first initialize the super class ... */
   XObject__Init( &_this->_.Super, aLink, aArg );
 
   /* Allow the Immediate Garbage Collection to evalute the members of this class. */
-  _this->_.XObject._.GCT = EW_CLASS_GCT( DeviceInterfaceBluetoothPairedDeviceInfo );
+  _this->_.XObject._.GCT = EW_CLASS_GCT( DeviceInterfaceBtPairedDeviceInfo );
 
   /* Setup the VMT pointer */
-  _this->_.VMT = EW_CLASS( DeviceInterfaceBluetoothPairedDeviceInfo );
+  _this->_.VMT = EW_CLASS( DeviceInterfaceBtPairedDeviceInfo );
 }
 
-/* Re-Initializer for the class 'DeviceInterface::BluetoothPairedDeviceInfo' */
-void DeviceInterfaceBluetoothPairedDeviceInfo__ReInit( DeviceInterfaceBluetoothPairedDeviceInfo _this )
+/* Re-Initializer for the class 'DeviceInterface::BtPairedDeviceInfo' */
+void DeviceInterfaceBtPairedDeviceInfo__ReInit( DeviceInterfaceBtPairedDeviceInfo _this )
 {
   /* At first re-initialize the super class ... */
   XObject__ReInit( &_this->_.Super );
 }
 
-/* Finalizer method for the class 'DeviceInterface::BluetoothPairedDeviceInfo' */
-void DeviceInterfaceBluetoothPairedDeviceInfo__Done( DeviceInterfaceBluetoothPairedDeviceInfo _this )
+/* Finalizer method for the class 'DeviceInterface::BtPairedDeviceInfo' */
+void DeviceInterfaceBtPairedDeviceInfo__Done( DeviceInterfaceBtPairedDeviceInfo _this )
 {
   /* Finalize this class */
   _this->_.Super._.VMT = EW_CLASS( XObject );
@@ -2805,15 +2924,14 @@ void DeviceInterfaceBluetoothPairedDeviceInfo__Done( DeviceInterfaceBluetoothPai
   XObject__Done( &_this->_.Super );
 }
 
-/* Variants derived from the class : 'DeviceInterface::BluetoothPairedDeviceInfo' */
-EW_DEFINE_CLASS_VARIANTS( DeviceInterfaceBluetoothPairedDeviceInfo )
-EW_END_OF_CLASS_VARIANTS( DeviceInterfaceBluetoothPairedDeviceInfo )
+/* Variants derived from the class : 'DeviceInterface::BtPairedDeviceInfo' */
+EW_DEFINE_CLASS_VARIANTS( DeviceInterfaceBtPairedDeviceInfo )
+EW_END_OF_CLASS_VARIANTS( DeviceInterfaceBtPairedDeviceInfo )
 
-/* Virtual Method Table (VMT) for the class : 'DeviceInterface::BluetoothPairedDeviceInfo' */
-EW_DEFINE_CLASS( DeviceInterfaceBluetoothPairedDeviceInfo, XObject, DeviceName, 
-                 DeviceName, DeviceName, DeviceName, DeviceName, IsYamahaAppConnected, 
-                 "DeviceInterface::BluetoothPairedDeviceInfo" )
-EW_END_OF_CLASS( DeviceInterfaceBluetoothPairedDeviceInfo )
+/* Virtual Method Table (VMT) for the class : 'DeviceInterface::BtPairedDeviceInfo' */
+EW_DEFINE_CLASS( DeviceInterfaceBtPairedDeviceInfo, XObject, DeviceName, DeviceName, 
+                 DeviceName, DeviceName, DeviceName, DeviceAddress, "DeviceInterface::BtPairedDeviceInfo" )
+EW_END_OF_CLASS( DeviceInterfaceBtPairedDeviceInfo )
 
 /* Initializer for the class 'DeviceInterface::RtcTime' */
 void DeviceInterfaceRtcTime__Init( DeviceInterfaceRtcTime _this, XObject aLink, XHandle aArg )
@@ -4223,7 +4341,7 @@ XBool DeviceInterfaceNotificationDeviceClass__IsPhoneCallStateActive( void* _thi
    about a particular system event. */
 void DeviceInterfaceNotificationDeviceClass_NotifyPhoneCallStateChanged( DeviceInterfaceNotificationDeviceClass _this )
 {
-  EwTrace( "%s", EwLoadString( &_Const000D ));
+  EwTrace( "%s", EwLoadString( &_Const000A ));
   CoreSystemEvent_Trigger( &_this->PhoneCallStateChangedSystemEvent, 0, 0 );
 }
 
@@ -4237,7 +4355,7 @@ void DeviceInterfaceNotificationDeviceClass__NotifyPhoneCallStateChanged( void* 
    about a particular system event. */
 void DeviceInterfaceNotificationDeviceClass_NotifyListUpdated( DeviceInterfaceNotificationDeviceClass _this )
 {
-  EwTrace( "%s", EwLoadString( &_Const000E ));
+  EwTrace( "%s", EwLoadString( &_Const000B ));
   CoreSystemEvent_Trigger( &_this->NotificationListUpdatedSystemEvent, 0, 0 );
 }
 
@@ -4440,7 +4558,7 @@ void DeviceInterfaceNotificationDeviceClass_PhoneCallVolumeControl( DeviceInterf
    about a particular system event. */
 void DeviceInterfaceNotificationDeviceClass_NotifyPhoneCallVolumeChanged( DeviceInterfaceNotificationDeviceClass _this )
 {
-  EwTrace( "%s", EwLoadString( &_Const000F ));
+  EwTrace( "%s", EwLoadString( &_Const000C ));
   CoreSystemEvent_Trigger( &_this->PhoneCallVolumeChangedSystemEvent, 0, 0 );
 }
 
@@ -4732,5 +4850,83 @@ EW_END_OF_CLASS_VARIANTS( DeviceInterfaceNaviPoiDataClass )
 EW_DEFINE_CLASS( DeviceInterfaceNaviPoiDataClass, XObject, DistUnit, DistUnit, DistUnit, 
                  DistUnit, DistUnit, Distance, "DeviceInterface::NaviPoiDataClass" )
 EW_END_OF_CLASS( DeviceInterfaceNaviPoiDataClass )
+
+/* Initializer for the class 'DeviceInterface::BtmStatusContext' */
+void DeviceInterfaceBtmStatusContext__Init( DeviceInterfaceBtmStatusContext _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  XObject__Init( &_this->_.Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_.XObject._.GCT = EW_CLASS_GCT( DeviceInterfaceBtmStatusContext );
+
+  /* Setup the VMT pointer */
+  _this->_.VMT = EW_CLASS( DeviceInterfaceBtmStatusContext );
+}
+
+/* Re-Initializer for the class 'DeviceInterface::BtmStatusContext' */
+void DeviceInterfaceBtmStatusContext__ReInit( DeviceInterfaceBtmStatusContext _this )
+{
+  /* At first re-initialize the super class ... */
+  XObject__ReInit( &_this->_.Super );
+}
+
+/* Finalizer method for the class 'DeviceInterface::BtmStatusContext' */
+void DeviceInterfaceBtmStatusContext__Done( DeviceInterfaceBtmStatusContext _this )
+{
+  /* Finalize this class */
+  _this->_.Super._.VMT = EW_CLASS( XObject );
+
+  /* Don't forget to deinitialize the super class ... */
+  XObject__Done( &_this->_.Super );
+}
+
+/* Variants derived from the class : 'DeviceInterface::BtmStatusContext' */
+EW_DEFINE_CLASS_VARIANTS( DeviceInterfaceBtmStatusContext )
+EW_END_OF_CLASS_VARIANTS( DeviceInterfaceBtmStatusContext )
+
+/* Virtual Method Table (VMT) for the class : 'DeviceInterface::BtmStatusContext' */
+EW_DEFINE_CLASS( DeviceInterfaceBtmStatusContext, XObject, _.VMT, _.VMT, _.VMT, 
+                 _.VMT, _.VMT, _.VMT, "DeviceInterface::BtmStatusContext" )
+EW_END_OF_CLASS( DeviceInterfaceBtmStatusContext )
+
+/* Initializer for the class 'DeviceInterface::ConnectionStatusContext' */
+void DeviceInterfaceConnectionStatusContext__Init( DeviceInterfaceConnectionStatusContext _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  XObject__Init( &_this->_.Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_.XObject._.GCT = EW_CLASS_GCT( DeviceInterfaceConnectionStatusContext );
+
+  /* Setup the VMT pointer */
+  _this->_.VMT = EW_CLASS( DeviceInterfaceConnectionStatusContext );
+}
+
+/* Re-Initializer for the class 'DeviceInterface::ConnectionStatusContext' */
+void DeviceInterfaceConnectionStatusContext__ReInit( DeviceInterfaceConnectionStatusContext _this )
+{
+  /* At first re-initialize the super class ... */
+  XObject__ReInit( &_this->_.Super );
+}
+
+/* Finalizer method for the class 'DeviceInterface::ConnectionStatusContext' */
+void DeviceInterfaceConnectionStatusContext__Done( DeviceInterfaceConnectionStatusContext _this )
+{
+  /* Finalize this class */
+  _this->_.Super._.VMT = EW_CLASS( XObject );
+
+  /* Don't forget to deinitialize the super class ... */
+  XObject__Done( &_this->_.Super );
+}
+
+/* Variants derived from the class : 'DeviceInterface::ConnectionStatusContext' */
+EW_DEFINE_CLASS_VARIANTS( DeviceInterfaceConnectionStatusContext )
+EW_END_OF_CLASS_VARIANTS( DeviceInterfaceConnectionStatusContext )
+
+/* Virtual Method Table (VMT) for the class : 'DeviceInterface::ConnectionStatusContext' */
+EW_DEFINE_CLASS( DeviceInterfaceConnectionStatusContext, XObject, _.VMT, _.VMT, 
+                 _.VMT, _.VMT, _.VMT, _.VMT, "DeviceInterface::ConnectionStatusContext" )
+EW_END_OF_CLASS( DeviceInterfaceConnectionStatusContext )
 
 /* Embedded Wizard */

@@ -107,6 +107,7 @@ EW_DEFINE_FIELDS( MenuItemWrapper, CoreGroup )
   EW_PROPERTY( ItemClass,       XClass )
   EW_PROPERTY( Height,          XInt32 )
   EW_PROPERTY( Uid,             XUInt32 )
+  EW_PROPERTY( DeviceAddress,   XUInt64 )
   EW_PROPERTY( Category,        XEnum )
   EW_PROPERTY( Icon2Visible,    XBool )
   EW_PROPERTY( Icon1Visible,    XBool )
@@ -227,6 +228,9 @@ void MenuItemWrapper_OnSetPoiListItemUnit( MenuItemWrapper _this, XString value 
 
 /* 'C' function for method : 'Menu::ItemWrapper.OnSetIcon2Visible()' */
 void MenuItemWrapper_OnSetIcon2Visible( MenuItemWrapper _this, XBool value );
+
+/* 'C' function for method : 'Menu::ItemWrapper.OnSetDeviceAddress()' */
+void MenuItemWrapper_OnSetDeviceAddress( MenuItemWrapper _this, XUInt64 value );
 
 #ifdef __cplusplus
   }

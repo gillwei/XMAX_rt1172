@@ -24,6 +24,7 @@
 #include "display_support.h"
 #include "EEPM_pub.h"
 #include "CAN_pub.h"
+#include "PERIPHERAL_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS

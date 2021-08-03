@@ -63,28 +63,6 @@ typedef enum
   EnumMusicControlTypeVolumeDown        = 5
 } EnumMusicControlType;
 
-/* User defined enumeration: 'Enum::BtDeviceConnectionResult' */
-typedef enum
-{
-  EnumBtDeviceConnectionResultSUCCESS   = 0,
-  EnumBtDeviceConnectionResultFAIL      = 1,
-  EnumBtDeviceConnectionResultAUTHENTICATION_ERR = 2,
-  EnumBtDeviceConnectionResultONLY_NAVI_APP_CONNECTED = 3,
-  EnumBtDeviceConnectionResultONLY_YAMAHA_APP_CONNECTED = 4,
-  EnumBtDeviceConnectionResultBOTH_APP_CONNECTED = 5,
-  EnumBtDeviceConnectionResultYAMAHA_APP_BLE_NOT_CONNECTED = 6,
-  EnumBtDeviceConnectionResultYAMAHA_APP_CONNECTION_FAILED = 7
-} EnumBtDeviceConnectionResult;
-
-/* User defined enumeration: 'Enum::BtFwStatus' */
-typedef enum
-{
-  EnumBtFwStatusNO_UPDATE               = 0,
-  EnumBtFwStatusUPDATE_START            = 1,
-  EnumBtFwStatusUPDATE_ABORT            = 2,
-  EnumBtFwStatusUPDATE_FINISH           = 3
-} EnumBtFwStatus;
-
 /* User defined enumeration: 'Enum::RotationDirection' */
 typedef enum
 {
@@ -429,19 +407,6 @@ typedef enum
   EnumPressureSettingItemKPA            = 1,
   EnumPressureSettingItemKGF_PER_CM2    = 2
 } EnumPressureSettingItem;
-
-/* User defined enumeration: 'Enum::BtcPairingState' */
-typedef enum
-{
-  EnumBtcPairingStateIDLE               = 0,
-  EnumBtcPairingStateDISCOVERABLE       = 1,
-  EnumBtcPairingStateSUCCESSFUL         = 2,
-  EnumBtcPairingStateTIMEOUT            = 3,
-  EnumBtcPairingStateFAIL               = 4,
-  EnumBtcPairingStatePASSKEY_GENERATED  = 5,
-  EnumBtcPairingStateNAVI_APP_CONNECTED = 6,
-  EnumBtcPairingStateYAMAHA_APP_CONNECTED = 7
-} EnumBtcPairingState;
 
 /* User defined enumeration: 'Enum::ReceptionStatus' */
 typedef enum
@@ -893,24 +858,25 @@ typedef enum
 {
   EnumConnectionStatusPAIRING_FAILED    = 0,
   EnumConnectionStatusCONFIRM_PASSKEY   = 1,
-  EnumConnectionStatusWAIT_APP_CONNECTION = 2,
-  EnumConnectionStatusNAVI_APP_CONNECTED = 3,
-  EnumConnectionStatusYAMAHA_APP_CONNECTED = 4,
-  EnumConnectionStatusBOTH_APP_CONNECTED = 5,
-  EnumConnectionStatusCONNECTION_FAILED = 6,
-  EnumConnectionStatusAUTHENTICATION_ERR = 7,
+  EnumConnectionStatusNAVI_APP_CONNECTED = 2,
+  EnumConnectionStatusYAMAHA_APP_CONNECTED = 3,
+  EnumConnectionStatusYAMAHA_APP_BLE_CONNECTED = 4,
+  EnumConnectionStatusYAMAHA_APP_BLE_NOT_CONNECTED = 5,
+  EnumConnectionStatusBOTH_APP_CONNECTED = 6,
+  EnumConnectionStatusCONNECTION_FAILED = 7,
   EnumConnectionStatusCONNECTED_APP_CHANGED = 8,
-  EnumConnectionStatusPAIRED_DEVICE_CHANGED = 9
+  EnumConnectionStatusPAIRED_DEVICE_CHANGED = 9,
+  EnumConnectionStatusPAIRED_DEVICE_LIST_UPDATED = 10
 } EnumConnectionStatus;
 
 /* User defined enumeration: 'Enum::BtmStatus' */
 typedef enum
 {
   EnumBtmStatusENABLED                  = 0,
-  EnumBtmStatusUPDATE_START             = 1,
-  EnumBtmStatusUPDATE_ABORT             = 2,
-  EnumBtmStatusUPDATE_FINISH            = 3,
-  EnumBtmStatusDISABLED                 = 4,
+  EnumBtmStatusDISABLED                 = 1,
+  EnumBtmStatusUPDATE_START             = 2,
+  EnumBtmStatusUPDATE_ABORT             = 3,
+  EnumBtmStatusUPDATE_FINISH            = 4,
   EnumBtmStatusFACTORY_RESET_COMPLETED  = 5
 } EnumBtmStatus;
 

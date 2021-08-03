@@ -27,12 +27,12 @@
 #include "ewlocale.h"
 #include "_ApplicationApplication.h"
 #include "_CoreGroup.h"
-#include "_CorePropertyObserver.h"
 #include "_CoreRoot.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
 #include "_CoreView.h"
 #include "_DeviceInterfaceBluetoothDeviceClass.h"
+#include "_DeviceInterfaceBtmStatusContext.h"
 #include "_DeviceInterfaceNavigationDeviceClass.h"
 #include "_DeviceInterfaceNotificationDeviceClass.h"
 #include "_DeviceInterfaceSystemData.h"
@@ -98,7 +98,6 @@ void ApplicationApplication__Init( ApplicationApplication _this, XObject aLink, 
 
   /* ... then construct all embedded objects */
   CoreSystemEventHandler__Init( &_this->FactoryTestEventHandler, &_this->_.XObject, 0 );
-  CorePropertyObserver__Init( &_this->BtFwStatusObserver, &_this->_.XObject, 0 );
   CoreTimer__Init( &_this->DDModeTestTimer, &_this->_.XObject, 0 );
   CoreSystemEventHandler__Init( &_this->OpeningSystemEventHandler, &_this->_.XObject, 0 );
   StatusBarMain__Init( &_this->StatusBar, &_this->_.XObject, 0 );
@@ -108,6 +107,7 @@ void ApplicationApplication__Init( ApplicationApplication _this, XObject aLink, 
   CoreSystemEventHandler__Init( &_this->VehicleDataReceivedEventHandler, &_this->_.XObject, 0 );
   CoreSystemEventHandler__Init( &_this->ReceivedSystemEventHandler, &_this->_.XObject, 0 );
   CoreTimer__Init( &_this->TestFontTimer, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->BtmStatusEventHandler, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_.VMT = EW_CLASS( ApplicationApplication );
@@ -128,10 +128,6 @@ void ApplicationApplication__Init( ApplicationApplication _this, XObject aLink, 
   _this->FactoryTestEventHandler.OnEvent = EwNewSlot( _this, ApplicationApplication_OnFactoryTestEventSlot );
   CoreSystemEventHandler_OnSetEvent( &_this->FactoryTestEventHandler, &EwGetAutoObject( 
   &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->FactoryTestSystemEvent );
-  _this->BtFwStatusObserver.OnEvent = EwNewSlot( _this, ApplicationApplication_OnBtFwStatusUpdteSlot );
-  CorePropertyObserver_OnSetOutlet( &_this->BtFwStatusObserver, EwNewRef( EwGetAutoObject( 
-  &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ), DeviceInterfaceBluetoothDeviceClass_OnGetBtFwStatus, 
-  DeviceInterfaceBluetoothDeviceClass_OnSetBtFwStatus ));
   _this->DDModeTestTimer.OnTrigger = EwNewSlot( _this, ApplicationApplication_OnDDModeTestSlot );
   _this->OpeningSystemEventHandler.OnEvent = EwNewSlot( _this, ApplicationApplication_OnStartOpeningSlot );
   CoreSystemEventHandler_OnSetEvent( &_this->OpeningSystemEventHandler, &EwGetAutoObject( 
@@ -150,6 +146,9 @@ void ApplicationApplication__Init( ApplicationApplication _this, XObject aLink, 
   CoreSystemEventHandler_OnSetEvent( &_this->ReceivedSystemEventHandler, &EwGetAutoObject( 
   &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )->SystemDataReceivedSystemEvent );
   _this->TestFontTimer.OnTrigger = EwNewSlot( _this, ApplicationApplication_OnTestFontSlot );
+  _this->BtmStatusEventHandler.OnEvent = EwNewSlot( _this, ApplicationApplication_OnConnectoinStatusReceivedSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->BtmStatusEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->BtmStatusEvent );
 
   /* Call the user defined constructor */
   ApplicationApplication_Init( _this, aArg );
@@ -163,7 +162,6 @@ void ApplicationApplication__ReInit( ApplicationApplication _this )
 
   /* ... then re-construct all embedded objects */
   CoreSystemEventHandler__ReInit( &_this->FactoryTestEventHandler );
-  CorePropertyObserver__ReInit( &_this->BtFwStatusObserver );
   CoreTimer__ReInit( &_this->DDModeTestTimer );
   CoreSystemEventHandler__ReInit( &_this->OpeningSystemEventHandler );
   StatusBarMain__ReInit( &_this->StatusBar );
@@ -173,6 +171,7 @@ void ApplicationApplication__ReInit( ApplicationApplication _this )
   CoreSystemEventHandler__ReInit( &_this->VehicleDataReceivedEventHandler );
   CoreSystemEventHandler__ReInit( &_this->ReceivedSystemEventHandler );
   CoreTimer__ReInit( &_this->TestFontTimer );
+  CoreSystemEventHandler__ReInit( &_this->BtmStatusEventHandler );
 }
 
 /* Finalizer method for the class 'Application::Application' */
@@ -183,7 +182,6 @@ void ApplicationApplication__Done( ApplicationApplication _this )
 
   /* Finalize all embedded objects */
   CoreSystemEventHandler__Done( &_this->FactoryTestEventHandler );
-  CorePropertyObserver__Done( &_this->BtFwStatusObserver );
   CoreTimer__Done( &_this->DDModeTestTimer );
   CoreSystemEventHandler__Done( &_this->OpeningSystemEventHandler );
   StatusBarMain__Done( &_this->StatusBar );
@@ -193,6 +191,7 @@ void ApplicationApplication__Done( ApplicationApplication _this )
   CoreSystemEventHandler__Done( &_this->VehicleDataReceivedEventHandler );
   CoreSystemEventHandler__Done( &_this->ReceivedSystemEventHandler );
   CoreTimer__Done( &_this->TestFontTimer );
+  CoreSystemEventHandler__Done( &_this->BtmStatusEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
   CoreRoot__Done( &_this->_.Super );
@@ -329,20 +328,29 @@ void ApplicationApplication_OnSetStatusBarVisible( ApplicationApplication _this,
 
 /* This slot method is executed when the associated property observer 'PropertyObserver' 
    is notified. */
-void ApplicationApplication_OnBtFwStatusUpdteSlot( ApplicationApplication _this, 
+void ApplicationApplication_OnConnectoinStatusReceivedSlot( ApplicationApplication _this, 
   XObject sender )
 {
+  DeviceInterfaceBtmStatusContext BtmStatusContext;
+
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  if ( EnumBtFwStatusUPDATE_START == EwGetAutoObject( &DeviceInterfaceBluetoothDevice, 
-      DeviceInterfaceBluetoothDeviceClass )->BtFwStatus )
+  BtmStatusContext = EwCastObject( _this->BtmStatusEventHandler.Context, DeviceInterfaceBtmStatusContext );
+
+  switch ( BtmStatusContext->Status )
   {
-    SettingsBtFwUpdateDialog BtFwDialog = EwNewObject( SettingsBtFwUpdateDialog, 
-      0 );
-    CoreView_OnSetStackingPriority((CoreView)BtFwDialog, 1 );
-    CoreGroup__Add( CoreView__GetRoot( _this ), ((CoreView)BtFwDialog ), 0 );
-    CoreRoot_BeginModal( CoreView__GetRoot( _this ), ((CoreGroup)BtFwDialog ));
+    case EnumBtmStatusUPDATE_START :
+    {
+      SettingsBtFwUpdateDialog BtFwDialog = EwNewObject( SettingsBtFwUpdateDialog, 
+        0 );
+      CoreView_OnSetStackingPriority((CoreView)BtFwDialog, 1 );
+      CoreGroup__Add( CoreView__GetRoot( _this ), ((CoreView)BtFwDialog ), 0 );
+      CoreRoot_BeginModal( CoreView__GetRoot( _this ), ((CoreGroup)BtFwDialog ));
+    }
+    break;
+
+    default :; 
   }
 }
 
@@ -383,6 +391,7 @@ void ApplicationApplication_SwitchToHome( ApplicationApplication _this, XEnum aH
       }
 
     if ( IsInDialogStack )
+    {
       for ( DialogIdx = 0; DialogIdx < CoreGroup_CountDialogs((CoreGroup)_this ); 
            DialogIdx++ )
         if ( HomeClass == EwClassOf(((XObject)CoreGroup_GetDialogAtIndex((CoreGroup)_this, 
@@ -399,6 +408,7 @@ void ApplicationApplication_SwitchToHome( ApplicationApplication _this, XEnum aH
         else
           CoreGroup_DismissDialog((CoreGroup)_this, CoreGroup_GetDialogAtIndex((CoreGroup)_this, 
           0 ), 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+    }
     else
     {
       CoreGroup HomeDialog = ApplicationApplication_HomeDialogOfHomeType( _this, 
@@ -561,8 +571,6 @@ void ApplicationApplication_OnOpeningFinishedSlot( ApplicationApplication _this,
     EwNullSlot, 0 );
 
   _this->IsFactoryModeDialogDisplayed = 0;
-  DeviceInterfaceBluetoothDeviceClass_GetBluetoothEnable( EwGetAutoObject( &DeviceInterfaceBluetoothDevice, 
-  DeviceInterfaceBluetoothDeviceClass ));
 
   if ( EnumOperationModeNORMAL == DeviceInterfaceSystemDeviceClass_OnGetOperationMode( 
       EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )))

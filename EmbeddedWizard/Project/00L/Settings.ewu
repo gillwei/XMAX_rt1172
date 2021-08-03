@@ -3,7 +3,6 @@
 $rect <20,10,220,50>
 inline Inline
 {
-  #include "BTM_pub.h"
   #include "ew_priv.h"
 }
 
@@ -230,7 +229,7 @@ class SET04_BtSettingMenu : Menu::BaseMenuView
   inherited method Init()
   {
     trace "SET04";
-    DeviceInterface::BluetoothDevice.GetBluetoothEnable();
+    IsBtEnabled = DeviceInterface::BluetoothDevice.BluetoothEnabled;
   }
 
   $rect <10,340,210,380>
@@ -279,12 +278,13 @@ class SET04_BtSettingMenu : Menu::BaseMenuView
     {
       case 0:
       {
-        DeviceInterface::BluetoothDevice.BluetoothEnable = IsChecked;
+        IsBtEnabled = IsChecked;
+        DeviceInterface::BluetoothDevice.BluetoothEnabled = IsChecked;
         Menu.InvalidateItems( 1, 4 );
       }
       case 1:
       {
-        if( DeviceInterface::BluetoothDevice.IsMaxPairedDevice )
+        if( DeviceInterface::BluetoothDevice.IsPairedDeviceNumMax )
         {
           PresentDialog( new Settings::SET05_BtcMaxPairedDevice, null, null, null, null, null, null, null, null, false );
         }
@@ -305,7 +305,7 @@ class SET04_BtSettingMenu : Menu::BaseMenuView
     var bool IsChecked = false;
     switch( aItemNo )
     {
-      case 0: IsChecked = DeviceInterface::BluetoothDevice.BluetoothEnable;
+      case 0: IsChecked = DeviceInterface::BluetoothDevice.BluetoothEnabled;
       case 3: IsChecked = DeviceInterface::BluetoothDevice.AutoConnect;
       default:;
     }
@@ -318,7 +318,7 @@ class SET04_BtSettingMenu : Menu::BaseMenuView
     var bool ItemEnabled = true;
     if( aItemNo > 0 )
     {
-      ItemEnabled = DeviceInterface::BluetoothDevice.BluetoothEnable;
+      ItemEnabled = IsBtEnabled;
     }
     return ItemEnabled;
   }
@@ -804,22 +804,23 @@ class SET06_BtcDiscovarable : Components::BaseMainBG
   }
 
   $rect <500,200,790,240>
-  object Core::SystemEventHandler BtcPairingStateChangeEventHandler
+  object Core::SystemEventHandler ConnectionStatusEventHandler
   {
-    preset OnEvent = OnBtcPairingStateChangeSlot;
-    preset Event = DeviceInterface::BluetoothDevice.BtcPairingChangedSystemEvent;
+    preset OnEvent = OnConnectoinStatusReceivedSlot;
+    preset Event = DeviceInterface::BluetoothDevice.ConnectionStatusEvent;
   }
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <500,250,760,290>
-  slot OnBtcPairingStateChangeSlot
+  $rect <500,250,790,290>
+  slot OnConnectoinStatusReceivedSlot
   {
     if( null != Owner )
     {
-      switch( DeviceInterface::BluetoothDevice.BtcPairingState )
+      var DeviceInterface::ConnectionStatusContext ConnectionStatusContext = (DeviceInterface::ConnectionStatusContext)ConnectionStatusEventHandler.Context;
+      switch( ConnectionStatusContext.Status )
       {
-        case Enum::BtcPairingState.FAIL:
+        case Enum::ConnectionStatus.PAIRING_FAILED:
         {
           var Settings::TimeoutDialog PairingFailDialog = new Settings::TimeoutDialog;
           PairingFailDialog.Message = Strings::SET07_PAIRING_FAILED;
@@ -827,7 +828,7 @@ class SET06_BtcDiscovarable : Components::BaseMainBG
           DeviceInterface::BluetoothDevice.Discoverable = false;
           Owner.SwitchToDialog( PairingFailDialog, null, null, null, null, null, null, null, null, null, false );
         }
-        case Enum::BtcPairingState.PASSKEY_GENERATED:
+        case Enum::ConnectionStatus.CONFIRM_PASSKEY:
         {
           DeviceInterface::BluetoothDevice.Discoverable = false;
           Owner.SwitchToDialog( new Settings::SET08_BtcPairDevice, null, null, null, null, null, null, null, null, null, false );
@@ -892,53 +893,41 @@ class SET10_11_12_BtConnectionResult : Components::BaseMainBG
   property string DeviceName;
 
   $rect <210,290,490,330>
-  object Core::SystemEventHandler ConnectPairedDeviceResultHandler
+  object Core::SystemEventHandler ConnectionStatusEventHandler
   {
-    preset OnEvent = OnConnectPairedDeviceResultSlot;
-    preset Event = DeviceInterface::BluetoothDevice.BtcConnectionResultSystemEvent;
+    preset OnEvent = OnConnectoinStatusReceivedSlot;
+    preset Event = DeviceInterface::BluetoothDevice.ConnectionStatusEvent;
   }
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
   $rect <210,340,490,380>
-  slot OnConnectPairedDeviceResultSlot
+  slot OnConnectoinStatusReceivedSlot
   {
-    var Enum::BtDeviceConnectionResult ConnectionResult = DeviceInterface::BluetoothDevice.ConnectPairedDeviceResult;
-    switch( ConnectionResult )
+    var DeviceInterface::ConnectionStatusContext ConnectionStatusContext = (DeviceInterface::ConnectionStatusContext)ConnectionStatusEventHandler.Context;
+    switch( ConnectionStatusContext.Status )
     {
-      case Enum::BtDeviceConnectionResult.ONLY_NAVI_APP_CONNECTED:
+      case Enum::ConnectionStatus.NAVI_APP_CONNECTED:
       {
         Owner.SwitchToDialog( new Settings::SET49_OnlyNaviAppConnected, null, null, null, null, null, null, null, null, null, false );
       }
-      case Enum::BtDeviceConnectionResult.ONLY_YAMAHA_APP_CONNECTED:
+      case Enum::ConnectionStatus.YAMAHA_APP_CONNECTED:
       {
         Owner.SwitchToDialog( new Settings::SET50_OnlyYahamaAppConnected, null, null, null, null, null, null, null, null, null, false );
       }
-      case Enum::BtDeviceConnectionResult.YAMAHA_APP_BLE_NOT_CONNECTED:
+      case Enum::ConnectionStatus.YAMAHA_APP_BLE_NOT_CONNECTED:
       {
         Owner.SwitchToDialog( new Settings::SET22_WaitingConnection, null, null, null, null, null, null, null, null, null, false );
       }
-      case Enum::BtDeviceConnectionResult.BOTH_APP_CONNECTED:
+      case Enum::ConnectionStatus.BOTH_APP_CONNECTED:
       {
         Owner.SwitchToDialog( new Settings::SET51_BothAppConnected, null, null, null, null, null, null, null, null, null, false );
       }
-      case Enum::BtDeviceConnectionResult.FAIL:
+      case Enum::ConnectionStatus.CONNECTION_FAILED:
       {
-        // replase %s with the connected BLE deivce name
-        var string ProcessString = Strings::SET10_CONNECTION_FAILED;
-        var int32 LeftIdx = ProcessString.find( Strings::ARGUMENT_STR, 0 );
-        var int32 RightIdx = ProcessString.length - LeftIdx - Strings::ARGUMENT_STR.length;
         HideLoadingUI();
-        Message.String = ProcessString.left( LeftIdx ) + DeviceName + ProcessString.right( RightIdx );
-      }
-      case Enum::BtDeviceConnectionResult.AUTHENTICATION_ERR:
-      {
-        // replase %s with the connected BLE deivce name
-        var string ProcessString = Strings::SET11_NO_LONGER_PAIRED;
-        var int32 LeftIdx = ProcessString.find( Strings::ARGUMENT_STR, 0 );
-        var int32 RightIdx = ProcessString.length - LeftIdx - Strings::ARGUMENT_STR.length;
-        HideLoadingUI();
-        Message.String = ProcessString.left( LeftIdx ) + DeviceName + ProcessString.right( RightIdx );
+        var Utility::String StringUtil = new Utility::String;
+        Message.String = StringUtil.ReplaceString( Strings::SET10_CONNECTION_FAILED, DeviceName );
       }
       default: Message.String = "";
     }
@@ -957,7 +946,6 @@ class SET10_11_12_BtConnectionResult : Components::BaseMainBG
   slot OnDismissSlot
   {
     Owner.DismissDialog( this, null, null, null, null, null, false );
-    DeviceInterface::BluetoothDevice.RefreshPairedDeviceList = true;
   }
 
   $rect <20,20,160,60>
@@ -1007,8 +995,8 @@ class SET10_11_12_BtConnectionResult : Components::BaseMainBG
   $reorder SlideDirection 1
   $reorder Message 1
   $reorder DeviceName 1
-  $reorder ConnectPairedDeviceResultHandler 1
-  $reorder OnConnectPairedDeviceResultSlot 1
+  $reorder ConnectionStatusEventHandler 1
+  $reorder OnConnectoinStatusReceivedSlot 1
   $reorder DismissTimer 1
   $reorder OnDismissSlot 1
   $reorder Divider 1
@@ -1093,12 +1081,7 @@ class SET08_BtcPairDevice : Components::BaseMainBG
   slot OnNoActivatedSlot
   {
     trace "SET08 no";
-    $if !$prototyper
-      native
-      {
-        BTM_btc_confirm_passkey( false );
-      }
-    $endif
+    DeviceInterface::BluetoothDevice.ConfirmPasskey( false );
 
     // back to SET03
     var Settings::SET04_BtSettingMenu BtSettingMenu = ( Settings::SET04_BtSettingMenu )Owner;
@@ -1144,14 +1127,7 @@ class SET08_BtcPairDevice : Components::BaseMainBG
   slot OnYesActivatedSlot
   {
     trace "SET08 yes";
-
-    $if !$prototyper
-      native
-      {
-        BTM_btc_confirm_passkey( true );
-      }
-    $endif
-
+    DeviceInterface::BluetoothDevice.ConfirmPasskey( true );
     Owner.SwitchToDialog( new Settings::SET47_WaitingApproval, null, null, null, null, null, null, null, null, null, false );
   }
 
@@ -1176,7 +1152,7 @@ class SET17_BtcPairedDeviceList : Menu::BaseMenuView
   inherited method Init()
   {
     trace "SET17";
-    UpdatePairedDeviceNum();
+    UpdateList();
   }
 
   $rect <0,340,200,380>
@@ -1185,40 +1161,34 @@ class SET17_BtcPairedDeviceList : Menu::BaseMenuView
   $rect <0,390,200,430>
   inherited var SlideOutEffectEnabled = true;
 
-  $rect <520,20,720,60>
+  $rect <520,20,730,60>
   inherited method LoadItemClass()
   {
-    aItemNo; //to suppress warning
+    aItemNo; //suppress warning
     return Menu::ItemBtPairedDevice;
   }
 
-  $rect <520,70,720,110>
+  $rect <520,70,730,110>
   inherited method LoadItemTitle()
   {
-    // suppress warning
-    aItemNo;
-
     var string Title;
-    if( PairedDeviceNum > 0 )
+    if( aItemNo < DeviceInterface::BluetoothDevice.PairedDeviceNum )
     {
-      DeviceInterface::BluetoothDevice.GetPairedDeviceAtItem( aItemNo );
-      Title = DeviceInterface::BluetoothDevice.PairedDeviceObj.DeviceName;
+      Title = DeviceInterface::BluetoothDevice.PairedDeviceList[aItemNo].DeviceName;
     }
-
     return Title;
   }
 
-  $rect <520,220,720,260>
+  $rect <520,270,730,310>
   inherited method OnItemActivate()
   {
-    // suppress warning
-    aItemNo;
+    aItemNo; // suppress warning
 
-    var Menu::ItemBtPairedDevice BtDeviceItem = ( Menu::ItemBtPairedDevice )aMenuItem;
+    var Menu::ItemBtPairedDevice BtDeviceItem = (Menu::ItemBtPairedDevice)aMenuItem;
     if( null != BtDeviceItem )
     {
       var Settings::SET19_BtcPairedDeviceOperation Dialog = new Settings::SET19_BtcPairedDeviceOperation;
-      Dialog.PairedDeviceIndex = aItemNo;
+      Dialog.DeviceAddress = BtDeviceItem.DeviceAddress;
       Dialog.DeviceName = BtDeviceItem.Title.String;
       Dialog.ConnectEnabled = !BtDeviceItem.Icon1Visible || !BtDeviceItem.Icon2Visible;
       Dialog.DisconnectEnabled = BtDeviceItem.Icon1Visible || BtDeviceItem.Icon2Visible;
@@ -1236,63 +1206,44 @@ class SET17_BtcPairedDeviceList : Menu::BaseMenuView
     preset ArrowScrollBarVisible = true;
   }
 
-  $rect <522,123,722,163>
+  $rect <520,120,730,160>
   inherited method LoadItemIcon1Visible()
   {
-    // suppress warning
-    aItemNo;
-
-    var bool result;
-    $if !$prototyper
-      if( 0 < PairedDeviceNum )
-      {
-        result = DeviceInterface::BluetoothDevice.PairedDeviceObj.IsNaviAppConnected;
-      }
-    $endif
+    var bool result = false;
+    if( aItemNo < DeviceInterface::BluetoothDevice.PairedDeviceNum )
+    {
+      result = DeviceInterface::BluetoothDevice.PairedDeviceList[aItemNo].IsNaviAppConnected;
+    }
     return result;
   }
 
-  $rect <220,290,440,330>
-  var int32 PairedDeviceNum = 0;
-
-  $rect <220,340,440,380>
-  method void UpdatePairedDeviceNum()
+  $rect <520,170,730,210>
+  inherited method LoadItemIcon2Visible()
   {
-    PairedDeviceNum = DeviceInterface::BluetoothDevice.PairedDeviceNum;
-    Menu.NoOfItems = PairedDeviceNum;
+    var bool result = false;
+    if( aItemNo < DeviceInterface::BluetoothDevice.PairedDeviceNum )
+    {
+      result = DeviceInterface::BluetoothDevice.PairedDeviceList[aItemNo].IsYamahaAppConnected;
+    }
+    return result;
+  }
 
-    trace "SET17 ", PairedDeviceNum;
+  $rect <220,390,440,430>
+  method void UpdateList()
+  {
+    Menu.NoOfItems = DeviceInterface::BluetoothDevice.PairedDeviceNum;
 
-    if( PairedDeviceNum > 0 )
+    if( 0 < DeviceInterface::BluetoothDevice.PairedDeviceNum )
     {
       NoDataTimeoutTimer.Enabled = false;
-      Menu.Focusable = true;
-      Menu.InvalidateItems( 0, PairedDeviceNum - 1 );
+      Menu.InvalidateItems( 0, Menu.NoOfItems - 1 );
       NoDataText.Visible = false;
     }
     else
     {
       NoDataTimeoutTimer.Enabled = true;
-      Menu.Focusable = false;
-      Menu.InvalidateItems( 0, 0 );
       NoDataText.Visible = true;
     }
-  }
-
-  $rect <460,290,660,330>
-  object Core::PropertyObserver RefreshListObserver
-  {
-    preset OnEvent = OnRefreshListSlot;
-    preset Outlet = ^DeviceInterface::BluetoothDevice.RefreshPairedDeviceList;
-  }
-
-  // This slot method is executed when the associated property observer 'PropertyObserver' \
-  // is notified.
-  $rect <460,340,660,380>
-  slot OnRefreshListSlot
-  {
-    trace "OnRefreshListSlot";
-    UpdatePairedDeviceNum();
   }
 
   $rect <20,20,160,60>
@@ -1303,14 +1254,14 @@ class SET17_BtcPairedDeviceList : Menu::BaseMenuView
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
-  $rect <680,290,880,330>
+  $rect <220,440,420,480>
   object Core::Timer NoDataTimeoutTimer
   {
     preset OnTrigger = OnNoDataTimeoutSlot;
     preset Begin = 2000;
   }
 
-  $rect <683,339,883,379>
+  $rect <223,489,423,529>
   slot OnNoDataTimeoutSlot
   {
     if( null != Owner )
@@ -1319,26 +1270,41 @@ class SET17_BtcPairedDeviceList : Menu::BaseMenuView
     }
   }
 
-  $rect <520,170,720,210>
-  inherited method LoadItemIcon2Visible()
+  $rect <520,220,730,260>
+  inherited method LoadItemDeviceAddress()
   {
-    // suppress warning
-    aItemNo;
-
-    var bool result;
-    $if !$prototyper
-      if( 0 < PairedDeviceNum )
-      {
-        result = DeviceInterface::BluetoothDevice.PairedDeviceObj.IsYamahaAppConnected;
-      }
-    $endif
-    return result;
+    var uint64 DeviceAddress = 0;
+    if( aItemNo < DeviceInterface::BluetoothDevice.PairedDeviceNum )
+    {
+      DeviceAddress = DeviceInterface::BluetoothDevice.PairedDeviceList[aItemNo].DeviceAddress;
+    }
+    return DeviceAddress;
   }
 
-  $reorder PairedDeviceNum 1
-  $reorder UpdatePairedDeviceNum 1
-  $reorder RefreshListObserver 1
-  $reorder OnRefreshListSlot 1
+  $rect <220,290,500,330>
+  object Core::SystemEventHandler ConnectionStatusEventHandler
+  {
+    preset OnEvent = OnConnectoinStatusReceivedSlot;
+    preset Event = DeviceInterface::BluetoothDevice.ConnectionStatusEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <220,340,500,380>
+  slot OnConnectoinStatusReceivedSlot
+  {
+    if( null != Owner )
+    {
+      var DeviceInterface::ConnectionStatusContext ConnectionStatusContext = (DeviceInterface::ConnectionStatusContext)ConnectionStatusEventHandler.Context;
+      switch( ConnectionStatusContext.Status )
+      {
+        case Enum::ConnectionStatus.PAIRED_DEVICE_LIST_UPDATED: UpdateList();
+        default:;
+      }
+    }
+  }
+
+  $reorder UpdateList 1
   $reorder NoDataText 1
   $reorder NoDataTimeoutTimer 1
   $reorder OnNoDataTimeoutSlot 1
@@ -1396,8 +1362,7 @@ class SET19_BtcPairedDeviceOperation : Menu::BaseMenuView
     {
       case 0:
       {
-        DeviceInterface::BluetoothDevice.UnpairDevice( PairedDeviceIndex );
-        DeviceInterface::BluetoothDevice.RefreshPairedDeviceList = true;
+        DeviceInterface::BluetoothDevice.UnpairDevice( DeviceAddress );
         SlideOutDialog();
       }
       case 1:
@@ -1410,13 +1375,12 @@ class SET19_BtcPairedDeviceOperation : Menu::BaseMenuView
           OwnerMenu.Menu.FocusFrame.Visible = true;
         }
         Owner.SwitchToDialog( Dialog, null, null, null, null, null, null, null, null, null, false );
-        DeviceInterface::BluetoothDevice.ConnectPairedDevice( PairedDeviceIndex );
+        DeviceInterface::BluetoothDevice.ConnectPairedDevice( DeviceAddress );
       }
       case 2:
       {
-        DeviceInterface::BluetoothDevice.DisconnectPairedDevice( PairedDeviceIndex );
+        DeviceInterface::BluetoothDevice.DisconnectPairedDevice( DeviceAddress );
         SlideOutDialog();
-        DeviceInterface::BluetoothDevice.RefreshPairedDeviceList = true;
       }
       default:;
     }
@@ -1446,7 +1410,7 @@ class SET19_BtcPairedDeviceOperation : Menu::BaseMenuView
   }
 
   $rect <10,350,210,390>
-  property int32 PairedDeviceIndex;
+  property uint64 DeviceAddress;
 
   $rect <10,400,210,440>
   property string DeviceName;
@@ -1458,7 +1422,7 @@ class SET19_BtcPairedDeviceOperation : Menu::BaseMenuView
   property bool DisconnectEnabled = false;
 }
 
-$rect <280,510,520,550>
+$rect <20,510,260,550>
 $output false
 class BtFwUpdateDialog : Core::Group
 {
@@ -1482,26 +1446,20 @@ class BtFwUpdateDialog : Core::Group
     preset Color = #FFFFFFFF;
   }
 
-  $rect <10,350,240,390>
-  object Core::PropertyObserver BtFwStatusObserver
-  {
-    preset OnEvent = OnBtFwStatusUpdateSlot;
-    preset Outlet = ^DeviceInterface::BluetoothDevice.BtFwStatus;
-  }
-
   // This slot method is executed when the associated property observer 'PropertyObserver' \
   // is notified.
   $rect <10,400,240,440>
-  slot OnBtFwStatusUpdateSlot
+  slot OnBtmStatusUpdateSlot
   {
-    switch( DeviceInterface::BluetoothDevice.BtFwStatus )
+    var DeviceInterface::BtmStatusContext BtmStatusContext = (DeviceInterface::BtmStatusContext)BtmStatusEventHandler.Context;
+    switch( BtmStatusContext.Status )
     {
-      case Enum::BtFwStatus.UPDATE_FINISH:
+      case Enum::BtmStatus.UPDATE_FINISH:
       {
         StatusText.String = "Update BT firmware complete";
         RemoveDialogTimer.Enabled = true;
       }
-      case Enum::BtFwStatus.UPDATE_ABORT:
+      case Enum::BtmStatus.UPDATE_ABORT:
       {
         StatusText.String = "Update BT firmware fail";
         RemoveDialogTimer.Enabled = true;
@@ -1522,6 +1480,13 @@ class BtFwUpdateDialog : Core::Group
   {
     GetRoot().EndModal( this );
     GetRoot().Remove( this );
+  }
+
+  $rect <10,350,230,390>
+  object Core::SystemEventHandler BtmStatusEventHandler
+  {
+    preset OnEvent = OnBtmStatusUpdateSlot;
+    preset Event = DeviceInterface::BluetoothDevice.BtmStatusEvent;
   }
 }
 
@@ -1739,7 +1704,7 @@ class SET22_WaitingConnection : Components::BaseMainBG
     WaitText.String = ProcessString.left( LeftIdx ) + DeviceInterface::BluetoothDevice.GetBtcPairingDeviceName() + ProcessString.right( RightIdx );
   }
 
-  $rect <560,290,790,330>
+  $rect <790,290,1020,330>
   inherited method OnShortUpKeyActivated()
   {
     /* for debug UI flow in prototyper */
@@ -1769,38 +1734,6 @@ class SET22_WaitingConnection : Components::BaseMainBG
     preset Bitmap = Resource::LoadingAnimation;
   }
 
-  $rect <240,290,520,330>
-  object Core::SystemEventHandler ConnectPairedDeviceResultHandler
-  {
-    preset OnEvent = OnConnectPairedDeviceResultSlot;
-    preset Event = DeviceInterface::BluetoothDevice.BtcConnectionResultSystemEvent;
-  }
-
-  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
-  // receives an event.
-  $rect <240,340,520,380>
-  slot OnConnectPairedDeviceResultSlot
-  {
-    var Enum::BtDeviceConnectionResult ConnectionResult = DeviceInterface::BluetoothDevice.ConnectPairedDeviceResult;
-    switch( ConnectionResult )
-    {
-      case Enum::BtDeviceConnectionResult.ONLY_NAVI_APP_CONNECTED:
-      {
-        Owner.SwitchToDialog( new Settings::SET49_OnlyNaviAppConnected, null, null, null, null, null, null, null, null, null, false );
-      }
-      case Enum::BtDeviceConnectionResult.YAMAHA_APP_CONNECTION_FAILED:
-      {
-        Owner.SwitchToDialog( new Settings::SET23_PairingFail, null, null, null, null, null, null, null, null, null, false );
-      }
-      case Enum::BtDeviceConnectionResult.ONLY_YAMAHA_APP_CONNECTED,
-           Enum::BtDeviceConnectionResult.BOTH_APP_CONNECTED:
-      {
-        Owner.SwitchToDialog( new Settings::SET26_PairingSuccessful, null, null, null, null, null, null, null, null, null, false );
-      }
-      default:;
-    }
-  }
-
   $rect <0,390,200,430>
   method void DisplayString()
   {
@@ -1808,6 +1741,62 @@ class SET22_WaitingConnection : Components::BaseMainBG
     var int32 LeftIdx = ProcessString.find( Strings::ARGUMENT_STR, 0 );
     var int32 RightIdx = ProcessString.length - LeftIdx - Strings::ARGUMENT_STR.length;
     WaitText.String = ProcessString.left( LeftIdx ) + DeviceInterface::BluetoothDevice.GetBtcPairingDeviceName() + ProcessString.right( RightIdx );
+  }
+
+  $rect <240,290,510,330>
+  object Core::SystemEventHandler ConnectionStatusEventHandler
+  {
+    preset OnEvent = OnConnectoinStatusReceivedSlot;
+    preset Event = DeviceInterface::BluetoothDevice.ConnectionStatusEvent;
+  }
+
+  // This slot method is executed when the associated system event handler 'SystemEventHandler' \
+  // receives an event.
+  $rect <240,340,520,380>
+  slot OnConnectoinStatusReceivedSlot
+  {
+    if( null != Owner )
+    {
+      var DeviceInterface::ConnectionStatusContext ConnectionStatusContext = (DeviceInterface::ConnectionStatusContext)ConnectionStatusEventHandler.Context;
+      switch( ConnectionStatusContext.Status )
+      {
+        case Enum::ConnectionStatus.PAIRING_FAILED:
+        {
+          HandlePairingFail();
+        }
+        case Enum::ConnectionStatus.YAMAHA_APP_CONNECTED:
+        {
+          DeviceInterface::BluetoothDevice.PairingFailCount = 0;
+          Owner.SwitchToDialog( new Settings::SET26_PairingSuccessful, null, null, null, null, null, null, null, null, null, false );
+        }
+        default:;
+      }
+    }
+  }
+
+  $rect <540,290,760,330>
+  object Core::Timer TimeoutTimer
+  {
+    preset OnTrigger = OnTimeoutSlot;
+    preset Period = 0;
+    preset Begin = 60000;
+    preset Enabled = true;
+  }
+
+  $rect <540,340,760,380>
+  slot OnTimeoutSlot
+  {
+    HandlePairingFail();
+  }
+
+  $rect <240,390,440,430>
+  method void HandlePairingFail()
+  {
+    if( null != Owner && IsCurrentDialog() )
+    {
+      DeviceInterface::BluetoothDevice.PairingFailCount++;
+      Owner.SwitchToDialog( new Settings::SET23_PairingFail, null, null, null, null, null, null, null, null, null, false );
+    }
   }
 }
 
@@ -1831,7 +1820,7 @@ class SET23_PairingFail : Settings::TimeoutDialog
   $rect <10,340,190,380>
   inherited slot OnTimeoutSlot
   {
-    if( DeviceInterface::BluetoothDevice.GetPairingFailCount() > 1 )
+    if( 1 < DeviceInterface::BluetoothDevice.PairingFailCount )
     {
       Owner.SwitchToDialog( new Settings::SET24_CheckPairingRecord, null, null, null, null, null, null, null, null, null, false );
     }
@@ -3122,11 +3111,11 @@ class SET47_WaitingApproval : Components::BaseMainBG
     DisplayString();
   }
 
-  $rect <1150,300,1380,340>
+  $rect <1040,300,1270,340>
   inherited method OnShortUpKeyActivated()
   {
     $if $prototyper
-      Owner.SwitchToDialog( new Settings::SET22_WaitingConnection, null, null, null, null, null, null, null, null, null, false );
+      Owner.SwitchToDialog( new Settings::SET50_OnlyYahamaAppConnected, null, null, null, null, null, null, null, null, null, false );
     $endif
   }
 
@@ -3163,25 +3152,26 @@ class SET47_WaitingApproval : Components::BaseMainBG
     preset Font = Fonts::NotoSansCjkJpMedium24pt;
   }
 
-  $rect <460,300,750,340>
-  object Core::SystemEventHandler BtcPairingStateChangeEventHandler
+  $rect <460,300,730,340>
+  object Core::SystemEventHandler ConnectionStatusEventHandler
   {
-    preset OnEvent = OnBtcPairingStateChangeSlot;
-    preset Event = DeviceInterface::BluetoothDevice.BtcPairingChangedSystemEvent;
+    preset OnEvent = OnConnectoinStatusReceivedSlot;
+    preset Event = DeviceInterface::BluetoothDevice.ConnectionStatusEvent;
   }
 
   // This slot method is executed when the associated system event handler 'SystemEventHandler' \
   // receives an event.
-  $rect <460,350,720,390>
-  slot OnBtcPairingStateChangeSlot
+  $rect <460,350,740,390>
+  slot OnConnectoinStatusReceivedSlot
   {
     if( null != Owner )
     {
-      switch( DeviceInterface::BluetoothDevice.BtcPairingState )
+      var DeviceInterface::ConnectionStatusContext ConnectionStatusContext = (DeviceInterface::ConnectionStatusContext)ConnectionStatusEventHandler.Context;
+      switch( ConnectionStatusContext.Status )
       {
-        case Enum::BtcPairingState.FAIL: DisplayPairingFailed();
-        case Enum::BtcPairingState.NAVI_APP_CONNECTED: Owner.SwitchToDialog( new Settings::SET49_OnlyNaviAppConnected, null, null, null, null, null, null, null, null, null, false );
-        case Enum::BtcPairingState.YAMAHA_APP_CONNECTED: Owner.SwitchToDialog( new Settings::SET22_WaitingConnection, null, null, null, null, null, null, null, null, null, false );
+        case Enum::ConnectionStatus.PAIRING_FAILED: DisplayPairingFailed();
+        case Enum::ConnectionStatus.NAVI_APP_CONNECTED: Owner.SwitchToDialog( new Settings::SET49_OnlyNaviAppConnected, null, null, null, null, null, null, null, null, null, false );
+        case Enum::ConnectionStatus.YAMAHA_APP_BLE_CONNECTED: Owner.SwitchToDialog( new Settings::SET22_WaitingConnection, null, null, null, null, null, null, null, null, null, false );
         default:;
       }
     }
@@ -3190,35 +3180,29 @@ class SET47_WaitingApproval : Components::BaseMainBG
   $rect <460,400,660,440>
   method void DisplayPairingFailed()
   {
-    var Settings::TimeoutDialog PairingFailedDialog = new Settings::TimeoutDialog;
-    PairingFailedDialog.Message = Strings::SET07_PAIRING_FAILED;
-    PairingFailedDialog.DismissAfterTimeout = true;
-    Owner.SwitchToDialog( PairingFailedDialog, null, null, null, null, null, null, null, null, null, false );
+    if( null != Owner )
+    {
+      var Settings::TimeoutDialog PairingFailedDialog = new Settings::TimeoutDialog;
+      PairingFailedDialog.Message = Strings::SET07_PAIRING_FAILED;
+      PairingFailedDialog.DismissAfterTimeout = true;
+      Owner.SwitchToDialog( PairingFailedDialog, null, null, null, null, null, null, null, null, null, false );
+    }
   }
 
-  $rect <780,350,1000,390>
-  object Core::Timer CountDownTimer
+  $rect <760,300,980,340>
+  object Core::Timer TimeoutTimer
   {
-    preset OnTrigger = UpdateCountDownTimeSlot;
-    preset Period = 1000;
+    preset OnTrigger = OnTimeoutSlot;
+    preset Period = 0;
+    preset Begin = 30000;
     preset Enabled = true;
   }
 
-  $rect <780,400,1020,440>
-  slot UpdateCountDownTimeSlot
+  $rect <760,350,980,390>
+  slot OnTimeoutSlot
   {
-    if( CountDownTimeSec > 0)
-    {
-      CountDownTimeSec--;
-    }
-    else
-    {
-      DisplayPairingFailed();
-    }
+    DisplayPairingFailed();
   }
-
-  $rect <780,300,1000,340>
-  var int32 CountDownTimeSec = 30;
 
   $rect <10,400,190,440>
   method void DisplayString()
@@ -3316,7 +3300,15 @@ class SET50_OnlyYahamaAppConnected : Settings::TimeoutDialog
   $rect <210,290,410,330>
   inherited slot OnTimeoutSlot
   {
-    Owner.DismissDialog( this, null, null, null, null, null, false );
+    var Settings::SET04_BtSettingMenu BtSettingMenu = (Settings::SET04_BtSettingMenu)Owner;
+    if( null != BtSettingMenu )
+    {
+      BtSettingMenu.SwitchToDialog( new Settings::SET17_BtcPairedDeviceList, null, null, null, null, null, null, null, null, null, false );
+    }
+    else
+    {
+      Owner.DismissDialog( this, null, null, null, null, null, false );
+    }
   }
 
   $rect <20,20,160,60>

@@ -188,6 +188,7 @@ EW_DEFINE_METHODS( MenuBaseMenuView, ComponentsBaseMainBG )
   EW_METHOD( LoadPoiListItemUnit, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemIcon1Visible, XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemIcon2Visible, XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemDeviceAddress, XUInt64 )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( MenuBaseMenuView )
 
 /* 'C' function for method : 'Menu::BaseMenuView.ReInit()' */
@@ -319,6 +320,12 @@ XBool MenuBaseMenuView_LoadItemIcon2Visible( MenuBaseMenuView _this, XInt32 aIte
 
 /* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemIcon2Visible()' */
 XBool MenuBaseMenuView__LoadItemIcon2Visible( void* _this, XInt32 aItemNo );
+
+/* 'C' function for method : 'Menu::BaseMenuView.LoadItemDeviceAddress()' */
+XUInt64 MenuBaseMenuView_LoadItemDeviceAddress( MenuBaseMenuView _this, XInt32 aItemNo );
+
+/* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemDeviceAddress()' */
+XUInt64 MenuBaseMenuView__LoadItemDeviceAddress( void* _this, XInt32 aItemNo );
 
 #ifdef __cplusplus
   }

@@ -69,7 +69,6 @@ EW_DEFINE_FIELDS( DeviceInterfaceSystemDeviceClass, TemplatesDeviceClass )
   EW_OBJECT  ( SystemDataReceivedSystemEvent, CoreSystemEvent )
   EW_PROPERTY( SoftwareVersion, XString )
   EW_PROPERTY( ESN,             XString )
-  EW_PROPERTY( BtSoftwareVersion, XString )
   EW_PROPERTY( BrightnessLevel, XInt32 )
   EW_PROPERTY( HomeType,        XEnum )
   EW_PROPERTY( InspectionDisplayPattern, XEnum )
@@ -134,9 +133,6 @@ void DeviceInterfaceSystemDeviceClass_RebootSystem( DeviceInterfaceSystemDeviceC
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.SetTFTDutyCycle()' */
 void DeviceInterfaceSystemDeviceClass_SetTFTDutyCycle( DeviceInterfaceSystemDeviceClass _this, 
   XInt32 aDutyCycle );
-
-/* 'C' function for method : 'DeviceInterface::SystemDeviceClass.OnGetBtSoftwareVersion()' */
-XString DeviceInterfaceSystemDeviceClass_OnGetBtSoftwareVersion( DeviceInterfaceSystemDeviceClass _this );
 
 /* 'C' function for method : 'DeviceInterface::SystemDeviceClass.StartBurnInTest()' */
 void DeviceInterfaceSystemDeviceClass_StartBurnInTest( DeviceInterfaceSystemDeviceClass _this );

@@ -17,13 +17,13 @@
 #include "ew_bsp_event.h"
 #include "ew_priv.h"
 #include "fsl_debug_console.h"
+#include <string.h>
+#include "semphr.h"
 #include "FreeRTOS.h"
 #include "DeviceInterface.h"
 #include "Enum.h"
 #include "EW_pub.h"
-#include "BTM_pub.h"
-#include <string.h>
-#include "semphr.h"
+#include "BT_pub.h"
 #include "BC_motocon_pub.h"
 
 /*--------------------------------------------------------------------
@@ -32,27 +32,11 @@
 #ifdef _DeviceInterfaceBluetoothDeviceClass_
     typedef int bluetooth_device_function( void );
 #endif
-#ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyPairedDeviceConnectionStatusUpdated_
-    static int ew_bt_notify_paired_device_connection_status_updated( void );
-#endif
-#ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyBtcPasskeyGenerated_
-    static int ew_bt_notify_btc_passkey_generated( void );
-#endif
-#ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyBtcConnectionResult_
-    static int ew_bt_notify_btc_connection_result( void );
-#endif
-#ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyBtFwStatus_
-    static int ew_notify_bt_fw_status( void );
-#endif
-#ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyBtcPairingStateChanged_
-    static int ew_notify_btc_pairing_state_received( void );
-#endif
-#ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyMotoConEventReceived_
-    static int ew_notify_motocon_event_received( void );
-#endif
+static int ew_notify_event_received( void );
 
-#define BT_FW_VERSION_MAX_LEN       ( 8 )
-#define MOTOCON_RX_EVENT_QUEUE_SIZE ( 16 )
+#define MOTOCON_RX_EVENT_QUEUE_SIZE     ( 16 )
+#define CONNECTION_STATUS_QUEUE_SIZE    ( 16 )
+#define BTM_STATUS_QUEUE_SIZE           ( 8 )
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -76,40 +60,20 @@
         #ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyPairedDeviceConnectionStatusUpdated_
             ew_bt_notify_paired_device_connection_status_updated,
         #endif
-        #ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyBtcPasskeyGenerated_
-            ew_bt_notify_btc_passkey_generated,
-        #endif
         #ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyBtcConnectionResult_
             ew_bt_notify_btc_connection_result,
         #endif
-        #ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyBtFwStatus_
-            ew_notify_bt_fw_status,
-        #endif
-        #ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyBtcPairingStateChanged_
-            ew_notify_btc_pairing_state_received,
-        #endif
-        #ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyMotoConEventReceived_
-            ew_notify_motocon_event_received
-        #endif
+        ew_notify_event_received
         };
 
     const int num_of_bluetooth_func = sizeof( bluetooth_function_lookup_table )/sizeof( bluetooth_device_function* );
 
-    static int is_btc_passkey_received = 0;
-    static int is_btc_paired_device_status_updated = 0;
-    static int is_btc_connection_result_updated = 0;
     static uint32_t btc_passkey = 0;
     static uint8_t  btc_connecing_device_name[BT_DEVICE_NAME_LEN];
-    static EnumBtDeviceConnectionResult btc_connection_result = 0;
-    static EnumBtcPairingState btc_pairing_state;
-    static int is_btc_pairing_state_changed = 0;
-
-    static int  is_notify_bt_fw_status = 0;
-    static char bt_fw_version[BT_FW_VERSION_MAX_LEN];
-    static EnumBtFwStatus bt_fw_update_status = 0;
-
-    static int  is_motocon_event_received = 0;
+    static int      is_event_received = 0;
     static QueueHandle_t motocon_rx_event_queue_handle;
+    static QueueHandle_t connection_status_queue_handle;
+    static QueueHandle_t btm_status_queue_handle;
 #endif
 
 /*--------------------------------------------------------------------
@@ -155,9 +119,6 @@ void ew_device_bluetooth_init
        variable to access the driver class during the runtime.
     */
     EwLockObject( device_object );
-
-    motocon_rx_event_queue_handle = xQueueCreate( MOTOCON_RX_EVENT_QUEUE_SIZE, sizeof( EnumMotoConRxEvent ) );
-    configASSERT( NULL != motocon_rx_event_queue_handle );
 #endif
 }
 
@@ -219,418 +180,48 @@ return need_update;
 /*********************************************************************
 *
 * @private
-* ew_bt_notify_paired_device_connection_status_updated
+* ew_notify_event_received
 *
-* Notify the Bluetooth paired device connection status updated to EW GUI.
+* Notify event to EW GUI.
 *
 *********************************************************************/
-#ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyPairedDeviceConnectionStatusUpdated_
-    static int ew_bt_notify_paired_device_connection_status_updated
-        (
-        void
-        )
+static int ew_notify_event_received
+    (
+    void
+    )
+{
+int need_update = 0;
+if( is_event_received )
     {
-    int need_update = 0;
-    if( is_btc_paired_device_status_updated )
-        {
-        is_btc_paired_device_status_updated = 0;
-        DeviceInterfaceBluetoothDeviceClass__NotifyPairedDeviceConnectionStatusUpdated( device_object );
-        need_update = 1;
-        }
-    return need_update;
-    }
-#endif
+    is_event_received = 0;
 
-/*********************************************************************
-*
-* @private
-* ew_bt_notify_btc_connection_result
-*
-* Notify the Bluetooth pairing result to EW GUI.
-*
-*********************************************************************/
-#ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyBtcConnectionResult_
-    static int ew_bt_notify_btc_connection_result
-        (
-        void
-        )
-    {
-    int need_update = 0;
-    if( is_btc_connection_result_updated )
-        {
-        is_btc_connection_result_updated = 0;
-        DeviceInterfaceBluetoothDeviceClass__NotifyBtcConnectionResult( device_object, btc_connection_result );
-        need_update = 1;
-        }
-    return need_update;
-    }
-#endif
-
-/*********************************************************************
-*
-* @private
-* ew_notify_bt_fw_status
-*
-* Notify the status of BT firmware update to EW GUI.
-*
-*********************************************************************/
-#ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyBtFwStatus_
-    static int ew_notify_bt_fw_status
-        (
-        void
-        )
-    {
-    int need_update = 0;
-    if( is_notify_bt_fw_status )
-        {
-        is_notify_bt_fw_status = 0;
-        XString version = EwNewStringAnsi( bt_fw_version );
-        DeviceInterfaceBluetoothDeviceClass__NotifyBtFwStatus( device_object, bt_fw_update_status, version );
-        need_update = 1;
-        }
-    return need_update;
-    }
-#endif
-
-/*********************************************************************
-*
-* @private
-* ew_notify_btc_pairing_state_received
-*
-* Notify EW the BTC pairing state changed
-*
-*********************************************************************/
-#ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyBtcPairingStateChanged_
-    static int ew_notify_btc_pairing_state_received
-        (
-        void
-        )
-    {
-    int need_update = 0;
-    if( is_btc_pairing_state_changed )
-        {
-        is_btc_pairing_state_changed = 0;
-        DeviceInterfaceBluetoothDeviceClass__NotifyBtcPairingStateChanged( device_object, btc_pairing_state );
-        need_update = 1;
-        }
-    return need_update;
-    }
-#endif
-
-/*********************************************************************
-*
-* @private
-* ew_notify_motocon_event_received
-*
-* Notify MotoCon event to EW GUI.
-*
-*********************************************************************/
-#ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyMotoConEventReceived_
-    static int ew_notify_motocon_event_received
-        (
-        void
-        )
-    {
-    int need_update = 0;
-    if( is_motocon_event_received )
-        {
-        is_motocon_event_received = 0;
-        EnumMotoConRxEvent event;
-        while( pdTRUE == xQueueReceive( motocon_rx_event_queue_handle, &event, 0 ) )
+    #ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyMotoConEventReceived_
+        EnumMotoConRxEvent motocon_event;
+        while( pdTRUE == xQueueReceive( motocon_rx_event_queue_handle, &motocon_event, 0 ) )
             {
-            DeviceInterfaceBluetoothDeviceClass__NotifyMotoConEventReceived( device_object, event );
+            DeviceInterfaceBluetoothDeviceClass__NotifyMotoConEventReceived( device_object, motocon_event );
             }
-        need_update = 1;
-        }
-    return need_update;
+    #endif
+
+    #ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyBtmStatus_
+        EnumBtmStatus btm_status;
+        while( pdTRUE == xQueueReceive( btm_status_queue_handle, &btm_status, 0 ) )
+            {
+            DeviceInterfaceBluetoothDeviceClass__NotifyBtmStatus( device_object, btm_status);
+            }
+    #endif
+
+    #ifdef _DeviceInterfaceBluetoothDeviceClass__NotifyConnectionStatus_
+        EnumConnectionStatus connection_status;
+        while( pdTRUE == xQueueReceive( connection_status_queue_handle, &connection_status, 0 ) )
+            {
+            DeviceInterfaceBluetoothDeviceClass__NotifyConnectionStatus( device_object, connection_status );
+            }
+    #endif
+
+    need_update = 1;
     }
-#endif
-
-/*********************************************************************
-*
-* @private
-* ew_bt_get_local_device_name
-*
-* @param device_name The pointer to the pointer to the device name.
-*
-*********************************************************************/
-void ew_bt_get_local_device_name
-    (
-    uint8_t** device_name
-    )
-{
-BTM_get_local_device_name( device_name );
-}
-
-/*********************************************************************
-*
-* @private
-* ew_bt_get_local_device_address
-*
-* @param device_addr The pointer to the local device address.
-*
-*********************************************************************/
-void ew_bt_get_local_device_address
-    (
-    uint8_t* device_address
-    )
-{
-BTM_get_local_device_address( device_address );
-}
-
-/*********************************************************************
-*
-* @private
-* ew_bt_is_max_paired_device_num
-*
-* Check if the paired device num reaches max or not
-*
-* @retval True if paired device num reaches max. False if not reaching max.
-*
-*********************************************************************/
-bool ew_bt_is_max_paired_device_num
-    (
-    void
-    )
-{
-return BTM_is_max_paired_device_num();
-}
-
-/*********************************************************************
-*
-* @private
-* ew_bt_get_paired_device_num
-*
-* Get the paired device num.
-*
-* @retval The paired device num.
-*
-*********************************************************************/
-int ew_bt_get_paired_device_num
-    (
-    void
-    )
-{
-return BTM_get_paired_device_num();
-}
-
-/*********************************************************************
-*
-* @private
-* ew_bt_get_paired_device_at_index
-*
-* Get the specific Bluetooth paired device information.
-*
-* @param index Index of the paired device.
-* @param device_name Pointer to the pointer of the device name.
-* @param is_navi_app_connected Pointer to the is_navi_app_connected bool value.
-* @param is_yamaha_app_connected Pointer to the is_yamaha_app_connected bool value.
-*
-*********************************************************************/
-void ew_bt_get_paired_device_at_index
-    (
-    const int paired_device_idx,
-    uint8_t** device_name,
-    bool*     is_navi_app_connected,
-    bool*     is_yamaha_app_connected
-    )
-{
-BTM_get_paired_device_info( paired_device_idx, device_name, is_navi_app_connected, is_yamaha_app_connected );
-}
-
-/*********************************************************************
-*
-* @private
-* ew_bt_connect_paired_device
-*
-* Device interface to connect the Bluetooth device
-*
-* @param paired_device_idx The index of paired device.
-*
-*********************************************************************/
-void ew_bt_connect_paired_device
-    (
-    const int paired_device_idx
-    )
-{
-BTM_connect_paired_device( paired_device_idx );
-}
-
-/*********************************************************************
-*
-* @private
-* ew_bt_disconnect_paired_device
-*
-* Device interface to disconnect the Bluetooth device
-*
-* @param paired_device_idx The index of paired device.
-*
-*********************************************************************/
-void ew_bt_disconnect_paired_device
-    (
-    const int paired_device_idx
-    )
-{
-BTM_disconnect_paired_device( paired_device_idx );
-}
-
-/*********************************************************************
-*
-* @private
-* ew_bt_unpair_paired_device
-*
-* Device interface to unpair the Bluetooth device
-*
-* @param paired_device_idx The index of paired device.
-*
-*********************************************************************/
-void ew_bt_unpair_paired_device
-    (
-    const int paired_device_idx
-    )
-{
-BTM_unpair_paired_device( paired_device_idx );
-}
-
-/*********************************************************************
-*
-* @private
-* ew_bt_set_enable
-*
-* Device interface to enable/disable Bluetooth.
-*
-* @param state True: enable Bluetooth.
-*              False: disable Bluetooth.
-*
-*********************************************************************/
-void ew_bt_set_enable
-    (
-    bool state
-    )
-{
-BTM_set_enable_state( state );
-}
-
-/*********************************************************************
-*
-* @private
-* ew_bt_get_enable
-*
-* Device interface to get Bluetooth enable state.
-*
-* @retVal True if Bluetooth is enabled.
-*         False if Bluetooth is disabled.
-*
-*********************************************************************/
-bool ew_bt_get_enable
-    (
-    void
-    )
-{
-return BTM_get_enable_state();
-}
-
-/*********************************************************************
-*
-* @private
-* ew_bt_set_discoverable
-*
-* Device interface used for making system discoverable to other
-* Bluetooth device.
-*
-* @param state True if turning discoverable on.
-*              False if turning discoverable off.
-*
-*********************************************************************/
-void ew_bt_set_discoverable
-    (
-    bool state
-    )
-{
-BTM_set_discoverable_state( ( int )state );
-}
-
-/*********************************************************************
-*
-* @private
-* ew_bt_get_discoverable
-*
-* Device interface to get Bluetooth discoverable state.
-*
-* @retVal True if discoverable.
-*         False if not discoverable.
-*
-*********************************************************************/
-bool ew_bt_get_discoverable
-    (
-    void
-    )
-{
-return BTM_get_discoverable_state();
-}
-
-/*********************************************************************
-*
-* @private
-* ew_bt_set_autoconnect
-*
-* Device interface to enable/disable auto connect to Bluetooth device.
-*
-* @param state True if turning auto connect on.
-*              False if turning auto connect off.
-*
-*********************************************************************/
-void ew_bt_set_autoconnect
-    (
-    bool state
-    )
-{
-BTM_set_autoconnect_state( ( int )state );
-}
-
-/*********************************************************************
-*
-* @private
-* ew_bt_get_autoconnect
-*
-* Device interface to get Bluetooth auto connect state.
-*
-* @retval True if auto connect.
-*         False if not auto connect.
-*
-*********************************************************************/
-bool ew_bt_get_autoconnect
-    (
-    void
-    )
-{
-return BTM_get_autoconnect_state();
-}
-
-/*********************************************************************
-*
-* @public
-* EW_notify_btc_passkey_generated
-*
-* Notify EW GUI that the BTC pairing passkey is generated.
-*
-* @param device_name Pointer to the BTC connecting device name
-* @param passkey Passkey to pair BTC
-*
-*********************************************************************/
-void EW_notify_btc_passkey_generated
-    (
-    const uint8_t* device_name,
-    const uint32_t passkey
-    )
-{
-#ifdef _DeviceInterfaceBluetoothDeviceClass_
-    memcpy( btc_connecing_device_name, device_name, BT_DEVICE_NAME_LEN );
-    btc_connecing_device_name[BT_DEVICE_NAME_LEN-1] = '\0';
-    btc_passkey = passkey;
-    is_btc_passkey_received = 1;
-    EwBspEventTrigger();
-#endif
+return need_update;
 }
 
 /*********************************************************************
@@ -652,130 +243,25 @@ void ew_bt_get_btc_connecting_device_name
 /*********************************************************************
 *
 * @public
-* EW_notify_bt_refresh_paired_device_list
-*
-* Notify EW GUI the status of the Bluetooth paired device is changed
-*
-*********************************************************************/
-void EW_notify_bt_paired_device_status_changed
-    (
-    void
-    )
-{
-#ifdef _DeviceInterfaceBluetoothDeviceClass_
-    is_btc_paired_device_status_updated = 1;
-    EwBspEventTrigger();
-#endif
-}
-
-/*********************************************************************
-*
-* @public
-* EW_notify_bt_connection_result
-*
-* Notify EW GUI the Bluetooth pairing result.
-*
-* @param result The BT connection result of bt_connection_result_type
-*
-*********************************************************************/
-void EW_notify_bt_connection_result
-    (
-    const EnumBtDeviceConnectionResult result
-    )
-{
-PRINTF( "%s, %d\r\n", __FUNCTION__, result );
-
-btc_connection_result = result;
-is_btc_connection_result_updated = 1;
-EwBspEventTrigger();
-}
-
-/*********************************************************************
-*
-* @public
-* EW_notify_bt_fw_update_status
-*
-* Notify EW GUI the Bluetooth firmware update status.
-*
-* @param status 0: EnumBtFwStatusNO_UPDATE,    1: EnumBtFwStatusUPDATE_START,
-*               2: EnumBtFwStatusUPDATE_ABORT, 3: EnumBtFwStatusUPDATE_FINISH
-* @param version The pointer to the char array of BT firmware version.
-*
-*********************************************************************/
-void EW_notify_bt_fw_update_status( EnumBtFwStatus status, char* version )
-{
-PRINTF( "%s, %d\r\n", __FUNCTION__, status );
-is_notify_bt_fw_status = 1;
-bt_fw_update_status = status;
-memcpy( bt_fw_version, version, BT_FW_VERSION_MAX_LEN );
-bt_fw_version[BT_FW_VERSION_MAX_LEN-1] = '\0';
-EwBspEventTrigger();
-}
-
-/*********************************************************************
-*
-* @public
-* EW_notify_bt_passkey_generated
+* EW_notify_btc_passkey_generated
 *
 * Notify EW BTC passkey generated
 *
-* @param device_name Name of the Bluetooth device to pari
-* @param passkey Passkey to pair BTC
+* @param device_name Name of the Bluetooth device to pair
+* @param passkey Passkey to confirm BTC pairing
 *
 *********************************************************************/
-void EW_notify_bt_passkey_generated
+void EW_notify_btc_passkey_generated
     (
     const uint8_t* device_name,
     const uint32_t passkey
     )
 {
-EwPrint( "%s %s %d\r\n", __FUNCTION__, device_name, passkey );
+EwPrint( "%s %s %u\r\n", __FUNCTION__, device_name, passkey );
 memcpy( btc_connecing_device_name, device_name, BT_DEVICE_NAME_LEN );
-btc_connecing_device_name[BT_DEVICE_NAME_LEN -1] = '\0';
+btc_connecing_device_name[BT_DEVICE_NAME_LEN-1] = '\0';
 btc_passkey = passkey;
-btc_pairing_state = EnumBtcPairingStatePASSKEY_GENERATED;
-is_btc_pairing_state_changed = true;
-EwBspEventTrigger();
-}
-
-/*********************************************************************
-*
-* @public
-* EW_notify_btc_pairing_state_changed
-*
-* Notify EW BTC pairing state changed
-*
-* @param state BTC pairing state
-*
-*********************************************************************/
-void EW_notify_btc_pairing_state_changed
-    (
-    const EnumBtcPairingState state
-    )
-{
-EwPrint( "%s %d\r\n", __FUNCTION__, state );
-btc_pairing_state = state;
-is_btc_pairing_state_changed = true;
-EwBspEventTrigger();
-}
-
-/*********************************************************************
-*
-* @private
-* ew_get_blc_pairing_state
-*
-* Get BTC pairing state
-*
-* @return BTC pairing state
-*
-*********************************************************************/
-EnumBtcPairingState ew_get_blc_pairing_state
-    (
-    void
-    )
-{
-EwPrint( "%s %d\r\n", __FUNCTION__, btc_pairing_state );
-return btc_pairing_state;
+EW_notify_connection_status( EnumConnectionStatusCONFIRM_PASSKEY );
 }
 
 /*********************************************************************
@@ -808,11 +294,19 @@ return btc_passkey;
 *********************************************************************/
 void EW_notify_connection_status
     (
-    const EnumConnectionStatus status,
-    const uint32_t data
+    const EnumConnectionStatus status
     )
 {
-PRINTF( "%s, %u\r\n", __FUNCTION__, data );
+PRINTF( "%s, %d\r\n", __FUNCTION__, status );
+if( pdTRUE == xQueueSend( connection_status_queue_handle, &status, 0 ) )
+    {
+    is_event_received = 1;
+    EwBspEventTrigger();
+    }
+else
+    {
+    PRINTF( "Err: %s queue\r\n", __FUNCTION__ );
+    }
 }
 
 /*********************************************************************
@@ -829,7 +323,23 @@ void EW_notify_btm_status
     const EnumBtmStatus status
     )
 {
-PRINTF( "%s\r\n", __FUNCTION__ );
+PRINTF( "%s, %d\r\n", __FUNCTION__, status );
+if( EnumBtmStatusFACTORY_RESET_COMPLETED == status )
+    {
+    ew_update_factory_reset_status( FACTORY_RESET_BT_MANAGER );
+    }
+else
+    {
+    if( pdTRUE == xQueueSend( btm_status_queue_handle, &status, 0 ) )
+        {
+        is_event_received = 1;
+        EwBspEventTrigger();
+        }
+    else
+        {
+        PRINTF( "Err: %s queue\r\n", __FUNCTION__ );
+        }
+    }
 }
 
 /*********************************************************************
@@ -849,7 +359,7 @@ void EW_notify_motocon_event_received
 PRINTF( "%s, %d\r\n", __FUNCTION__, event );
 if( pdTRUE == xQueueSend( motocon_rx_event_queue_handle, &event, 0 ) )
     {
-    is_motocon_event_received = 1;
+    is_event_received = 1;
     EwBspEventTrigger();
     }
 else
@@ -881,4 +391,26 @@ switch( command )
     default:
         break;
     }
+}
+
+/*********************************************************************
+* @private
+* ew_device_bt_create_queue
+*
+* Create queue
+*
+*********************************************************************/
+void ew_device_bt_create_queue
+    (
+    void
+    )
+{
+motocon_rx_event_queue_handle = xQueueCreate( MOTOCON_RX_EVENT_QUEUE_SIZE, sizeof( EnumMotoConRxEvent ) );
+configASSERT( NULL != motocon_rx_event_queue_handle );
+
+btm_status_queue_handle = xQueueCreate( BTM_STATUS_QUEUE_SIZE, sizeof( EnumBtmStatus ) );
+configASSERT( NULL != btm_status_queue_handle );
+
+connection_status_queue_handle = xQueueCreate( CONNECTION_STATUS_QUEUE_SIZE, sizeof( EnumConnectionStatus ) );
+configASSERT( NULL != connection_status_queue_handle );
 }

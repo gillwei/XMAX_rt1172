@@ -18,7 +18,7 @@ extern "C" {
 #include "Enum.h"
 #include "Core.h"
 #include "MM_pub_ams_type.h"
-#include "BTM_pub.h"
+#include "BT_pub.h"
 #include "RTC_pub.h"
 
 #define CCUID_PREFIX                    "000603" /* product id: 00, device type id: 06, supplier id: 03 */
@@ -81,13 +81,9 @@ void EW_update_burn_in_time( const uint32_t time_sec );
 void EW_show_burn_in_result( const bool result );
 void EW_notify_inspection_request( EnumInspectionMode mode, EnumInspectionDisplay display_pattern );
 
-void EW_notify_connection_status( const EnumConnectionStatus status, const uint32_t data );
+void EW_notify_connection_status( const EnumConnectionStatus status );
 void EW_notify_btm_status( const EnumBtmStatus status );
-void EW_notify_bt_paired_device_status_changed( void );
-void EW_notify_bt_connection_result( const EnumBtDeviceConnectionResult result );
-void EW_notify_bt_passkey_generated( const uint8_t* device_name, const uint32_t passkey );
-void EW_notify_btc_pairing_state_changed( const EnumBtcPairingState state );
-void EW_notify_bt_fw_update_status( EnumBtFwStatus status, char* version );
+void EW_notify_btc_passkey_generated( const uint8_t* device_name, const uint32_t passkey );
 void EW_notify_motocon_event_received( const EnumMotoConRxEvent event );
 
 void EW_notify_dd_mode_state_changed( void );

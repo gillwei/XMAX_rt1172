@@ -43,7 +43,9 @@
 #endif
 
 #include "_DeviceInterfaceBluetoothDeviceClass.h"
-#include "_DeviceInterfaceBluetoothPairedDeviceInfo.h"
+#include "_DeviceInterfaceBtPairedDeviceInfo.h"
+#include "_DeviceInterfaceBtmStatusContext.h"
+#include "_DeviceInterfaceConnectionStatusContext.h"
 #include "_DeviceInterfaceDateTime.h"
 #include "_DeviceInterfaceMediaManagerDeviceClass.h"
 #include "_DeviceInterfaceMotoConContext.h"

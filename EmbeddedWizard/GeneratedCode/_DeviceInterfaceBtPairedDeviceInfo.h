@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _DeviceInterfaceBluetoothPairedDeviceInfo_H
-#define _DeviceInterfaceBluetoothPairedDeviceInfo_H
+#ifndef _DeviceInterfaceBtPairedDeviceInfo_H
+#define _DeviceInterfaceBtPairedDeviceInfo_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,28 +42,29 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-/* Forward declaration of the class DeviceInterface::BluetoothPairedDeviceInfo */
-#ifndef _DeviceInterfaceBluetoothPairedDeviceInfo_
-  EW_DECLARE_CLASS( DeviceInterfaceBluetoothPairedDeviceInfo )
-#define _DeviceInterfaceBluetoothPairedDeviceInfo_
+/* Forward declaration of the class DeviceInterface::BtPairedDeviceInfo */
+#ifndef _DeviceInterfaceBtPairedDeviceInfo_
+  EW_DECLARE_CLASS( DeviceInterfaceBtPairedDeviceInfo )
+#define _DeviceInterfaceBtPairedDeviceInfo_
 #endif
 
 
-/* Deklaration of class : 'DeviceInterface::BluetoothPairedDeviceInfo' */
-EW_DEFINE_FIELDS( DeviceInterfaceBluetoothPairedDeviceInfo, XObject )
+/* Deklaration of class : 'DeviceInterface::BtPairedDeviceInfo' */
+EW_DEFINE_FIELDS( DeviceInterfaceBtPairedDeviceInfo, XObject )
   EW_VARIABLE( DeviceName,      XString )
+  EW_VARIABLE( DeviceAddress,   XUInt64 )
   EW_VARIABLE( IsYamahaAppConnected, XBool )
   EW_VARIABLE( IsNaviAppConnected, XBool )
-EW_END_OF_FIELDS( DeviceInterfaceBluetoothPairedDeviceInfo )
+EW_END_OF_FIELDS( DeviceInterfaceBtPairedDeviceInfo )
 
-/* Virtual Method Table (VMT) for the class : 'DeviceInterface::BluetoothPairedDeviceInfo' */
-EW_DEFINE_METHODS( DeviceInterfaceBluetoothPairedDeviceInfo, XObject )
-EW_END_OF_METHODS( DeviceInterfaceBluetoothPairedDeviceInfo )
+/* Virtual Method Table (VMT) for the class : 'DeviceInterface::BtPairedDeviceInfo' */
+EW_DEFINE_METHODS( DeviceInterfaceBtPairedDeviceInfo, XObject )
+EW_END_OF_METHODS( DeviceInterfaceBtPairedDeviceInfo )
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _DeviceInterfaceBluetoothPairedDeviceInfo_H */
+#endif /* _DeviceInterfaceBtPairedDeviceInfo_H */
 
 /* Embedded Wizard */

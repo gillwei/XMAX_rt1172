@@ -38,7 +38,9 @@
 #include "_CoreView.h"
 #include "_DevelopmentDEV_Main.h"
 #include "_DeviceInterfaceBluetoothDeviceClass.h"
-#include "_DeviceInterfaceBluetoothPairedDeviceInfo.h"
+#include "_DeviceInterfaceBtPairedDeviceInfo.h"
+#include "_DeviceInterfaceBtmStatusContext.h"
+#include "_DeviceInterfaceConnectionStatusContext.h"
 #include "_DeviceInterfaceSystemData.h"
 #include "_DeviceInterfaceSystemDeviceClass.h"
 #include "_DeviceInterfaceVehicleDataClass.h"
@@ -113,22 +115,21 @@
 /* Compressed strings for the language 'Default'. */
 EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
-  0x00000366, /* ratio 45.98 % */
+  0x0000032C, /* ratio 45.81 % */
   0xB8001100, 0x800A6452, 0x00A80022, 0x06200180, 0x09028780, 0x90A8441A, 0x00878CE1,
   0x983C1622, 0x1A002170, 0xEC4E3518, 0xC846B178, 0x02291B81, 0xA4E388B8, 0x2F0A8E44,
   0xB29970E6, 0x10874823, 0x098C8E51, 0x024606E0, 0xDCD01528, 0x4FC6D1E9, 0x021F0C94,
   0x2863A825, 0x640086CC, 0xD0C95538, 0x5497CE64, 0xB87CB401, 0x8653E740, 0x7000412D,
   0x460DE003, 0x86B35E06, 0x40079005, 0x30730019, 0xA4E8250A, 0x64B1002C, 0x40018400,
-  0x8ED4EF47, 0x4C3E7D0E, 0xCF701690, 0xA02918BB, 0x8016327C, 0xCC00B714, 0x39039000,
-  0x4C001A2E, 0xCB81A400, 0x36418017, 0xAD5EFB76, 0xCCE1D0A9, 0x56502787, 0x40070001,
-  0x377DBDDE, 0x58833D93, 0x92B14748, 0x036E5337, 0xCA5F8EE0, 0x6E20596F, 0xDEEDFA0D,
-  0xFAC56FB8, 0xAFB9BBDE, 0x9FCF000B, 0x9AA0F43F, 0x7DBF6BB5, 0xADB00393, 0xC9E6B710,
-  0x072F7800, 0x5D8C7DAF, 0x6721C4DE, 0x7AA1A8C7, 0xB59DD7EB, 0x1B9C4773, 0x90DFF8BC,
-  0x000733BD, 0x8BD1347A, 0xC1000149, 0x01458D62, 0xE57610DE, 0xC663D6F5, 0x7F96D75D,
-  0x1175494F, 0x05492A84, 0x491D8512, 0x288095B5, 0x641B2665, 0x9065990A, 0x05999479,
-  0x6162681A, 0x134810A8, 0x8AD85466, 0xA305FD51, 0x65622E55, 0xA9460013, 0x3560A318,
-  0x61D1F692, 0x5A74823A, 0x1499448F, 0x814F48A0, 0x2A9221B4, 0x91138499, 0xD188E211,
-  0x00010194, 0x00000000
+  0x8ED4EF47, 0xAD5E7D0E, 0xCCE1D0A9, 0x56502787, 0x40070001, 0xD37DBDDE, 0xE670058C,
+  0x1D21002E, 0x20019AC5, 0x36800E59, 0xF5F8EE00, 0xE58596FC, 0xFADC6CC6, 0xAC56FB8D,
+  0xFB92BDE8, 0x7B3000BA, 0x8A0F43F6, 0xDBF63B19, 0xCCE5F5B7, 0xFE773600, 0x6AB47A1C,
+  0x82EC63B1, 0x37BAAD46, 0x1BB90D46, 0xFC7BE63F, 0x9CCD42B7, 0xFD067801, 0xCDF57B5A,
+  0x1EA401B0, 0x5262F44C, 0x3E501000, 0xFBC51C99, 0xDF79BB10, 0x37BD514A, 0x4FF25B6F,
+  0xAFC45EA5, 0xFE482A52, 0x15B5491D, 0x9131287A, 0x296F591D, 0xC9419664, 0x6A566679,
+  0xA00589A9, 0x97ED2042, 0x45365A51, 0x008517F5, 0x56217558, 0xA1351A19, 0x487D8286,
+  0x6D3D47D8, 0x2661E288, 0x79D26512, 0xD2053D22, 0x64AA3180, 0xE62D4E12, 0x18888007,
+  0x0010143D, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -169,47 +170,45 @@ static const XStringRes _Const0021 = { _StringsDefault0, 0x0079 };
 static const XStringRes _Const0022 = { _StringsDefault0, 0x0085 };
 static const XStringRes _Const0023 = { _StringsDefault0, 0x008F };
 static const XStringRes _Const0024 = { _StringsDefault0, 0x0097 };
-static const XStringRes _Const0025 = { _StringsDefault0, 0x00A0 };
-static const XStringRes _Const0026 = { _StringsDefault0, 0x00B4 };
-static const XColor _Const0027 = { 0x00, 0x00, 0x00, 0xFF };
-static const XRect _Const0028 = {{ 80, 60 }, { 380, 210 }};
-static const XStringRes _Const0029 = { _StringsDefault0, 0x00BC };
-static const XColor _Const002A = { 0xFF, 0xFF, 0xFF, 0xFF };
-static const XStringRes _Const002B = { _StringsDefault0, 0x00E3 };
-static const XStringRes _Const002C = { _StringsDefault0, 0x0101 };
-static const XRect _Const002D = {{ 174, 63 }, { 306, 195 }};
-static const XRect _Const002E = {{ 0, 39 }, { 94, 114 }};
-static const XRect _Const002F = {{ 0, 189 }, { 94, 264 }};
-static const XRect _Const0030 = {{ 0, 114 }, { 95, 189 }};
-static const XStringRes _Const0031 = { _StringsDefault0, 0x011B };
-static const XStringRes _Const0032 = { _StringsDefault0, 0x0123 };
-static const XRect _Const0033 = {{ 10, 131 }, { 470, 255 }};
-static const XRect _Const0034 = {{ 193, 36 }, { 287, 130 }};
-static const XStringRes _Const0035 = { _StringsDefault0, 0x0133 };
-static const XStringRes _Const0036 = { _StringsDefault0, 0x013B };
-static const XRect _Const0037 = {{ 10, 45 }, { 470, 76 }};
-static const XRect _Const0038 = {{ 10, 107 }, { 470, 138 }};
-static const XRect _Const0039 = {{ 10, 76 }, { 470, 107 }};
-static const XRect _Const003A = {{ 10, 138 }, { 470, 169 }};
-static const XRect _Const003B = {{ 95, 176 }, { 385, 259 }};
-static const XStringRes _Const003C = { _StringsDefault0, 0x0143 };
-static const XRect _Const003D = {{ 0, 0 }, { 388, 211 }};
-static const XRect _Const003E = {{ 0, 0 }, { 388, 31 }};
-static const XRect _Const003F = {{ 0, 61 }, { 388, 1301 }};
-static const XStringRes _Const0040 = { _StringsDefault0, 0x014B };
-static const XStringRes _Const0041 = { _StringsDefault0, 0x015B };
-static const XStringRes _Const0042 = { _StringsDefault0, 0x0163 };
-static const XStringRes _Const0043 = { _StringsDefault0, 0x016B };
-static const XStringRes _Const0044 = { _StringsDefault0, 0x0173 };
-static const XRect _Const0045 = {{ 10, 40 }, { 470, 168 }};
-static const XStringRes _Const0046 = { _StringsDefault0, 0x017B };
-static const XRect _Const0047 = {{ 10, 156 }, { 470, 227 }};
-static const XStringRes _Const0048 = { _StringsDefault0, 0x0183 };
-static const XStringRes _Const0049 = { _StringsDefault0, 0x018B };
-static const XStringRes _Const004A = { _StringsDefault0, 0x0193 };
-static const XStringRes _Const004B = { _StringsDefault0, 0x019B };
-static const XStringRes _Const004C = { _StringsDefault0, 0x01A3 };
-static const XStringRes _Const004D = { _StringsDefault0, 0x01AB };
+static const XColor _Const0025 = { 0x00, 0x00, 0x00, 0xFF };
+static const XRect _Const0026 = {{ 80, 60 }, { 380, 210 }};
+static const XStringRes _Const0027 = { _StringsDefault0, 0x009F };
+static const XColor _Const0028 = { 0xFF, 0xFF, 0xFF, 0xFF };
+static const XStringRes _Const0029 = { _StringsDefault0, 0x00C6 };
+static const XStringRes _Const002A = { _StringsDefault0, 0x00E4 };
+static const XRect _Const002B = {{ 174, 63 }, { 306, 195 }};
+static const XRect _Const002C = {{ 0, 39 }, { 94, 114 }};
+static const XRect _Const002D = {{ 0, 189 }, { 94, 264 }};
+static const XRect _Const002E = {{ 0, 114 }, { 95, 189 }};
+static const XStringRes _Const002F = { _StringsDefault0, 0x00FE };
+static const XStringRes _Const0030 = { _StringsDefault0, 0x0106 };
+static const XRect _Const0031 = {{ 10, 131 }, { 470, 255 }};
+static const XRect _Const0032 = {{ 193, 36 }, { 287, 130 }};
+static const XStringRes _Const0033 = { _StringsDefault0, 0x0116 };
+static const XStringRes _Const0034 = { _StringsDefault0, 0x011E };
+static const XRect _Const0035 = {{ 10, 45 }, { 470, 76 }};
+static const XRect _Const0036 = {{ 10, 107 }, { 470, 138 }};
+static const XRect _Const0037 = {{ 10, 76 }, { 470, 107 }};
+static const XRect _Const0038 = {{ 10, 138 }, { 470, 169 }};
+static const XRect _Const0039 = {{ 95, 176 }, { 385, 259 }};
+static const XStringRes _Const003A = { _StringsDefault0, 0x0126 };
+static const XRect _Const003B = {{ 0, 0 }, { 388, 211 }};
+static const XRect _Const003C = {{ 0, 0 }, { 388, 31 }};
+static const XRect _Const003D = {{ 0, 61 }, { 388, 1301 }};
+static const XStringRes _Const003E = { _StringsDefault0, 0x012E };
+static const XStringRes _Const003F = { _StringsDefault0, 0x013E };
+static const XStringRes _Const0040 = { _StringsDefault0, 0x0146 };
+static const XStringRes _Const0041 = { _StringsDefault0, 0x014E };
+static const XStringRes _Const0042 = { _StringsDefault0, 0x0156 };
+static const XRect _Const0043 = {{ 10, 40 }, { 470, 168 }};
+static const XStringRes _Const0044 = { _StringsDefault0, 0x015E };
+static const XRect _Const0045 = {{ 10, 156 }, { 470, 227 }};
+static const XStringRes _Const0046 = { _StringsDefault0, 0x0166 };
+static const XStringRes _Const0047 = { _StringsDefault0, 0x016E };
+static const XStringRes _Const0048 = { _StringsDefault0, 0x0176 };
+static const XStringRes _Const0049 = { _StringsDefault0, 0x017E };
+static const XStringRes _Const004A = { _StringsDefault0, 0x0186 };
+static const XStringRes _Const004B = { _StringsDefault0, 0x018E };
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.
@@ -233,7 +232,6 @@ static const XStringRes _Const004D = { _StringsDefault0, 0x01AB };
 #endif
 
 /* User defined inline code: 'Settings::Inline' */
-#include "BTM_pub.h"
 #include "ew_priv.h"
 
 /* Initializer for the class 'Settings::SET01_MainSettingMenu' */
@@ -567,6 +565,7 @@ EW_DEFINE_CLASS( SettingsSET01_MainSettingMenu, MenuBaseMenuView, _.VMT, _.VMT,
   MenuBaseMenuView_LoadPoiListItemUnit,
   MenuBaseMenuView_LoadItemIcon1Visible,
   MenuBaseMenuView_LoadItemIcon2Visible,
+  MenuBaseMenuView_LoadItemDeviceAddress,
 EW_END_OF_CLASS( SettingsSET01_MainSettingMenu )
 
 /* Initializer for the class 'Settings::SET03_ConnectionSettingMenu' */
@@ -747,6 +746,7 @@ EW_DEFINE_CLASS( SettingsSET03_ConnectionSettingMenu, MenuBaseMenuView, _.VMT, _
   MenuBaseMenuView_LoadPoiListItemUnit,
   MenuBaseMenuView_LoadItemIcon1Visible,
   MenuBaseMenuView_LoadItemIcon2Visible,
+  MenuBaseMenuView_LoadItemDeviceAddress,
 EW_END_OF_CLASS( SettingsSET03_ConnectionSettingMenu )
 
 /* Initializer for the class 'Settings::SET04_BtSettingMenu' */
@@ -801,12 +801,11 @@ void SettingsSET04_BtSettingMenu_Init( SettingsSET04_BtSettingMenu _this, XHandl
   aArg )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( aArg );
 
   EwTrace( "%s", EwLoadString( &_Const0002 ));
-  DeviceInterfaceBluetoothDeviceClass_GetBluetoothEnable( EwGetAutoObject( &DeviceInterfaceBluetoothDevice, 
-  DeviceInterfaceBluetoothDeviceClass ));
+  _this->IsBtEnabled = DeviceInterfaceBluetoothDeviceClass_OnGetBluetoothEnabled( 
+  EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ));
 }
 
 /* 'C' function for method : 'Settings::SET04_BtSettingMenu.LoadItemClass()' */
@@ -870,14 +869,15 @@ void SettingsSET04_BtSettingMenu_OnItemActivate( SettingsSET04_BtSettingMenu _th
   {
     case 0 :
     {
-      DeviceInterfaceBluetoothDeviceClass_OnSetBluetoothEnable( EwGetAutoObject( 
+      _this->IsBtEnabled = IsChecked;
+      DeviceInterfaceBluetoothDeviceClass_OnSetBluetoothEnabled( EwGetAutoObject( 
       &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ), IsChecked );
       MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 1, 4 );
     }
     break;
 
     case 1 :
-      if ( DeviceInterfaceBluetoothDeviceClass_OnGetIsMaxPairedDevice( EwGetAutoObject( 
+      if ( DeviceInterfaceBluetoothDeviceClass_OnGetIsPairedDeviceNumMax( EwGetAutoObject( 
           &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )))
         CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( SettingsSET05_BtcMaxPairedDevice, 
         0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
@@ -914,7 +914,8 @@ XBool SettingsSET04_BtSettingMenu_LoadItemChecked( SettingsSET04_BtSettingMenu _
   switch ( aItemNo )
   {
     case 0 :
-      IsChecked = EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->BluetoothEnable;
+      IsChecked = DeviceInterfaceBluetoothDeviceClass_OnGetBluetoothEnabled( EwGetAutoObject( 
+      &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ));
     break;
 
     case 3 :
@@ -932,15 +933,10 @@ XBool SettingsSET04_BtSettingMenu_LoadItemChecked( SettingsSET04_BtSettingMenu _
 XBool SettingsSET04_BtSettingMenu_LoadItemEnabled( SettingsSET04_BtSettingMenu _this, 
   XInt32 aItemNo )
 {
-  XBool ItemEnabled;
-
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( _this );
-
-  ItemEnabled = 1;
+  XBool ItemEnabled = 1;
 
   if ( aItemNo > 0 )
-    ItemEnabled = EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->BluetoothEnable;
+    ItemEnabled = _this->IsBtEnabled;
 
   return ItemEnabled;
 }
@@ -1015,6 +1011,7 @@ EW_DEFINE_CLASS( SettingsSET04_BtSettingMenu, MenuBaseMenuView, _.VMT, _.VMT, _.
   MenuBaseMenuView_LoadPoiListItemUnit,
   MenuBaseMenuView_LoadItemIcon1Visible,
   MenuBaseMenuView_LoadItemIcon2Visible,
+  MenuBaseMenuView_LoadItemDeviceAddress,
 EW_END_OF_CLASS( SettingsSET04_BtSettingMenu )
 
 /* Initializer for the class 'Settings::SET35_LegalMenu' */
@@ -1184,6 +1181,7 @@ EW_DEFINE_CLASS( SettingsSET35_LegalMenu, MenuBaseMenuView, _.VMT, _.VMT, _.VMT,
   MenuBaseMenuView_LoadPoiListItemUnit,
   MenuBaseMenuView_LoadItemIcon1Visible,
   MenuBaseMenuView_LoadItemIcon2Visible,
+  MenuBaseMenuView_LoadItemDeviceAddress,
 EW_END_OF_CLASS( SettingsSET35_LegalMenu )
 
 /* Initializer for the class 'Settings::SET38_ConfirmAllReset' */
@@ -1281,8 +1279,7 @@ void SettingsSET38_ConfirmAllReset_OnOkActivatedSlot( SettingsSET38_ConfirmAllRe
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  if ( 0 < DeviceInterfaceBluetoothDeviceClass_OnGetPairedDeviceNum( EwGetAutoObject( 
-      &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )))
+  if ( 0 < EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->PairedDeviceNum )
     CoreGroup_SwitchToDialog( _this->Super5.Owner, ((CoreGroup)EwNewObject( SettingsSET39_DeletePairedDevice, 
     0 )), 0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
   else
@@ -1878,7 +1875,7 @@ void SettingsSET06_BtcDiscovarable__Init( SettingsSET06_BtcDiscovarable _this, X
   ComponentsBaseText__Init( &_this->NameText, &_this->_.XObject, 0 );
   CoreTimer__Init( &_this->CountDownTimer, &_this->_.XObject, 0 );
   MenuPushButton__Init( &_this->PushButton, &_this->_.XObject, 0 );
-  CoreSystemEventHandler__Init( &_this->BtcPairingStateChangeEventHandler, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->ConnectionStatusEventHandler, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_.VMT = EW_CLASS( SettingsSET06_BtcDiscovarable );
@@ -1920,9 +1917,9 @@ void SettingsSET06_BtcDiscovarable__Init( SettingsSET06_BtcDiscovarable _this, X
   ResourcesFont ));
   _this->CountDownTimer.OnTrigger = EwNewSlot( _this, SettingsSET06_BtcDiscovarable_UpdateCountDownTimeSlot );
   _this->PushButton.OnActivate = EwNewSlot( _this, SettingsSET06_BtcDiscovarable_OnCancelSlot );
-  _this->BtcPairingStateChangeEventHandler.OnEvent = EwNewSlot( _this, SettingsSET06_BtcDiscovarable_OnBtcPairingStateChangeSlot );
-  CoreSystemEventHandler_OnSetEvent( &_this->BtcPairingStateChangeEventHandler, 
-  &EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->BtcPairingChangedSystemEvent );
+  _this->ConnectionStatusEventHandler.OnEvent = EwNewSlot( _this, SettingsSET06_BtcDiscovarable_OnConnectoinStatusReceivedSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->ConnectionStatusEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->ConnectionStatusEvent );
 
   /* Call the user defined constructor */
   SettingsSET06_BtcDiscovarable_Init( _this, aArg );
@@ -1940,7 +1937,7 @@ void SettingsSET06_BtcDiscovarable__ReInit( SettingsSET06_BtcDiscovarable _this 
   ComponentsBaseText__ReInit( &_this->NameText );
   CoreTimer__ReInit( &_this->CountDownTimer );
   MenuPushButton__ReInit( &_this->PushButton );
-  CoreSystemEventHandler__ReInit( &_this->BtcPairingStateChangeEventHandler );
+  CoreSystemEventHandler__ReInit( &_this->ConnectionStatusEventHandler );
 
   /* ... and re-initialize objects, variables, properties, etc. */
   ViewsText_OnSetString((ViewsText)&_this->DiscoverableText, EwGetVariantOfString( 
@@ -1967,7 +1964,7 @@ void SettingsSET06_BtcDiscovarable__Done( SettingsSET06_BtcDiscovarable _this )
   ComponentsBaseText__Done( &_this->NameText );
   CoreTimer__Done( &_this->CountDownTimer );
   MenuPushButton__Done( &_this->PushButton );
-  CoreSystemEventHandler__Done( &_this->BtcPairingStateChangeEventHandler );
+  CoreSystemEventHandler__Done( &_this->ConnectionStatusEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseMainBG__Done( &_this->_.Super );
@@ -2052,16 +2049,20 @@ void SettingsSET06_BtcDiscovarable_UpdateCountDownTimeSlot( SettingsSET06_BtcDis
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
    receives an event. */
-void SettingsSET06_BtcDiscovarable_OnBtcPairingStateChangeSlot( SettingsSET06_BtcDiscovarable _this, 
+void SettingsSET06_BtcDiscovarable_OnConnectoinStatusReceivedSlot( SettingsSET06_BtcDiscovarable _this, 
   XObject sender )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
   if ( _this->Super5.Owner != 0 )
-    switch ( EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->BtcPairingState )
+  {
+    DeviceInterfaceConnectionStatusContext ConnectionStatusContext = EwCastObject( 
+      _this->ConnectionStatusEventHandler.Context, DeviceInterfaceConnectionStatusContext );
+
+    switch ( ConnectionStatusContext->Status )
     {
-      case EnumBtcPairingStateFAIL :
+      case EnumConnectionStatusPAIRING_FAILED :
       {
         SettingsTimeoutDialog PairingFailDialog = EwNewObject( SettingsTimeoutDialog, 
           0 );
@@ -2076,7 +2077,7 @@ void SettingsSET06_BtcDiscovarable_OnBtcPairingStateChangeSlot( SettingsSET06_Bt
       }
       break;
 
-      case EnumBtcPairingStatePASSKEY_GENERATED :
+      case EnumConnectionStatusCONFIRM_PASSKEY :
       {
         DeviceInterfaceBluetoothDeviceClass_OnSetDiscoverable( EwGetAutoObject( 
         &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ), 
@@ -2089,6 +2090,7 @@ void SettingsSET06_BtcDiscovarable_OnBtcPairingStateChangeSlot( SettingsSET06_Bt
 
       default :; 
     }
+  }
 }
 
 /* 'C' function for method : 'Settings::SET06_BtcDiscovarable.DisplayLocalDeviceName()' */
@@ -2186,7 +2188,7 @@ void SettingsSET10_11_12_BtConnectionResult__Init( SettingsSET10_11_12_BtConnect
 
   /* ... then construct all embedded objects */
   ComponentsBaseText__Init( &_this->Message, &_this->_.XObject, 0 );
-  CoreSystemEventHandler__Init( &_this->ConnectPairedDeviceResultHandler, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->ConnectionStatusEventHandler, &_this->_.XObject, 0 );
   CoreTimer__Init( &_this->DismissTimer, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->Divider, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->LoadingAnimation, &_this->_.XObject, 0 );
@@ -2218,9 +2220,9 @@ void SettingsSET10_11_12_BtConnectionResult__Init( SettingsSET10_11_12_BtConnect
   CoreGroup__Add( _this, ((CoreView)&_this->LoadingText ), 0 );
   ViewsText_OnSetFont((ViewsText)&_this->Message, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
-  _this->ConnectPairedDeviceResultHandler.OnEvent = EwNewSlot( _this, SettingsSET10_11_12_BtConnectionResult_OnConnectPairedDeviceResultSlot );
-  CoreSystemEventHandler_OnSetEvent( &_this->ConnectPairedDeviceResultHandler, &EwGetAutoObject( 
-  &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->BtcConnectionResultSystemEvent );
+  _this->ConnectionStatusEventHandler.OnEvent = EwNewSlot( _this, SettingsSET10_11_12_BtConnectionResult_OnConnectoinStatusReceivedSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->ConnectionStatusEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->ConnectionStatusEvent );
   _this->DismissTimer.OnTrigger = EwNewSlot( _this, SettingsSET10_11_12_BtConnectionResult_OnDismissSlot );
   ViewsImage_OnSetBitmap( &_this->Divider, EwLoadResource( &ResourceStatusBarDivider, 
   ResourcesBitmap ));
@@ -2241,7 +2243,7 @@ void SettingsSET10_11_12_BtConnectionResult__ReInit( SettingsSET10_11_12_BtConne
 
   /* ... then re-construct all embedded objects */
   ComponentsBaseText__ReInit( &_this->Message );
-  CoreSystemEventHandler__ReInit( &_this->ConnectPairedDeviceResultHandler );
+  CoreSystemEventHandler__ReInit( &_this->ConnectionStatusEventHandler );
   CoreTimer__ReInit( &_this->DismissTimer );
   ViewsImage__ReInit( &_this->Divider );
   ViewsImage__ReInit( &_this->LoadingAnimation );
@@ -2256,7 +2258,7 @@ void SettingsSET10_11_12_BtConnectionResult__Done( SettingsSET10_11_12_BtConnect
 
   /* Finalize all embedded objects */
   ComponentsBaseText__Done( &_this->Message );
-  CoreSystemEventHandler__Done( &_this->ConnectPairedDeviceResultHandler );
+  CoreSystemEventHandler__Done( &_this->ConnectionStatusEventHandler );
   CoreTimer__Done( &_this->DismissTimer );
   ViewsImage__Done( &_this->Divider );
   ViewsImage__Done( &_this->LoadingAnimation );
@@ -2281,63 +2283,46 @@ void SettingsSET10_11_12_BtConnectionResult_Init( SettingsSET10_11_12_BtConnecti
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
    receives an event. */
-void SettingsSET10_11_12_BtConnectionResult_OnConnectPairedDeviceResultSlot( SettingsSET10_11_12_BtConnectionResult _this, 
+void SettingsSET10_11_12_BtConnectionResult_OnConnectoinStatusReceivedSlot( SettingsSET10_11_12_BtConnectionResult _this, 
   XObject sender )
 {
-  XEnum ConnectionResult;
+  DeviceInterfaceConnectionStatusContext ConnectionStatusContext;
 
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  ConnectionResult = EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->ConnectPairedDeviceResult;
+  ConnectionStatusContext = EwCastObject( _this->ConnectionStatusEventHandler.Context, 
+  DeviceInterfaceConnectionStatusContext );
 
-  switch ( ConnectionResult )
+  switch ( ConnectionStatusContext->Status )
   {
-    case EnumBtDeviceConnectionResultONLY_NAVI_APP_CONNECTED :
+    case EnumConnectionStatusNAVI_APP_CONNECTED :
       CoreGroup_SwitchToDialog( _this->Super5.Owner, ((CoreGroup)EwNewObject( SettingsSET49_OnlyNaviAppConnected, 
       0 )), 0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
     break;
 
-    case EnumBtDeviceConnectionResultONLY_YAMAHA_APP_CONNECTED :
+    case EnumConnectionStatusYAMAHA_APP_CONNECTED :
       CoreGroup_SwitchToDialog( _this->Super5.Owner, ((CoreGroup)EwNewObject( SettingsSET50_OnlyYahamaAppConnected, 
       0 )), 0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
     break;
 
-    case EnumBtDeviceConnectionResultYAMAHA_APP_BLE_NOT_CONNECTED :
+    case EnumConnectionStatusYAMAHA_APP_BLE_NOT_CONNECTED :
       CoreGroup_SwitchToDialog( _this->Super5.Owner, ((CoreGroup)EwNewObject( SettingsSET22_WaitingConnection, 
       0 )), 0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
     break;
 
-    case EnumBtDeviceConnectionResultBOTH_APP_CONNECTED :
+    case EnumConnectionStatusBOTH_APP_CONNECTED :
       CoreGroup_SwitchToDialog( _this->Super5.Owner, ((CoreGroup)EwNewObject( SettingsSET51_BothAppConnected, 
       0 )), 0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
     break;
 
-    case EnumBtDeviceConnectionResultFAIL :
+    case EnumConnectionStatusCONNECTION_FAILED :
     {
-      XString ProcessString = EwGetVariantOfString( &StringsSET10_CONNECTION_FAILED );
-      XInt32 LeftIdx = EwStringFind( ProcessString, EwLoadString( &StringsARGUMENT_STR ), 
-        0 );
-      XInt32 RightIdx = ( EwGetStringLength( ProcessString ) - LeftIdx ) - EwGetStringLength( 
-        EwLoadString( &StringsARGUMENT_STR ));
+      UtilityString StringUtil;
       SettingsSET10_11_12_BtConnectionResult_HideLoadingUI( _this );
-      ViewsText_OnSetString((ViewsText)&_this->Message, EwConcatString( EwConcatString( 
-      EwStringLeft( ProcessString, LeftIdx ), _this->DeviceName ), EwStringRight( 
-      ProcessString, RightIdx )));
-    }
-    break;
-
-    case EnumBtDeviceConnectionResultAUTHENTICATION_ERR :
-    {
-      XString ProcessString = EwGetVariantOfString( &StringsSET11_NO_LONGER_PAIRED );
-      XInt32 LeftIdx = EwStringFind( ProcessString, EwLoadString( &StringsARGUMENT_STR ), 
-        0 );
-      XInt32 RightIdx = ( EwGetStringLength( ProcessString ) - LeftIdx ) - EwGetStringLength( 
-        EwLoadString( &StringsARGUMENT_STR ));
-      SettingsSET10_11_12_BtConnectionResult_HideLoadingUI( _this );
-      ViewsText_OnSetString((ViewsText)&_this->Message, EwConcatString( EwConcatString( 
-      EwStringLeft( ProcessString, LeftIdx ), _this->DeviceName ), EwStringRight( 
-      ProcessString, RightIdx )));
+      StringUtil = EwNewObject( UtilityString, 0 );
+      ViewsText_OnSetString((ViewsText)&_this->Message, UtilityString_ReplaceString( 
+      StringUtil, EwGetVariantOfString( &StringsSET10_CONNECTION_FAILED ), _this->DeviceName ));
     }
     break;
 
@@ -2357,8 +2342,6 @@ void SettingsSET10_11_12_BtConnectionResult_OnDismissSlot( SettingsSET10_11_12_B
 
   CoreGroup_DismissDialog( _this->Super5.Owner, ((CoreGroup)_this ), 0, 0, 0, EwNullSlot, 
   EwNullSlot, 0 );
-  DeviceInterfaceBluetoothDeviceClass_OnSetRefreshPairedDeviceList( EwGetAutoObject( 
-  &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ), 1 );
 }
 
 /* 'C' function for method : 'Settings::SET10_11_12_BtConnectionResult.HideLoadingUI()' */
@@ -2703,7 +2686,8 @@ void SettingsSET08_BtcPairDevice_OnNoActivatedSlot( SettingsSET08_BtcPairDevice 
   EW_UNUSED_ARG( sender );
 
   EwTrace( "%s", EwLoadString( &_Const0020 ));
-  BTM_btc_confirm_passkey( false );
+  DeviceInterfaceBluetoothDeviceClass_ConfirmPasskey( EwGetAutoObject( &DeviceInterfaceBluetoothDevice, 
+  DeviceInterfaceBluetoothDeviceClass ), 0 );
   BtSettingMenu = EwCastObject( _this->Super5.Owner, SettingsSET04_BtSettingMenu );
 
   if ( BtSettingMenu != 0 )
@@ -2721,7 +2705,8 @@ void SettingsSET08_BtcPairDevice_OnYesActivatedSlot( SettingsSET08_BtcPairDevice
   EW_UNUSED_ARG( sender );
 
   EwTrace( "%s", EwLoadString( &_Const0021 ));
-  BTM_btc_confirm_passkey( true );
+  DeviceInterfaceBluetoothDeviceClass_ConfirmPasskey( EwGetAutoObject( &DeviceInterfaceBluetoothDevice, 
+  DeviceInterfaceBluetoothDeviceClass ), 1 );
   CoreGroup_SwitchToDialog( _this->Super5.Owner, ((CoreGroup)EwNewObject( SettingsSET47_WaitingApproval, 
   0 )), 0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
 }
@@ -2807,9 +2792,9 @@ void SettingsSET17_BtcPairedDeviceList__Init( SettingsSET17_BtcPairedDeviceList 
   _this->_.XObject._.GCT = EW_CLASS_GCT( SettingsSET17_BtcPairedDeviceList );
 
   /* ... then construct all embedded objects */
-  CorePropertyObserver__Init( &_this->RefreshListObserver, &_this->_.XObject, 0 );
   ComponentsBaseText__Init( &_this->NoDataText, &_this->_.XObject, 0 );
   CoreTimer__Init( &_this->NoDataTimeoutTimer, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->ConnectionStatusEventHandler, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_.VMT = EW_CLASS( SettingsSET17_BtcPairedDeviceList );
@@ -2826,13 +2811,12 @@ void SettingsSET17_BtcPairedDeviceList__Init( SettingsSET17_BtcPairedDeviceList 
   ViewsText_OnSetString((ViewsText)&_this->NoDataText, EwLoadString( &_Const0022 ));
   CoreTimer_OnSetBegin( &_this->NoDataTimeoutTimer, 2000 );
   CoreGroup__Add( _this, ((CoreView)&_this->NoDataText ), 0 );
-  _this->RefreshListObserver.OnEvent = EwNewSlot( _this, SettingsSET17_BtcPairedDeviceList_OnRefreshListSlot );
-  CorePropertyObserver_OnSetOutlet( &_this->RefreshListObserver, EwNewRef( EwGetAutoObject( 
-  &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ), DeviceInterfaceBluetoothDeviceClass_OnGetRefreshPairedDeviceList, 
-  DeviceInterfaceBluetoothDeviceClass_OnSetRefreshPairedDeviceList ));
   ViewsText_OnSetFont((ViewsText)&_this->NoDataText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
   _this->NoDataTimeoutTimer.OnTrigger = EwNewSlot( _this, SettingsSET17_BtcPairedDeviceList_OnNoDataTimeoutSlot );
+  _this->ConnectionStatusEventHandler.OnEvent = EwNewSlot( _this, SettingsSET17_BtcPairedDeviceList_OnConnectoinStatusReceivedSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->ConnectionStatusEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->ConnectionStatusEvent );
 
   /* Call the user defined constructor */
   SettingsSET17_BtcPairedDeviceList_Init( _this, aArg );
@@ -2845,9 +2829,9 @@ void SettingsSET17_BtcPairedDeviceList__ReInit( SettingsSET17_BtcPairedDeviceLis
   MenuBaseMenuView__ReInit( &_this->_.Super );
 
   /* ... then re-construct all embedded objects */
-  CorePropertyObserver__ReInit( &_this->RefreshListObserver );
   ComponentsBaseText__ReInit( &_this->NoDataText );
   CoreTimer__ReInit( &_this->NoDataTimeoutTimer );
+  CoreSystemEventHandler__ReInit( &_this->ConnectionStatusEventHandler );
 
   /* ... and re-initialize objects, variables, properties, etc. */
   ViewsText_OnSetFont((ViewsText)&_this->NoDataText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
@@ -2861,9 +2845,9 @@ void SettingsSET17_BtcPairedDeviceList__Done( SettingsSET17_BtcPairedDeviceList 
   _this->_.Super._.VMT = EW_CLASS( MenuBaseMenuView );
 
   /* Finalize all embedded objects */
-  CorePropertyObserver__Done( &_this->RefreshListObserver );
   ComponentsBaseText__Done( &_this->NoDataText );
   CoreTimer__Done( &_this->NoDataTimeoutTimer );
+  CoreSystemEventHandler__Done( &_this->ConnectionStatusEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
   MenuBaseMenuView__Done( &_this->_.Super );
@@ -2879,7 +2863,7 @@ void SettingsSET17_BtcPairedDeviceList_Init( SettingsSET17_BtcPairedDeviceList _
   EW_UNUSED_ARG( aArg );
 
   EwTrace( "%s", EwLoadString( &_Const0023 ));
-  SettingsSET17_BtcPairedDeviceList_UpdatePairedDeviceNum( _this );
+  SettingsSET17_BtcPairedDeviceList_UpdateList( _this );
 }
 
 /* 'C' function for method : 'Settings::SET17_BtcPairedDeviceList.LoadItemClass()' */
@@ -2897,14 +2881,16 @@ XClass SettingsSET17_BtcPairedDeviceList_LoadItemClass( SettingsSET17_BtcPairedD
 XString SettingsSET17_BtcPairedDeviceList_LoadItemTitle( SettingsSET17_BtcPairedDeviceList _this, 
   XInt32 aItemNo )
 {
-  XString Title = 0;
+  XString Title;
 
-  if ( _this->PairedDeviceNum > 0 )
-  {
-    DeviceInterfaceBluetoothDeviceClass_GetPairedDeviceAtItem( EwGetAutoObject( 
-    &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ), aItemNo );
-    Title = EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->PairedDeviceObj.DeviceName;
-  }
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  Title = 0;
+
+  if ( aItemNo < EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->PairedDeviceNum )
+    Title = EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->PairedDeviceList[ 
+    EwCheckIndex( aItemNo, 8 )]->DeviceName;
 
   return Title;
 }
@@ -2913,13 +2899,18 @@ XString SettingsSET17_BtcPairedDeviceList_LoadItemTitle( SettingsSET17_BtcPaired
 void SettingsSET17_BtcPairedDeviceList_OnItemActivate( SettingsSET17_BtcPairedDeviceList _this, 
   XInt32 aItemNo, MenuItemBase aMenuItem )
 {
-  MenuItemBtPairedDevice BtDeviceItem = EwCastObject( aMenuItem, MenuItemBtPairedDevice );
+  MenuItemBtPairedDevice BtDeviceItem;
+
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( aItemNo );
+
+  BtDeviceItem = EwCastObject( aMenuItem, MenuItemBtPairedDevice );
 
   if ( BtDeviceItem != 0 )
   {
     SettingsSET19_BtcPairedDeviceOperation Dialog = EwNewObject( SettingsSET19_BtcPairedDeviceOperation, 
       0 );
-    Dialog->PairedDeviceIndex = aItemNo;
+    Dialog->DeviceAddress = BtDeviceItem->DeviceAddress;
     Dialog->DeviceName = EwShareString( BtDeviceItem->Super1.Title.Super1.String );
     Dialog->ConnectEnabled = (XBool)( !BtDeviceItem->Icon1Visible || !BtDeviceItem->Icon2Visible );
     Dialog->DisconnectEnabled = (XBool)( BtDeviceItem->Icon1Visible || BtDeviceItem->Icon2Visible );
@@ -2934,51 +2925,53 @@ XBool SettingsSET17_BtcPairedDeviceList_LoadItemIcon1Visible( SettingsSET17_BtcP
   XBool result;
 
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( aItemNo );
+  EW_UNUSED_ARG( _this );
 
   result = 0;
 
-  if ( 0 < _this->PairedDeviceNum )
-    result = EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->PairedDeviceObj.IsNaviAppConnected;
+  if ( aItemNo < EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->PairedDeviceNum )
+    result = EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->PairedDeviceList[ 
+    EwCheckIndex( aItemNo, 8 )]->IsNaviAppConnected;
 
   return result;
 }
 
-/* 'C' function for method : 'Settings::SET17_BtcPairedDeviceList.UpdatePairedDeviceNum()' */
-void SettingsSET17_BtcPairedDeviceList_UpdatePairedDeviceNum( SettingsSET17_BtcPairedDeviceList _this )
+/* 'C' function for method : 'Settings::SET17_BtcPairedDeviceList.LoadItemIcon2Visible()' */
+XBool SettingsSET17_BtcPairedDeviceList_LoadItemIcon2Visible( SettingsSET17_BtcPairedDeviceList _this, 
+  XInt32 aItemNo )
 {
-  _this->PairedDeviceNum = DeviceInterfaceBluetoothDeviceClass_OnGetPairedDeviceNum( 
-  EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ));
-  MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, _this->PairedDeviceNum );
-  EwTrace( "%s%i", EwLoadString( &_Const0024 ), _this->PairedDeviceNum );
+  XBool result;
 
-  if ( _this->PairedDeviceNum > 0 )
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  result = 0;
+
+  if ( aItemNo < EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->PairedDeviceNum )
+    result = EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->PairedDeviceList[ 
+    EwCheckIndex( aItemNo, 8 )]->IsYamahaAppConnected;
+
+  return result;
+}
+
+/* 'C' function for method : 'Settings::SET17_BtcPairedDeviceList.UpdateList()' */
+void SettingsSET17_BtcPairedDeviceList_UpdateList( SettingsSET17_BtcPairedDeviceList _this )
+{
+  MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, EwGetAutoObject( &DeviceInterfaceBluetoothDevice, 
+  DeviceInterfaceBluetoothDeviceClass )->PairedDeviceNum );
+
+  if ( 0 < EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->PairedDeviceNum )
   {
     CoreTimer_OnSetEnabled( &_this->NoDataTimeoutTimer, 0 );
-    _this->Super1.Menu.Focusable = 1;
-    MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, _this->PairedDeviceNum 
+    MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, _this->Super1.Menu.NoOfItems 
     - 1 );
     ViewsText_OnSetVisible((ViewsText)&_this->NoDataText, 0 );
   }
   else
   {
     CoreTimer_OnSetEnabled( &_this->NoDataTimeoutTimer, 1 );
-    _this->Super1.Menu.Focusable = 0;
-    MenuVerticalMenu_InvalidateItems( &_this->Super1.Menu, 0, 0 );
     ViewsText_OnSetVisible((ViewsText)&_this->NoDataText, 1 );
   }
-}
-
-/* This slot method is executed when the associated property observer 'PropertyObserver' 
-   is notified. */
-void SettingsSET17_BtcPairedDeviceList_OnRefreshListSlot( SettingsSET17_BtcPairedDeviceList _this, 
-  XObject sender )
-{
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( sender );
-
-  EwTrace( "%s", EwLoadString( &_Const0025 ));
-  SettingsSET17_BtcPairedDeviceList_UpdatePairedDeviceNum( _this );
 }
 
 /* 'C' function for method : 'Settings::SET17_BtcPairedDeviceList.OnNoDataTimeoutSlot()' */
@@ -2992,21 +2985,46 @@ void SettingsSET17_BtcPairedDeviceList_OnNoDataTimeoutSlot( SettingsSET17_BtcPai
     ComponentsBaseMainBG_SlideOutDialog((ComponentsBaseMainBG)_this );
 }
 
-/* 'C' function for method : 'Settings::SET17_BtcPairedDeviceList.LoadItemIcon2Visible()' */
-XBool SettingsSET17_BtcPairedDeviceList_LoadItemIcon2Visible( SettingsSET17_BtcPairedDeviceList _this, 
+/* 'C' function for method : 'Settings::SET17_BtcPairedDeviceList.LoadItemDeviceAddress()' */
+XUInt64 SettingsSET17_BtcPairedDeviceList_LoadItemDeviceAddress( SettingsSET17_BtcPairedDeviceList _this, 
   XInt32 aItemNo )
 {
-  XBool result;
+  XUInt64 DeviceAddress;
 
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( aItemNo );
+  EW_UNUSED_ARG( _this );
 
-  result = 0;
+  DeviceAddress = 0;
 
-  if ( 0 < _this->PairedDeviceNum )
-    result = EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->PairedDeviceObj.IsYamahaAppConnected;
+  if ( aItemNo < EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->PairedDeviceNum )
+    DeviceAddress = EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->PairedDeviceList[ 
+    EwCheckIndex( aItemNo, 8 )]->DeviceAddress;
 
-  return result;
+  return DeviceAddress;
+}
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void SettingsSET17_BtcPairedDeviceList_OnConnectoinStatusReceivedSlot( SettingsSET17_BtcPairedDeviceList _this, 
+  XObject sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  if ( _this->Super6.Owner != 0 )
+  {
+    DeviceInterfaceConnectionStatusContext ConnectionStatusContext = EwCastObject( 
+      _this->ConnectionStatusEventHandler.Context, DeviceInterfaceConnectionStatusContext );
+
+    switch ( ConnectionStatusContext->Status )
+    {
+      case EnumConnectionStatusPAIRED_DEVICE_LIST_UPDATED :
+        SettingsSET17_BtcPairedDeviceList_UpdateList( _this );
+      break;
+
+      default :; 
+    }
+  }
 }
 
 /* Variants derived from the class : 'Settings::SET17_BtcPairedDeviceList' */
@@ -3014,9 +3032,8 @@ EW_DEFINE_CLASS_VARIANTS( SettingsSET17_BtcPairedDeviceList )
 EW_END_OF_CLASS_VARIANTS( SettingsSET17_BtcPairedDeviceList )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET17_BtcPairedDeviceList' */
-EW_DEFINE_CLASS( SettingsSET17_BtcPairedDeviceList, MenuBaseMenuView, RefreshListObserver, 
-                 RefreshListObserver, RefreshListObserver, RefreshListObserver, 
-                 PairedDeviceNum, PairedDeviceNum, "Settings::SET17_BtcPairedDeviceList" )
+EW_DEFINE_CLASS( SettingsSET17_BtcPairedDeviceList, MenuBaseMenuView, NoDataText, 
+                 NoDataText, NoDataText, NoDataText, _.VMT, _.VMT, "Settings::SET17_BtcPairedDeviceList" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -3080,6 +3097,7 @@ EW_DEFINE_CLASS( SettingsSET17_BtcPairedDeviceList, MenuBaseMenuView, RefreshLis
   MenuBaseMenuView_LoadPoiListItemUnit,
   SettingsSET17_BtcPairedDeviceList_LoadItemIcon1Visible,
   SettingsSET17_BtcPairedDeviceList_LoadItemIcon2Visible,
+  SettingsSET17_BtcPairedDeviceList_LoadItemDeviceAddress,
 EW_END_OF_CLASS( SettingsSET17_BtcPairedDeviceList )
 
 /* Initializer for the class 'Settings::SET19_BtcPairedDeviceOperation' */
@@ -3131,7 +3149,7 @@ void SettingsSET19_BtcPairedDeviceOperation_Init( SettingsSET19_BtcPairedDeviceO
   EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const0026 ));
+  EwTrace( "%s", EwLoadString( &_Const0024 ));
 }
 
 /* 'C' function for method : 'Settings::SET19_BtcPairedDeviceOperation.LoadItemClass()' */
@@ -3188,9 +3206,7 @@ void SettingsSET19_BtcPairedDeviceOperation_OnItemActivate( SettingsSET19_BtcPai
     case 0 :
     {
       DeviceInterfaceBluetoothDeviceClass_UnpairDevice( EwGetAutoObject( &DeviceInterfaceBluetoothDevice, 
-      DeviceInterfaceBluetoothDeviceClass ), _this->PairedDeviceIndex );
-      DeviceInterfaceBluetoothDeviceClass_OnSetRefreshPairedDeviceList( EwGetAutoObject( 
-      &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ), 1 );
+      DeviceInterfaceBluetoothDeviceClass ), _this->DeviceAddress );
       ComponentsBaseMainBG_SlideOutDialog((ComponentsBaseMainBG)_this );
     }
     break;
@@ -3209,17 +3225,15 @@ void SettingsSET19_BtcPairedDeviceOperation_OnItemActivate( SettingsSET19_BtcPai
       CoreGroup_SwitchToDialog( _this->Super6.Owner, ((CoreGroup)Dialog ), 0, 0, 
       0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
       DeviceInterfaceBluetoothDeviceClass_ConnectPairedDevice( EwGetAutoObject( 
-      &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ), _this->PairedDeviceIndex );
+      &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ), _this->DeviceAddress );
     }
     break;
 
     case 2 :
     {
       DeviceInterfaceBluetoothDeviceClass_DisconnectPairedDevice( EwGetAutoObject( 
-      &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ), _this->PairedDeviceIndex );
+      &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ), _this->DeviceAddress );
       ComponentsBaseMainBG_SlideOutDialog((ComponentsBaseMainBG)_this );
-      DeviceInterfaceBluetoothDeviceClass_OnSetRefreshPairedDeviceList( EwGetAutoObject( 
-      &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ), 1 );
     }
     break;
 
@@ -3259,7 +3273,7 @@ EW_END_OF_CLASS_VARIANTS( SettingsSET19_BtcPairedDeviceOperation )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET19_BtcPairedDeviceOperation' */
 EW_DEFINE_CLASS( SettingsSET19_BtcPairedDeviceOperation, MenuBaseMenuView, DeviceName, 
-                 DeviceName, DeviceName, DeviceName, DeviceName, PairedDeviceIndex, 
+                 DeviceName, DeviceName, DeviceName, DeviceName, DeviceAddress, 
                  "Settings::SET19_BtcPairedDeviceOperation" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
@@ -3324,6 +3338,7 @@ EW_DEFINE_CLASS( SettingsSET19_BtcPairedDeviceOperation, MenuBaseMenuView, Devic
   MenuBaseMenuView_LoadPoiListItemUnit,
   MenuBaseMenuView_LoadItemIcon1Visible,
   MenuBaseMenuView_LoadItemIcon2Visible,
+  MenuBaseMenuView_LoadItemDeviceAddress,
 EW_END_OF_CLASS( SettingsSET19_BtcPairedDeviceOperation )
 
 /* Initializer for the class 'Settings::BtFwUpdateDialog' */
@@ -3338,8 +3353,8 @@ void SettingsBtFwUpdateDialog__Init( SettingsBtFwUpdateDialog _this, XObject aLi
   /* ... then construct all embedded objects */
   ViewsRectangle__Init( &_this->Rectangle, &_this->_.XObject, 0 );
   ComponentsBaseText__Init( &_this->StatusText, &_this->_.XObject, 0 );
-  CorePropertyObserver__Init( &_this->BtFwStatusObserver, &_this->_.XObject, 0 );
   CoreTimer__Init( &_this->RemoveDialogTimer, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->BtmStatusEventHandler, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_.VMT = EW_CLASS( SettingsBtFwUpdateDialog );
@@ -3347,21 +3362,20 @@ void SettingsBtFwUpdateDialog__Init( SettingsBtFwUpdateDialog _this, XObject aLi
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0004 );
   CoreRectView__OnSetBounds( &_this->Rectangle, _Const0004 );
-  ViewsRectangle_OnSetColor( &_this->Rectangle, _Const0027 );
-  CoreRectView__OnSetBounds( &_this->StatusText, _Const0028 );
+  ViewsRectangle_OnSetColor( &_this->Rectangle, _Const0025 );
+  CoreRectView__OnSetBounds( &_this->StatusText, _Const0026 );
   ViewsText_OnSetWrapText((ViewsText)&_this->StatusText, 1 );
-  ViewsText_OnSetString((ViewsText)&_this->StatusText, EwLoadString( &_Const0029 ));
-  ViewsText_OnSetColor((ViewsText)&_this->StatusText, _Const002A );
+  ViewsText_OnSetString((ViewsText)&_this->StatusText, EwLoadString( &_Const0027 ));
+  ViewsText_OnSetColor((ViewsText)&_this->StatusText, _Const0028 );
   CoreTimer_OnSetPeriod( &_this->RemoveDialogTimer, 2000 );
   CoreGroup__Add( _this, ((CoreView)&_this->Rectangle ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->StatusText ), 0 );
   ViewsText_OnSetFont((ViewsText)&_this->StatusText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
-  _this->BtFwStatusObserver.OnEvent = EwNewSlot( _this, SettingsBtFwUpdateDialog_OnBtFwStatusUpdateSlot );
-  CorePropertyObserver_OnSetOutlet( &_this->BtFwStatusObserver, EwNewRef( EwGetAutoObject( 
-  &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ), DeviceInterfaceBluetoothDeviceClass_OnGetBtFwStatus, 
-  DeviceInterfaceBluetoothDeviceClass_OnSetBtFwStatus ));
   _this->RemoveDialogTimer.OnTrigger = EwNewSlot( _this, SettingsBtFwUpdateDialog_OnRemoveDialogSlot );
+  _this->BtmStatusEventHandler.OnEvent = EwNewSlot( _this, SettingsBtFwUpdateDialog_OnBtmStatusUpdateSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->BtmStatusEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->BtmStatusEvent );
 }
 
 /* Re-Initializer for the class 'Settings::BtFwUpdateDialog' */
@@ -3373,8 +3387,8 @@ void SettingsBtFwUpdateDialog__ReInit( SettingsBtFwUpdateDialog _this )
   /* ... then re-construct all embedded objects */
   ViewsRectangle__ReInit( &_this->Rectangle );
   ComponentsBaseText__ReInit( &_this->StatusText );
-  CorePropertyObserver__ReInit( &_this->BtFwStatusObserver );
   CoreTimer__ReInit( &_this->RemoveDialogTimer );
+  CoreSystemEventHandler__ReInit( &_this->BtmStatusEventHandler );
 }
 
 /* Finalizer method for the class 'Settings::BtFwUpdateDialog' */
@@ -3386,8 +3400,8 @@ void SettingsBtFwUpdateDialog__Done( SettingsBtFwUpdateDialog _this )
   /* Finalize all embedded objects */
   ViewsRectangle__Done( &_this->Rectangle );
   ComponentsBaseText__Done( &_this->StatusText );
-  CorePropertyObserver__Done( &_this->BtFwStatusObserver );
   CoreTimer__Done( &_this->RemoveDialogTimer );
+  CoreSystemEventHandler__Done( &_this->BtmStatusEventHandler );
 
   /* Don't forget to deinitialize the super class ... */
   CoreGroup__Done( &_this->_.Super );
@@ -3395,24 +3409,28 @@ void SettingsBtFwUpdateDialog__Done( SettingsBtFwUpdateDialog _this )
 
 /* This slot method is executed when the associated property observer 'PropertyObserver' 
    is notified. */
-void SettingsBtFwUpdateDialog_OnBtFwStatusUpdateSlot( SettingsBtFwUpdateDialog _this, 
+void SettingsBtFwUpdateDialog_OnBtmStatusUpdateSlot( SettingsBtFwUpdateDialog _this, 
   XObject sender )
 {
+  DeviceInterfaceBtmStatusContext BtmStatusContext;
+
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  switch ( EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->BtFwStatus )
+  BtmStatusContext = EwCastObject( _this->BtmStatusEventHandler.Context, DeviceInterfaceBtmStatusContext );
+
+  switch ( BtmStatusContext->Status )
   {
-    case EnumBtFwStatusUPDATE_FINISH :
+    case EnumBtmStatusUPDATE_FINISH :
     {
-      ViewsText_OnSetString((ViewsText)&_this->StatusText, EwLoadString( &_Const002B ));
+      ViewsText_OnSetString((ViewsText)&_this->StatusText, EwLoadString( &_Const0029 ));
       CoreTimer_OnSetEnabled( &_this->RemoveDialogTimer, 1 );
     }
     break;
 
-    case EnumBtFwStatusUPDATE_ABORT :
+    case EnumBtmStatusUPDATE_ABORT :
     {
-      ViewsText_OnSetString((ViewsText)&_this->StatusText, EwLoadString( &_Const002C ));
+      ViewsText_OnSetString((ViewsText)&_this->StatusText, EwLoadString( &_Const002A ));
       CoreTimer_OnSetEnabled( &_this->RemoveDialogTimer, 1 );
     }
     break;
@@ -3635,16 +3653,16 @@ void SettingsSET30_QRCode__Init( SettingsSET30_QRCode _this, XObject aLink, XHan
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
-  CoreRectView__OnSetBounds( &_this->WhiteMargin, _Const002D );
-  CoreRectView__OnSetBounds( &_this->QrCodeImage, _Const002D );
+  CoreRectView__OnSetBounds( &_this->WhiteMargin, _Const002B );
+  CoreRectView__OnSetBounds( &_this->QrCodeImage, _Const002B );
   ViewsImage_OnSetAlignment( &_this->QrCodeImage, ViewsImageAlignmentAlignHorzCenter 
   | ViewsImageAlignmentAlignVertCenter );
   CoreRectView__OnSetBounds( &_this->PushButton, _Const0008 );
   ComponentsBaseComponent__OnSetDDModeEnabled( &_this->PushButton, 1 );
   MenuPushButton_OnSetTitle( &_this->PushButton, EwGetVariantOfString( &StringsGEN_OK ));
-  CoreRectView__OnSetBounds( &_this->BrightnessUpButton, _Const002E );
-  CoreRectView__OnSetBounds( &_this->BrightnessDownButton, _Const002F );
-  CoreRectView__OnSetBounds( &_this->BrightnessIcon, _Const0030 );
+  CoreRectView__OnSetBounds( &_this->BrightnessUpButton, _Const002C );
+  CoreRectView__OnSetBounds( &_this->BrightnessDownButton, _Const002D );
+  CoreRectView__OnSetBounds( &_this->BrightnessIcon, _Const002E );
   CoreGroup__Add( _this, ((CoreView)&_this->WhiteMargin ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->QrCodeImage ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->PushButton ), 0 );
@@ -3707,12 +3725,12 @@ void SettingsSET30_QRCode_Init( SettingsSET30_QRCode _this, XHandle aArg )
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const0031 ));
+  EwTrace( "%s", EwLoadString( &_Const002F ));
 
   if ( !!DeviceInterfaceSystemDeviceClass_GetSystemStatus( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
       DeviceInterfaceSystemDeviceClass ), EnumSystemStatusIS_QRCODE_READY ))
   {
-    EwTrace( "%s", EwLoadString( &_Const0032 ));
+    EwTrace( "%s", EwLoadString( &_Const0030 ));
     ViewsImage_OnSetBitmap( &_this->QrCodeImage, ((ResourcesBitmap)EwGetAutoObject( 
     &ResourceQrCodeExternBitmap, ResourcesExternBitmap )));
     ResourcesExternBitmap_OnSetName( EwGetAutoObject( &ResourceQrCodeExternBitmap, 
@@ -3859,28 +3877,33 @@ void SettingsSET22_WaitingConnection__Init( SettingsSET22_WaitingConnection _thi
   /* ... then construct all embedded objects */
   ComponentsBaseText__Init( &_this->WaitText, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->Image, &_this->_.XObject, 0 );
-  CoreSystemEventHandler__Init( &_this->ConnectPairedDeviceResultHandler, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->ConnectionStatusEventHandler, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->TimeoutTimer, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_.VMT = EW_CLASS( SettingsSET22_WaitingConnection );
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
-  CoreRectView__OnSetBounds( &_this->WaitText, _Const0033 );
+  CoreRectView__OnSetBounds( &_this->WaitText, _Const0031 );
   ViewsText_OnSetWrapText((ViewsText)&_this->WaitText, 1 );
   ViewsText_OnSetString((ViewsText)&_this->WaitText, EwGetVariantOfString( &StringsSET22_WAIT_APP_CONNECTION ));
-  CoreRectView__OnSetBounds( &_this->Image, _Const0034 );
+  CoreRectView__OnSetBounds( &_this->Image, _Const0032 );
   ViewsImage_OnSetAnimated( &_this->Image, 1 );
   ViewsImage_OnSetFrameNumber( &_this->Image, 0 );
+  CoreTimer_OnSetPeriod( &_this->TimeoutTimer, 0 );
+  CoreTimer_OnSetBegin( &_this->TimeoutTimer, 60000 );
+  CoreTimer_OnSetEnabled( &_this->TimeoutTimer, 1 );
   CoreGroup__Add( _this, ((CoreView)&_this->WaitText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->Image ), 0 );
   ViewsText_OnSetFont((ViewsText)&_this->WaitText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
   ViewsImage_OnSetBitmap( &_this->Image, EwLoadResource( &ResourceLoadingAnimation, 
   ResourcesBitmap ));
-  _this->ConnectPairedDeviceResultHandler.OnEvent = EwNewSlot( _this, SettingsSET22_WaitingConnection_OnConnectPairedDeviceResultSlot );
-  CoreSystemEventHandler_OnSetEvent( &_this->ConnectPairedDeviceResultHandler, &EwGetAutoObject( 
-  &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->BtcConnectionResultSystemEvent );
+  _this->ConnectionStatusEventHandler.OnEvent = EwNewSlot( _this, SettingsSET22_WaitingConnection_OnConnectoinStatusReceivedSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->ConnectionStatusEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->ConnectionStatusEvent );
+  _this->TimeoutTimer.OnTrigger = EwNewSlot( _this, SettingsSET22_WaitingConnection_OnTimeoutSlot );
 
   /* Call the user defined constructor */
   SettingsSET22_WaitingConnection_Init( _this, aArg );
@@ -3895,7 +3918,8 @@ void SettingsSET22_WaitingConnection__ReInit( SettingsSET22_WaitingConnection _t
   /* ... then re-construct all embedded objects */
   ComponentsBaseText__ReInit( &_this->WaitText );
   ViewsImage__ReInit( &_this->Image );
-  CoreSystemEventHandler__ReInit( &_this->ConnectPairedDeviceResultHandler );
+  CoreSystemEventHandler__ReInit( &_this->ConnectionStatusEventHandler );
+  CoreTimer__ReInit( &_this->TimeoutTimer );
 
   /* ... and re-initialize objects, variables, properties, etc. */
   ViewsText_OnSetString((ViewsText)&_this->WaitText, EwGetVariantOfString( &StringsSET22_WAIT_APP_CONNECTION ));
@@ -3915,7 +3939,8 @@ void SettingsSET22_WaitingConnection__Done( SettingsSET22_WaitingConnection _thi
   /* Finalize all embedded objects */
   ComponentsBaseText__Done( &_this->WaitText );
   ViewsImage__Done( &_this->Image );
-  CoreSystemEventHandler__Done( &_this->ConnectPairedDeviceResultHandler );
+  CoreSystemEventHandler__Done( &_this->ConnectionStatusEventHandler );
+  CoreTimer__Done( &_this->TimeoutTimer );
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseMainBG__Done( &_this->_.Super );
@@ -3940,7 +3965,7 @@ void SettingsSET22_WaitingConnection_Init( SettingsSET22_WaitingConnection _this
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const0035 ));
+  EwTrace( "%s", EwLoadString( &_Const0033 ));
   ProcessString = EwGetVariantOfString( &StringsSET22_WAIT_APP_CONNECTION );
   LeftIdx = EwStringFind( ProcessString, EwLoadString( &StringsARGUMENT_STR ), 0 );
   RightIdx = ( EwGetStringLength( ProcessString ) - LeftIdx ) - EwGetStringLength( 
@@ -3958,40 +3983,6 @@ void SettingsSET22_WaitingConnection_OnShortUpKeyActivated( SettingsSET22_Waitin
   EW_UNUSED_ARG( _this );
 }
 
-/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
-   receives an event. */
-void SettingsSET22_WaitingConnection_OnConnectPairedDeviceResultSlot( SettingsSET22_WaitingConnection _this, 
-  XObject sender )
-{
-  XEnum ConnectionResult;
-
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( sender );
-
-  ConnectionResult = EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->ConnectPairedDeviceResult;
-
-  switch ( ConnectionResult )
-  {
-    case EnumBtDeviceConnectionResultONLY_NAVI_APP_CONNECTED :
-      CoreGroup_SwitchToDialog( _this->Super5.Owner, ((CoreGroup)EwNewObject( SettingsSET49_OnlyNaviAppConnected, 
-      0 )), 0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
-    break;
-
-    case EnumBtDeviceConnectionResultYAMAHA_APP_CONNECTION_FAILED :
-      CoreGroup_SwitchToDialog( _this->Super5.Owner, ((CoreGroup)EwNewObject( SettingsSET23_PairingFail, 
-      0 )), 0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
-    break;
-
-    case EnumBtDeviceConnectionResultONLY_YAMAHA_APP_CONNECTED :
-    case EnumBtDeviceConnectionResultBOTH_APP_CONNECTED :
-      CoreGroup_SwitchToDialog( _this->Super5.Owner, ((CoreGroup)EwNewObject( SettingsSET26_PairingSuccessful, 
-      0 )), 0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
-    break;
-
-    default :; 
-  }
-}
-
 /* 'C' function for method : 'Settings::SET22_WaitingConnection.DisplayString()' */
 void SettingsSET22_WaitingConnection_DisplayString( SettingsSET22_WaitingConnection _this )
 {
@@ -4005,6 +3996,61 @@ void SettingsSET22_WaitingConnection_DisplayString( SettingsSET22_WaitingConnect
   EwStringLeft( ProcessString, LeftIdx ), DeviceInterfaceBluetoothDeviceClass_GetBtcPairingDeviceName( 
   EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ))), 
   EwStringRight( ProcessString, RightIdx )));
+}
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void SettingsSET22_WaitingConnection_OnConnectoinStatusReceivedSlot( SettingsSET22_WaitingConnection _this, 
+  XObject sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  if ( _this->Super5.Owner != 0 )
+  {
+    DeviceInterfaceConnectionStatusContext ConnectionStatusContext = EwCastObject( 
+      _this->ConnectionStatusEventHandler.Context, DeviceInterfaceConnectionStatusContext );
+
+    switch ( ConnectionStatusContext->Status )
+    {
+      case EnumConnectionStatusPAIRING_FAILED :
+        SettingsSET22_WaitingConnection_HandlePairingFail( _this );
+      break;
+
+      case EnumConnectionStatusYAMAHA_APP_CONNECTED :
+      {
+        EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->PairingFailCount 
+        = 0;
+        CoreGroup_SwitchToDialog( _this->Super5.Owner, ((CoreGroup)EwNewObject( 
+        SettingsSET26_PairingSuccessful, 0 )), 0, 0, 0, 0, 0, 0, 0, EwNullSlot, 
+        EwNullSlot, 0 );
+      }
+      break;
+
+      default :; 
+    }
+  }
+}
+
+/* 'C' function for method : 'Settings::SET22_WaitingConnection.OnTimeoutSlot()' */
+void SettingsSET22_WaitingConnection_OnTimeoutSlot( SettingsSET22_WaitingConnection _this, 
+  XObject sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  SettingsSET22_WaitingConnection_HandlePairingFail( _this );
+}
+
+/* 'C' function for method : 'Settings::SET22_WaitingConnection.HandlePairingFail()' */
+void SettingsSET22_WaitingConnection_HandlePairingFail( SettingsSET22_WaitingConnection _this )
+{
+  if (( _this->Super5.Owner != 0 ) && CoreGroup__IsCurrentDialog( _this ))
+  {
+    EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->PairingFailCount++;
+    CoreGroup_SwitchToDialog( _this->Super5.Owner, ((CoreGroup)EwNewObject( SettingsSET23_PairingFail, 
+    0 )), 0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+  }
 }
 
 /* Variants derived from the class : 'Settings::SET22_WaitingConnection' */
@@ -4109,7 +4155,7 @@ void SettingsSET23_PairingFail_Init( SettingsSET23_PairingFail _this, XHandle aA
   EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const0035 ));
+  EwTrace( "%s", EwLoadString( &_Const0033 ));
 }
 
 /* 'C' function for method : 'Settings::SET23_PairingFail.OnTimeoutSlot()' */
@@ -4119,9 +4165,7 @@ void SettingsSET23_PairingFail_OnTimeoutSlot( SettingsSET23_PairingFail _this, X
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  if ( DeviceInterfaceBluetoothDeviceClass_GetPairingFailCount( EwGetAutoObject( 
-      &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )) > 
-      1 )
+  if ( 1 < EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->PairingFailCount )
     CoreGroup_SwitchToDialog( _this->Super6.Owner, ((CoreGroup)EwNewObject( SettingsSET24_CheckPairingRecord, 
     0 )), 0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
   else
@@ -4268,7 +4312,7 @@ void SettingsSET24_CheckPairingRecord_Init( SettingsSET24_CheckPairingRecord _th
   EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const0036 ));
+  EwTrace( "%s", EwLoadString( &_Const0034 ));
 }
 
 /* 'C' function for method : 'Settings::SET24_CheckPairingRecord.OnOkActivatedSlot()' */
@@ -4366,17 +4410,17 @@ void SettingsSET28_SystemInfo__Init( SettingsSET28_SystemInfo _this, XObject aLi
   CoreRectView__OnSetBounds( _this, _Const0004 );
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
   ComponentsBaseComponent_OnSetMagicKeyEnabled((ComponentsBaseComponent)_this, 1 );
-  CoreRectView__OnSetBounds( &_this->ESN, _Const0037 );
+  CoreRectView__OnSetBounds( &_this->ESN, _Const0035 );
   ViewsText_OnSetString((ViewsText)&_this->ESN, EwGetVariantOfString( &StringsSET28_ESN ));
-  CoreRectView__OnSetBounds( &_this->SoftwareVersionTitle, _Const0038 );
+  CoreRectView__OnSetBounds( &_this->SoftwareVersionTitle, _Const0036 );
   ViewsText_OnSetString((ViewsText)&_this->SoftwareVersionTitle, EwGetVariantOfString( 
   &StringsSET28_SW_VERSION ));
-  CoreRectView__OnSetBounds( &_this->EsnText, _Const0039 );
+  CoreRectView__OnSetBounds( &_this->EsnText, _Const0037 );
   ViewsText_OnSetString((ViewsText)&_this->EsnText, 0 );
-  CoreRectView__OnSetBounds( &_this->SoftwareVersionText, _Const003A );
+  CoreRectView__OnSetBounds( &_this->SoftwareVersionText, _Const0038 );
   ViewsText_OnSetString((ViewsText)&_this->SoftwareVersionText, DeviceInterfaceSystemDeviceClass_OnGetSoftwareVersion( 
   EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )));
-  CoreRectView__OnSetBounds( &_this->UpDownPushButtonSet, _Const003B );
+  CoreRectView__OnSetBounds( &_this->UpDownPushButtonSet, _Const0039 );
   _this->UpDownPushButtonSet.Super1.PassHomeKey = 1;
   _this->UpDownPushButtonSet.Super1.PassMagicKey = 1;
   ComponentsBaseComponent__OnSetDDModeEnabled( &_this->UpDownPushButtonSet, 1 );
@@ -4480,7 +4524,7 @@ void SettingsSET28_SystemInfo_Init( SettingsSET28_SystemInfo _this, XHandle aArg
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const003C ));
+  EwTrace( "%s", EwLoadString( &_Const003A ));
   ViewsText_OnSetString((ViewsText)&_this->EsnText, DeviceInterfaceSystemDeviceClass_OnGetESN( 
   EwGetAutoObject( &DeviceInterfaceSystemDevice, DeviceInterfaceSystemDeviceClass )));
   ViewsText_OnSetString((ViewsText)&_this->SoftwareVersionText, DeviceInterfaceSystemDeviceClass_OnGetSoftwareVersion( 
@@ -4629,12 +4673,12 @@ void SettingsLicenseDetail__Init( SettingsLicenseDetail _this, XObject aLink, XH
   _this->_.VMT = EW_CLASS( SettingsLicenseDetail );
 
   /* ... and initialize objects, variables, properties, etc. */
-  CoreRectView__OnSetBounds( _this, _Const003D );
-  CoreRectView__OnSetBounds( &_this->TitleText, _Const003E );
+  CoreRectView__OnSetBounds( _this, _Const003B );
+  CoreRectView__OnSetBounds( &_this->TitleText, _Const003C );
   ViewsText_OnSetAlignment((ViewsText)&_this->TitleText, ViewsTextAlignmentAlignHorzLeft 
   | ViewsTextAlignmentAlignVertCenter );
   ViewsText_OnSetString((ViewsText)&_this->TitleText, EwGetVariantOfString( &StringsSET35_LICENSE ));
-  CoreRectView__OnSetBounds( &_this->LicenseText, _Const003F );
+  CoreRectView__OnSetBounds( &_this->LicenseText, _Const003D );
   ViewsText_OnSetRowDistance((ViewsText)&_this->LicenseText, 30 );
   ViewsText_OnSetAutoSize((ViewsText)&_this->LicenseText, 1 );
   ViewsText_OnSetWrapText((ViewsText)&_this->LicenseText, 1 );
@@ -4645,7 +4689,7 @@ void SettingsLicenseDetail__Init( SettingsLicenseDetail _this, XObject aLink, XH
   EffectsEffect_OnSetNoOfCycles((EffectsEffect)&_this->ScrollEffect, 1 );
   EffectsEffect_OnSetCycleDuration((EffectsEffect)&_this->ScrollEffect, 200 );
   EffectsEffect_OnSetInitialDelay((EffectsEffect)&_this->ScrollEffect, 0 );
-  _this->LicenseInitBounds = _Const003F;
+  _this->LicenseInitBounds = _Const003D;
   CoreGroup__Add( _this, ((CoreView)&_this->TitleText ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->LicenseText ), 0 );
   ViewsText_OnSetFont((ViewsText)&_this->TitleText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
@@ -4709,7 +4753,7 @@ XInt32 SettingsLicenseDetail_ScrollUpPage( SettingsLicenseDetail _this )
     EffectsEffect_OnSetEnabled((EffectsEffect)&_this->ScrollEffect, 1 );
     _this->LineToScroll = (( EwGetInt32Abs( NextScrollOffsetY ) / _this->LicenseText.Super1.RowDistance ) 
     + 7 ) - 1;
-    EwTrace( "%s%i", EwLoadString( &_Const0040 ), _this->LineToScroll );
+    EwTrace( "%s%i", EwLoadString( &_Const003E ), _this->LineToScroll );
   }
 
   return _this->LineToScroll;
@@ -4735,7 +4779,7 @@ XInt32 SettingsLicenseDetail_ScrollDownPage( SettingsLicenseDetail _this )
     EffectsEffect_OnSetEnabled((EffectsEffect)&_this->ScrollEffect, 1 );
     _this->LineToScroll = (( EwGetInt32Abs( NextScrollOffsetY ) / _this->LicenseText.Super1.RowDistance ) 
     + 7 ) - 1;
-    EwTrace( "%s%i", EwLoadString( &_Const0040 ), _this->LineToScroll );
+    EwTrace( "%s%i", EwLoadString( &_Const003E ), _this->LineToScroll );
   }
 
   return _this->LineToScroll;
@@ -4749,7 +4793,7 @@ void SettingsLicenseDetail_OnSetScrollOffsetY( SettingsLicenseDetail _this, XInt
   {
     XRect NewBounds;
     _this->ScrollOffsetY = value;
-    NewBounds = _Const003E;
+    NewBounds = _Const003C;
     NewBounds.Point1.Y = value;
     NewBounds.Point2.Y = ( NewBounds.Point1.Y + 31 );
     CoreRectView__OnSetBounds( &_this->TitleText, NewBounds );
@@ -4862,7 +4906,7 @@ void SettingsSET43_ResetMenu_Init( SettingsSET43_ResetMenu _this, XHandle aArg )
   EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const0041 ));
+  EwTrace( "%s", EwLoadString( &_Const003F ));
 }
 
 /* 'C' function for method : 'Settings::SET43_ResetMenu.LoadItemClass()' */
@@ -5015,6 +5059,7 @@ EW_DEFINE_CLASS( SettingsSET43_ResetMenu, MenuBaseMenuView, _.VMT, _.VMT, _.VMT,
   MenuBaseMenuView_LoadPoiListItemUnit,
   MenuBaseMenuView_LoadItemIcon1Visible,
   MenuBaseMenuView_LoadItemIcon2Visible,
+  MenuBaseMenuView_LoadItemDeviceAddress,
 EW_END_OF_CLASS( SettingsSET43_ResetMenu )
 
 /* Initializer for the class 'Settings::SET42_ResetCompleted' */
@@ -5097,7 +5142,7 @@ void SettingsSET42_ResetCompleted_Init( SettingsSET42_ResetCompleted _this, XHan
   EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const0042 ));
+  EwTrace( "%s", EwLoadString( &_Const0040 ));
   DeviceInterfaceVehicleDeviceClass_SetData( EwGetAutoObject( &DeviceInterfaceVehicleDevice, 
   DeviceInterfaceVehicleDeviceClass ), EnumVehicleTxTypeREBOOT_REQUEST, 0 );
 }
@@ -5274,7 +5319,7 @@ void SettingsSET45_TripMileageReset_Init( SettingsSET45_TripMileageReset _this,
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const0043 ));
+  EwTrace( "%s", EwLoadString( &_Const0041 ));
   SettingsSET45_TripMileageReset_SetNoOfMenuItems( _this );
   SettingsSET45_TripMileageReset_GetMileageSetting( _this );
 }
@@ -5614,6 +5659,7 @@ EW_DEFINE_CLASS( SettingsSET45_TripMileageReset, MenuBaseMenuView, VehicleDataRe
   MenuBaseMenuView_LoadPoiListItemUnit,
   MenuBaseMenuView_LoadItemIcon1Visible,
   MenuBaseMenuView_LoadItemIcon2Visible,
+  MenuBaseMenuView_LoadItemDeviceAddress,
 EW_END_OF_CLASS( SettingsSET45_TripMileageReset )
 
 /* Initializer for the class 'Settings::SET46_VehicleInfoReset' */
@@ -5680,7 +5726,7 @@ void SettingsSET46_VehicleInfoReset_Init( SettingsSET46_VehicleInfoReset _this,
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const0044 ));
+  EwTrace( "%s", EwLoadString( &_Const0042 ));
   SettingsSET46_VehicleInfoReset_SetNoOfMenuItems( _this );
   SettingsSET46_VehicleInfoReset_GetUnitSetting( _this );
 }
@@ -6054,6 +6100,7 @@ EW_DEFINE_CLASS( SettingsSET46_VehicleInfoReset, MenuBaseMenuView, VehicleDataRe
   MenuBaseMenuView_LoadPoiListItemUnit,
   MenuBaseMenuView_LoadItemIcon1Visible,
   MenuBaseMenuView_LoadItemIcon2Visible,
+  MenuBaseMenuView_LoadItemDeviceAddress,
 EW_END_OF_CLASS( SettingsSET46_VehicleInfoReset )
 
 /* Initializer for the class 'Settings::SET27_ConfirmUpdate' */
@@ -6076,7 +6123,7 @@ void SettingsSET27_ConfirmUpdate__Init( SettingsSET27_ConfirmUpdate _this, XObje
 
   /* ... and initialize objects, variables, properties, etc. */
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
-  CoreRectView__OnSetBounds( &_this->Text, _Const0045 );
+  CoreRectView__OnSetBounds( &_this->Text, _Const0043 );
   ViewsText_OnSetString((ViewsText)&_this->Text, EwGetVariantOfString( &StringsSET27_UPDATE_SYSTEM ));
   CoreRectView__OnSetBounds( &_this->UpDownPushButtonSet, _Const0006 );
   _this->UpDownPushButtonSet.Super1.PassHomeKey = 1;
@@ -6152,7 +6199,7 @@ void SettingsSET27_ConfirmUpdate_Init( SettingsSET27_ConfirmUpdate _this, XHandl
   EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const0046 ));
+  EwTrace( "%s", EwLoadString( &_Const0044 ));
   DeviceInterfaceSystemDeviceClass_SaveLastStatus( EwGetAutoObject( &DeviceInterfaceSystemDevice, 
   DeviceInterfaceSystemDeviceClass ));
 }
@@ -6293,8 +6340,8 @@ void SettingsSET47_WaitingApproval__Init( SettingsSET47_WaitingApproval _this, X
   /* ... then construct all embedded objects */
   ViewsImage__Init( &_this->LoadingAnimation, &_this->_.XObject, 0 );
   ComponentsBaseText__Init( &_this->WaitingText, &_this->_.XObject, 0 );
-  CoreSystemEventHandler__Init( &_this->BtcPairingStateChangeEventHandler, &_this->_.XObject, 0 );
-  CoreTimer__Init( &_this->CountDownTimer, &_this->_.XObject, 0 );
+  CoreSystemEventHandler__Init( &_this->ConnectionStatusEventHandler, &_this->_.XObject, 0 );
+  CoreTimer__Init( &_this->TimeoutTimer, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_.VMT = EW_CLASS( SettingsSET47_WaitingApproval );
@@ -6303,24 +6350,24 @@ void SettingsSET47_WaitingApproval__Init( SettingsSET47_WaitingApproval _this, X
   ComponentsBaseComponent__OnSetDDModeEnabled( _this, 1 );
   CoreRectView__OnSetBounds( &_this->LoadingAnimation, _Const000B );
   ViewsImage_OnSetAnimated( &_this->LoadingAnimation, 1 );
-  CoreRectView__OnSetBounds( &_this->WaitingText, _Const0047 );
+  CoreRectView__OnSetBounds( &_this->WaitingText, _Const0045 );
   ViewsText_OnSetWrapText((ViewsText)&_this->WaitingText, 1 );
   ViewsText_OnSetAlignment((ViewsText)&_this->WaitingText, ViewsTextAlignmentAlignHorzCenter 
   | ViewsTextAlignmentAlignVertTop );
   ViewsText_OnSetString((ViewsText)&_this->WaitingText, EwGetVariantOfString( &StringsSET47_WAIT_APPROVAL ));
-  CoreTimer_OnSetPeriod( &_this->CountDownTimer, 1000 );
-  CoreTimer_OnSetEnabled( &_this->CountDownTimer, 1 );
-  _this->CountDownTimeSec = 30;
+  CoreTimer_OnSetPeriod( &_this->TimeoutTimer, 0 );
+  CoreTimer_OnSetBegin( &_this->TimeoutTimer, 30000 );
+  CoreTimer_OnSetEnabled( &_this->TimeoutTimer, 1 );
   CoreGroup__Add( _this, ((CoreView)&_this->LoadingAnimation ), 0 );
   CoreGroup__Add( _this, ((CoreView)&_this->WaitingText ), 0 );
   ViewsImage_OnSetBitmap( &_this->LoadingAnimation, EwLoadResource( &ResourceLoadingAnimation, 
   ResourcesBitmap ));
   ViewsText_OnSetFont((ViewsText)&_this->WaitingText, EwLoadResource( &FontsNotoSansCjkJpMedium24pt, 
   ResourcesFont ));
-  _this->BtcPairingStateChangeEventHandler.OnEvent = EwNewSlot( _this, SettingsSET47_WaitingApproval_OnBtcPairingStateChangeSlot );
-  CoreSystemEventHandler_OnSetEvent( &_this->BtcPairingStateChangeEventHandler, 
-  &EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->BtcPairingChangedSystemEvent );
-  _this->CountDownTimer.OnTrigger = EwNewSlot( _this, SettingsSET47_WaitingApproval_UpdateCountDownTimeSlot );
+  _this->ConnectionStatusEventHandler.OnEvent = EwNewSlot( _this, SettingsSET47_WaitingApproval_OnConnectoinStatusReceivedSlot );
+  CoreSystemEventHandler_OnSetEvent( &_this->ConnectionStatusEventHandler, &EwGetAutoObject( 
+  &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->ConnectionStatusEvent );
+  _this->TimeoutTimer.OnTrigger = EwNewSlot( _this, SettingsSET47_WaitingApproval_OnTimeoutSlot );
 
   /* Call the user defined constructor */
   SettingsSET47_WaitingApproval_Init( _this, aArg );
@@ -6335,8 +6382,8 @@ void SettingsSET47_WaitingApproval__ReInit( SettingsSET47_WaitingApproval _this 
   /* ... then re-construct all embedded objects */
   ViewsImage__ReInit( &_this->LoadingAnimation );
   ComponentsBaseText__ReInit( &_this->WaitingText );
-  CoreSystemEventHandler__ReInit( &_this->BtcPairingStateChangeEventHandler );
-  CoreTimer__ReInit( &_this->CountDownTimer );
+  CoreSystemEventHandler__ReInit( &_this->ConnectionStatusEventHandler );
+  CoreTimer__ReInit( &_this->TimeoutTimer );
 
   /* ... and re-initialize objects, variables, properties, etc. */
   ViewsText_OnSetString((ViewsText)&_this->WaitingText, EwGetVariantOfString( &StringsSET47_WAIT_APPROVAL ));
@@ -6356,8 +6403,8 @@ void SettingsSET47_WaitingApproval__Done( SettingsSET47_WaitingApproval _this )
   /* Finalize all embedded objects */
   ViewsImage__Done( &_this->LoadingAnimation );
   ComponentsBaseText__Done( &_this->WaitingText );
-  CoreSystemEventHandler__Done( &_this->BtcPairingStateChangeEventHandler );
-  CoreTimer__Done( &_this->CountDownTimer );
+  CoreSystemEventHandler__Done( &_this->ConnectionStatusEventHandler );
+  CoreTimer__Done( &_this->TimeoutTimer );
 
   /* Don't forget to deinitialize the super class ... */
   ComponentsBaseMainBG__Done( &_this->_.Super );
@@ -6378,7 +6425,7 @@ void SettingsSET47_WaitingApproval_Init( SettingsSET47_WaitingApproval _this, XH
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const0048 ));
+  EwTrace( "%s", EwLoadString( &_Const0046 ));
   SettingsSET47_WaitingApproval_DisplayString( _this );
 }
 
@@ -6405,26 +6452,30 @@ void SettingsSET47_WaitingApproval_OnLongHomeKeyActivated( SettingsSET47_Waiting
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
    receives an event. */
-void SettingsSET47_WaitingApproval_OnBtcPairingStateChangeSlot( SettingsSET47_WaitingApproval _this, 
+void SettingsSET47_WaitingApproval_OnConnectoinStatusReceivedSlot( SettingsSET47_WaitingApproval _this, 
   XObject sender )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
   if ( _this->Super5.Owner != 0 )
-    switch ( EwGetAutoObject( &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass )->BtcPairingState )
+  {
+    DeviceInterfaceConnectionStatusContext ConnectionStatusContext = EwCastObject( 
+      _this->ConnectionStatusEventHandler.Context, DeviceInterfaceConnectionStatusContext );
+
+    switch ( ConnectionStatusContext->Status )
     {
-      case EnumBtcPairingStateFAIL :
+      case EnumConnectionStatusPAIRING_FAILED :
         SettingsSET47_WaitingApproval_DisplayPairingFailed( _this );
       break;
 
-      case EnumBtcPairingStateNAVI_APP_CONNECTED :
+      case EnumConnectionStatusNAVI_APP_CONNECTED :
         CoreGroup_SwitchToDialog( _this->Super5.Owner, ((CoreGroup)EwNewObject( 
         SettingsSET49_OnlyNaviAppConnected, 0 )), 0, 0, 0, 0, 0, 0, 0, EwNullSlot, 
         EwNullSlot, 0 );
       break;
 
-      case EnumBtcPairingStateYAMAHA_APP_CONNECTED :
+      case EnumConnectionStatusYAMAHA_APP_BLE_CONNECTED :
         CoreGroup_SwitchToDialog( _this->Super5.Owner, ((CoreGroup)EwNewObject( 
         SettingsSET22_WaitingConnection, 0 )), 0, 0, 0, 0, 0, 0, 0, EwNullSlot, 
         EwNullSlot, 0 );
@@ -6432,32 +6483,32 @@ void SettingsSET47_WaitingApproval_OnBtcPairingStateChangeSlot( SettingsSET47_Wa
 
       default :; 
     }
+  }
 }
 
 /* 'C' function for method : 'Settings::SET47_WaitingApproval.DisplayPairingFailed()' */
 void SettingsSET47_WaitingApproval_DisplayPairingFailed( SettingsSET47_WaitingApproval _this )
 {
-  SettingsTimeoutDialog PairingFailedDialog = EwNewObject( SettingsTimeoutDialog, 
-    0 );
-
-  SettingsTimeoutDialog_OnSetMessage( PairingFailedDialog, EwGetVariantOfString( 
-  &StringsSET07_PAIRING_FAILED ));
-  PairingFailedDialog->DismissAfterTimeout = 1;
-  CoreGroup_SwitchToDialog( _this->Super5.Owner, ((CoreGroup)PairingFailedDialog ), 
-  0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+  if ( _this->Super5.Owner != 0 )
+  {
+    SettingsTimeoutDialog PairingFailedDialog = EwNewObject( SettingsTimeoutDialog, 
+      0 );
+    SettingsTimeoutDialog_OnSetMessage( PairingFailedDialog, EwGetVariantOfString( 
+    &StringsSET07_PAIRING_FAILED ));
+    PairingFailedDialog->DismissAfterTimeout = 1;
+    CoreGroup_SwitchToDialog( _this->Super5.Owner, ((CoreGroup)PairingFailedDialog ), 
+    0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+  }
 }
 
-/* 'C' function for method : 'Settings::SET47_WaitingApproval.UpdateCountDownTimeSlot()' */
-void SettingsSET47_WaitingApproval_UpdateCountDownTimeSlot( SettingsSET47_WaitingApproval _this, 
+/* 'C' function for method : 'Settings::SET47_WaitingApproval.OnTimeoutSlot()' */
+void SettingsSET47_WaitingApproval_OnTimeoutSlot( SettingsSET47_WaitingApproval _this, 
   XObject sender )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  if ( _this->CountDownTimeSec > 0 )
-    _this->CountDownTimeSec--;
-  else
-    SettingsSET47_WaitingApproval_DisplayPairingFailed( _this );
+  SettingsSET47_WaitingApproval_DisplayPairingFailed( _this );
 }
 
 /* 'C' function for method : 'Settings::SET47_WaitingApproval.DisplayString()' */
@@ -6481,8 +6532,8 @@ EW_END_OF_CLASS_VARIANTS( SettingsSET47_WaitingApproval )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET47_WaitingApproval' */
 EW_DEFINE_CLASS( SettingsSET47_WaitingApproval, ComponentsBaseMainBG, LoadingAnimation, 
-                 LoadingAnimation, LoadingAnimation, LoadingAnimation, CountDownTimeSec, 
-                 CountDownTimeSec, "Settings::SET47_WaitingApproval" )
+                 LoadingAnimation, LoadingAnimation, LoadingAnimation, _.VMT, _.VMT, 
+                 "Settings::SET47_WaitingApproval" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,
@@ -6597,7 +6648,7 @@ void SettingsSET49_OnlyNaviAppConnected_Init( SettingsSET49_OnlyNaviAppConnected
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const0049 ));
+  EwTrace( "%s", EwLoadString( &_Const0047 ));
   SettingsSET49_OnlyNaviAppConnected_DisplayString( _this );
 }
 
@@ -6758,7 +6809,7 @@ void SettingsSET50_OnlyYahamaAppConnected_Init( SettingsSET50_OnlyYahamaAppConne
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const004A ));
+  EwTrace( "%s", EwLoadString( &_Const0048 ));
   SettingsSET50_OnlyYahamaAppConnected_DisplayString( _this );
 }
 
@@ -6766,11 +6817,20 @@ void SettingsSET50_OnlyYahamaAppConnected_Init( SettingsSET50_OnlyYahamaAppConne
 void SettingsSET50_OnlyYahamaAppConnected_OnTimeoutSlot( SettingsSET50_OnlyYahamaAppConnected _this, 
   XObject sender )
 {
+  SettingsSET04_BtSettingMenu BtSettingMenu;
+
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  CoreGroup_DismissDialog( _this->Super6.Owner, ((CoreGroup)_this ), 0, 0, 0, EwNullSlot, 
-  EwNullSlot, 0 );
+  BtSettingMenu = EwCastObject( _this->Super6.Owner, SettingsSET04_BtSettingMenu );
+
+  if ( BtSettingMenu != 0 )
+    CoreGroup_SwitchToDialog((CoreGroup)BtSettingMenu, ((CoreGroup)EwNewObject( 
+    SettingsSET17_BtcPairedDeviceList, 0 )), 0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 
+    0 );
+  else
+    CoreGroup_DismissDialog( _this->Super6.Owner, ((CoreGroup)_this ), 0, 0, 0, 
+    EwNullSlot, EwNullSlot, 0 );
 }
 
 /* 'C' function for method : 'Settings::SET50_OnlyYahamaAppConnected.DisplayString()' */
@@ -6890,7 +6950,7 @@ void SettingsSET48_ReconnectYamahaApp_Init( SettingsSET48_ReconnectYamahaApp _th
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const004B ));
+  EwTrace( "%s", EwLoadString( &_Const0049 ));
   SettingsSET48_ReconnectYamahaApp_DisplayString( _this );
 }
 
@@ -7044,7 +7104,7 @@ void SettingsSET51_BothAppConnected_Init( SettingsSET51_BothAppConnected _this,
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const004C ));
+  EwTrace( "%s", EwLoadString( &_Const004A ));
   SettingsSET51_BothAppConnected_DisplayString( _this );
 }
 
@@ -7172,7 +7232,7 @@ void SettingsSET26_PairingSuccessful_Init( SettingsSET26_PairingSuccessful _this
   EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( aArg );
 
-  EwTrace( "%s", EwLoadString( &_Const004D ));
+  EwTrace( "%s", EwLoadString( &_Const004B ));
 }
 
 /* 'C' function for method : 'Settings::SET26_PairingSuccessful.OnTimeoutSlot()' */

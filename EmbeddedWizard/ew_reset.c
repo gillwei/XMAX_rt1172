@@ -20,7 +20,7 @@
 #include <stdio.h>
 #include "Enum.h"
 #include "EEPM_pub.h"
-#include "BTM_pub.h"
+#include "BT_pub.h"
 #include "VI_pub.h"
 #include "RTC_pub.h"
 
@@ -31,14 +31,7 @@
 #define DEFAULT_NAVI_VIEW_SETTING       ( 0 )
 #define DEFAULT_METER_DISPLAY_SETTING   ( 0 )
 #define DEFAULT_LANGUAGE                ( EnumLanguageENGLISH ) //TODO: depends on SKU
-
 #define DEFAULT_CLK_AUTO_ADJUSTMENT     ( 1 )
-
-#define FACTORY_RESET_BT_MANAGER    ( 1 << 0 )
-#define FACTORY_RESET_LANGUAGE      ( 1 << 1 )
-#define FACTORY_RESET_LAST_PAGE     ( 1 << 2 )
-#define FACTORY_RESET_CLK_AUTO_ADJ  ( 1 << 3 )
-#define FACTORY_RESET_TOTAL         ( FACTORY_RESET_BT_MANAGER | FACTORY_RESET_LANGUAGE | FACTORY_RESET_LAST_PAGE | FACTORY_RESET_CLK_AUTO_ADJ )
 
 /*--------------------------------------------------------------------
                                  TYPES
@@ -64,15 +57,17 @@ static uint32_t factory_reset_status;
 /*********************************************************************
 *
 * @private
-* update_factory_reset_status
+* ew_update_factory_reset_status
 *
 * Count the number of items reset, and set is_factory_reset_complete to 1
 * if all items are reset.
 *
+* @param status Factory reset status
+*
 *********************************************************************/
-static void update_factory_reset_status
+void ew_update_factory_reset_status
     (
-    uint32_t status
+    const uint32_t status
     )
 {
 PRINTF( "%s 0x%02x\r\n", __FUNCTION__, status );
@@ -105,7 +100,7 @@ if( !result )
     {
     EwPrint( "reset clk auto adj fail\r\n" );
     }
-update_factory_reset_status( FACTORY_RESET_CLK_AUTO_ADJ );
+ew_update_factory_reset_status( FACTORY_RESET_CLK_AUTO_ADJ );
 }
 
 /*********************************************************************
@@ -130,7 +125,7 @@ if( !result )
     {
     EwPrint( "EW reset last page fail\r\n" );
     }
-update_factory_reset_status( FACTORY_RESET_LAST_PAGE );
+ew_update_factory_reset_status( FACTORY_RESET_LAST_PAGE );
 }
 
 /*********************************************************************
@@ -155,30 +150,7 @@ if( !result )
     {
     EwPrint( "EW reset lang fail\r\n" );
     }
-update_factory_reset_status( FACTORY_RESET_LANGUAGE );
-}
-
-/*********************************************************************
-*
-* @public
-* EW_btm_reset_callback
-*
-* The callback function of resetting BT manager
-*
-* @param result 1: The reset of BT manager successes.
-*               0: The reset of BT manager fails.
-*
-*********************************************************************/
-void EW_btm_reset_callback
-    (
-    int result
-    )
-{
-if( !result )
-    {
-    EwPrint( "EW reset BTM fail\r\n" );
-    }
-update_factory_reset_status( FACTORY_RESET_BT_MANAGER );
+ew_update_factory_reset_status( FACTORY_RESET_LANGUAGE );
 }
 
 /*********************************************************************
@@ -221,6 +193,7 @@ if( pdFALSE == EEPM_set_language( DEFAULT_LANGUAGE, &EW_eeprom_set_language_call
     EwPrint( "reset lang false\r\n" );
     }
 
-/* reset BT */
-BTM_reset_factory_default( &EW_btm_reset_callback );
+/* reset CM & BT */
+CM_factory_reset();
+BT_factory_reset();
 }

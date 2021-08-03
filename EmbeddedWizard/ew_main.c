@@ -572,6 +572,7 @@ void EW_init
     void
     )
 {
+ew_device_bt_create_queue();
 create_task();
 ew_key_init();
 ew_system_int();

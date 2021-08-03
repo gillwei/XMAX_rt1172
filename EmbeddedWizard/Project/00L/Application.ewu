@@ -152,24 +152,22 @@ class Application : Core::Root
     attr Bounds = <640,570,910,730>;
   }
 
-  $rect <670,620,890,660>
-  object Core::PropertyObserver BtFwStatusObserver
-  {
-    preset OnEvent = OnBtFwStatusUpdteSlot;
-    preset Outlet = ^DeviceInterface::BluetoothDevice.BtFwStatus;
-  }
-
   // This slot method is executed when the associated property observer 'PropertyObserver' \
   // is notified.
   $rect <670,670,890,710>
-  slot OnBtFwStatusUpdteSlot
+  slot OnConnectoinStatusReceivedSlot
   {
-    if( Enum::BtFwStatus.UPDATE_START == DeviceInterface::BluetoothDevice.BtFwStatus )
+    var DeviceInterface::BtmStatusContext BtmStatusContext = (DeviceInterface::BtmStatusContext)BtmStatusEventHandler.Context;
+    switch( BtmStatusContext.Status )
     {
-      var Settings::BtFwUpdateDialog BtFwDialog = new Settings::BtFwUpdateDialog;
-      BtFwDialog.StackingPriority = 1;
-      GetRoot().Add( BtFwDialog, 0 );
-      GetRoot().BeginModal( BtFwDialog );
+      case Enum::BtmStatus.UPDATE_START:
+      {
+        var Settings::BtFwUpdateDialog BtFwDialog = new Settings::BtFwUpdateDialog;
+        BtFwDialog.StackingPriority = 1;
+        GetRoot().Add( BtFwDialog, 0 );
+        GetRoot().BeginModal( BtFwDialog );
+      }
+      default:;
     }
   }
 
@@ -339,7 +337,6 @@ class Application : Core::Root
     }
 
     IsFactoryModeDialogDisplayed = false;
-    DeviceInterface::BluetoothDevice.GetBluetoothEnable();
     if( Enum::OperationMode.NORMAL == DeviceInterface::SystemDevice.OperationMode )
     {
       ShowDisclaimer();
@@ -676,5 +673,12 @@ class Application : Core::Root
   note group Note10
   {
     attr Bounds = <1140,0,1390,350>;
+  }
+
+  $rect <670,620,890,660>
+  object Core::SystemEventHandler BtmStatusEventHandler
+  {
+    preset OnEvent = OnConnectoinStatusReceivedSlot;
+    preset Event = DeviceInterface::BluetoothDevice.BtmStatusEvent;
   }
 }

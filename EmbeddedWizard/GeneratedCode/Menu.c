@@ -616,6 +616,8 @@ void MenuVerticalMenu_OnLoadItemSlot( MenuVerticalMenu _this, XObject sender )
                 OwnerMenu, ItemNo ));
                 MenuItemWrapper_OnSetIcon2Visible( Item, MenuBaseMenuView__LoadItemIcon2Visible( 
                 OwnerMenu, ItemNo ));
+                MenuItemWrapper_OnSetDeviceAddress( Item, MenuBaseMenuView__LoadItemDeviceAddress( 
+                OwnerMenu, ItemNo ));
               }
 
     CoreRectView__OnSetBounds( Item, EwSetRectSize( Item->Super2.Bounds, EwNewPoint( 
@@ -1502,6 +1504,22 @@ void MenuItemWrapper_OnSetIcon2Visible( MenuItemWrapper _this, XBool value )
   }
 }
 
+/* 'C' function for method : 'Menu::ItemWrapper.OnSetDeviceAddress()' */
+void MenuItemWrapper_OnSetDeviceAddress( MenuItemWrapper _this, XUInt64 value )
+{
+  if ( _this->DeviceAddress != value )
+  {
+    CoreView view;
+    MenuItemBtPairedDevice MenuItem;
+    _this->DeviceAddress = value;
+    view = CoreGroup__FindNextView( _this, 0, 0 );
+    MenuItem = EwCastObject( view, MenuItemBtPairedDevice );
+
+    if ( MenuItem != 0 )
+      MenuItem->DeviceAddress = value;
+  }
+}
+
 /* Variants derived from the class : 'Menu::ItemWrapper' */
 EW_DEFINE_CLASS_VARIANTS( MenuItemWrapper )
 EW_END_OF_CLASS_VARIANTS( MenuItemWrapper )
@@ -2133,6 +2151,23 @@ XBool MenuBaseMenuView__LoadItemIcon2Visible( void* _this, XInt32 aItemNo )
   , aItemNo );
 }
 
+/* 'C' function for method : 'Menu::BaseMenuView.LoadItemDeviceAddress()' */
+XUInt64 MenuBaseMenuView_LoadItemDeviceAddress( MenuBaseMenuView _this, XInt32 aItemNo )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+  EW_UNUSED_ARG( aItemNo );
+
+  return 0;
+}
+
+/* Wrapper function for the virtual method : 'Menu::BaseMenuView.LoadItemDeviceAddress()' */
+XUInt64 MenuBaseMenuView__LoadItemDeviceAddress( void* _this, XInt32 aItemNo )
+{
+  return ((MenuBaseMenuView)_this)->_.VMT->LoadItemDeviceAddress((MenuBaseMenuView)_this
+  , aItemNo );
+}
+
 /* Variants derived from the class : 'Menu::BaseMenuView' */
 EW_DEFINE_CLASS_VARIANTS( MenuBaseMenuView )
 EW_END_OF_CLASS_VARIANTS( MenuBaseMenuView )
@@ -2203,6 +2238,7 @@ EW_DEFINE_CLASS( MenuBaseMenuView, ComponentsBaseMainBG, Menu, Menu, Menu, Menu,
   MenuBaseMenuView_LoadPoiListItemUnit,
   MenuBaseMenuView_LoadItemIcon1Visible,
   MenuBaseMenuView_LoadItemIcon2Visible,
+  MenuBaseMenuView_LoadItemDeviceAddress,
 EW_END_OF_CLASS( MenuBaseMenuView )
 
 /* Initializer for the class 'Menu::PushButton' */
@@ -3997,7 +4033,7 @@ EW_END_OF_CLASS_VARIANTS( MenuItemBtPairedDevice )
 
 /* Virtual Method Table (VMT) for the class : 'Menu::ItemBtPairedDevice' */
 EW_DEFINE_CLASS( MenuItemBtPairedDevice, MenuItemBase, NaviAppIcon, NaviAppIcon, 
-                 NaviAppIcon, NaviAppIcon, Icon2Visible, Icon2Visible, "Menu::ItemBtPairedDevice" )
+                 NaviAppIcon, NaviAppIcon, DeviceAddress, DeviceAddress, "Menu::ItemBtPairedDevice" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,
   CoreGroup_Draw,

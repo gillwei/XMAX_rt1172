@@ -18,7 +18,6 @@
 #include "EW_pub.h"
 #include "fsl_debug_console.h"
 #include "queue.h"
-#include "HCI_pub.h"
 #include "GRM_pub_prj.h"
 #include "mm_priv.h"
 #include "MM_pub.h"

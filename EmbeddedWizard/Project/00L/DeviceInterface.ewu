@@ -5,13 +5,15 @@ inline Inline
 {
   #include <stddef.h>
   #include <stdlib.h>
+  #include <stdio.h>
   #include "ew_priv.h"
   #include "display_support.h"
   #include "EEPM_pub.h"
   #include "PERIPHERAL_pub.h"
   #include "VI_pub.h"
   #include "MM_pub_ams_type.h"
-  #include "BTM_pub.h"
+  #include "BT_pub.h"
+  #include "CM_pub.h"
   #include "BC_motocon_pub.h"
   #include "BC_motocon_pub_type.h"
   #include "BC_ams_pub.h"
@@ -190,28 +192,6 @@ class SystemDeviceClass : Templates::DeviceClass
 
   $rect <1010,470,1210,510>
   property int32 BrightnessLevel = 7;
-
-  $rect <250,170,450,210>
-  property string BtSoftwareVersion;
-
-  $rect <250,220,450,260>
-  onget BtSoftwareVersion
-  {
-    $if !$prototyper
-      var string bt_sw_version = "";
-
-      native( bt_sw_version )
-      {
-         char version[8];
-         ew_get_bt_software_version( version );
-         bt_sw_version = EwNewStringAnsi( version );
-      }
-
-      pure BtSoftwareVersion = bt_sw_version;
-    $endif
-
-    return pure BtSoftwareVersion;
-  }
 
   $rect <250,440,470,480>
   $output true
@@ -1552,7 +1532,7 @@ class NavigationDeviceClass : Templates::DeviceClass
       var bool IsNaviAppSppConnected = false;
       native( IsNaviAppSppConnected )
       {
-        IsNaviAppSppConnected = BTM_is_bt_connected();
+        IsNaviAppSppConnected = CM_get_spp_connection_status( CM_APP_NAVILITE );
       }
       return IsNaviAppSppConnected;
     $else
@@ -2060,74 +2040,57 @@ $rect <810,70,1010,110>
 $output false
 class BluetoothDeviceClass : Templates::DeviceClass
 {
-  // BT related properties
+  // Properties
   note group Note1
   {
-    attr Bounds = <10,10,1600,260>;
+    attr Bounds = <10,10,1420,260>;
   }
 
-  // Interfaces to react to BT system events
-  note group Note2
-  {
-    attr Bounds = <9,280,1730,450>;
-  }
-
-  // Interfaces to perform BT operations on device
+  // Paired Device List & Operation
   note group Note3
   {
-    attr Bounds = <10,470,840,690>;
+    attr Bounds = <410,280,1020,800>;
   }
 
-  $rect <290,510,503,550>
-  method void GetPairedDeviceAtItem( arg int32 aItemNo )
+  $rect <430,520,643,560>
+  method void GetPairedDeviceList()
   {
     $if !$prototyper
+      var int32  DevIdx;
       var string DevName;
-      var bool   IsNaviAppConnected;
-      var bool   IsYamahaAppConnected;
+      var uint64 DevAddr;
 
-      native( aItemNo, DevName, IsNaviAppConnected, IsYamahaAppConnected )
+      for( DevIdx = 0; DevIdx < PairedDeviceNum; DevIdx++ )
       {
-        uint8_t* device_name;
-        bool     is_navi_app_connected = false;
-        bool     is_yamaha_app_connected = false;
-
-        ew_bt_get_paired_device_at_index( aItemNo, &device_name, &is_navi_app_connected, &is_yamaha_app_connected );
-
-        uint8_t *stuffed_str = NULL;
-        int32_t stuffed_str_len = ew_handle_special_characters( device_name, &stuffed_str );
-        if( stuffed_str_len > 0 && stuffed_str != NULL )
+        native( DevIdx, DevName, DevAddr )
         {
-          DevName = EwNewStringUtf8( stuffed_str, stuffed_str_len );
+          BT_device_info_t device_info;
+          uint8_t* stuffed_str = NULL;
+          int32_t  stuffed_str_len;
+
+          if( BT_STATUS_OK == BT_get_paired_device_info( DevIdx, &device_info ) )
+          {
+            stuffed_str_len = ew_handle_special_characters( device_info.device_name, &stuffed_str );
+            if( ( 0 < stuffed_str_len ) && ( NULL != stuffed_str ) )
+            {
+              DevName = EwNewStringUtf8( stuffed_str, stuffed_str_len );
+            }
+
+            DevAddr = 0;
+            for( int32_t i = 0; i < BT_DEVICE_ADDRESS_LEN; i++ )
+            {
+              DevAddr = ( DevAddr << 8 ) | device_info.bd_addr[i];
+            }
+          }
         }
 
-        IsNaviAppConnected = is_navi_app_connected;
-        IsYamahaAppConnected = is_yamaha_app_connected;
+        var DeviceInterface::BtPairedDeviceInfo DevInfo = new DeviceInterface::BtPairedDeviceInfo;
+        DevInfo.DeviceName = DevName;
+        DevInfo.DeviceAddress = DevAddr;
+        PairedDeviceList[DevIdx] = DevInfo;
       }
-      PairedDeviceObj.DeviceName = DevName;
-      PairedDeviceObj.IsNaviAppConnected = IsNaviAppConnected;
-      PairedDeviceObj.IsYamahaAppConnected = IsYamahaAppConnected;
-    $else
-      // suppress warning
-      aItemNo;
     $endif
   }
-
-  $rect <30,380,290,420>
-  object Core::SystemEvent BtcPairingChangedSystemEvent;
-
-  // This method is intended to be called by the device to notify the GUI application \
-  // about a particular system event.
-  $rect <30,330,290,370>
-  $output true
-  method void NotifyBtcPairingStateChanged( arg Enum::BtcPairingState aState )
-  {
-    BtcPairingState = aState;
-    BtcPairingChangedSystemEvent.Trigger( null, false );
-  }
-
-  $rect <302,330,502,370>
-  property Enum::BtcPairingState BtcPairingState;
 
   $rect <250,50,450,90>
   property bool Discoverable = false;
@@ -2141,7 +2104,7 @@ class BluetoothDeviceClass : Templates::DeviceClass
       $if !$prototyper
         native
         {
-          ew_bt_set_discoverable( ( bool )value );
+          BT_set_discoverable_state( (bool)value );
         }
       $endif
     }
@@ -2154,44 +2117,45 @@ class BluetoothDeviceClass : Templates::DeviceClass
       var bool IsDiscoverable = false;
       native( IsDiscoverable )
       {
-        IsDiscoverable = ew_bt_get_discoverable();
+        IsDiscoverable = BT_get_discoverable_state();
       }
-      return IsDiscoverable;
-    $else
-      return pure Discoverable;
+      pure Discoverable = IsDiscoverable;
     $endif
+
+    return pure Discoverable;
   }
 
   $rect <30,50,240,90>
-  property bool BluetoothEnable = false;
+  property bool BluetoothEnabled = false;
 
   $rect <30,100,240,140>
-  onset BluetoothEnable
+  onset BluetoothEnabled
   {
-    trace "OnSetBluetoothEnable ", value;
-
-    if( pure BluetoothEnable != value )
+    if( pure BluetoothEnabled != value )
     {
-      pure BluetoothEnable = value;
+      pure BluetoothEnabled = value;
       $if !$prototyper
         native
         {
-          ew_bt_set_enable( ( bool )value );
+          BT_set_enable_state( (bool)value );
         }
       $endif
     }
-
-    notifyobservers ^BluetoothEnable;
   }
 
   $rect <30,150,240,190>
-  onget BluetoothEnable
+  onget BluetoothEnabled
   {
     $if !$prototyper
-      return pure BluetoothEnable;
-    $else
-      return true;
+      var bool EnableStatus = false;
+      native( EnableStatus )
+      {
+        EnableStatus = BT_get_enable_state();
+      }
+      pure BluetoothEnabled = EnableStatus;
     $endif
+
+    return pure BluetoothEnabled;
   }
 
   $rect <460,50,660,90>
@@ -2200,13 +2164,16 @@ class BluetoothDeviceClass : Templates::DeviceClass
   $rect <460,100,660,140>
   onset AutoConnect
   {
-    pure AutoConnect = value;
-    $if !$prototyper
-      native
-      {
-        ew_bt_set_autoconnect( ( bool )value );
-      }
-    $endif
+    if( pure AutoConnect != value )
+    {
+      pure AutoConnect = value;
+      $if !$prototyper
+        native
+        {
+          CM_set_auto_connect_state( value );
+        }
+      $endif
+    }
   }
 
   $rect <460,150,660,190>
@@ -2216,72 +2183,48 @@ class BluetoothDeviceClass : Templates::DeviceClass
       var bool IsAutoConnect = false;
       native( IsAutoConnect )
       {
-        IsAutoConnect = ew_bt_get_autoconnect();
+        IsAutoConnect = CM_get_auto_connect_state();
       }
-      return IsAutoConnect;
+      pure AutoConnect = IsAutoConnect;
+    $endif
+
+    return pure AutoConnect;
+  }
+
+  $rect <750,420,970,460>
+  method void UnpairDevice( arg uint64 aDeviceAddress )
+  {
+    DeleteFromPairedDeviceList( aDeviceAddress );
+
+    $if !$prototyper
+      var uint64 DevAddr = aDeviceAddress;
+      native ( DevAddr )
+      {
+        uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN];
+        for( int32_t i = 0; i < BT_DEVICE_ADDRESS_LEN; i++ )
+        {
+          bd_addr[BT_DEVICE_ADDRESS_LEN - i - 1] = DevAddr >> ( 8*i );
+        }
+        BT_delete_paired_device( bd_addr );
+      }
     $else
-      return pure AutoConnect;
+      // suppress warning
+      aDeviceAddress;
     $endif
   }
 
-  $rect <670,50,880,90>
-  property int32 PairedDeviceNum;
-
-  $rect <670,100,880,140>
-  onget PairedDeviceNum
-  {
-    $if !$prototyper
-      var int32 PairedDevNum = 0;
-      native( PairedDevNum )
-      {
-        PairedDevNum = ew_bt_get_paired_device_num();
-      }
-      return PairedDevNum;
-    $else
-      return pure PairedDeviceNum;
-    $endif
-  }
-
-  $rect <40,630,260,670>
-  method void UnpairDevice( arg int32 aPairedDeviceIndex )
-  {
-    $if !$prototyper
-      native ( aPairedDeviceIndex )
-      {
-        ew_bt_unpair_paired_device( aPairedDeviceIndex );
-      }
-    $endif
-  }
-
-  $rect <290,570,503,610>
-  object DeviceInterface::BluetoothPairedDeviceInfo PairedDeviceObj;
-
-  $rect <30,200,240,240>
-  method void GetBluetoothEnable()
-  {
-    $if !$prototyper
-      var bool enable = false;
-      native( enable )
-      {
-        enable = ew_bt_get_enable();
-      }
-      BluetoothEnable = enable;
-    $endif
-  }
-
-  $rect <1108,50,1338,90>
+  $rect <940,50,1170,90>
   property string LocalDeviceName;
 
-  $rect <1108,100,1338,140>
+  $rect <940,100,1170,140>
   onget LocalDeviceName
   {
     var string LocalDevName;
     $if !$prototyper
       native( LocalDevName )
       {
-        uint8_t* device_name;
-        ew_bt_get_local_device_name( &device_name );
-        LocalDevName = EwNewStringUtf8( (const unsigned char*)device_name, (int)strlen( (char*)device_name ) );
+        const uint8_t* device_name = BT_get_local_device_name();
+        LocalDevName = EwNewStringUtf8( device_name, (int)strlen( (char*)device_name ) );
       }
     $else
       LocalDevName = "(Device name)";
@@ -2289,148 +2232,98 @@ class BluetoothDeviceClass : Templates::DeviceClass
     return LocalDevName;
   }
 
-  $rect <1350,50,1580,90>
+  $rect <942,150,1172,190>
   property string LocalDeviceAddress;
 
-  $rect <1350,100,1580,140>
+  $rect <942,200,1172,240>
   onget LocalDeviceAddress
   {
     $if !$prototyper
       var string DeviceAddr = "";
       native( DeviceAddr )
       {
-        uint8_t dev_addr[BT_DEVICE_ADDRESS_LEN + 1];
-        ew_bt_get_local_device_address( dev_addr );
-        dev_addr[BT_DEVICE_ADDRESS_LEN + 1] = NULL;
-        DeviceAddr = EwNewStringAnsi( dev_addr );
+        const uint8_t* bd_addr = BT_get_local_device_address();
+        char bd_addr_display[32];
+        snprintf( bd_addr_display, 32, "%02x:%02x:%02x:%02x:%02x:%02x", bd_addr[0], bd_addr[1], bd_addr[2], bd_addr[3], bd_addr[4], bd_addr[5] );
+        DeviceAddr = EwNewStringAnsi( (const char*)bd_addr_display );
       }
-      return DeviceAddr;
-    $else
-      return pure LocalDeviceAddress;
+      pure LocalDeviceAddress = DeviceAddr;
     $endif
+
+    return pure LocalDeviceAddress;
   }
 
-  $rect <40,510,260,550>
-  method void ConnectPairedDevice( arg int32 aPairedDeviceIndex )
+  $rect <750,320,970,360>
+  method void ConnectPairedDevice( arg uint64 aDeviceAddress )
   {
     $if !$prototyper
-      native ( aPairedDeviceIndex )
+      var uint64 DevAddr = aDeviceAddress;
+      native ( DevAddr )
       {
-        ew_bt_connect_paired_device( aPairedDeviceIndex );
+        uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN];
+        for( int32_t i = 0; i < BT_DEVICE_ADDRESS_LEN; i++ )
+        {
+          bd_addr[BT_DEVICE_ADDRESS_LEN - i - 1] = DevAddr >> ( 8*i );
+        }
+        CM_connect( bd_addr );
       }
     $else
       // suppress warning
-      aPairedDeviceIndex;
+      aDeviceAddress;
     $endif
   }
 
-  $rect <40,570,260,610>
-  method void DisconnectPairedDevice( arg int32 aPairedDeviceIndex )
+  $rect <750,370,970,410>
+  method void DisconnectPairedDevice( arg uint64 aDeviceAddress )
   {
     $if !$prototyper
-      native ( aPairedDeviceIndex )
+      var uint64 DevAddr = aDeviceAddress;
+      native ( DevAddr )
       {
-        ew_bt_disconnect_paired_device( aPairedDeviceIndex );
+        uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN];
+        for( int32_t i = 0; i < BT_DEVICE_ADDRESS_LEN; i++ )
+        {
+          bd_addr[BT_DEVICE_ADDRESS_LEN - i - 1] = DevAddr >> ( 8*i );
+        }
+        CM_disconnect( bd_addr );
       }
+    $else
+      // suppress warning
+      aDeviceAddress;
     $endif
   }
 
-  $rect <891,50,1091,90>
-  property bool IsMaxPairedDevice;
+  $rect <671,50,930,90>
+  property bool IsPairedDeviceNumMax;
 
-  $rect <891,100,1091,140>
-  onget IsMaxPairedDevice
+  $rect <671,100,930,140>
+  onget IsPairedDeviceNumMax
   {
     $if !$prototyper
       var bool is_max_paired_device = false;
       native( is_max_paired_device )
       {
-        is_max_paired_device = ew_bt_is_max_paired_device_num();
+         BT_is_paired_device_max_num_reached( (bool*)&is_max_paired_device );
       }
-      return is_max_paired_device;
-    $else
-      return pure IsMaxPairedDevice;
+      pure IsPairedDeviceNumMax = is_max_paired_device;
     $endif
+
+    return pure IsPairedDeviceNumMax;
   }
 
-  $rect <40,806,240,846>
-  property Enum::BtFwStatus BtFwStatus;
-
-  $rect <40,860,240,900>
-  onset BtFwStatus
-  {
-    if ( pure BtFwStatus != value )
-    {
-      pure BtFwStatus = value;
-      notifyobservers ^BtFwStatus;
-    }
-
-  }
-
-  $rect <40,750,240,790>
-  $output true
-  method void NotifyBtFwStatus( arg Enum::BtFwStatus status, arg string version )
-  {
-    trace "NotifyBtFWStatus: ", status;
-    trace "BtFwVer: ", version;
-
-    BtFwStatus = status;
-  }
-
-  // Interfaces to BT firmware update
+  // Status/Event from BTM / CM
   note group Note4
   {
-    attr Bounds = <10,710,320,920>;
+    attr Bounds = <1040,280,1420,530>;
   }
 
-  $rect <530,510,750,550>
-  property bool RefreshPairedDeviceList;
-
-  $rect <530,570,790,610>
-  onset RefreshPairedDeviceList
-  {
-    pure RefreshPairedDeviceList = value;
-    notifyobservers ^RefreshPairedDeviceList;
-  }
-
-  // This method is intended to be called by the device to notify the GUI application \
-  // about a particular system event.
-  $rect <760,330,1110,370>
-  $output true
-  method void NotifyPairedDeviceConnectionStatusUpdated()
-  {
-    RefreshPairedDeviceList = true;
-    PairedDeviceUpdatedSystemEvent.Trigger( null, false );
-  }
-
-  // Connection Status
-  note group Note5
-  {
-    attr Bounds = <860,470,1640,690>;
-  }
-
-  // MotoCon connection status
+  // Status/Event from MotoCon
   note group Note6
   {
-    attr Bounds = <350,710,660,920>;
+    attr Bounds = <1040,550,1420,800>;
   }
 
-  $rect <880,620,1090,660>
-  method int32 GetPairingFailCount()
-  {
-    var int32 FailCount = 0;
-
-    $if !$prototyper
-      native( FailCount )
-      {
-        FailCount = BTM_get_ble_pairing_fail_count();
-      }
-    $endif
-
-    return FailCount;
-  }
-
-  $rect <1200,520,1450,560>
+  $rect <1110,740,1360,780>
   method bool IsMotoconConnected()
   {
     $if !$prototyper
@@ -2445,7 +2338,7 @@ class BluetoothDeviceClass : Templates::DeviceClass
     $endif
   }
 
-  $rect <380,760,630,800>
+  $rect <1110,590,1360,630>
   $output true
   method void NotifyMotoConEventReceived( arg Enum::MotoConRxEvent aEvent )
   {
@@ -2454,29 +2347,10 @@ class BluetoothDeviceClass : Templates::DeviceClass
     MotoConSystemEvent.Trigger( MotoConContext, false );
   }
 
-  $rect <380,810,630,850>
+  $rect <1110,640,1360,680>
   object Core::SystemEvent MotoConSystemEvent;
 
-  $rect <760,380,1110,420>
-  object Core::SystemEvent PairedDeviceUpdatedSystemEvent;
-
-  $rect <1130,380,1370,420>
-  property Enum::BtDeviceConnectionResult ConnectPairedDeviceResult;
-
-  // This method is intended to be called by the device to notify the GUI application \
-  // about a particular system event.
-  $rect <1130,330,1370,370>
-  $output true
-  method void NotifyBtcConnectionResult( arg Enum::BtDeviceConnectionResult aResult )
-  {
-    ConnectPairedDeviceResult = aResult;
-    BtcConnectionResultSystemEvent.Trigger( null, false );
-  }
-
-  $rect <1380,380,1670,420>
-  object Core::SystemEvent BtcConnectionResultSystemEvent;
-
-  $rect <300,380,500,420>
+  $rect <39,330,239,370>
   method uint32 GetBtcPasskey()
   {
     var uint32 Passkey;
@@ -2489,7 +2363,7 @@ class BluetoothDeviceClass : Templates::DeviceClass
     return Passkey;
   }
 
-  $rect <510,330,740,370>
+  $rect <39,379,269,419>
   method string GetBtcPairingDeviceName()
   {
     var string PairingDeviceName;
@@ -2512,7 +2386,7 @@ class BluetoothDeviceClass : Templates::DeviceClass
     return PairingDeviceName;
   }
 
-  $rect <380,860,630,900>
+  $rect <1110,690,1360,730>
   $output true
   method void SendMotoConCommand( arg Enum::MotoConTx aTxCmd )
   {
@@ -2524,61 +2398,270 @@ class BluetoothDeviceClass : Templates::DeviceClass
     $endif
   }
 
-  $rect <1380,330,1710,370>
+  $rect <1120,320,1340,360>
+  $output true
+  method void NotifyBtmStatus( arg Enum::BtmStatus aStatus )
+  {
+    trace "NotifyBtmStatus: ", aStatus;
+    var DeviceInterface::BtmStatusContext BtmStatusContext = new DeviceInterface::BtmStatusContext;
+    BtmStatusContext.Status = aStatus;
+    BtmStatusEvent.Trigger( BtmStatusContext, false );
+  }
+
+  $rect <1120,420,1340,460>
+  $output true
+  method void NotifyConnectionStatus( arg Enum::ConnectionStatus aStatus )
+  {
+    trace "NotifyConnectionStatus: ", aStatus;
+    switch( aStatus )
+    {
+      case Enum::ConnectionStatus.PAIRED_DEVICE_CHANGED:
+      {
+        postsignal OnPairedDeviceListUpdatedSlot;
+      }
+      case Enum::ConnectionStatus.CONNECTED_APP_CHANGED:
+      {
+        postsignal OnConnectedAppStatusUpdatedSlot;
+      }
+      default:
+      {
+        var DeviceInterface::ConnectionStatusContext ConnectionStatusContext = new DeviceInterface::ConnectionStatusContext;
+        ConnectionStatusContext.Status = aStatus;
+        ConnectionStatusEvent.Trigger( ConnectionStatusContext, false );
+      }
+    }
+  }
+
+  $rect <1120,370,1340,410>
+  object Core::SystemEvent BtmStatusEvent;
+
+  $rect <1120,470,1350,510>
+  object Core::SystemEvent ConnectionStatusEvent;
+
+  $rect <40,430,370,470>
   method bool IsPairingDeviceYamahaAppSPPConnected()
   {
-    var bool IsConnected = false;
+    var bool Connected = false;
     $if !$prototyper
-      native( IsConnected )
+      native( Connected )
       {
-        IsConnected = BTM_is_pairing_device_yapp_spp_connected();
+        Connected = CM_get_spp_connection_status( CM_APP_YCONNECT );
       }
     $endif
-    return IsConnected;
+    return Connected;
   }
 
-  $rect <880,520,1170,560>
-  property bool IsYamahaAppSppConnected;
-
-  $rect <880,570,1170,610>
-  onget IsYamahaAppSppConnected
-  {
-    $if !$prototyper
-      var bool IsConnected = false;
-      native( IsConnected )
-      {
-        IsConnected = BTM_is_pairing_device_yapp_spp_connected();
-      }
-      pure IsYamahaAppSppConnected = IsConnected;
-      trace "IsYAppSppConnected: ", IsConnected;
-    $endif
-    return pure IsYamahaAppSppConnected;
-  }
-
-  $rect <1200,570,1480,610>
+  $rect <40,480,320,520>
   method void TriggerConnectionTimeoutTimer()
   {
     $if !$prototyper
       native
       {
-        BTM_start_btm_timeout_timer( BTM_BLE_PAIR_TIMEOUT );
+        //BTM_start_btm_timeout_timer( BTM_BLE_PAIR_TIMEOUT );
       }
     $endif
   }
 
-  $rect <690,760,910,800>
-  $output true
-  method void NotifyBtmStatus( arg Enum::BtmStatus status )
+  $rect <430,370,630,410>
+  array DeviceInterface::BtPairedDeviceInfo PairedDeviceList[ 8 ];
+
+  $rect <430,420,690,460>
+  slot OnPairedDeviceListUpdatedSlot
   {
-    trace "NotifyBtmStatus: ", status;
+    PairedDeviceNum = GetPairedDeviceNum();
+    if( 0 < PairedDeviceNum )
+    {
+      GetPairedDeviceList();
+      signal OnConnectedAppStatusUpdatedSlot;
+    }
+    else
+    {
+      NotifyConnectionStatus( Enum::ConnectionStatus.PAIRED_DEVICE_LIST_UPDATED );
+    }
   }
 
-  $rect <690,810,910,850>
-  $output true
-  method void NotifyConnectionStatus( arg Enum::ConnectionStatus status, arg uint32 data )
+  $rect <430,570,730,610>
+  slot OnConnectedAppStatusUpdatedSlot
   {
-    trace "NotifyConnectionStatus: ", status, data;
+    var int32 i = 0;
+    for( i = 0; i < PairedDeviceNum; i++ )
+    {
+      PairedDeviceList[i].IsNaviAppConnected = GetNaviAppStatus( PairedDeviceList[i].DeviceAddress );
+      PairedDeviceList[i].IsYamahaAppConnected = GetYamahaAppStatus( PairedDeviceList[i].DeviceAddress );
+    }
+    NotifyConnectionStatus( Enum::ConnectionStatus.PAIRED_DEVICE_LIST_UPDATED );
   }
+
+  // Number of paired devices (max 8)
+  $rect <430,320,630,360>
+  var int32 PairedDeviceNum;
+
+  $rect <430,470,630,510>
+  method int32 GetPairedDeviceNum()
+  {
+    var int32 Num = 0;
+    $if !$prototyper
+      native( Num )
+      {
+        uint8_t paired_device_num = 0;
+        if( BT_STATUS_OK == BT_get_num_paired_devices( &paired_device_num ) )
+        {
+          Num = paired_device_num;
+        }
+      }
+
+      if( DeviceInterface::MAX_PAIRED_DEVICE_NUM < Num )
+      {
+        Num = DeviceInterface::MAX_PAIRED_DEVICE_NUM;
+      }
+    $endif
+    return Num;
+  }
+
+  $rect <430,620,650,660>
+  method bool GetNaviAppStatus( arg uint64 aAddress )
+  {
+    var bool IsNaviAppConnected = false;
+
+    $if !$prototyper
+      native( aAddress, IsNaviAppConnected )
+      {
+        uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN];
+        for( int32_t i = 0; i < BT_DEVICE_ADDRESS_LEN; i++ )
+        {
+          bd_addr[i] = aAddress >> ( 8 * i );
+        }
+        IsNaviAppConnected = CM_get_app_connection_status( CM_APP_NAVILITE, bd_addr );
+      }
+    $else
+      // suppress warning
+      aAddress;
+    $endif
+
+    return IsNaviAppConnected;
+  }
+
+  $rect <430,670,650,710>
+  method bool GetYamahaAppStatus( arg uint64 aAddress )
+  {
+    var bool IsYamahaAppConnected = false;
+
+    $if !$prototyper
+      native( aAddress, IsYamahaAppConnected )
+      {
+        uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN];
+        for( int32_t i = 0; i < BT_DEVICE_ADDRESS_LEN; i++ )
+        {
+          bd_addr[i] = aAddress >> ( 8*i );
+        }
+        IsYamahaAppConnected = CM_get_app_connection_status( CM_APP_YCONNECT, bd_addr );
+      }
+    $else
+      // suppress warning
+      aAddress;
+    $endif
+
+    return IsYamahaAppConnected;
+  }
+
+  $rect <41,530,240,570>
+  method void ConfirmPasskey( arg bool aResult )
+  {
+    $if !$prototyper
+      var bool aConfirmedResult = aResult;
+      native( aConfirmedResult )
+      {
+        BT_accept_pairing( aConfirmedResult );
+      }
+    $else
+      aResult; // suppress warning
+    $endif
+  }
+
+  // Pairing Operation
+  note group Note5
+  {
+    attr Bounds = <10,280,390,800>;
+  }
+
+  $rect <1182,50,1382,90>
+  property string BtSoftwareVersion;
+
+  $rect <1182,100,1402,140>
+  onget BtSoftwareVersion
+  {
+    $if !$prototyper
+      var string bt_sw_version = "";
+
+      native( bt_sw_version )
+      {
+        uint8_t major = 0;
+        uint8_t minor = 0;
+        BT_get_sw_version( &major, &minor );
+
+        char version[32];
+        snprintf( version, 32, "%1u.%u", major, minor );
+        bt_sw_version = EwNewStringAnsi( version );
+      }
+
+      pure BtSoftwareVersion = bt_sw_version;
+    $endif
+
+    return pure BtSoftwareVersion;
+  }
+
+  // BT log level of BT_log_severity_e type, default is BT_LOG_INFO
+  $rect <1182,150,1382,190>
+  property int32 LogLevel = 3;
+
+  $rect <1182,200,1382,240>
+  onset LogLevel
+  {
+    if( pure LogLevel != value )
+    {
+      pure LogLevel = value;
+      $if !$prototyper
+        var bool BtLogLevel = value;
+        native( BtLogLevel )
+        {
+          BT_set_log_level( BtLogLevel );
+        }
+      $endif
+    }
+  }
+
+  $rect <750,470,1000,510>
+  method void DeleteFromPairedDeviceList( arg uint64 aDeviceAddress )
+  {
+    var int32 i;
+    var int32 FoundIdx = -1;
+
+    for( i = 0; i < PairedDeviceNum; i++ )
+    {
+      if( PairedDeviceList[i].DeviceAddress == aDeviceAddress )
+      {
+        FoundIdx = i;
+        break;
+      }
+    }
+
+    if( 0 <= FoundIdx )
+    {
+      for( i = FoundIdx; i < ( PairedDeviceNum - 1 ); i++ )
+      {
+        PairedDeviceList[i].DeviceName = PairedDeviceList[i+1].DeviceName;
+        PairedDeviceList[i].DeviceAddress = PairedDeviceList[i+1].DeviceAddress;
+        PairedDeviceList[i].IsNaviAppConnected = PairedDeviceList[i+1].IsNaviAppConnected;
+        PairedDeviceList[i].IsYamahaAppConnected = PairedDeviceList[i+1].IsYamahaAppConnected;
+      }
+
+      PairedDeviceNum--;
+      NotifyConnectionStatus( Enum::ConnectionStatus.PAIRED_DEVICE_LIST_UPDATED );
+    }
+  }
+
+  $rect <40,580,240,620>
+  property int32 PairingFailCount;
 }
 
 $rect <810,110,1010,150>
@@ -2586,7 +2669,7 @@ autoobject DeviceInterface::BluetoothDeviceClass BluetoothDevice;
 
 $rect <810,150,1010,190>
 $output false
-class BluetoothPairedDeviceInfo
+class BtPairedDeviceInfo
 {
   $rect <20,10,220,50>
   var string DeviceName;
@@ -2596,6 +2679,9 @@ class BluetoothPairedDeviceInfo
 
   $rect <20,110,250,150>
   var bool IsYamahaAppConnected;
+
+  $rect <20,160,220,200>
+  var uint64 DeviceAddress;
 }
 
 $rect <20,150,220,190>
@@ -4482,3 +4568,23 @@ class NaviPoiDataClass
   $output true
   var string PoiTitle;
 }
+
+$rect <810,230,1010,270>
+$output false
+class BtmStatusContext
+{
+  $rect <10,10,210,50>
+  var Enum::BtmStatus Status;
+}
+
+$rect <810,270,1010,310>
+$output false
+class ConnectionStatusContext
+{
+  $rect <10,10,210,50>
+  var Enum::ConnectionStatus Status;
+}
+
+$rect <810,310,1060,350>
+$output false
+const int32 MAX_PAIRED_DEVICE_NUM = 8;

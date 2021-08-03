@@ -42,7 +42,6 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_CorePropertyObserver.h"
 #include "_CoreRoot.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
@@ -112,7 +111,6 @@
 /* This is the root component of the entire GUI application. */
 EW_DEFINE_FIELDS( ApplicationApplication, CoreRoot )
   EW_OBJECT  ( FactoryTestEventHandler, CoreSystemEventHandler )
-  EW_OBJECT  ( BtFwStatusObserver, CorePropertyObserver )
   EW_OBJECT  ( DDModeTestTimer, CoreTimer )
   EW_OBJECT  ( OpeningSystemEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( StatusBar,       StatusBarMain )
@@ -122,6 +120,7 @@ EW_DEFINE_FIELDS( ApplicationApplication, CoreRoot )
   EW_OBJECT  ( VehicleDataReceivedEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( ReceivedSystemEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( TestFontTimer,   CoreTimer )
+  EW_OBJECT  ( BtmStatusEventHandler, CoreSystemEventHandler )
   EW_VARIABLE( IsFactoryModeDialogDisplayed, XBool )
   EW_VARIABLE( IsDisclaimerDismissed, XBool )
   EW_PROPERTY( StatusBarVisible, XBool )
@@ -195,7 +194,7 @@ void ApplicationApplication_OnSetStatusBarVisible( ApplicationApplication _this,
 
 /* This slot method is executed when the associated property observer 'PropertyObserver' 
    is notified. */
-void ApplicationApplication_OnBtFwStatusUpdteSlot( ApplicationApplication _this, 
+void ApplicationApplication_OnConnectoinStatusReceivedSlot( ApplicationApplication _this, 
   XObject sender );
 
 /* 'C' function for method : 'Application::Application.DismissFactoryTestDialog()' */

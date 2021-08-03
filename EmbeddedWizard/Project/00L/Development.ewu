@@ -189,32 +189,75 @@ class DEV_RealTimeClock : Components::BaseMainBG
 
 $rect <20,160,260,200>
 $output false
-class DEV_Bluetooth : Components::BaseMainBG
+class DEV_Bluetooth : Menu::BaseMenuView
 {
-  $rect <10,290,210,330>
-  inherited property Bounds = <0,0,480,272>;
-
-  $rect <220,290,450,330>
+  $rect <0,290,230,330>
   inherited method OnShortHomeKeyActivated()
   {
     Owner.DismissDialog( this, null, null, null, null, null, false );
   }
 
-  $rect <20,20,160,60>
-  object Views::Text BtSwVersionTitle
+  $rect <510,6,710,46>
+  inherited method LoadItemClass()
   {
-    preset Bounds = <0,40,240,65>;
-    preset String = "BT Software Version";
-    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    aItemNo; // suppress warning
+
+    return Menu::ItemBaseValue;
+  }
+
+  $rect <510,60,710,100>
+  inherited method LoadItemTitle()
+  {
+    var string Title;
+    switch( aItemNo )
+    {
+      case 0: Title = "SW Ver " + DeviceInterface::BluetoothDevice.BtSoftwareVersion;
+      case 1: Title = DeviceInterface::BluetoothDevice.LocalDeviceName;
+      case 2: Title = DeviceInterface::BluetoothDevice.LocalDeviceAddress;
+      case 3:
+      {
+        Title = "Log Level - ";
+        switch( DeviceInterface::BluetoothDevice.LogLevel )
+        {
+          case 0: Title += "Fatal";
+          case 1: Title += "Error";
+          case 2: Title += "Warning";
+          case 3: Title += "Info";
+          case 4: Title += "Debug";
+          case 5: Title += "Verbose";
+          default:;
+        }
+      }
+      default:;
+    }
+    return Title;
+  }
+
+  $rect <510,110,710,150>
+  inherited method OnItemActivate()
+  {
+    aMenuItem; // suppress warning
+
+    switch( aItemNo )
+    {
+      case 3: PresentDialog( new Development::DEV_BtLogLevel, null, null, null, null, null, null, null, null, false );
+      default:;
+    }
   }
 
   $rect <20,20,160,60>
-  object Views::Text BtSwVersionText
+  inherited object Menu
   {
-    preset Bounds = <247,40,356,65>;
-    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
-    preset String = DeviceInterface::SystemDevice.BtSoftwareVersion;
-    preset Font = Fonts::NotoSansCjkJpMedium24pt;
+    preset NoOfItems = 4;
+    preset ItemHeight = Menu::ItemHeightSmall;
+    preset ItemNumPerPage = 4;
+    preset ArrowScrollBarVisible = true;
+  }
+
+  $rect <510,160,710,200>
+  slot OnLogLevelChangedSlot
+  {
+    Menu.InvalidateItems( 3, 3 );
   }
 
   $reorder next 1
@@ -1122,4 +1165,78 @@ class DEV_AncsCategory : Menu::BaseMenuView
   $reorder OnItemActivate 4
   $reorder LoadItemChecked 4
   $reorder CategoryList 1
+}
+
+$rect <20,360,260,400>
+$output false
+class DEV_BtLogLevel : Menu::BaseMenuView
+{
+  $rect <0,290,230,330>
+  inherited method OnShortHomeKeyActivated()
+  {
+    Owner.DismissDialog( this, null, null, null, null, null, false );
+  }
+
+  $rect <510,40,710,80>
+  inherited method LoadItemClass()
+  {
+    aItemNo; // suppress warning
+
+    return Menu::ItemCheckMark;
+  }
+
+  $rect <510,90,710,130>
+  inherited method LoadItemTitle()
+  {
+    var string Title;
+    switch( aItemNo )
+    {
+      case 0: Title = "Fatal";
+      case 1: Title = "Error";
+      case 2: Title = "Warning";
+      case 3: Title = "Info";
+      case 4: Title = "Debug";
+      case 5: Title = "Verbose";
+      default:;
+    }
+    return Title;
+  }
+
+  $rect <510,190,710,230>
+  inherited method OnItemActivate()
+  {
+    aMenuItem; // suppress warning
+
+    DeviceInterface::BluetoothDevice.LogLevel = aItemNo;
+
+    var Development::DEV_Bluetooth DevBtTestPage = (Development::DEV_Bluetooth)Owner;
+    if( null != DevBtTestPage )
+    {
+      postsignal DevBtTestPage.OnLogLevelChangedSlot;
+    }
+
+    DismissThisDialog();
+  }
+
+  $rect <510,140,710,180>
+  inherited method LoadItemChecked()
+  {
+    var bool Checked = false;
+    if( DeviceInterface::BluetoothDevice.LogLevel == aItemNo )
+    {
+      Checked = true;
+    }
+    return Checked;
+  }
+
+  $rect <20,20,160,60>
+  inherited object Menu
+  {
+    preset NoOfItems = 6;
+    preset ItemHeight = Menu::ItemHeightSmall;
+    preset ItemNumPerPage = 4;
+    preset ArrowScrollBarVisible = true;
+  }
+
+  $reorder next 1
 }

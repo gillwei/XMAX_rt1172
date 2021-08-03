@@ -104,9 +104,8 @@
 EW_DEFINE_FIELDS( SettingsSET47_WaitingApproval, ComponentsBaseMainBG )
   EW_OBJECT  ( LoadingAnimation, ViewsImage )
   EW_OBJECT  ( WaitingText,     ComponentsBaseText )
-  EW_OBJECT  ( BtcPairingStateChangeEventHandler, CoreSystemEventHandler )
-  EW_OBJECT  ( CountDownTimer,  CoreTimer )
-  EW_VARIABLE( CountDownTimeSec, XInt32 )
+  EW_OBJECT  ( ConnectionStatusEventHandler, CoreSystemEventHandler )
+  EW_OBJECT  ( TimeoutTimer,    CoreTimer )
 EW_END_OF_FIELDS( SettingsSET47_WaitingApproval )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET47_WaitingApproval' */
@@ -186,14 +185,14 @@ void SettingsSET47_WaitingApproval_OnLongHomeKeyActivated( SettingsSET47_Waiting
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
    receives an event. */
-void SettingsSET47_WaitingApproval_OnBtcPairingStateChangeSlot( SettingsSET47_WaitingApproval _this, 
+void SettingsSET47_WaitingApproval_OnConnectoinStatusReceivedSlot( SettingsSET47_WaitingApproval _this, 
   XObject sender );
 
 /* 'C' function for method : 'Settings::SET47_WaitingApproval.DisplayPairingFailed()' */
 void SettingsSET47_WaitingApproval_DisplayPairingFailed( SettingsSET47_WaitingApproval _this );
 
-/* 'C' function for method : 'Settings::SET47_WaitingApproval.UpdateCountDownTimeSlot()' */
-void SettingsSET47_WaitingApproval_UpdateCountDownTimeSlot( SettingsSET47_WaitingApproval _this, 
+/* 'C' function for method : 'Settings::SET47_WaitingApproval.OnTimeoutSlot()' */
+void SettingsSET47_WaitingApproval_OnTimeoutSlot( SettingsSET47_WaitingApproval _this, 
   XObject sender );
 
 /* 'C' function for method : 'Settings::SET47_WaitingApproval.DisplayString()' */

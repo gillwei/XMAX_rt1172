@@ -25,6 +25,7 @@
 #include "semphr.h"
 #include "EEPM_pub.h"
 #include "GRM_pub_prj.h"
+#include "PERIPHERAL_pub.h"
 #include "RTC_pub.h"
 #include "PM_pub.h"
 #include "QR_pub.h"
@@ -380,27 +381,6 @@ version[i++] = '.';
 version[i++] = '0' + ( SW_VERSION % 100 / 10 );
 version[i++] = '0' + ( SW_VERSION % 100 % 10 );
 version[i]   = 0;
-}
-
-/*********************************************************************
-*
-* @private
-* ew_get_bt_software_version
-*
-* Get BT software version
-*
-* @param version The pointer to the char buffer storing software version
-*
-*********************************************************************/
-void ew_get_bt_software_version
-    (
-    char* version
-    )
-{
-version[0] = '\0';
-uint8_t bt_sw_ver[BT_SW_VERSION_LEN];
-BTM_get_sw_version( bt_sw_ver );
-sprintf( version, "%d.%02d", bt_sw_ver[0], bt_sw_ver[1] );
 }
 
 /*********************************************************************

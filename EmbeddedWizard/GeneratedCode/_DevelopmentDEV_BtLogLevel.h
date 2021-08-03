@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#ifndef _SettingsSET22_WaitingConnection_H
-#define _SettingsSET22_WaitingConnection_H
+#ifndef _DevelopmentDEV_BtLogLevel_H
+#define _DevelopmentDEV_BtLogLevel_H
 
 #ifdef __cplusplus
   extern "C"
@@ -42,14 +42,20 @@
   #error Wrong version of Embedded Wizard Graphics Engine.
 #endif
 
-#include "_ComponentsBaseMainBG.h"
-#include "_ComponentsBaseText.h"
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
+#include "_MenuBaseMenuView.h"
+#include "_MenuVerticalMenu.h"
 #include "_ViewsImage.h"
 #include "_ViewsRectangle.h"
+
+/* Forward declaration of the class Components::BaseMainBG */
+#ifndef _ComponentsBaseMainBG_
+  EW_DECLARE_CLASS( ComponentsBaseMainBG )
+#define _ComponentsBaseMainBG_
+#endif
 
 /* Forward declaration of the class Core::DialogContext */
 #ifndef _CoreDialogContext_
@@ -81,6 +87,12 @@
 #define _CoreView_
 #endif
 
+/* Forward declaration of the class Development::DEV_BtLogLevel */
+#ifndef _DevelopmentDEV_BtLogLevel_
+  EW_DECLARE_CLASS( DevelopmentDEV_BtLogLevel )
+#define _DevelopmentDEV_BtLogLevel_
+#endif
+
 /* Forward declaration of the class Effects::Fader */
 #ifndef _EffectsFader_
   EW_DECLARE_CLASS( EffectsFader )
@@ -93,23 +105,19 @@
 #define _GraphicsCanvas_
 #endif
 
-/* Forward declaration of the class Settings::SET22_WaitingConnection */
-#ifndef _SettingsSET22_WaitingConnection_
-  EW_DECLARE_CLASS( SettingsSET22_WaitingConnection )
-#define _SettingsSET22_WaitingConnection_
+/* Forward declaration of the class Menu::ItemBase */
+#ifndef _MenuItemBase_
+  EW_DECLARE_CLASS( MenuItemBase )
+#define _MenuItemBase_
 #endif
 
 
-/* Deklaration of class : 'Settings::SET22_WaitingConnection' */
-EW_DEFINE_FIELDS( SettingsSET22_WaitingConnection, ComponentsBaseMainBG )
-  EW_OBJECT  ( WaitText,        ComponentsBaseText )
-  EW_OBJECT  ( Image,           ViewsImage )
-  EW_OBJECT  ( ConnectionStatusEventHandler, CoreSystemEventHandler )
-  EW_OBJECT  ( TimeoutTimer,    CoreTimer )
-EW_END_OF_FIELDS( SettingsSET22_WaitingConnection )
+/* Deklaration of class : 'Development::DEV_BtLogLevel' */
+EW_DEFINE_FIELDS( DevelopmentDEV_BtLogLevel, MenuBaseMenuView )
+EW_END_OF_FIELDS( DevelopmentDEV_BtLogLevel )
 
-/* Virtual Method Table (VMT) for the class : 'Settings::SET22_WaitingConnection' */
-EW_DEFINE_METHODS( SettingsSET22_WaitingConnection, ComponentsBaseMainBG )
+/* Virtual Method Table (VMT) for the class : 'Development::DEV_BtLogLevel' */
+EW_DEFINE_METHODS( DevelopmentDEV_BtLogLevel, MenuBaseMenuView )
   EW_METHOD( initLayoutContext, void )( CoreRectView _this, XRect aBounds, CoreOutline 
     aOutline )
   EW_METHOD( GetRoot,           CoreRoot )( CoreView _this )
@@ -152,50 +160,68 @@ EW_DEFINE_METHODS( SettingsSET22_WaitingConnection, ComponentsBaseMainBG )
   EW_METHOD( Add,               void )( CoreGroup _this, CoreView aView, XInt32 
     aOrder )
   EW_METHOD( OnShortDownKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortUpKeyActivated, void )( SettingsSET22_WaitingConnection _this )
+  EW_METHOD( OnShortUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortEnterKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnShortHomeKeyActivated, void )( ComponentsBaseMainBG _this )
+  EW_METHOD( OnShortHomeKeyActivated, void )( DevelopmentDEV_BtLogLevel _this )
   EW_METHOD( OnLongDownKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongUpKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongEnterKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnLongHomeKeyActivated, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnShortMagicKeyActivated, void )( ComponentsBaseComponent _this )
-  EW_METHOD( OnSetDDModeEnabled, void )( ComponentsBaseMainBG _this, XBool value )
+  EW_METHOD( OnSetDDModeEnabled, void )( MenuBaseMenuView _this, XBool value )
   EW_METHOD( OnDownKeyReleased, void )( ComponentsBaseComponent _this )
   EW_METHOD( OnUpKeyReleased,   void )( ComponentsBaseComponent _this )
-EW_END_OF_METHODS( SettingsSET22_WaitingConnection )
+  EW_METHOD( LoadItemClass,     XClass )( DevelopmentDEV_BtLogLevel _this, XInt32 
+    aItemNo )
+  EW_METHOD( LoadItemTitle,     XString )( DevelopmentDEV_BtLogLevel _this, XInt32 
+    aItemNo )
+  EW_METHOD( OnItemActivate,    void )( DevelopmentDEV_BtLogLevel _this, XInt32 
+    aItemNo, MenuItemBase aMenuItem )
+  EW_METHOD( LoadItemChecked,   XBool )( DevelopmentDEV_BtLogLevel _this, XInt32 
+    aItemNo )
+  EW_METHOD( LoadItemEnabled,   XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemBaseValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemMessage,   XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemReceivedTime, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemCategory,  XEnum )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemUid,       XUInt32 )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemToggle,    XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemUnit,      XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemValue,     XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( OnItemLongEnterKeyActivate, void )( MenuBaseMenuView _this, XInt32 
+    aItemNo, MenuItemBase aMenuItem )
+  EW_METHOD( LoadItemHour,      XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemMinute,    XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadPoiListItemValue, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadPoiListItemUnit, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemIcon1Visible, XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemIcon2Visible, XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemDeviceAddress, XUInt64 )( MenuBaseMenuView _this, XInt32 aItemNo )
+EW_END_OF_METHODS( DevelopmentDEV_BtLogLevel )
 
-/* 'C' function for method : 'Settings::SET22_WaitingConnection.ReInit()' */
-void SettingsSET22_WaitingConnection_ReInit( SettingsSET22_WaitingConnection _this );
+/* 'C' function for method : 'Development::DEV_BtLogLevel.OnShortHomeKeyActivated()' */
+void DevelopmentDEV_BtLogLevel_OnShortHomeKeyActivated( DevelopmentDEV_BtLogLevel _this );
 
-/* The method Init() is invoked automatically after the component has been created. 
-   This method can be overridden and filled with logic containing additional initialization 
-   statements. */
-void SettingsSET22_WaitingConnection_Init( SettingsSET22_WaitingConnection _this, 
-  XHandle aArg );
+/* 'C' function for method : 'Development::DEV_BtLogLevel.LoadItemClass()' */
+XClass DevelopmentDEV_BtLogLevel_LoadItemClass( DevelopmentDEV_BtLogLevel _this, 
+  XInt32 aItemNo );
 
-/* 'C' function for method : 'Settings::SET22_WaitingConnection.OnShortUpKeyActivated()' */
-void SettingsSET22_WaitingConnection_OnShortUpKeyActivated( SettingsSET22_WaitingConnection _this );
+/* 'C' function for method : 'Development::DEV_BtLogLevel.LoadItemTitle()' */
+XString DevelopmentDEV_BtLogLevel_LoadItemTitle( DevelopmentDEV_BtLogLevel _this, 
+  XInt32 aItemNo );
 
-/* 'C' function for method : 'Settings::SET22_WaitingConnection.DisplayString()' */
-void SettingsSET22_WaitingConnection_DisplayString( SettingsSET22_WaitingConnection _this );
+/* 'C' function for method : 'Development::DEV_BtLogLevel.OnItemActivate()' */
+void DevelopmentDEV_BtLogLevel_OnItemActivate( DevelopmentDEV_BtLogLevel _this, 
+  XInt32 aItemNo, MenuItemBase aMenuItem );
 
-/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
-   receives an event. */
-void SettingsSET22_WaitingConnection_OnConnectoinStatusReceivedSlot( SettingsSET22_WaitingConnection _this, 
-  XObject sender );
-
-/* 'C' function for method : 'Settings::SET22_WaitingConnection.OnTimeoutSlot()' */
-void SettingsSET22_WaitingConnection_OnTimeoutSlot( SettingsSET22_WaitingConnection _this, 
-  XObject sender );
-
-/* 'C' function for method : 'Settings::SET22_WaitingConnection.HandlePairingFail()' */
-void SettingsSET22_WaitingConnection_HandlePairingFail( SettingsSET22_WaitingConnection _this );
+/* 'C' function for method : 'Development::DEV_BtLogLevel.LoadItemChecked()' */
+XBool DevelopmentDEV_BtLogLevel_LoadItemChecked( DevelopmentDEV_BtLogLevel _this, 
+  XInt32 aItemNo );
 
 #ifdef __cplusplus
   }
 #endif
 
-#endif /* _SettingsSET22_WaitingConnection_H */
+#endif /* _DevelopmentDEV_BtLogLevel_H */
 
 /* Embedded Wizard */

@@ -348,6 +348,7 @@ EW_DEFINE_CLASS( BrightnessBRT01_BrightnessSettingMenu, MenuBaseMenuView, Vehicl
   MenuBaseMenuView_LoadPoiListItemUnit,
   MenuBaseMenuView_LoadItemIcon1Visible,
   MenuBaseMenuView_LoadItemIcon2Visible,
+  MenuBaseMenuView_LoadItemDeviceAddress,
 EW_END_OF_CLASS( BrightnessBRT01_BrightnessSettingMenu )
 
 /* Initializer for the class 'Brightness::BRT02_TFTBrightness' */

@@ -45,7 +45,6 @@
 #include "_ComponentsBaseText.h"
 #include "_ComponentsDDModeMask.h"
 #include "_CoreKeyPressHandler.h"
-#include "_CorePropertyObserver.h"
 #include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
 #include "_MenuBaseMenuView.h"
@@ -116,10 +115,9 @@
 
 /* Deklaration of class : 'Settings::SET17_BtcPairedDeviceList' */
 EW_DEFINE_FIELDS( SettingsSET17_BtcPairedDeviceList, MenuBaseMenuView )
-  EW_OBJECT  ( RefreshListObserver, CorePropertyObserver )
   EW_OBJECT  ( NoDataText,      ComponentsBaseText )
   EW_OBJECT  ( NoDataTimeoutTimer, CoreTimer )
-  EW_VARIABLE( PairedDeviceNum, XInt32 )
+  EW_OBJECT  ( ConnectionStatusEventHandler, CoreSystemEventHandler )
 EW_END_OF_FIELDS( SettingsSET17_BtcPairedDeviceList )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::SET17_BtcPairedDeviceList' */
@@ -203,6 +201,8 @@ EW_DEFINE_METHODS( SettingsSET17_BtcPairedDeviceList, MenuBaseMenuView )
     XInt32 aItemNo )
   EW_METHOD( LoadItemIcon2Visible, XBool )( SettingsSET17_BtcPairedDeviceList _this, 
     XInt32 aItemNo )
+  EW_METHOD( LoadItemDeviceAddress, XUInt64 )( SettingsSET17_BtcPairedDeviceList _this, 
+    XInt32 aItemNo )
 EW_END_OF_METHODS( SettingsSET17_BtcPairedDeviceList )
 
 /* The method Init() is invoked automatically after the component has been created. 
@@ -227,21 +227,25 @@ void SettingsSET17_BtcPairedDeviceList_OnItemActivate( SettingsSET17_BtcPairedDe
 XBool SettingsSET17_BtcPairedDeviceList_LoadItemIcon1Visible( SettingsSET17_BtcPairedDeviceList _this, 
   XInt32 aItemNo );
 
-/* 'C' function for method : 'Settings::SET17_BtcPairedDeviceList.UpdatePairedDeviceNum()' */
-void SettingsSET17_BtcPairedDeviceList_UpdatePairedDeviceNum( SettingsSET17_BtcPairedDeviceList _this );
+/* 'C' function for method : 'Settings::SET17_BtcPairedDeviceList.LoadItemIcon2Visible()' */
+XBool SettingsSET17_BtcPairedDeviceList_LoadItemIcon2Visible( SettingsSET17_BtcPairedDeviceList _this, 
+  XInt32 aItemNo );
 
-/* This slot method is executed when the associated property observer 'PropertyObserver' 
-   is notified. */
-void SettingsSET17_BtcPairedDeviceList_OnRefreshListSlot( SettingsSET17_BtcPairedDeviceList _this, 
-  XObject sender );
+/* 'C' function for method : 'Settings::SET17_BtcPairedDeviceList.UpdateList()' */
+void SettingsSET17_BtcPairedDeviceList_UpdateList( SettingsSET17_BtcPairedDeviceList _this );
 
 /* 'C' function for method : 'Settings::SET17_BtcPairedDeviceList.OnNoDataTimeoutSlot()' */
 void SettingsSET17_BtcPairedDeviceList_OnNoDataTimeoutSlot( SettingsSET17_BtcPairedDeviceList _this, 
   XObject sender );
 
-/* 'C' function for method : 'Settings::SET17_BtcPairedDeviceList.LoadItemIcon2Visible()' */
-XBool SettingsSET17_BtcPairedDeviceList_LoadItemIcon2Visible( SettingsSET17_BtcPairedDeviceList _this, 
+/* 'C' function for method : 'Settings::SET17_BtcPairedDeviceList.LoadItemDeviceAddress()' */
+XUInt64 SettingsSET17_BtcPairedDeviceList_LoadItemDeviceAddress( SettingsSET17_BtcPairedDeviceList _this, 
   XInt32 aItemNo );
+
+/* This slot method is executed when the associated system event handler 'SystemEventHandler' 
+   receives an event. */
+void SettingsSET17_BtcPairedDeviceList_OnConnectoinStatusReceivedSlot( SettingsSET17_BtcPairedDeviceList _this, 
+  XObject sender );
 
 #ifdef __cplusplus
   }

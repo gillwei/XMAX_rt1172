@@ -418,6 +418,7 @@ class VerticalMenu : Components::BaseComponent
       {
         Item.Icon1Visible = OwnerMenu.LoadItemIcon1Visible( ItemNo );
         Item.Icon2Visible = OwnerMenu.LoadItemIcon2Visible( ItemNo );
+        Item.DeviceAddress = OwnerMenu.LoadItemDeviceAddress( ItemNo );
       }
       else
       {
@@ -1294,13 +1295,13 @@ class ItemWrapper : Core::Group
   // For BT paired device item
   note group Note12
   {
-    attr Bounds = <20,1010,490,1170>;
+    attr Bounds = <20,1170,700,1330>;
   }
 
-  $rect <40,1050,240,1090>
+  $rect <40,1210,240,1250>
   property bool Icon1Visible;
 
-  $rect <40,1100,240,1140>
+  $rect <40,1260,240,1300>
   onset Icon1Visible
   {
     if( pure Icon1Visible != value )
@@ -1334,10 +1335,10 @@ class ItemWrapper : Core::Group
     }
   }
 
-  $rect <250,1050,450,1090>
+  $rect <260,1210,460,1250>
   property bool Icon2Visible;
 
-  $rect <250,1100,450,1140>
+  $rect <260,1260,460,1300>
   onset Icon2Visible
   {
     if( pure Icon2Visible != value )
@@ -1348,6 +1349,24 @@ class ItemWrapper : Core::Group
       if( MenuItem != null )
       {
         MenuItem.Icon2Visible = value;
+      }
+    }
+  }
+
+  $rect <480,1210,680,1250>
+  property uint64 DeviceAddress;
+
+  $rect <480,1260,680,1300>
+  onset DeviceAddress
+  {
+    if( pure DeviceAddress != value )
+    {
+      pure DeviceAddress = value;
+      var Core::View view = FindNextView( null, Core::ViewState[] );
+      var Menu::ItemBtPairedDevice MenuItem = (Menu::ItemBtPairedDevice)view;
+      if( MenuItem != null )
+      {
+        MenuItem.DeviceAddress = value;
       }
     }
   }
@@ -1692,7 +1711,7 @@ class BaseMenuView : Components::BaseMainBG
   // For BT paired device item
   note group Note13
   {
-    attr Bounds = <880,430,1140,590>;
+    attr Bounds = <880,430,1140,630>;
   }
 
   $rect <910,470,1110,510>
@@ -1707,6 +1726,13 @@ class BaseMenuView : Components::BaseMainBG
   {
     aItemNo; //suppress warning
     return false;
+  }
+
+  $rect <910,570,1120,610>
+  method uint64 LoadItemDeviceAddress( arg int32 aItemNo )
+  {
+    aItemNo; //suppress warning
+    return 0;
   }
 
   $reorder BlackBG 1
@@ -2738,4 +2764,7 @@ class ItemBtPairedDevice : Menu::ItemBase
       YAppIcon.Visible = value;
     }
   }
+
+  $rect <440,100,640,140>
+  property uint64 DeviceAddress;
 }

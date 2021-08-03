@@ -195,6 +195,7 @@ EW_DEFINE_METHODS( SettingsSET35_LegalMenu, MenuBaseMenuView )
   EW_METHOD( LoadPoiListItemUnit, XString )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemIcon1Visible, XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
   EW_METHOD( LoadItemIcon2Visible, XBool )( MenuBaseMenuView _this, XInt32 aItemNo )
+  EW_METHOD( LoadItemDeviceAddress, XUInt64 )( MenuBaseMenuView _this, XInt32 aItemNo )
 EW_END_OF_METHODS( SettingsSET35_LegalMenu )
 
 /* The method Init() is invoked automatically after the component has been created. 

@@ -33,6 +33,12 @@ extern "C" {
 #define LAST_PAGE_NAVIGATION_SETTING_MASK   ( 0x3 )
 #define LAST_PAGE_METER_DISP_SETTING_MASK   ( 0xF )
 
+#define FACTORY_RESET_BT_MANAGER    ( 1 << 0 )
+#define FACTORY_RESET_LANGUAGE      ( 1 << 1 )
+#define FACTORY_RESET_LAST_PAGE     ( 1 << 2 )
+#define FACTORY_RESET_CLK_AUTO_ADJ  ( 1 << 3 )
+#define FACTORY_RESET_TOTAL         ( FACTORY_RESET_BT_MANAGER | FACTORY_RESET_LANGUAGE | FACTORY_RESET_LAST_PAGE | FACTORY_RESET_CLK_AUTO_ADJ )
+
 #define DEFAULT_CLK_AUTO_ADJUSTMENT     ( 1 )
 
 typedef struct
@@ -67,7 +73,6 @@ int ew_device_system_proc( void );
 void ew_send_system_command( const EnumSystemTxCmd command );
 int32_t ew_system_get_status( const EnumSystemStatus status_type );
 void ew_get_software_version( char* version );
-void ew_get_bt_software_version( char* version );
 void ew_set_last_page( const EnumHomeGroup home_group, const EnumMeterDisplay meter_display_setting, const EnumNavigationView navigation_view_setting );
 EnumHomeGroup ew_get_last_home_group( void );
 EnumMeterDisplay ew_get_meter_display_setting( void );
@@ -77,6 +82,7 @@ void ew_get_rtc_time( snvs_lp_srtc_datetime_t* srtc_datetime );
 void ew_set_operation_mode( EnumOperationMode mode );
 bool ew_is_operation_mode_ready( void );
 int  ew_handle_special_characters( const uint8_t* in_str, uint8_t** out_str );
+void ew_update_factory_reset_status( const uint32_t status );
 
 void ew_power_init( void );
 void ew_save_last_status( void );
@@ -102,22 +108,8 @@ int  ew_device_notification_proc( void );
 void ew_device_bluetooth_init( void );
 void ew_device_bluetooth_deinit( void );
 int  ew_device_bluetooth_proc( void );
-void ew_bt_get_local_device_name( uint8_t** device_name );
-void ew_bt_get_local_device_address( uint8_t* device_addr );
-void ew_bt_set_enable( bool state );
-bool ew_bt_get_enable( void );
-void ew_bt_set_discoverable( bool state );
-bool ew_bt_get_discoverable( void );
-void ew_bt_set_autoconnect( bool state );
-bool ew_bt_get_autoconnect( void );
+void ew_device_bt_create_queue( void );
 void ew_bt_get_btc_connecting_device_name( uint8_t** device_name );
-bool ew_bt_is_max_paired_device_num( void );
-int  ew_bt_get_paired_device_num( void );
-void ew_bt_get_paired_device_at_index( const int paired_device_idx, uint8_t** device_name, bool* is_navi_app_connected, bool* is_yamaha_app_connected );
-void ew_bt_connect_paired_device( const int paired_device_idx );
-void ew_bt_disconnect_paired_device( const int paired_device_idx );
-void ew_bt_unpair_paired_device( const int paired_device_idx );
-EnumBtcPairingState ew_get_blc_pairing_state( void );
 uint32_t ew_get_btc_passkey( void );
 void ew_send_motocon_command( const EnumMotoConTx command );
 

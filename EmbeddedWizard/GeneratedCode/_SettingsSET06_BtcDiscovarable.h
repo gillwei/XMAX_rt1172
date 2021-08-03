@@ -108,7 +108,7 @@ EW_DEFINE_FIELDS( SettingsSET06_BtcDiscovarable, ComponentsBaseMainBG )
   EW_OBJECT  ( NameText,        ComponentsBaseText )
   EW_OBJECT  ( CountDownTimer,  CoreTimer )
   EW_OBJECT  ( PushButton,      MenuPushButton )
-  EW_OBJECT  ( BtcPairingStateChangeEventHandler, CoreSystemEventHandler )
+  EW_OBJECT  ( ConnectionStatusEventHandler, CoreSystemEventHandler )
   EW_VARIABLE( CountDownTimeSec, XInt32 )
 EW_END_OF_FIELDS( SettingsSET06_BtcDiscovarable )
 
@@ -194,7 +194,7 @@ void SettingsSET06_BtcDiscovarable_UpdateCountDownTimeSlot( SettingsSET06_BtcDis
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
    receives an event. */
-void SettingsSET06_BtcDiscovarable_OnBtcPairingStateChangeSlot( SettingsSET06_BtcDiscovarable _this, 
+void SettingsSET06_BtcDiscovarable_OnConnectoinStatusReceivedSlot( SettingsSET06_BtcDiscovarable _this, 
   XObject sender );
 
 /* 'C' function for method : 'Settings::SET06_BtcDiscovarable.DisplayLocalDeviceName()' */

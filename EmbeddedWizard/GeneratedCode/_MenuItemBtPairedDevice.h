@@ -102,6 +102,7 @@
 EW_DEFINE_FIELDS( MenuItemBtPairedDevice, MenuItemBase )
   EW_OBJECT  ( NaviAppIcon,     ViewsImage )
   EW_OBJECT  ( YAppIcon,        ViewsImage )
+  EW_PROPERTY( DeviceAddress,   XUInt64 )
   EW_PROPERTY( Icon2Visible,    XBool )
   EW_PROPERTY( Icon1Visible,    XBool )
 EW_END_OF_FIELDS( MenuItemBtPairedDevice )

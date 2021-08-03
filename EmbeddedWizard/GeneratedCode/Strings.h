@@ -442,9 +442,6 @@ EW_DECLARE_CONST( StringsSET08_PASSKEY )
 /* User defined constant: 'Strings::SET10_CONNECTION_FAILED' */
 EW_DECLARE_CONST( StringsSET10_CONNECTION_FAILED )
 
-/* User defined constant: 'Strings::SET11_NO_LONGER_PAIRED' */
-EW_DECLARE_CONST( StringsSET11_NO_LONGER_PAIRED )
-
 /* User defined constant: 'Strings::SET19_DELETE_PAIRING' */
 EW_DECLARE_CONST( StringsSET19_DELETE_PAIRING )
 

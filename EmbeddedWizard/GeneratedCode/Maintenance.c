@@ -499,6 +499,7 @@ EW_DEFINE_CLASS( MaintenanceMNT01_MaintenanceReset, MenuBaseMenuView, VehicleDat
   MenuBaseMenuView_LoadPoiListItemUnit,
   MenuBaseMenuView_LoadItemIcon1Visible,
   MenuBaseMenuView_LoadItemIcon2Visible,
+  MenuBaseMenuView_LoadItemDeviceAddress,
 EW_END_OF_CLASS( MaintenanceMNT01_MaintenanceReset )
 
 /* Embedded Wizard */

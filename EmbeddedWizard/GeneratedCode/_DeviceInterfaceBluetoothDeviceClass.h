@@ -43,7 +43,6 @@
 #endif
 
 #include "_CoreSystemEvent.h"
-#include "_DeviceInterfaceBluetoothPairedDeviceInfo.h"
 #include "_TemplatesDeviceClass.h"
 
 /* Forward declaration of the class DeviceInterface::BluetoothDeviceClass */
@@ -52,20 +51,27 @@
 #define _DeviceInterfaceBluetoothDeviceClass_
 #endif
 
+/* Forward declaration of the class DeviceInterface::BtPairedDeviceInfo */
+#ifndef _DeviceInterfaceBtPairedDeviceInfo_
+  EW_DECLARE_CLASS( DeviceInterfaceBtPairedDeviceInfo )
+#define _DeviceInterfaceBtPairedDeviceInfo_
+#endif
+
 
 /* Deklaration of class : 'DeviceInterface::BluetoothDeviceClass' */
 EW_DEFINE_FIELDS( DeviceInterfaceBluetoothDeviceClass, TemplatesDeviceClass )
-  EW_OBJECT  ( BtcPairingChangedSystemEvent, CoreSystemEvent )
-  EW_OBJECT  ( PairedDeviceObj, DeviceInterfaceBluetoothPairedDeviceInfo )
+  EW_ARRAY   ( PairedDeviceList, DeviceInterfaceBtPairedDeviceInfo, [8])
   EW_OBJECT  ( MotoConSystemEvent, CoreSystemEvent )
-  EW_OBJECT  ( PairedDeviceUpdatedSystemEvent, CoreSystemEvent )
-  EW_OBJECT  ( BtcConnectionResultSystemEvent, CoreSystemEvent )
-  EW_PROPERTY( ConnectPairedDeviceResult, XEnum )
-  EW_PROPERTY( BtFwStatus,      XEnum )
-  EW_PROPERTY( BtcPairingState, XEnum )
-  EW_PROPERTY( RefreshPairedDeviceList, XBool )
+  EW_OBJECT  ( BtmStatusEvent,  CoreSystemEvent )
+  EW_OBJECT  ( ConnectionStatusEvent, CoreSystemEvent )
+  EW_PROPERTY( LocalDeviceAddress, XString )
+  EW_PROPERTY( BtSoftwareVersion, XString )
+  EW_VARIABLE( PairedDeviceNum, XInt32 )
+  EW_PROPERTY( LogLevel,        XInt32 )
+  EW_PROPERTY( PairingFailCount, XInt32 )
+  EW_PROPERTY( IsPairedDeviceNumMax, XBool )
   EW_PROPERTY( AutoConnect,     XBool )
-  EW_PROPERTY( BluetoothEnable, XBool )
+  EW_PROPERTY( BluetoothEnabled, XBool )
   EW_PROPERTY( Discoverable,    XBool )
 EW_END_OF_FIELDS( DeviceInterfaceBluetoothDeviceClass )
 
@@ -73,32 +79,19 @@ EW_END_OF_FIELDS( DeviceInterfaceBluetoothDeviceClass )
 EW_DEFINE_METHODS( DeviceInterfaceBluetoothDeviceClass, TemplatesDeviceClass )
 EW_END_OF_METHODS( DeviceInterfaceBluetoothDeviceClass )
 
-/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.GetPairedDeviceAtItem()' */
-void DeviceInterfaceBluetoothDeviceClass_GetPairedDeviceAtItem( DeviceInterfaceBluetoothDeviceClass _this, 
-  XInt32 aItemNo );
-
-/* This method is intended to be called by the device to notify the GUI application 
-   about a particular system event. */
-void DeviceInterfaceBluetoothDeviceClass_NotifyBtcPairingStateChanged( DeviceInterfaceBluetoothDeviceClass _this, 
-  XEnum aState );
-
-/* Wrapper function for the non virtual method : 'DeviceInterface::BluetoothDeviceClass.NotifyBtcPairingStateChanged()' */
-void DeviceInterfaceBluetoothDeviceClass__NotifyBtcPairingStateChanged( void* _this, 
-  XEnum aState );
-
-/* The following define announces the presence of the method DeviceInterface::BluetoothDeviceClass.NotifyBtcPairingStateChanged(). */
-#define _DeviceInterfaceBluetoothDeviceClass__NotifyBtcPairingStateChanged_
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.GetPairedDeviceList()' */
+void DeviceInterfaceBluetoothDeviceClass_GetPairedDeviceList( DeviceInterfaceBluetoothDeviceClass _this );
 
 /* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnSetDiscoverable()' */
 void DeviceInterfaceBluetoothDeviceClass_OnSetDiscoverable( DeviceInterfaceBluetoothDeviceClass _this, 
   XBool value );
 
-/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnSetBluetoothEnable()' */
-void DeviceInterfaceBluetoothDeviceClass_OnSetBluetoothEnable( DeviceInterfaceBluetoothDeviceClass _this, 
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnSetBluetoothEnabled()' */
+void DeviceInterfaceBluetoothDeviceClass_OnSetBluetoothEnabled( DeviceInterfaceBluetoothDeviceClass _this, 
   XBool value );
 
-/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnGetBluetoothEnable()' */
-XBool DeviceInterfaceBluetoothDeviceClass_OnGetBluetoothEnable( DeviceInterfaceBluetoothDeviceClass _this );
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnGetBluetoothEnabled()' */
+XBool DeviceInterfaceBluetoothDeviceClass_OnGetBluetoothEnabled( DeviceInterfaceBluetoothDeviceClass _this );
 
 /* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnSetAutoConnect()' */
 void DeviceInterfaceBluetoothDeviceClass_OnSetAutoConnect( DeviceInterfaceBluetoothDeviceClass _this, 
@@ -107,61 +100,26 @@ void DeviceInterfaceBluetoothDeviceClass_OnSetAutoConnect( DeviceInterfaceBlueto
 /* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnGetAutoConnect()' */
 XBool DeviceInterfaceBluetoothDeviceClass_OnGetAutoConnect( DeviceInterfaceBluetoothDeviceClass _this );
 
-/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnGetPairedDeviceNum()' */
-XInt32 DeviceInterfaceBluetoothDeviceClass_OnGetPairedDeviceNum( DeviceInterfaceBluetoothDeviceClass _this );
-
 /* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.UnpairDevice()' */
 void DeviceInterfaceBluetoothDeviceClass_UnpairDevice( DeviceInterfaceBluetoothDeviceClass _this, 
-  XInt32 aPairedDeviceIndex );
-
-/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.GetBluetoothEnable()' */
-void DeviceInterfaceBluetoothDeviceClass_GetBluetoothEnable( DeviceInterfaceBluetoothDeviceClass _this );
+  XUInt64 aDeviceAddress );
 
 /* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnGetLocalDeviceName()' */
 XString DeviceInterfaceBluetoothDeviceClass_OnGetLocalDeviceName( DeviceInterfaceBluetoothDeviceClass _this );
 
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnGetLocalDeviceAddress()' */
+XString DeviceInterfaceBluetoothDeviceClass_OnGetLocalDeviceAddress( DeviceInterfaceBluetoothDeviceClass _this );
+
 /* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.ConnectPairedDevice()' */
 void DeviceInterfaceBluetoothDeviceClass_ConnectPairedDevice( DeviceInterfaceBluetoothDeviceClass _this, 
-  XInt32 aPairedDeviceIndex );
+  XUInt64 aDeviceAddress );
 
 /* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.DisconnectPairedDevice()' */
 void DeviceInterfaceBluetoothDeviceClass_DisconnectPairedDevice( DeviceInterfaceBluetoothDeviceClass _this, 
-  XInt32 aPairedDeviceIndex );
+  XUInt64 aDeviceAddress );
 
-/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnGetIsMaxPairedDevice()' */
-XBool DeviceInterfaceBluetoothDeviceClass_OnGetIsMaxPairedDevice( DeviceInterfaceBluetoothDeviceClass _this );
-
-/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnSetBtFwStatus()' */
-void DeviceInterfaceBluetoothDeviceClass_OnSetBtFwStatus( DeviceInterfaceBluetoothDeviceClass _this, 
-  XEnum value );
-
-/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.NotifyBtFwStatus()' */
-void DeviceInterfaceBluetoothDeviceClass_NotifyBtFwStatus( DeviceInterfaceBluetoothDeviceClass _this, 
-  XEnum status, XString version );
-
-/* Wrapper function for the non virtual method : 'DeviceInterface::BluetoothDeviceClass.NotifyBtFwStatus()' */
-void DeviceInterfaceBluetoothDeviceClass__NotifyBtFwStatus( void* _this, XEnum status, 
-  XString version );
-
-/* The following define announces the presence of the method DeviceInterface::BluetoothDeviceClass.NotifyBtFwStatus(). */
-#define _DeviceInterfaceBluetoothDeviceClass__NotifyBtFwStatus_
-
-/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnSetRefreshPairedDeviceList()' */
-void DeviceInterfaceBluetoothDeviceClass_OnSetRefreshPairedDeviceList( DeviceInterfaceBluetoothDeviceClass _this, 
-  XBool value );
-
-/* This method is intended to be called by the device to notify the GUI application 
-   about a particular system event. */
-void DeviceInterfaceBluetoothDeviceClass_NotifyPairedDeviceConnectionStatusUpdated( DeviceInterfaceBluetoothDeviceClass _this );
-
-/* Wrapper function for the non virtual method : 'DeviceInterface::BluetoothDeviceClass.NotifyPairedDeviceConnectionStatusUpdated()' */
-void DeviceInterfaceBluetoothDeviceClass__NotifyPairedDeviceConnectionStatusUpdated( void* _this );
-
-/* The following define announces the presence of the method DeviceInterface::BluetoothDeviceClass.NotifyPairedDeviceConnectionStatusUpdated(). */
-#define _DeviceInterfaceBluetoothDeviceClass__NotifyPairedDeviceConnectionStatusUpdated_
-
-/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.GetPairingFailCount()' */
-XInt32 DeviceInterfaceBluetoothDeviceClass_GetPairingFailCount( DeviceInterfaceBluetoothDeviceClass _this );
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnGetIsPairedDeviceNumMax()' */
+XBool DeviceInterfaceBluetoothDeviceClass_OnGetIsPairedDeviceNumMax( DeviceInterfaceBluetoothDeviceClass _this );
 
 /* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.IsMotoconConnected()' */
 XBool DeviceInterfaceBluetoothDeviceClass_IsMotoconConnected( DeviceInterfaceBluetoothDeviceClass _this );
@@ -176,18 +134,6 @@ void DeviceInterfaceBluetoothDeviceClass__NotifyMotoConEventReceived( void* _thi
 
 /* The following define announces the presence of the method DeviceInterface::BluetoothDeviceClass.NotifyMotoConEventReceived(). */
 #define _DeviceInterfaceBluetoothDeviceClass__NotifyMotoConEventReceived_
-
-/* This method is intended to be called by the device to notify the GUI application 
-   about a particular system event. */
-void DeviceInterfaceBluetoothDeviceClass_NotifyBtcConnectionResult( DeviceInterfaceBluetoothDeviceClass _this, 
-  XEnum aResult );
-
-/* Wrapper function for the non virtual method : 'DeviceInterface::BluetoothDeviceClass.NotifyBtcConnectionResult()' */
-void DeviceInterfaceBluetoothDeviceClass__NotifyBtcConnectionResult( void* _this, 
-  XEnum aResult );
-
-/* The following define announces the presence of the method DeviceInterface::BluetoothDeviceClass.NotifyBtcConnectionResult(). */
-#define _DeviceInterfaceBluetoothDeviceClass__NotifyBtcConnectionResult_
 
 /* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.GetBtcPasskey()' */
 XUInt32 DeviceInterfaceBluetoothDeviceClass_GetBtcPasskey( DeviceInterfaceBluetoothDeviceClass _this );
@@ -206,38 +152,66 @@ void DeviceInterfaceBluetoothDeviceClass__SendMotoConCommand( void* _this, XEnum
 /* The following define announces the presence of the method DeviceInterface::BluetoothDeviceClass.SendMotoConCommand(). */
 #define _DeviceInterfaceBluetoothDeviceClass__SendMotoConCommand_
 
-/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.IsPairingDeviceYamahaAppSPPConnected()' */
-XBool DeviceInterfaceBluetoothDeviceClass_IsPairingDeviceYamahaAppSPPConnected( DeviceInterfaceBluetoothDeviceClass _this );
-
-/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.TriggerConnectionTimeoutTimer()' */
-void DeviceInterfaceBluetoothDeviceClass_TriggerConnectionTimeoutTimer( DeviceInterfaceBluetoothDeviceClass _this );
-
 /* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.NotifyBtmStatus()' */
 void DeviceInterfaceBluetoothDeviceClass_NotifyBtmStatus( DeviceInterfaceBluetoothDeviceClass _this, 
-  XEnum status );
+  XEnum aStatus );
 
 /* Wrapper function for the non virtual method : 'DeviceInterface::BluetoothDeviceClass.NotifyBtmStatus()' */
-void DeviceInterfaceBluetoothDeviceClass__NotifyBtmStatus( void* _this, XEnum status );
+void DeviceInterfaceBluetoothDeviceClass__NotifyBtmStatus( void* _this, XEnum aStatus );
 
 /* The following define announces the presence of the method DeviceInterface::BluetoothDeviceClass.NotifyBtmStatus(). */
 #define _DeviceInterfaceBluetoothDeviceClass__NotifyBtmStatus_
 
 /* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.NotifyConnectionStatus()' */
 void DeviceInterfaceBluetoothDeviceClass_NotifyConnectionStatus( DeviceInterfaceBluetoothDeviceClass _this, 
-  XEnum status, XUInt32 data );
+  XEnum aStatus );
 
 /* Wrapper function for the non virtual method : 'DeviceInterface::BluetoothDeviceClass.NotifyConnectionStatus()' */
 void DeviceInterfaceBluetoothDeviceClass__NotifyConnectionStatus( void* _this, XEnum 
-  status, XUInt32 data );
+  aStatus );
 
 /* The following define announces the presence of the method DeviceInterface::BluetoothDeviceClass.NotifyConnectionStatus(). */
 #define _DeviceInterfaceBluetoothDeviceClass__NotifyConnectionStatus_
 
-/* Default onget method for the property 'BtFwStatus' */
-XEnum DeviceInterfaceBluetoothDeviceClass_OnGetBtFwStatus( DeviceInterfaceBluetoothDeviceClass _this );
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.IsPairingDeviceYamahaAppSPPConnected()' */
+XBool DeviceInterfaceBluetoothDeviceClass_IsPairingDeviceYamahaAppSPPConnected( DeviceInterfaceBluetoothDeviceClass _this );
 
-/* Default onget method for the property 'RefreshPairedDeviceList' */
-XBool DeviceInterfaceBluetoothDeviceClass_OnGetRefreshPairedDeviceList( DeviceInterfaceBluetoothDeviceClass _this );
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.TriggerConnectionTimeoutTimer()' */
+void DeviceInterfaceBluetoothDeviceClass_TriggerConnectionTimeoutTimer( DeviceInterfaceBluetoothDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnPairedDeviceListUpdatedSlot()' */
+void DeviceInterfaceBluetoothDeviceClass_OnPairedDeviceListUpdatedSlot( DeviceInterfaceBluetoothDeviceClass _this, 
+  XObject sender );
+
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnConnectedAppStatusUpdatedSlot()' */
+void DeviceInterfaceBluetoothDeviceClass_OnConnectedAppStatusUpdatedSlot( DeviceInterfaceBluetoothDeviceClass _this, 
+  XObject sender );
+
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.GetPairedDeviceNum()' */
+XInt32 DeviceInterfaceBluetoothDeviceClass_GetPairedDeviceNum( DeviceInterfaceBluetoothDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.GetNaviAppStatus()' */
+XBool DeviceInterfaceBluetoothDeviceClass_GetNaviAppStatus( DeviceInterfaceBluetoothDeviceClass _this, 
+  XUInt64 aAddress );
+
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.GetYamahaAppStatus()' */
+XBool DeviceInterfaceBluetoothDeviceClass_GetYamahaAppStatus( DeviceInterfaceBluetoothDeviceClass _this, 
+  XUInt64 aAddress );
+
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.ConfirmPasskey()' */
+void DeviceInterfaceBluetoothDeviceClass_ConfirmPasskey( DeviceInterfaceBluetoothDeviceClass _this, 
+  XBool aResult );
+
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnGetBtSoftwareVersion()' */
+XString DeviceInterfaceBluetoothDeviceClass_OnGetBtSoftwareVersion( DeviceInterfaceBluetoothDeviceClass _this );
+
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnSetLogLevel()' */
+void DeviceInterfaceBluetoothDeviceClass_OnSetLogLevel( DeviceInterfaceBluetoothDeviceClass _this, 
+  XInt32 value );
+
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.DeleteFromPairedDeviceList()' */
+void DeviceInterfaceBluetoothDeviceClass_DeleteFromPairedDeviceList( DeviceInterfaceBluetoothDeviceClass _this, 
+  XUInt64 aDeviceAddress );
 
 #ifdef __cplusplus
   }

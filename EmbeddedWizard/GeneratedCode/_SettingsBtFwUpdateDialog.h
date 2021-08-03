@@ -44,7 +44,7 @@
 
 #include "_ComponentsBaseText.h"
 #include "_CoreGroup.h"
-#include "_CorePropertyObserver.h"
+#include "_CoreSystemEventHandler.h"
 #include "_CoreTimer.h"
 #include "_ViewsRectangle.h"
 
@@ -101,8 +101,8 @@
 EW_DEFINE_FIELDS( SettingsBtFwUpdateDialog, CoreGroup )
   EW_OBJECT  ( Rectangle,       ViewsRectangle )
   EW_OBJECT  ( StatusText,      ComponentsBaseText )
-  EW_OBJECT  ( BtFwStatusObserver, CorePropertyObserver )
   EW_OBJECT  ( RemoveDialogTimer, CoreTimer )
+  EW_OBJECT  ( BtmStatusEventHandler, CoreSystemEventHandler )
 EW_END_OF_FIELDS( SettingsBtFwUpdateDialog )
 
 /* Virtual Method Table (VMT) for the class : 'Settings::BtFwUpdateDialog' */
@@ -152,7 +152,7 @@ EW_END_OF_METHODS( SettingsBtFwUpdateDialog )
 
 /* This slot method is executed when the associated property observer 'PropertyObserver' 
    is notified. */
-void SettingsBtFwUpdateDialog_OnBtFwStatusUpdateSlot( SettingsBtFwUpdateDialog _this, 
+void SettingsBtFwUpdateDialog_OnBtmStatusUpdateSlot( SettingsBtFwUpdateDialog _this, 
   XObject sender );
 
 /* 'C' function for method : 'Settings::BtFwUpdateDialog.OnRemoveDialogSlot()' */

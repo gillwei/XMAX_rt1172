@@ -103,7 +103,7 @@
 /* Deklaration of class : 'Settings::SET10_11_12_BtConnectionResult' */
 EW_DEFINE_FIELDS( SettingsSET10_11_12_BtConnectionResult, ComponentsBaseMainBG )
   EW_OBJECT  ( Message,         ComponentsBaseText )
-  EW_OBJECT  ( ConnectPairedDeviceResultHandler, CoreSystemEventHandler )
+  EW_OBJECT  ( ConnectionStatusEventHandler, CoreSystemEventHandler )
   EW_OBJECT  ( DismissTimer,    CoreTimer )
   EW_OBJECT  ( Divider,         ViewsImage )
   EW_OBJECT  ( LoadingAnimation, ViewsImage )
@@ -176,7 +176,7 @@ void SettingsSET10_11_12_BtConnectionResult_Init( SettingsSET10_11_12_BtConnecti
 
 /* This slot method is executed when the associated system event handler 'SystemEventHandler' 
    receives an event. */
-void SettingsSET10_11_12_BtConnectionResult_OnConnectPairedDeviceResultSlot( SettingsSET10_11_12_BtConnectionResult _this, 
+void SettingsSET10_11_12_BtConnectionResult_OnConnectoinStatusReceivedSlot( SettingsSET10_11_12_BtConnectionResult _this, 
   XObject sender );
 
 /* 'C' function for method : 'Settings::SET10_11_12_BtConnectionResult.OnDismissSlot()' */
