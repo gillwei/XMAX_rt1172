@@ -53,10 +53,46 @@ extern "C" {
 /*--------------------------------------------------------------------
                         PROCEDURES
 --------------------------------------------------------------------*/
-//void CM_log
-//    (
-//    const char *format, ...
-//    );
+void CM_core_init
+    (
+    void
+    );
+
+bool CM_core_spp_connect
+    (
+    const uint8_t* bd_addr
+    );
+
+bool CM_core_spp_disconnect
+    (
+    const uint8_t* bd_addr
+    );
+
+bool CM_core_get_spp_connection_status
+    (
+    const CM_app_type_e app_type
+    );
+
+bool CM_core_get_app_connection_status
+    (
+    const CM_app_type_e app_type,
+    const uint8_t* bd_addr
+    );
+
+void CM_core_handle_btmgr_pairing_result
+    (
+    const CM_btmgr_pairing_result_t *CM_btmgr_pairing_result
+    );
+
+void CM_core_handle_btmgr_spp_connection_status_changed
+    (
+    const CM_connection_status_change_t *CM_connection_status_change
+    );
+
+void CM_core_handle_app_auth_result
+    (
+    const CM_auth_result_t *CM_auth_result
+    );
 
 
 #ifdef __cplusplus

@@ -137,6 +137,7 @@ PM_init();
 EEPM_init();
 WDG_init();
 BT_init();
+CM_init();
 FACTORY_init();
 BC_init();
 VI_init();
