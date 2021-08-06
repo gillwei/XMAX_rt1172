@@ -17,9 +17,10 @@
 #include "semphr.h"
 #include "fsl_debug_console.h"
 #include "EW_pub.h"
-#include "HCI_pub.h"
+#include "BT_pub.h"
 #include "MM_pub.h"
 #include "bc_ams_priv.h"
+
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
@@ -57,7 +58,7 @@ void BC_ams_service_discovered_callback( const uint16_t start_handle, const uint
 void BC_ams_characteristic_discovered_callback( const uint8_t* uuid, const uint16_t value_handle );
 void BC_ams_descriptor_discovered_callback( const uint16_t descriptor_handle );
 void BC_ams_discovery_complete_callback( void );
-void BC_ams_notification_received_callback( const uint16_t handle, const uint8_t* data, const uint16_t length );
+void BC_ams_notification_received_callback( const uint16_t handle, const uint8_t* data, const uint8_t length );
 
 /*--------------------------------------------------------------------
                            PROJECT INCLUDES
@@ -71,7 +72,7 @@ void BC_ams_notification_received_callback( const uint16_t handle, const uint8_t
                                VARIABLES
 --------------------------------------------------------------------*/
 /* AMS characteristic UUID in little endian */
-static const char AMS_CHARACTERISTIC_UUID[AMS_CHARACTERISTIC_TOTAL][UUID_128BIT_LEN] =
+static const char AMS_CHARACTERISTIC_UUID[AMS_CHARACTERISTIC_TOTAL][GATT_UUID_128BIT_LEN] =
     {
     {0xC2, 0x51, 0xCA, 0xF7, 0x56, 0x0E, 0xDF, 0xB8, 0x8A, 0x4A, 0xB1, 0x57, 0xD8, 0x81, 0x3C, 0x9B}, // remote control
     {0x02, 0xC1, 0x96, 0xBA, 0x92, 0xBB, 0x0C, 0x9A, 0x1F, 0x41, 0x8D, 0x80, 0xCE, 0xAB, 0x7C, 0x2F}, // entity update
@@ -86,7 +87,7 @@ static int      ams_characteristic_discovered_count;
 static uint8_t  ams_index_table[AMS_CHARACTERISTIC_TOTAL];
 static gatt_ams_notification_struct gatt_ams_notification_data;
 
-static ble_client_callback ams_client_callback =
+static BLE_client_callback_t ams_client_callback =
     {
     BC_ams_ble_connected_callback,
     BC_ams_ble_disconnected_callback,
@@ -122,16 +123,16 @@ if( ams_characteristics[entity_update_idx].cccd_handle > 0 )
     // write cccd to enable notification
     PRINTF( "write entity update cccd %x\r\n", ams_characteristics[entity_update_idx].cccd_handle );
     uint8_t data[8];
-    data[0] = BLE_GATT_CLIENT_CONFIG_NOTIFICATION & 0xff;
-    data[1] = ( BLE_GATT_CLIENT_CONFIG_NOTIFICATION >> 8 ) & 0xff;
-    HCI_le_enqueue_gatt_write_request( ams_characteristics[entity_update_idx].cccd_handle, data, 2 );
+    data[0] = GATT_CLIENT_CONFIG_NOTIFICATION & 0xff;
+    data[1] = ( GATT_CLIENT_CONFIG_NOTIFICATION >> 8 ) & 0xff;
+    BLE_client_write_request( ams_characteristics[entity_update_idx].cccd_handle, data, 2 );
 
     // register for notification of player
     data[0] = AMS_ENTITY_ID_PLAYER;
     data[1] = AMS_PLAYER_ATTRIBUTE_ID_NAME;
     data[2] = AMS_PLAYER_ATTRIBUTE_ID_PLAYBACK_INFO;
     data[3] = AMS_PLAYER_ATTRIBUTE_ID_VOLUME;
-    HCI_le_enqueue_gatt_write_request( ams_characteristics[entity_update_idx].value_handle, data, 4 );
+    BLE_client_write_request( ams_characteristics[entity_update_idx].value_handle, data, 4 );
 
     // register for notification of track
     data[0] = AMS_ENTITY_ID_TRACK;
@@ -139,7 +140,7 @@ if( ams_characteristics[entity_update_idx].cccd_handle > 0 )
     data[2] = AMS_TRACK_ATTRIBUTE_ID_ALBUM;
     data[3] = AMS_TRACK_ATTRIBUTE_ID_TITLE;
     data[4] = AMS_TRACK_ATTRIBUTE_ID_DURATION;
-    HCI_le_enqueue_gatt_write_request( ams_characteristics[entity_update_idx].value_handle, data, 5 );
+    BLE_client_write_request( ams_characteristics[entity_update_idx].value_handle, data, 5 );
     }
 else
     {
@@ -247,7 +248,7 @@ if( AMS_CHARACTERISTIC_TOTAL > ams_characteristic_discovered_count )
     {
     for( int i = 0; i < AMS_CHARACTERISTIC_TOTAL; i++ )
         {
-        if( 0 == memcmp( uuid, AMS_CHARACTERISTIC_UUID[i], UUID_128BIT_LEN ) )
+        if( 0 == memcmp( uuid, AMS_CHARACTERISTIC_UUID[i], GATT_UUID_128BIT_LEN ) )
             {
             BC_AMS_PRINTF( "%s, found: %d\r\n", __FUNCTION__, i );
             ams_characteristics[ams_characteristic_discovered_count].characteristic = i;
@@ -310,7 +311,7 @@ for( int i = 0; i < AMS_CHARACTERISTIC_TOTAL; i++ )
 * @public
 * BC_ams_discovery_complete_callback
 *
-* Callback function when the discovery of all the characteristics 
+* Callback function when the discovery of all the characteristics
 * are completed
 *
 *********************************************************************/
@@ -339,7 +340,7 @@ void BC_ams_notification_received_callback
     (
     const uint16_t handle,
     const uint8_t* data,
-    const uint16_t length
+    const uint8_t  length
     )
 {
 BC_AMS_PRINTF( "%s, handle: 0x%x, len: %d\r\n", __FUNCTION__, handle, length );
@@ -382,12 +383,11 @@ void BC_ams_send_remote_control
 uint8_t  remote_control_idx = ams_index_table[AMS_CHARACTERISTIC_REMOTE_CONTROL];
 uint16_t handle             = ams_characteristics[remote_control_idx].value_handle;
 
-if( HCI_le_is_connected() &&
-    ams_characteristics[remote_control_idx].is_discovered &&
+if( ams_characteristics[remote_control_idx].is_discovered &&
     ( handle > 0 ) )
     {
     BC_AMS_PRINTF( "%s %d\r\n", __FUNCTION__, re_ctrl_cmd );
-    HCI_le_enqueue_gatt_write_request( handle, &re_ctrl_cmd, 1 );
+    BLE_client_write_request( handle, &re_ctrl_cmd, 1 );
     }
 }
 
@@ -420,6 +420,6 @@ void bc_ams_init
     void
     )
 {
-HCI_le_register_client_callback( BLE_CLIENT_AMS, &ams_client_callback );
+BLE_client_register_callback( BLE_CLIENT_AMS, &ams_client_callback );
 }
 

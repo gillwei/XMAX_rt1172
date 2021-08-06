@@ -21,12 +21,17 @@
 #include "bc_priv.h"
 #include "bc_ancs_priv.h"
 #include "BC_ancs_pub.h"
-#include "HCI_pub.h"
+#include "BT_pub.h"
 #include "NTF_pub.h"
 
 /*--------------------------------------------------------------------
                            LITERAL CONSTANTS
 --------------------------------------------------------------------*/
+/* combine two bytes of little endian order to one word */
+#define WORD_LITTLE( byte0, byte1 )                     ( ( byte1 << 8 ) | byte0 )
+/* combine four bytes of little endian order to double word */
+#define DWORD_LITTLE( byte0, byte1, byte2, byte3 )      ( ( byte3 << 24 ) | ( byte2 << 16 ) | ( byte1 << 8 ) | byte0 )
+
 #define ANCS_EVENT_ID_NOTIFICATION_ADDED                ( 0 )
 #define ANCS_EVENT_ID_NOTIFICATION_MODIFIED             ( 1 )
 #define ANCS_EVENT_ID_NOTIFICATION_REMOVED              ( 2 )
@@ -127,7 +132,7 @@ void BC_ancs_service_discovered_callback( const uint16_t start_handle, const uin
 void BC_ancs_characteristic_discovered_callback( const uint8_t* uuid, const uint16_t value_handle );
 void BC_ancs_descriptor_discovered_callback( const uint16_t descriptor_handle );
 void BC_ancs_discovery_complete_callback( void );
-void BC_ancs_notification_received_callback( const uint16_t handle, const uint8_t* data, const uint16_t length );
+void BC_ancs_notification_received_callback( const uint16_t handle, const uint8_t* data, const uint8_t length );
 
 void BC_ancs_delete_notification_callback( const uint32_t uid );
 void BC_ancs_answer_call_callback( const uint32_t uid );
@@ -145,7 +150,7 @@ void BC_ancs_decline_call_callback( const uint32_t uid );
                                VARIABLES
 --------------------------------------------------------------------*/
 /* ANCS characteristic UUID in little endian */
-static const char ANCS_CHARACTERISTIC_UUID[ANCS_CHARACTERISTIC_TOTAL][UUID_128BIT_LEN] =
+static const char ANCS_CHARACTERISTIC_UUID[ANCS_CHARACTERISTIC_TOTAL][GATT_UUID_128BIT_LEN] =
     {
     {0xD9, 0xD9, 0xAA, 0xFD, 0xBD, 0x9B, 0x21, 0x98, 0xA8, 0x49, 0xE1, 0x45, 0xF3, 0xD8, 0xD1, 0x69}, // Control Point
     {0xBD, 0x1D, 0xA2, 0x99, 0xE6, 0x25, 0x58, 0x8C, 0xD9, 0x42, 0x01, 0x63, 0x0D, 0x12, 0xBF, 0x9F}, // Notification Source
@@ -159,7 +164,7 @@ static int      ancs_characteristic_discovered_count;
 static uint8_t  ancs_index_table[ANCS_CHARACTERISTIC_TOTAL];
 
 // callback functions from BLE
-static const ble_client_callback ancs_client_callback =
+static const BLE_client_callback_t ancs_client_callback =
     {
     BC_ancs_ble_connected_callback,
     BC_ancs_ble_disconnected_callback,
@@ -185,7 +190,7 @@ static uint32_t ancs_notification_attributes_received_size = 0;
 typedef struct
     {
     uint16_t handle;
-    uint8_t  data[HCI_MAX_DATA_SIZE];
+    uint8_t  data[HCI_PAYLOAD_MAX_SIZE];
     uint16_t data_len;
     } gatt_notification_struct;
 static QueueHandle_t gatt_notification_queue_handle;
@@ -612,7 +617,7 @@ data[15] = ANCS_NOTIFICATION_ATTR_ID_DATE;
 data[16] = ANCS_NOTIFICATION_ATTR_ID_POSITIVE_ACTION_LABEL;
 data[17] = ANCS_NOTIFICATION_ATTR_ID_NEGATIVE_ACTION_LABEL;
 
-result = HCI_le_enqueue_gatt_write_request( ancs_characteristics[control_point_idx].value_handle, data, 18 );
+result = BLE_client_write_request( ancs_characteristics[control_point_idx].value_handle, data, 18 );
 if( ERR_NONE != result )
     {
     BC_ANCS_PRINTF( "%s fail\r\n", __FUNCTION__ );
@@ -1051,15 +1056,15 @@ if( ancs_characteristics[notification_source_idx].cccd_handle > 0 &&
     {
     /* write notification source cccd */
     BC_ANCS_PRINTF( "write notification source cccd %x\r\n", ancs_characteristics[notification_source_idx].cccd_handle );
-    data[0] = BLE_GATT_CLIENT_CONFIG_NOTIFICATION & 0xff;
-    data[1] = ( BLE_GATT_CLIENT_CONFIG_NOTIFICATION >> 8 ) & 0xff;
-    HCI_le_enqueue_gatt_write_request( ancs_characteristics[notification_source_idx].cccd_handle, data, 2 );
+    data[0] = GATT_CLIENT_CONFIG_NOTIFICATION & 0xff;
+    data[1] = ( GATT_CLIENT_CONFIG_NOTIFICATION >> 8 ) & 0xff;
+    BLE_client_write_request( ancs_characteristics[notification_source_idx].cccd_handle, data, 2 );
 
     /* write data source cccd */
     BC_ANCS_PRINTF( "write data source cccd %x\r\n", ancs_characteristics[data_source_idx].cccd_handle );
-    data[0] = BLE_GATT_CLIENT_CONFIG_NOTIFICATION & 0xff;
-    data[1] = ( BLE_GATT_CLIENT_CONFIG_NOTIFICATION >> 8 ) & 0xff;
-    HCI_le_enqueue_gatt_write_request( ancs_characteristics[data_source_idx].cccd_handle, data, 2 );
+    data[0] = GATT_CLIENT_CONFIG_NOTIFICATION & 0xff;
+    data[1] = ( GATT_CLIENT_CONFIG_NOTIFICATION >> 8 ) & 0xff;
+    BLE_client_write_request( ancs_characteristics[data_source_idx].cccd_handle, data, 2 );
     }
 else
     {
@@ -1165,7 +1170,7 @@ void BC_ancs_characteristic_discovered_callback
 BC_ANCS_PRINTF( "%s, handle: 0x%x\r\n", __FUNCTION__, value_handle );
 for( int i = 0; i < ANCS_CHARACTERISTIC_TOTAL; i++ )
     {
-    if( 0 == memcmp( uuid, ANCS_CHARACTERISTIC_UUID[i], UUID_128BIT_LEN ) )
+    if( 0 == memcmp( uuid, ANCS_CHARACTERISTIC_UUID[i], GATT_UUID_128BIT_LEN ) )
         {
         ancs_characteristics[i].is_discovered = true;
         ancs_characteristics[i].value_handle  = value_handle;
@@ -1189,7 +1194,7 @@ if( ANCS_CHARACTERISTIC_TOTAL > ancs_characteristic_discovered_count )
     {
     for( int i = 0; i < ANCS_CHARACTERISTIC_TOTAL; i++ )
         {
-        if( 0 == memcmp( uuid, ANCS_CHARACTERISTIC_UUID[i], UUID_128BIT_LEN ) )
+        if( 0 == memcmp( uuid, ANCS_CHARACTERISTIC_UUID[i], GATT_UUID_128BIT_LEN ) )
             {
             BC_ANCS_PRINTF( "%s, found: %d\r\n", __FUNCTION__, i );
             ancs_characteristics[ancs_characteristic_discovered_count].characteristic = i;
@@ -1280,12 +1285,12 @@ void BC_ancs_notification_received_callback
     (
     const uint16_t handle,
     const uint8_t* data,
-    const uint16_t length
+    const uint8_t  length
     )
 {
 BC_ANCS_PRINTF( "%s, handle: 0x%x, len: %d\r\n", __FUNCTION__, handle, length );
 
-if( length <= HCI_MAX_DATA_SIZE )
+if( length <= HCI_PAYLOAD_MAX_SIZE )
     {
     gatt_notification_struct gatt_notification_data;
     gatt_notification_data.handle   = handle;
@@ -1304,7 +1309,7 @@ if( length <= HCI_MAX_DATA_SIZE )
     }
 else
     {
-    PRINTF( "Err: %s %d > %d\r\n", __FUNCTION__, length, HCI_MAX_DATA_SIZE );
+    PRINTF( "Err: %s %d > %d\r\n", __FUNCTION__, length, HCI_PAYLOAD_MAX_SIZE );
     }
 }
 
@@ -1374,7 +1379,7 @@ if( control_point_idx < ANCS_CHARACTERISTIC_TOTAL &&
     data[4] = ( uid >> 24 ) & 0xff;
     data[5] = ( uint8_t )action_id;
 
-    HCI_le_enqueue_gatt_write_request( ancs_characteristics[control_point_idx].value_handle, data, 6 );
+    BLE_client_write_request( ancs_characteristics[control_point_idx].value_handle, data, 6 );
     }
 else
     {
@@ -1436,5 +1441,5 @@ phone_connected_time.year = INVALID_SMARTPHONE_TIME_YEAR;
 gatt_notification_queue_handle = xQueueCreate( GATT_NOTIFICATION_DATA_QUEUE_SIZE, sizeof( gatt_notification_struct ) );
 configASSERT( NULL != gatt_notification_queue_handle );
 
-HCI_le_register_client_callback( BLE_CLIENT_ANCS, &ancs_client_callback );
+BLE_client_register_callback( BLE_CLIENT_ANCS, &ancs_client_callback );
 }
