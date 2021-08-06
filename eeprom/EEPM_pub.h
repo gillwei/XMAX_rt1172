@@ -25,7 +25,7 @@ extern "C" {
 --------------------------------------------------------------------*/
 #define ESN_LENGTH                           ( 4 )
 #define BT_EN_LENGTH                         ( 1 )
-#define BT_AUTO_CONN_LENGTH                  ( 1 )
+#define AUTO_CONNECT_EN_LENGTH               ( 1 )
 #define LAST_PAGE_LENGTH                     ( 1 )
 #define EEPROM_ID_PAGE_LOCK_DATA_LENGTH      ( 1 )
 #define LANGUAGE_LENGTH                      ( 1 )
@@ -45,6 +45,7 @@ extern "C" {
 #define AUTO_CONNECT_SEQUENCE_LENGTH         ( 8 )
 #define EEPM_OFFSET_LENGTH                   ( 2 )
 #define QRCODE_FUSED_DATA_LENGTH             ( 8 )
+#define AUTO_CONNECT_DEVICE_COUNT_LENGTH     ( 1 )
 
 #define EEPROM_INVALID_VAL_1_BYTE            ( 0xFF )
 #define EEPROM_INVALID_VAL_2_BYTE            ( 0xFFFF )
@@ -54,7 +55,7 @@ typedef uint8_t EEPM_block_config_type; enum
     {
     EEPM_BLOCK_CONFIG_ESN,
     EEPM_BLOCK_CONFIG_BT_EN,
-    EEPM_BLOCK_CONFIG_BT_AUTO_CONN,
+    EEPM_BLOCK_CONFIG_AUTO_CONNECT_EN,
     EEPM_BLOCK_CONFIG_LAST_PAGE,
     EEPM_BLOCK_CONFIG_ID_PAGE_LOCK,
     EEPM_BLOCK_CONFIG_LANGUAGE,
@@ -76,6 +77,15 @@ typedef uint8_t EEPM_block_config_type; enum
     EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_1,
     EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_2,
     EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_3,
+    EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_COUNT,
+    EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_1,
+    EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_2,
+    EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_3,
+    EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_4,
+    EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_5,
+    EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_6,
+    EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_7,
+    EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_8,
 
     EEPM_BLOCK_CONFIG_CNT
     };
@@ -135,13 +145,13 @@ BaseType_t EEPM_get_BT_en
     void (*callback_ptr)(bool, void*)
     );
 
-BaseType_t EEPM_set_BT_autoconn
+BaseType_t EEPM_set_auto_connect_en
     (
-    bool is_auto,
+    bool is_enable,
     void (*callback_ptr)(bool, void*)
     );
 
-BaseType_t EEPM_get_BT_autoconn
+BaseType_t EEPM_get_auto_connect_en
     (
     void (*callback_ptr)(bool, void*)
     );
@@ -311,17 +321,6 @@ BaseType_t EEPM_get_fuel_consumption
     void (*callback_ptr)(bool, void*)
     );
 
-BaseType_t EEPM_set_auto_connect_sequence
-    (
-    uint8_t *auto_connect_sequence,
-    void (*callback_ptr)(bool, void*)
-    );
-
-BaseType_t EEPM_get_auto_connect_sequence
-    (
-    void (*callback_ptr)(bool, void*)
-    );
-
 BaseType_t EEPM_set_qrcode_fused_data_1
     (
     uint8_t * qrcode_fused,
@@ -351,6 +350,105 @@ BaseType_t EEPM_set_qrcode_fused_data_3
     );
 
 BaseType_t EEPM_get_qrcode_fused_data_3
+    (
+    void (*callback_ptr)(bool, void*)
+    );
+
+BaseType_t EEPM_set_auto_connect_device_count
+    (
+    uint8_t device_count,
+    void (*callback_ptr)(bool, void*)
+    );
+
+BaseType_t EEPM_get_auto_connect_device_count
+    (
+    void (*callback_ptr)(bool, void*)
+    );
+
+BaseType_t EEPM_set_auto_connect_device_1
+    (
+    uint8_t* bd_addr,
+    void (*callback_ptr)(bool, void*)
+    );
+
+BaseType_t EEPM_get_auto_connect_device_1
+    (
+    void (*callback_ptr)(bool, void*)
+    );
+
+BaseType_t EEPM_set_auto_connect_device_2
+    (
+    uint8_t* bd_addr,
+    void (*callback_ptr)(bool, void*)
+    );
+
+BaseType_t EEPM_get_auto_connect_device_2
+    (
+    void (*callback_ptr)(bool, void*)
+    );
+
+BaseType_t EEPM_set_auto_connect_device_3
+    (
+    uint8_t* bd_addr,
+    void (*callback_ptr)(bool, void*)
+    );
+
+BaseType_t EEPM_get_auto_connect_device_3
+    (
+    void (*callback_ptr)(bool, void*)
+    );
+
+BaseType_t EEPM_set_auto_connect_device_4
+    (
+    uint8_t* bd_addr,
+    void (*callback_ptr)(bool, void*)
+    );
+
+BaseType_t EEPM_get_auto_connect_device_4
+    (
+    void (*callback_ptr)(bool, void*)
+    );
+
+BaseType_t EEPM_set_auto_connect_device_5
+    (
+    uint8_t* bd_addr,
+    void (*callback_ptr)(bool, void*)
+    );
+
+BaseType_t EEPM_get_auto_connect_device_5
+    (
+    void (*callback_ptr)(bool, void*)
+    );
+
+BaseType_t EEPM_set_auto_connect_device_6
+    (
+    uint8_t* bd_addr,
+    void (*callback_ptr)(bool, void*)
+    );
+
+BaseType_t EEPM_get_auto_connect_device_6
+    (
+    void (*callback_ptr)(bool, void*)
+    );
+
+BaseType_t EEPM_set_auto_connect_device_7
+    (
+    uint8_t* bd_addr,
+    void (*callback_ptr)(bool, void*)
+    );
+
+BaseType_t EEPM_get_auto_connect_device_7
+    (
+    void (*callback_ptr)(bool, void*)
+    );
+
+BaseType_t EEPM_set_auto_connect_device_8
+    (
+    uint8_t* bd_addr,
+    void (*callback_ptr)(bool, void*)
+    );
+
+BaseType_t EEPM_get_auto_connect_device_8
     (
     void (*callback_ptr)(bool, void*)
     );

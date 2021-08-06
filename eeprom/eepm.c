@@ -58,8 +58,6 @@ static uint8_t write_sup_func[SUPPORTED_FUNCTION_LENGTH];
 static uint8_t read_sup_func[SUPPORTED_FUNCTION_LENGTH];
 static uint8_t write_ccuid[QRCODE_CCUID_LENGTH];
 static uint8_t read_ccuid[QRCODE_CCUID_LENGTH];
-static uint8_t write_auto_connect_sequence[AUTO_CONNECT_SEQUENCE_LENGTH]; // Use for store auto connect sequence
-static uint8_t read_auto_connect_sequence[AUTO_CONNECT_SEQUENCE_LENGTH]; // Use for store auto connect sequence
 
 static uint8_t write_qrcode_fused_1[QRCODE_FUSED_DATA_LENGTH];
 static uint8_t read_qrcode_fused_1[QRCODE_FUSED_DATA_LENGTH];
@@ -67,6 +65,23 @@ static uint8_t write_qrcode_fused_2[QRCODE_FUSED_DATA_LENGTH];
 static uint8_t read_qrcode_fused_2[QRCODE_FUSED_DATA_LENGTH];
 static uint8_t write_qrcode_fused_3[QRCODE_FUSED_DATA_LENGTH];
 static uint8_t read_qrcode_fused_3[QRCODE_FUSED_DATA_LENGTH];
+
+static uint8_t write_auto_connect_device_1[BD_ADDRESS_LENGTH];
+static uint8_t read_auto_connect_device_1[BD_ADDRESS_LENGTH];
+static uint8_t write_auto_connect_device_2[BD_ADDRESS_LENGTH];
+static uint8_t read_auto_connect_device_2[BD_ADDRESS_LENGTH];
+static uint8_t write_auto_connect_device_3[BD_ADDRESS_LENGTH];
+static uint8_t read_auto_connect_device_3[BD_ADDRESS_LENGTH];
+static uint8_t write_auto_connect_device_4[BD_ADDRESS_LENGTH];
+static uint8_t read_auto_connect_device_4[BD_ADDRESS_LENGTH];
+static uint8_t write_auto_connect_device_5[BD_ADDRESS_LENGTH];
+static uint8_t read_auto_connect_device_5[BD_ADDRESS_LENGTH];
+static uint8_t write_auto_connect_device_6[BD_ADDRESS_LENGTH];
+static uint8_t read_auto_connect_device_6[BD_ADDRESS_LENGTH];
+static uint8_t write_auto_connect_device_7[BD_ADDRESS_LENGTH];
+static uint8_t read_auto_connect_device_7[BD_ADDRESS_LENGTH];
+static uint8_t write_auto_connect_device_8[BD_ADDRESS_LENGTH];
+static uint8_t read_auto_connect_device_8[BD_ADDRESS_LENGTH];
 
 /*--------------------------------------------------------------------
                         PROTOTYPES
@@ -107,12 +122,12 @@ static void eepm_BT_en_r_callback
     status_t status
     );
 
-static void eepm_BT_autoconn_w_callback
+static void eepm_auto_connect_en_w_callback
     (
     status_t status
     );
 
-static void eepm_BT_autoconn_r_callback
+static void eepm_auto_connect_en_r_callback
     (
     status_t status
     );
@@ -303,38 +318,38 @@ eepm_r_callback( EEPM_BLOCK_CONFIG_BT_EN, status );
 
 /*================================================================================================*/
 /**
-@brief   eepm_BT_autoconn_w_callback
-@details eepm_BT_autoconn_w_callback
+@brief   eepm_auto_connect_en_w_callback
+@details eepm_auto_connect_en_w_callback
 
 @return None
 @retval None
 */
 /*================================================================================================*/
 
-static void eepm_BT_autoconn_w_callback
+static void eepm_auto_connect_en_w_callback
     (
     status_t status
     )
 {
-eepm_w_callback( EEPM_BLOCK_CONFIG_BT_AUTO_CONN, status );
+eepm_w_callback( EEPM_BLOCK_CONFIG_AUTO_CONNECT_EN, status );
 }
 
 /*================================================================================================*/
 /**
-@brief   eepm_BT_autoconn_r_callback
-@details eepm_BT_autoconn_r_callback
+@brief   eepm_auto_connect_en_r_callback
+@details eepm_auto_connect_en_r_callback
 
 @return None
 @retval None
 */
 /*================================================================================================*/
 
-static void eepm_BT_autoconn_r_callback
+static void eepm_auto_connect_en_r_callback
     (
     status_t status
     )
 {
-eepm_r_callback( EEPM_BLOCK_CONFIG_BT_AUTO_CONN, status );
+eepm_r_callback( EEPM_BLOCK_CONFIG_AUTO_CONNECT_EN, status );
 }
 
 /*================================================================================================*/
@@ -962,64 +977,6 @@ eepm_r_callback( EEPM_BLOCK_CONFIG_FUEL_CONSUMPTION, status );
 
 /*================================================================================================*/
 /**
-@brief   eepm_auto_con_seq_w_callback
-@details eepm_auto_con_seq_w_callback
-
-@return None
-@retval None
-*/
-/*================================================================================================*/
-static void eepm_auto_con_seq_w_callback
-    (
-    status_t status
-    )
-{
-eepm_w_callback( EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE, status );
-}
-
-/*================================================================================================*/
-/**
-@brief   eepm_auto_con_seq_r_callback
-@details eepm_auto_con_seq_r_callback
-
-@return None
-@retval None
-*/
-/*================================================================================================*/
-static void eepm_auto_con_seq_r_callback
-    (
-    status_t status
-    )
-{
-bool rtn = false;
-
-xSemaphoreGive( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE].semaphore );
-if( kStatus_Success == status )
-    {
-    if( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE].need_verified )
-        {
-        if( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE].cb_write )
-            {
-            if( 0 == memcmp( write_auto_connect_sequence, read_auto_connect_sequence, AUTO_CONNECT_SEQUENCE_LENGTH ) )
-                {
-                rtn = true;
-                }
-            }
-        }
-    else
-        {
-        rtn = true;
-        }
-    }
-
-if( NULL != eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE].callback_ptr )
-    {
-    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE].callback_ptr( rtn, read_auto_connect_sequence );
-    }
-}
-
-/*================================================================================================*/
-/**
 @brief   eepm_qrcode_fused_1_w_callback
 @details eepm_qrcode_fused_1_w_callback
 
@@ -1192,6 +1149,514 @@ if( kStatus_Success == status )
 if( NULL != eepm_data[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_3].callback_ptr )
     {
     eepm_data[EEPM_BLOCK_CONFIG_QRCODE_FUSED_DATA_3].callback_ptr( rtn, read_qrcode_fused_3 );
+    }
+}
+
+/*================================================================================================*/
+/**
+@brief   eepm_auto_connect_device_count_w_callback
+@details eepm_auto_connect_device_count_w_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+static void eepm_auto_connect_device_count_w_callback
+    (
+    status_t status
+    )
+{
+eepm_w_callback( EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_COUNT, status );
+}
+
+/*================================================================================================*/
+/**
+@brief   eepm_auto_connect_device_count_r_callback
+@details eepm_auto_connect_device_count_r_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+static void eepm_auto_connect_device_count_r_callback
+    (
+    status_t status
+    )
+{
+eepm_r_callback( EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_COUNT, status );
+}
+
+/*================================================================================================*/
+/**
+@brief   eepm_auto_connect_device_1_w_callback
+@details eepm_auto_connect_device_1_w_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+static void eepm_auto_connect_device_1_w_callback
+    (
+    status_t status
+    )
+{
+eepm_w_callback( EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_1, status );
+}
+
+/*================================================================================================*/
+/**
+@brief   eepm_auto_connect_device_1_r_callback
+@details eepm_auto_connect_device_1_r_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+static void eepm_auto_connect_device_1_r_callback
+    (
+    status_t status
+    )
+{
+bool rtn = false;
+
+xSemaphoreGive( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_1].semaphore );
+if( kStatus_Success == status )
+    {
+    if( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_1].need_verified )
+        {
+        if( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_1].cb_write )
+            {
+            if( 0 == memcmp( write_auto_connect_device_1, read_auto_connect_device_1, BD_ADDRESS_LENGTH ) )
+                {
+                rtn = true;
+                }
+            }
+        }
+    else
+        {
+        rtn = true;
+        }
+    }
+
+if( NULL != eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_1].callback_ptr )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_1].callback_ptr( rtn, read_auto_connect_device_1 );
+    }
+}
+
+/*================================================================================================*/
+/**
+@brief   eepm_auto_connect_device_2_w_callback
+@details eepm_auto_connect_device_2_w_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+static void eepm_auto_connect_device_2_w_callback
+    (
+    status_t status
+    )
+{
+eepm_w_callback( EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_2, status );
+}
+
+/*================================================================================================*/
+/**
+@brief   eepm_auto_connect_device_2_r_callback
+@details eepm_auto_connect_device_2_r_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+static void eepm_auto_connect_device_2_r_callback
+    (
+    status_t status
+    )
+{
+bool rtn = false;
+
+xSemaphoreGive( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_2].semaphore );
+if( kStatus_Success == status )
+    {
+    if( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_2].need_verified )
+        {
+        if( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_2].cb_write )
+            {
+            if( 0 == memcmp( write_auto_connect_device_2, read_auto_connect_device_2, BD_ADDRESS_LENGTH ) )
+                {
+                rtn = true;
+                }
+            }
+        }
+    else
+        {
+        rtn = true;
+        }
+    }
+
+if( NULL != eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_2].callback_ptr )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_2].callback_ptr( rtn, read_auto_connect_device_2 );
+    }
+}
+
+/*================================================================================================*/
+/**
+@brief   eepm_auto_connect_device_3_w_callback
+@details eepm_auto_connect_device_3_w_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+static void eepm_auto_connect_device_3_w_callback
+    (
+    status_t status
+    )
+{
+eepm_w_callback( EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_3, status );
+}
+
+/*================================================================================================*/
+/**
+@brief   eepm_auto_connect_device_3_r_callback
+@details eepm_auto_connect_device_3_r_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+static void eepm_auto_connect_device_3_r_callback
+    (
+    status_t status
+    )
+{
+bool rtn = false;
+
+xSemaphoreGive( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_3].semaphore );
+if( kStatus_Success == status )
+    {
+    if( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_3].need_verified )
+        {
+        if( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_3].cb_write )
+            {
+            if( 0 == memcmp( write_auto_connect_device_3, read_auto_connect_device_3, BD_ADDRESS_LENGTH ) )
+                {
+                rtn = true;
+                }
+            }
+        }
+    else
+        {
+        rtn = true;
+        }
+    }
+
+if( NULL != eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_3].callback_ptr )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_3].callback_ptr( rtn, read_auto_connect_device_3 );
+    }
+}
+
+/*================================================================================================*/
+/**
+@brief   eepm_auto_connect_device_4_w_callback
+@details eepm_auto_connect_device_4_w_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+static void eepm_auto_connect_device_4_w_callback
+    (
+    status_t status
+    )
+{
+eepm_w_callback( EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_4, status );
+}
+
+/*================================================================================================*/
+/**
+@brief   eepm_auto_connect_device_4_r_callback
+@details eepm_auto_connect_device_4_r_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+static void eepm_auto_connect_device_4_r_callback
+    (
+    status_t status
+    )
+{
+bool rtn = false;
+
+xSemaphoreGive( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_4].semaphore );
+if( kStatus_Success == status )
+    {
+    if( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_4].need_verified )
+        {
+        if( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_4].cb_write )
+            {
+            if( 0 == memcmp( write_auto_connect_device_4, read_auto_connect_device_4, BD_ADDRESS_LENGTH ) )
+                {
+                rtn = true;
+                }
+            }
+        }
+    else
+        {
+        rtn = true;
+        }
+    }
+
+if( NULL != eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_4].callback_ptr )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_4].callback_ptr( rtn, read_auto_connect_device_4 );
+    }
+}
+
+/*================================================================================================*/
+/**
+@brief   eepm_auto_connect_device_5_w_callback
+@details eepm_auto_connect_device_5_w_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+static void eepm_auto_connect_device_5_w_callback
+    (
+    status_t status
+    )
+{
+eepm_w_callback( EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_5, status );
+}
+
+/*================================================================================================*/
+/**
+@brief   eepm_auto_connect_device_5_r_callback
+@details eepm_auto_connect_device_5_r_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+static void eepm_auto_connect_device_5_r_callback
+    (
+    status_t status
+    )
+{
+bool rtn = false;
+
+xSemaphoreGive( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_5].semaphore );
+if( kStatus_Success == status )
+    {
+    if( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_5].need_verified )
+        {
+        if( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_5].cb_write )
+            {
+            if( 0 == memcmp( write_auto_connect_device_5, read_auto_connect_device_5, BD_ADDRESS_LENGTH ) )
+                {
+                rtn = true;
+                }
+            }
+        }
+    else
+        {
+        rtn = true;
+        }
+    }
+
+if( NULL != eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_5].callback_ptr )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_5].callback_ptr( rtn, read_auto_connect_device_5 );
+    }
+}
+
+/*================================================================================================*/
+/**
+@brief   eepm_auto_connect_device_6_w_callback
+@details eepm_auto_connect_device_6_w_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+static void eepm_auto_connect_device_6_w_callback
+    (
+    status_t status
+    )
+{
+eepm_w_callback( EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_6, status );
+}
+
+/*================================================================================================*/
+/**
+@brief   eepm_auto_connect_device_6_r_callback
+@details eepm_auto_connect_device_6_r_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+static void eepm_auto_connect_device_6_r_callback
+    (
+    status_t status
+    )
+{
+bool rtn = false;
+
+xSemaphoreGive( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_6].semaphore );
+if( kStatus_Success == status )
+    {
+    if( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_6].need_verified )
+        {
+        if( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_6].cb_write )
+            {
+            if( 0 == memcmp( write_auto_connect_device_6, read_auto_connect_device_6, BD_ADDRESS_LENGTH ) )
+                {
+                rtn = true;
+                }
+            }
+        }
+    else
+        {
+        rtn = true;
+        }
+    }
+
+if( NULL != eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_6].callback_ptr )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_6].callback_ptr( rtn, read_auto_connect_device_6 );
+    }
+}
+
+/*================================================================================================*/
+/**
+@brief   eepm_auto_connect_device_7_w_callback
+@details eepm_auto_connect_device_7_w_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+static void eepm_auto_connect_device_7_w_callback
+    (
+    status_t status
+    )
+{
+eepm_w_callback( EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_7, status );
+}
+
+/*================================================================================================*/
+/**
+@brief   eepm_auto_connect_device_7_r_callback
+@details eepm_auto_connect_device_7_r_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+static void eepm_auto_connect_device_7_r_callback
+    (
+    status_t status
+    )
+{
+bool rtn = false;
+
+xSemaphoreGive( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_7].semaphore );
+if( kStatus_Success == status )
+    {
+    if( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_7].need_verified )
+        {
+        if( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_7].cb_write )
+            {
+            if( 0 == memcmp( write_auto_connect_device_7, read_auto_connect_device_7, BD_ADDRESS_LENGTH ) )
+                {
+                rtn = true;
+                }
+            }
+        }
+    else
+        {
+        rtn = true;
+        }
+    }
+
+if( NULL != eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_7].callback_ptr )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_7].callback_ptr( rtn, read_auto_connect_device_7 );
+    }
+}
+
+/*================================================================================================*/
+/**
+@brief   eepm_auto_connect_device_8_w_callback
+@details eepm_auto_connect_device_8_w_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+static void eepm_auto_connect_device_8_w_callback
+    (
+    status_t status
+    )
+{
+eepm_w_callback( EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_8, status );
+}
+
+/*================================================================================================*/
+/**
+@brief   eepm_auto_connect_device_8_r_callback
+@details eepm_auto_connect_device_8_r_callback
+
+@return None
+@retval None
+*/
+/*================================================================================================*/
+
+static void eepm_auto_connect_device_8_r_callback
+    (
+    status_t status
+    )
+{
+bool rtn = false;
+
+xSemaphoreGive( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_8].semaphore );
+if( kStatus_Success == status )
+    {
+    if( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_8].need_verified )
+        {
+        if( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_8].cb_write )
+            {
+            if( 0 == memcmp( write_auto_connect_device_8, read_auto_connect_device_8, BD_ADDRESS_LENGTH ) )
+                {
+                rtn = true;
+                }
+            }
+        }
+    else
+        {
+        rtn = true;
+        }
+    }
+
+if( NULL != eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_8].callback_ptr )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_8].callback_ptr( rtn, read_auto_connect_device_8 );
     }
 }
 
@@ -1373,30 +1838,29 @@ else
 return rtn;
 }
 
-
 /*================================================================================================*/
 /**
-@brief   EEPM_set_BT_autoconn
-@details EEPM_set_BT_autoconn
+@brief   EEPM_set_auto_connect_en
+@details EEPM_set_auto_connect_en
 
-@return Result of enqueue set BT auto connection operation
+@return Result of enqueue set auto connect operation
 @retval None
 */
 /*================================================================================================*/
-BaseType_t EEPM_set_BT_autoconn
+BaseType_t EEPM_set_auto_connect_en
     (
-    bool is_auto,
+    bool is_enable,
     void (*callback_ptr)(bool, void*)
     )
 {
 BaseType_t rtn = pdTRUE;
-if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_BT_AUTO_CONN].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_EN].semaphore, ( TickType_t ) 0 ) == pdTRUE )
     {
-    eepm_data[EEPM_BLOCK_CONFIG_BT_AUTO_CONN].write_val= (uint32_t)is_auto;
-    eepm_data[EEPM_BLOCK_CONFIG_BT_AUTO_CONN].need_verified = true;
-    eepm_data[EEPM_BLOCK_CONFIG_BT_AUTO_CONN].callback_ptr = callback_ptr;
-    rtn = eep_set_BT_auto_conn( (uint8_t*)&( eepm_data[EEPM_BLOCK_CONFIG_BT_AUTO_CONN].write_val ), eepm_BT_autoconn_w_callback );
-    eep_get_BT_auto_conn( (uint8_t*)&( eepm_data[EEPM_BLOCK_CONFIG_BT_AUTO_CONN].read_val ), eepm_BT_autoconn_r_callback );
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_EN].write_val= (uint32_t)is_enable;
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_EN].need_verified = true;
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_EN].callback_ptr = callback_ptr;
+    rtn = eep_set_auto_connect_en( (uint8_t*)&( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_EN].write_val ), eepm_auto_connect_en_w_callback );
+    eep_get_auto_connect_en( (uint8_t*)&( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_EN].read_val ), eepm_auto_connect_en_r_callback );
     }
 else
     {
@@ -1407,26 +1871,26 @@ return rtn;
 
 /*================================================================================================*/
 /**
-@brief   EEPM_get_BT_autoconn
-@details EEPM_get_BT_autoconn
+@brief   EEPM_get_auto_connect_en
+@details EEPM_get_auto_connect_en
 
-@return Result of enqueue get BT auto connection operation
+@return Result of enqueue get auto connect operation
 @retval None
 */
 /*================================================================================================*/
 
-BaseType_t EEPM_get_BT_autoconn
+BaseType_t EEPM_get_auto_connect_en
     (
     void (*callback_ptr)(bool, void*)
     )
 {
 BaseType_t rtn = pdTRUE;
-if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_BT_AUTO_CONN].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_EN].semaphore, ( TickType_t ) 0 ) == pdTRUE )
     {
-    eepm_data[EEPM_BLOCK_CONFIG_BT_AUTO_CONN].write_val = 0;
-    eepm_data[EEPM_BLOCK_CONFIG_BT_AUTO_CONN].need_verified= false;
-    eepm_data[EEPM_BLOCK_CONFIG_BT_AUTO_CONN].callback_ptr = callback_ptr;
-    rtn = eep_get_BT_auto_conn( (uint8_t*)&( eepm_data[EEPM_BLOCK_CONFIG_BT_AUTO_CONN].read_val ), eepm_BT_autoconn_r_callback );
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_EN].write_val = 0;
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_EN].need_verified= false;
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_EN].callback_ptr = callback_ptr;
+    rtn = eep_get_auto_connect_en( (uint8_t*)&( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_EN].read_val ), eepm_auto_connect_en_r_callback );
     }
 else
     {
@@ -2357,67 +2821,6 @@ return rtn;
 
 /*================================================================================================*/
 /**
-@brief   EEPM_set_auto_connect_sequence
-@details EEPM_set_auto_connect_sequence
-
-@return Result of enqueue set auto connection sequence
-@retval None
-*/
-/*================================================================================================*/
-BaseType_t EEPM_set_auto_connect_sequence
-    (
-    uint8_t *auto_connect_sequence,
-    void (*callback_ptr)(bool, void*)
-    )
-{
-BaseType_t rtn = pdTRUE;
-
-if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE].semaphore, ( TickType_t ) 0 ) == pdTRUE )
-    {
-    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE].need_verified = true;
-    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE].callback_ptr = callback_ptr;
-    memcpy( write_auto_connect_sequence, auto_connect_sequence, AUTO_CONNECT_SEQUENCE_LENGTH );
-    rtn = eep_set_auto_connect_sequence( write_auto_connect_sequence, eepm_auto_con_seq_w_callback );
-    eep_get_auto_connect_sequence( read_auto_connect_sequence, eepm_auto_con_seq_r_callback );
-    }
-else
-    {
-    rtn = pdFALSE;
-    }
-return rtn;
-}
-
-/*================================================================================================*/
-/**
-@brief   EEPM_get_auto_connect_sequence
-@details EEPM_get_auto_connect_sequence
-
-@return Result of enqueue get auto connection sequence
-@retval None
-*/
-/*================================================================================================*/
-BaseType_t EEPM_get_auto_connect_sequence
-    (
-    void (*callback_ptr)(bool, void*)
-    )
-{
-BaseType_t rtn = pdTRUE;
-if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE].semaphore, ( TickType_t ) 0 ) == pdTRUE )
-    {
-    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE].write_val = 0;
-    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE].need_verified = false;
-    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE].callback_ptr = callback_ptr;
-    rtn = eep_get_auto_connect_sequence( read_auto_connect_sequence, eepm_auto_con_seq_r_callback );
-    }
-else
-    {
-    rtn = pdFALSE;
-    }
-return rtn;
-}
-
-/*================================================================================================*/
-/**
 @brief   EEPM_set_qrcode_fused_data_1
 @details EEPM_set_qrcode_fused_data_1
 
@@ -2601,3 +3004,561 @@ else
     }
 return rtn;
 }
+
+/*================================================================================================*/
+/**
+@brief   EEPM_set_auto_connect_device_count
+@details EEPM_set_auto_connect_device_count
+
+@return Result of enqueue set auto connect device count
+@retval None
+*/
+/*================================================================================================*/
+BaseType_t EEPM_set_auto_connect_device_count
+    (
+    uint8_t device_count,
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_COUNT].write_val= (uint32_t)device_count;
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_COUNT].need_verified = true;
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_COUNT].callback_ptr = callback_ptr;
+    rtn = eep_set_auto_connect_device_count( (uint8_t*)&( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_COUNT].write_val ), eepm_auto_connect_device_count_w_callback );
+    eep_get_auto_connect_device_count( (uint8_t*)&( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_COUNT].read_val ), eepm_auto_connect_device_count_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+/*================================================================================================*/
+/**
+@brief   EEPM_get_auto_connect_device_count
+@details EEPM_get_auto_connect_device_count
+
+@return Result of enqueue get auto connect device count
+@retval None
+*/
+/*================================================================================================*/
+BaseType_t EEPM_get_auto_connect_device_count
+    (
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_COUNT].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE].write_val = 0;
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE].need_verified = false;
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE].callback_ptr = callback_ptr;
+    eep_get_auto_connect_device_count( (uint8_t*)&( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_COUNT].read_val ), eepm_auto_connect_device_count_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+/*================================================================================================*/
+/**
+@brief   EEPM_set_auto_connect_device_1
+@details EEPM_set_auto_connect_device_1
+
+@return Result of enqueue set auto connect device with index 1
+@retval None
+*/
+/*================================================================================================*/
+BaseType_t EEPM_set_auto_connect_device_1
+    (
+    uint8_t* bd_addr,
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_1].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_1].need_verified = true;
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_1].callback_ptr = callback_ptr;
+    memcpy( write_auto_connect_device_1, bd_addr, BD_ADDRESS_LENGTH );
+    rtn = eep_set_auto_connect_device_1( write_auto_connect_device_1, eepm_auto_connect_device_1_w_callback );
+    eep_get_auto_connect_device_1( read_auto_connect_device_1, eepm_auto_connect_device_1_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+/*================================================================================================*/
+/**
+@brief   EEPM_get_auto_connect_device_1
+@details EEPM_get_auto_connect_device_1
+
+@return Result of enqueue get auto connect device with index 1
+@retval None
+*/
+/*================================================================================================*/
+BaseType_t EEPM_get_auto_connect_device_1
+    (
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_1].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_1].write_val= 0;
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_1].need_verified = false;
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_1].callback_ptr = callback_ptr;
+    eep_get_auto_connect_device_1( read_auto_connect_device_1, eepm_auto_connect_device_1_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+/*================================================================================================*/
+/**
+@brief   EEPM_set_auto_connect_device_2
+@details EEPM_set_auto_connect_device_2
+
+@return Result of enqueue set auto connect device with index 2
+@retval None
+*/
+/*================================================================================================*/
+BaseType_t EEPM_set_auto_connect_device_2
+    (
+    uint8_t* bd_addr,
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_2].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_2].need_verified = true;
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_2].callback_ptr = callback_ptr;
+    memcpy( write_auto_connect_device_2, bd_addr, BD_ADDRESS_LENGTH );
+    rtn = eep_set_auto_connect_device_2( write_auto_connect_device_2, eepm_auto_connect_device_2_w_callback );
+    eep_get_auto_connect_device_2( read_auto_connect_device_2, eepm_auto_connect_device_2_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+/*================================================================================================*/
+/**
+@brief   EEPM_get_auto_connect_device_2
+@details EEPM_get_auto_connect_device_2
+
+@return Result of enqueue get auto connect device with index 2
+@retval None
+*/
+/*================================================================================================*/
+BaseType_t EEPM_get_auto_connect_device_2
+    (
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_2].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_2].write_val= 0;
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_2].need_verified = false;
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_2].callback_ptr = callback_ptr;
+    eep_get_auto_connect_device_2( read_auto_connect_device_2, eepm_auto_connect_device_2_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+/*================================================================================================*/
+/**
+@brief   EEPM_set_auto_connect_device_3
+@details EEPM_set_auto_connect_device_3
+
+@return Result of enqueue set auto connect device with index 3
+@retval None
+*/
+/*================================================================================================*/
+BaseType_t EEPM_set_auto_connect_device_3
+    (
+    uint8_t* bd_addr,
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_3].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_3].need_verified = true;
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_3].callback_ptr = callback_ptr;
+    memcpy( write_auto_connect_device_3, bd_addr, BD_ADDRESS_LENGTH );
+    rtn = eep_set_auto_connect_device_3( write_auto_connect_device_3, eepm_auto_connect_device_3_w_callback );
+    eep_get_auto_connect_device_3( read_auto_connect_device_3, eepm_auto_connect_device_3_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+/*================================================================================================*/
+/**
+@brief   EEPM_get_auto_connect_device_3
+@details EEPM_get_auto_connect_device_3
+
+@return Result of enqueue get auto connect device with index 3
+@retval None
+*/
+/*================================================================================================*/
+BaseType_t EEPM_get_auto_connect_device_3
+    (
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_3].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_3].write_val= 0;
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_3].need_verified = false;
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_3].callback_ptr = callback_ptr;
+    eep_get_auto_connect_device_3( read_auto_connect_device_3, eepm_auto_connect_device_3_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+/*================================================================================================*/
+/**
+@brief   EEPM_set_auto_connect_device_4
+@details EEPM_set_auto_connect_device_4
+
+@return Result of enqueue set auto connect device with index 4
+@retval None
+*/
+/*================================================================================================*/
+BaseType_t EEPM_set_auto_connect_device_4
+    (
+    uint8_t* bd_addr,
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_4].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_4].need_verified = true;
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_4].callback_ptr = callback_ptr;
+    memcpy( write_auto_connect_device_4, bd_addr, BD_ADDRESS_LENGTH );
+    rtn = eep_set_auto_connect_device_4( write_auto_connect_device_4, eepm_auto_connect_device_4_w_callback );
+    eep_get_auto_connect_device_4( read_auto_connect_device_4, eepm_auto_connect_device_4_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+/*================================================================================================*/
+/**
+@brief   EEPM_get_auto_connect_device_4
+@details EEPM_get_auto_connect_device_4
+
+@return Result of enqueue get auto connect device with index 4
+@retval None
+*/
+/*================================================================================================*/
+BaseType_t EEPM_get_auto_connect_device_4
+    (
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_4].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_4].write_val= 0;
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_4].need_verified = false;
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_4].callback_ptr = callback_ptr;
+    eep_get_auto_connect_device_4( read_auto_connect_device_4, eepm_auto_connect_device_4_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+/*================================================================================================*/
+/**
+@brief   EEPM_set_auto_connect_device_5
+@details EEPM_set_auto_connect_device_5
+
+@return Result of enqueue set auto connect device with index 5
+@retval None
+*/
+/*================================================================================================*/
+BaseType_t EEPM_set_auto_connect_device_5
+    (
+    uint8_t* bd_addr,
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_5].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_5].need_verified = true;
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_5].callback_ptr = callback_ptr;
+    memcpy( write_auto_connect_device_5, bd_addr, BD_ADDRESS_LENGTH );
+    rtn = eep_set_auto_connect_device_5( write_auto_connect_device_5, eepm_auto_connect_device_5_w_callback );
+    eep_get_auto_connect_device_5( read_auto_connect_device_5, eepm_auto_connect_device_5_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+/*================================================================================================*/
+/**
+@brief   EEPM_get_auto_connect_device_5
+@details EEPM_get_auto_connect_device_5
+
+@return Result of enqueue get auto connect device with index 5
+@retval None
+*/
+/*================================================================================================*/
+BaseType_t EEPM_get_auto_connect_device_5
+    (
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_5].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_5].write_val= 0;
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_5].need_verified = false;
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_5].callback_ptr = callback_ptr;
+    eep_get_auto_connect_device_5( read_auto_connect_device_5, eepm_auto_connect_device_5_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+/*================================================================================================*/
+/**
+@brief   EEPM_set_auto_connect_device_6
+@details EEPM_set_auto_connect_device_6
+
+@return Result of enqueue set auto connect device with index 6
+@retval None
+*/
+/*================================================================================================*/
+BaseType_t EEPM_set_auto_connect_device_6
+    (
+    uint8_t* bd_addr,
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_6].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_6].need_verified = true;
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_6].callback_ptr = callback_ptr;
+    memcpy( write_auto_connect_device_6, bd_addr, BD_ADDRESS_LENGTH );
+    rtn = eep_set_auto_connect_device_6( write_auto_connect_device_6, eepm_auto_connect_device_6_w_callback );
+    eep_get_auto_connect_device_6( read_auto_connect_device_6, eepm_auto_connect_device_6_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+/*================================================================================================*/
+/**
+@brief   EEPM_get_auto_connect_device_6
+@details EEPM_get_auto_connect_device_6
+
+@return Result of enqueue get auto connect device with index 6
+@retval None
+*/
+/*================================================================================================*/
+BaseType_t EEPM_get_auto_connect_device_6
+    (
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_6].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_6].write_val= 0;
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_6].need_verified = false;
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_6].callback_ptr = callback_ptr;
+    eep_get_auto_connect_device_6( read_auto_connect_device_6, eepm_auto_connect_device_6_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+/*================================================================================================*/
+/**
+@brief   EEPM_set_auto_connect_device_7
+@details EEPM_set_auto_connect_device_7
+
+@return Result of enqueue set auto connect device with index 7
+@retval None
+*/
+/*================================================================================================*/
+BaseType_t EEPM_set_auto_connect_device_7
+    (
+    uint8_t* bd_addr,
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_7].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_7].need_verified = true;
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_7].callback_ptr = callback_ptr;
+    memcpy( write_auto_connect_device_7, bd_addr, BD_ADDRESS_LENGTH );
+    rtn = eep_set_auto_connect_device_7( write_auto_connect_device_7, eepm_auto_connect_device_7_w_callback );
+    eep_get_auto_connect_device_7( read_auto_connect_device_7, eepm_auto_connect_device_7_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+/*================================================================================================*/
+/**
+@brief   EEPM_get_auto_connect_device_7
+@details EEPM_get_auto_connect_device_7
+
+@return Result of enqueue get auto connect device with index 7
+@retval None
+*/
+/*================================================================================================*/
+BaseType_t EEPM_get_auto_connect_device_7
+    (
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_7].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_7].write_val= 0;
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_7].need_verified = false;
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_7].callback_ptr = callback_ptr;
+    eep_get_auto_connect_device_7( read_auto_connect_device_7, eepm_auto_connect_device_7_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+/*================================================================================================*/
+/**
+@brief   EEPM_set_auto_connect_device_8
+@details EEPM_set_auto_connect_device_8
+
+@return Result of enqueue set auto connect device with index 8
+@retval None
+*/
+/*================================================================================================*/
+BaseType_t EEPM_set_auto_connect_device_8
+    (
+    uint8_t* bd_addr,
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_8].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_8].need_verified = true;
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_8].callback_ptr = callback_ptr;
+    memcpy( write_auto_connect_device_8, bd_addr, BD_ADDRESS_LENGTH );
+    rtn = eep_set_auto_connect_device_8( write_auto_connect_device_8, eepm_auto_connect_device_8_w_callback );
+    eep_get_auto_connect_device_8( read_auto_connect_device_8, eepm_auto_connect_device_8_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+
+/*================================================================================================*/
+/**
+@brief   EEPM_get_auto_connect_device_8
+@details EEPM_get_auto_connect_device_8
+
+@return Result of enqueue get auto connect device with index 8
+@retval None
+*/
+/*================================================================================================*/
+BaseType_t EEPM_get_auto_connect_device_8
+    (
+    void (*callback_ptr)(bool, void*)
+    )
+{
+BaseType_t rtn = pdTRUE;
+
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_8].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+    {
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_8].write_val= 0;
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_8].need_verified = false;
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_8].callback_ptr = callback_ptr;
+    eep_get_auto_connect_device_8( read_auto_connect_device_8, eepm_auto_connect_device_8_r_callback );
+    }
+else
+    {
+    rtn = pdFALSE;
+    }
+return rtn;
+}
+

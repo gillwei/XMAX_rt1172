@@ -77,15 +77,15 @@ BaseType_t eep_get_BT_en
     void ( *callback_func_ptr ) ( status_t )
     );
 
-BaseType_t eep_set_BT_auto_conn
+BaseType_t eep_set_auto_connect_en
     (
-    uint8_t* is_auto_conn_ptr,
+    uint8_t* is_en_ptr,
     void ( *callback_func_ptr ) ( status_t )
     );
 
-BaseType_t eep_get_BT_auto_conn
+BaseType_t eep_get_auto_connect_en
     (
-    uint8_t* is_auto_conn_ptr,
+    uint8_t* is_en_ptr,
     void ( *callback_func_ptr ) ( status_t )
     );
 
@@ -256,17 +256,6 @@ BaseType_t eep_get_clk_auto_adjustment
     uint8_t* auto_adjustment_ptr,
     void ( *callback_func_ptr ) ( status_t )
     );
-BaseType_t eep_set_auto_connect_sequence
-    (
-    uint8_t* auto_connect_seq_ptr,
-    void ( *callback_func_ptr ) ( status_t )
-    );
-
-BaseType_t eep_get_auto_connect_sequence
-    (
-    uint8_t* auto_connect_seq_ptr,
-    void ( *callback_func_ptr ) ( status_t )
-    );
 
 BaseType_t eep_set_fuel_consumption
     (
@@ -313,6 +302,114 @@ BaseType_t eep_set_qrcode_fused_3
 BaseType_t eep_get_qrcode_fused_3
     (
     uint8_t* fused_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
+BaseType_t eep_set_auto_connect_device_count
+    (
+    uint8_t* device_count_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
+BaseType_t eep_get_auto_connect_device_count
+    (
+    uint8_t* device_count_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
+BaseType_t eep_set_auto_connect_device_1
+    (
+    uint8_t* bd_addr_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
+BaseType_t eep_get_auto_connect_device_1
+    (
+    uint8_t* bd_addr_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
+BaseType_t eep_set_auto_connect_device_2
+    (
+    uint8_t* bd_addr_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
+BaseType_t eep_get_auto_connect_device_2
+    (
+    uint8_t* bd_addr_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
+BaseType_t eep_set_auto_connect_device_3
+    (
+    uint8_t* bd_addr_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
+BaseType_t eep_get_auto_connect_device_3
+    (
+    uint8_t* bd_addr_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
+BaseType_t eep_set_auto_connect_device_4
+    (
+    uint8_t* bd_addr_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
+BaseType_t eep_get_auto_connect_device_4
+    (
+    uint8_t* bd_addr_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
+BaseType_t eep_set_auto_connect_device_5
+    (
+    uint8_t* bd_addr_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
+BaseType_t eep_get_auto_connect_device_5
+    (
+    uint8_t* bd_addr_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
+BaseType_t eep_set_auto_connect_device_6
+    (
+    uint8_t* bd_addr_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
+BaseType_t eep_get_auto_connect_device_6
+    (
+    uint8_t* bd_addr_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
+BaseType_t eep_set_auto_connect_device_7
+    (
+    uint8_t* bd_addr_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
+BaseType_t eep_get_auto_connect_device_7
+    (
+    uint8_t* bd_addr_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
+BaseType_t eep_set_auto_connect_device_8
+    (
+    uint8_t* bd_addr_ptr,
+    void ( *callback_func_ptr ) ( status_t )
+    );
+
+BaseType_t eep_get_auto_connect_device_8
+    (
+    uint8_t* bd_addr_ptr,
     void ( *callback_func_ptr ) ( status_t )
     );
 
