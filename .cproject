@@ -169,8 +169,6 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/navilite}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/navi}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/test}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/bt_hci}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/btm}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/bt/include/public}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/bt/include/private/common}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/bt/include/private/hci}&quot;"/>
@@ -435,11 +433,9 @@
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="board"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="bt/src/common"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="bt/src/hci"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="bt/src/le"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="bt/src/manager"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="bt/src/spp"/>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="bt/src/le"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="bt_hci"/>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="btm"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="cm"/>
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="component"/>
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="device"/>
@@ -638,8 +634,6 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/navilite}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/navi}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/test}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/bt_hci}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/btm}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/bt/include/public}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/bt/include/private/common}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/bt/include/private/hci}&quot;"/>
@@ -904,11 +898,9 @@
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="board"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="bt/src/common"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="bt/src/hci"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="bt/src/le"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="bt/src/manager"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="bt/src/spp"/>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="bt/src/le"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="bt_hci"/>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="btm"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="cm"/>
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="component"/>
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="device"/>
