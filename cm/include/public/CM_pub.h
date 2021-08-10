@@ -49,6 +49,8 @@ CM_status_e CM_init
     void
     );
 
+
+// For HMI use
 CM_status_e CM_connect
     (
     const uint8_t* bd_addr
@@ -76,7 +78,7 @@ CM_status_e CM_handle_hmi_ccuid_ready
 
 bool CM_get_spp_connection_status
     (
-    const CM_spp_app_type_e app_type
+    const CM_app_type_e app_type
     );
 
 bool CM_get_app_connection_status
@@ -85,6 +87,19 @@ bool CM_get_app_connection_status
     const uint8_t* bd_addr
     );
 
+CM_status_e CM_factory_reset
+    (
+    void
+    );
+
+// For Navi APP and Motocon APP use
+CM_status_e CM_handle_app_auth_result
+    (
+    const CM_app_type_e app_type,
+    const bool auth_result
+    );
+
+// For BT manager use
 CM_status_e CM_handle_btmgr_enable_state_changed
     (
     const bool enable_state
@@ -104,6 +119,7 @@ CM_status_e CM_handle_btmgr_paired_device_deleted
 CM_status_e CM_handle_btmgr_spp_connection_status_changed
     (
     const bool connected,
+    const CM_app_type_e app_type,
     const uint8_t* bd_addr
     );
 
