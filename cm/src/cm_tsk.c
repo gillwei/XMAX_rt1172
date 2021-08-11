@@ -141,6 +141,23 @@ while( 1 )
                 {
                 CM_core_handle_app_auth_result( &(task_request.CM_auth_result) );
                 } break;
+
+            case CM_REQUEST_ACL_DISCONNECT:
+                {
+                CM_core_handle_btmgr_acl_link_disconnected( &(task_request.CM_acl_disconnected) );
+                } break;
+
+            case CM_REQUEST_SET_AUTOCONNECT_STATE:
+                {
+                CM_core_set_auto_connect_state( &(task_request.CM_set_auto_connect_state) );
+                } break;
+
+            case CM_REQUEST_SET_ENABLE_STATE:
+                {
+                CM_core_set_auto_connect_state( &(task_request.CM_set_auto_connect_state) );
+                } break;
+
+
             default:
                 {
                 CM_LOG_DEBUG( "Invalid request type: %d\r\n", task_request );

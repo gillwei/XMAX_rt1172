@@ -17,6 +17,9 @@ extern "C"{
 #include "CM_pub.h"
 #include "cm_tsk.h"
 #include "cm_prv.h"
+#include "cm_log.h"
+#include "cm_auto_connect.h"
+#include "bt_core.h"
 
 /*--------------------------------------------------------------------
                         Definitions
@@ -62,6 +65,7 @@ CM_status_e CM_init
 {
 CM_core_init();
 CM_tsk_init();
+CMA_init();
 
 return CM_STATUS_OK;
 }
@@ -146,14 +150,17 @@ return CM_core_get_app_connection_status( app_type, bd_addr );
 ================================================================================================*/
 CM_status_e CM_handle_btmgr_pairing_result
     (
-    const bool pairing_result,
-    const uint8_t* bd_addr
+    const BT_pairing_status_e pairing_status,
+    const uint8_t* bd_addr,
+    const BT_transport_type_e transport_type
     )
 {
 CM_task_request_t task_request;
 task_request.CM_REQUEST_type = CM_REQUEST_PAIRING_RESULT;
-task_request.CM_btmgr_pairing_result.pairing_result = pairing_result;
+task_request.CM_btmgr_pairing_result.pairing_result = pairing_status;
 memcpy( task_request.CM_btmgr_pairing_result.bd_addr, bd_addr, BT_DEVICE_ADDRESS_LEN );
+task_request.CM_btmgr_pairing_result.transport_type = transport_type;
+
 if( false == CM_tsk_send_request( &task_request ) )
     {
     return CM_STATUS_QUEUE_FULL;
@@ -204,6 +211,106 @@ CM_task_request_t task_request;
 task_request.CM_REQUEST_type = CM_REQUEST_AUTHENTICATION_RESULT;
 task_request.CM_auth_result.app_type = app_type;
 task_request.CM_auth_result.result = auth_result;
+
+if( false == CM_tsk_send_request( &task_request ) )
+    {
+    return CM_STATUS_QUEUE_FULL;
+    }
+return CM_STATUS_OK;
+}
+
+/*================================================================================================
+@brief   Handle the BT manager ACL disconnected
+@details Handle the BT manager ACL disconnected
+@return  None
+@retval  Return Connection manager send request status
+================================================================================================*/
+CM_status_e CM_handle_btmgr_acl_link_disconnected
+    (
+    const uint8_t* bd_addr,
+    const bool user_requested
+    )
+{
+CM_task_request_t task_request;
+task_request.CM_REQUEST_type = CM_REQUEST_ACL_DISCONNECT;
+memcpy( task_request.CM_acl_disconnected.bd_addr, bd_addr, BT_DEVICE_ADDRESS_LEN );
+task_request.CM_acl_disconnected.user_request = user_requested;
+
+if( false == CM_tsk_send_request( &task_request ) )
+    {
+    return CM_STATUS_QUEUE_FULL;
+    }
+return CM_STATUS_OK;
+}
+
+/*================================================================================================
+@brief   Get Connection manager autoconnect enable state
+@details Get Connection manager autoconnect enable state
+@return  None
+@retval  Return auto connect enable state
+================================================================================================*/
+bool CM_get_auto_connect_state
+    (
+    void
+    )
+{
+return CMA_get_enable_state();
+}
+
+/*================================================================================================
+@brief   Set autoconnect enable state
+@details Set autoconnect enable state
+@return  None
+@retval  None
+================================================================================================*/
+CM_status_e CM_set_auto_connect_state
+    (
+    const bool state
+    )
+{
+CM_task_request_t task_request;
+task_request.CM_REQUEST_type = CM_REQUEST_SET_AUTOCONNECT_STATE;
+task_request.CM_set_auto_connect_state.auto_connect_state = state;
+
+if( false == CM_tsk_send_request( &task_request ) )
+    {
+    return CM_STATUS_QUEUE_FULL;
+    }
+return CM_STATUS_OK;
+}
+
+/*================================================================================================
+@brief   Get Connection manager autoconnect enable state
+@details Get Connection manager autoconnect enable state
+@return  None
+@retval  Return auto connect enable state
+================================================================================================*/
+CM_status_e CM_factory_reset
+    (
+    void
+    )
+{
+if( !CMA_factory_reset() )
+    {
+    CM_LOG_ERROR( "CMA_factory_reset false" );
+    }
+return CM_STATUS_OK;
+}
+
+/*================================================================================================
+@brief   Receive BT manager change enable state
+@details Receive BT manager change enable state
+@return  None
+@retval  Return Connection manager send request status
+================================================================================================*/
+CM_status_e CM_handle_btmgr_enable_state_changed
+    (
+    const bool enable_state
+    )
+{
+CM_task_request_t task_request;
+task_request.CM_REQUEST_type = CM_REQUEST_SET_ENABLE_STATE;
+task_request.CM_set_bt_enable_state.bt_enable_state = enable_state;
 
 if( false == CM_tsk_send_request( &task_request ) )
     {

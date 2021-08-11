@@ -16,7 +16,7 @@ extern "C" {
 /*--------------------------------------------------------------------
                         GENERAL INCLUDES
 --------------------------------------------------------------------*/
-#include "bt_types.h"
+#include "bt_core.h"
 
 /*--------------------------------------------------------------------
                         LITERAL CONSTANTS
@@ -87,6 +87,9 @@ typedef enum CM_REQUEST_type
     CM_REQUEST_PAIRING_RESULT,
     CM_REQUEST_CONNECTION_STATUS_CHANGE,
     CM_REQUEST_AUTHENTICATION_RESULT,
+    CM_REQUEST_ACL_DISCONNECT,
+    CM_REQUEST_SET_AUTOCONNECT_STATE,
+    CM_REQUEST_SET_ENABLE_STATE,
 
     CM_REQUEST_TYPE_CNT,
     CM_REQUEST_TYPE_INVALID = CM_REQUEST_TYPE_CNT
@@ -121,8 +124,9 @@ typedef struct CM_spp_disconnect_request
 
 typedef struct CM_btmgr_pairing_result
     {
-    bool    pairing_result;
+    BT_pairing_status_e    pairing_result;
     uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN];
+    BT_transport_type_e transport_type;
     } CM_btmgr_pairing_result_t;
 
 typedef struct CM_connection_status_change
@@ -138,6 +142,22 @@ typedef struct CM_auth_result
     bool          result;
     } CM_auth_result_t;
 
+typedef struct CM_acl_disconnected
+    {
+    uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN];
+    bool    user_request;
+    } CM_acl_disconnected_t;
+
+typedef struct CM_set_auto_connect_state
+    {
+    bool    auto_connect_state;
+    } CM_set_auto_connect_state_t;
+
+typedef struct CM_set_bt_enable_state
+    {
+    bool    bt_enable_state;
+    } CM_set_bt_enable_state_t;
+
 typedef struct CM_task_request
     {
     CM_REQUEST_type_e                CM_REQUEST_type;
@@ -146,6 +166,9 @@ typedef struct CM_task_request
     CM_btmgr_pairing_result_t        CM_btmgr_pairing_result;
     CM_connection_status_change_t    CM_connection_status_change;
     CM_auth_result_t                 CM_auth_result;
+    CM_acl_disconnected_t            CM_acl_disconnected;
+    CM_set_auto_connect_state_t      CM_set_auto_connect_state;
+    CM_set_bt_enable_state_t         CM_set_bt_enable_state;
     } CM_task_request_t;
 
 // Since HMI need to show both of Navi and Yconnect Connection result

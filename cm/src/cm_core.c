@@ -20,7 +20,10 @@ extern "C"{
 
 #include "cm_types.h"
 #include "CM_pub.h"
+#include "cm_prv.h"
 #include "cm_log.h"
+#include "cm_auto_connect.h"
+
 #include "BT_pub.h"
 #include "bt_types.h"
 #include "EW_pub.h"
@@ -97,7 +100,7 @@ if( NULL == s_binary_semaphore )
 @return  None
 @retval  None
 ================================================================================================*/
-void CM_core_spp_connect
+bool CM_core_spp_connect
     (
     const uint8_t* bd_addr
     )
@@ -154,8 +157,10 @@ if( ( CM_NAVI_APP_CONNECTION_DISCONNECTED == cm_connect_device.navi_app_connecti
     else
         {
         }
+    // If send any connect request, return true
+    return true;
     }
-
+return false;
 }
 
 /*================================================================================================
@@ -164,7 +169,7 @@ if( ( CM_NAVI_APP_CONNECTION_DISCONNECTED == cm_connect_device.navi_app_connecti
 @return  None
 @retval  None
 ================================================================================================*/
-void CM_core_spp_disconnect
+bool CM_core_spp_disconnect
     (
     const uint8_t* bd_addr
     )
@@ -182,6 +187,8 @@ if( CM_YCONNECT_APP_CONNECTION_CONNECTED == cm_connect_device.yconnect_app_conne
     {
     BT_spp_disconnect( bd_addr, BT_SPP_APP_MOTOCON );
     }
+
+return true;
 }
 
 /*================================================================================================
@@ -377,6 +384,57 @@ if( true == CM_auth_result->result )
         }
     }
 }
+
+/*================================================================================================
+@brief   CM core handle BT manager ACL link disconnected
+@details CM core handle BT manager ACL link disconnected
+@return  None
+@retval  None
+================================================================================================*/
+void CM_core_handle_btmgr_acl_link_disconnected
+    (
+    const CM_acl_disconnected_t *CM_acl_disconnected
+    )
+{
+// Reset cm connect device status
+memset( cm_connect_device.bd_addr, BT_DEVICE_ADDRESS_LEN, 0 );
+cm_connect_device.yconnect_app_connection_status = CM_YCONNECT_APP_CONNECTION_DISCONNECTED;
+cm_connect_device.navi_app_connection_status = CM_NAVI_APP_CONNECTION_DISCONNECTED;
+
+// Update to Auto connect
+CMA_handle_btmgr_acl_link_disconnected( CM_acl_disconnected->bd_addr, CM_acl_disconnected->user_request );
+}
+
+/*================================================================================================
+@brief   CM core set auto connect state
+@details CM core set auto connect state
+@return  None
+@retval  None
+================================================================================================*/
+void CM_core_set_auto_connect_state
+    (
+    const CM_set_auto_connect_state_t *CM_set_auto_connect_state
+    )
+{
+if( !CMA_set_enable_state( CM_set_auto_connect_state->auto_connect_state ) )
+    {
+    CM_LOG_ERROR( "CMA_set_enable_state FALSE" );
+    }
+}
+
+/*================================================================================================
+@brief   CM core handle BT enable state change
+@details Send bt enable state to CM auto connect
+@return  None
+@retval  None
+================================================================================================*/
+void CM_core_handle_btmgr_enable_state_changed
+    (
+    const bool enable_state
+    )
+    {
+    CMA_handle_btmgr_enable_state_changed( enable_state );
+    }
 
 #ifdef __cplusplus
 }

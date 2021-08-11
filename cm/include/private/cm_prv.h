@@ -94,6 +94,20 @@ void CM_core_handle_app_auth_result
     const CM_auth_result_t *CM_auth_result
     );
 
+void CM_core_handle_btmgr_acl_link_disconnected
+    (
+    const CM_acl_disconnected_t *CM_acl_disconnected
+    );
+
+void CM_core_set_auto_connect_state
+    (
+    const CM_set_auto_connect_state_t *CM_set_auto_connect_state
+    );
+
+void CM_core_handle_btmgr_enable_state_changed
+    (
+    const bool enable_state
+    );
 
 #ifdef __cplusplus
 }

@@ -16,6 +16,7 @@ extern "C" {
                         GENERAL INCLUDES
 --------------------------------------------------------------------*/
 #include "cm_types.h"
+#include "bt_types.h"
 
 /*--------------------------------------------------------------------
                         LITERAL CONSTANTS
@@ -48,7 +49,6 @@ CM_status_e CM_init
     (
     void
     );
-
 
 // For HMI use
 CM_status_e CM_connect
@@ -107,8 +107,9 @@ CM_status_e CM_handle_btmgr_enable_state_changed
 
 CM_status_e CM_handle_btmgr_pairing_result
     (
-    const bool pairing_result,
-    const uint8_t* bd_addr
+    const BT_pairing_status_e pairing_status,
+    const uint8_t* bd_addr,
+    const BT_transport_type_e transport_type
     );
 
 CM_status_e CM_handle_btmgr_paired_device_deleted
@@ -125,6 +126,7 @@ CM_status_e CM_handle_btmgr_spp_connection_status_changed
 
 CM_status_e CM_handle_btmgr_acl_link_disconnected
     (
+    const uint8_t* bd_addr,
     const bool user_requested
     );
 
