@@ -15,7 +15,7 @@ extern "C"{
 #include <stdarg.h>
 #include <stdio.h>
 #include <FreeRTOS.h>
-#include <semphr.h>
+#include <timers.h>
 #include "fsl_debug_console.h"
 
 #include "cm_types.h"
@@ -37,7 +37,9 @@ extern "C"{
 /*--------------------------------------------------------------------
                         LITERAL CONSTANTS
 --------------------------------------------------------------------*/
-#define CONNECT_CALLBACK_TIMEOUT   20000
+#define CM_CORE_TIMER_PERIOD_MS            1000
+#define CM_CORE_TICK_PERIOD_MS             pdMS_TO_TICKS( CM_CORE_TIMER_PERIOD_MS )
+#define CONNECTION_FAIL_TIMEOUT_PERIOD_MS  ( 20000 / CM_CORE_TICK_PERIOD_MS )
 
 /*--------------------------------------------------------------------
                         TYPES
@@ -56,14 +58,32 @@ extern "C"{
 /*--------------------------------------------------------------------
                         VARIABLES
 --------------------------------------------------------------------*/
-static SemaphoreHandle_t              s_binary_semaphore = NULL;
 static CM_connect_device_status_t     cm_connect_device;
 static CM_connect_result_t            CM_connect_result;
+static uint8_t                        cm_connecting_request_count = 0;
+static bool                           connecting_notify_ready = false;
+static uint16_t                       cm_core_timeout_count = 0;
+static cm_core_timeout_type_t         cm_core_timeout_type = CM_CORE_TIMEOUT_IDLE;
+static TimerHandle_t                  cm_core_timeout_timer_handle;
+static uint8_t                        cm_stored_ccuid[CCUID_LENGTH + 1] = { 0 };
 
 /*--------------------------------------------------------------------
                         PROTOTYPES
 --------------------------------------------------------------------*/
+static void CM_core_start_timeout_timer
+    (
+    cm_core_timeout_type_t  input_cm_core_timeout_type
+    );
 
+static void CM_core_stop_timeout_timer
+    (
+    void
+    );
+
+static void CM_core_timeout_timer_callback
+    (
+    TimerHandle_t timer_handle
+    );
 
 /*--------------------------------------------------------------------
                         PROCEDURES
@@ -85,18 +105,77 @@ CM_connect_result.can_notify_UI = false;
 CM_connect_result.navi_connect_result = false;
 CM_connect_result.yconnect_connect_result = false;
 
-// The binary semaphore created using vSemaphoreCreateBinary is created in Given state
-if( NULL == s_binary_semaphore )
-    {
-    // The binary semaphore created using xSemaphoreCreateBinary is created in Taken state
-    s_binary_semaphore = xSemaphoreCreateBinary();
-    configASSERT( NULL != s_binary_semaphore );
-    }
+memcpy( cm_stored_ccuid, TEST_CCUID, CCUID_LENGTH );
+
+cm_core_timeout_timer_handle = xTimerCreate( "cm_core_timeout_timer", CM_CORE_TICK_PERIOD_MS, pdTRUE, ( void * ) 0, CM_core_timeout_timer_callback );
+configASSERT( NULL != cm_core_timeout_timer_handle );
 }
 
 /*================================================================================================
-@brief   Connect the SPP app to the remote device
-@details Send the HCI command of connecting the SPP app to the remote device to Cypress module
+@brief   CM core start timeout timer
+@details CM core start timeout timer
+@return  None
+@retval  None
+================================================================================================*/
+void CM_core_start_timeout_timer
+    (
+    cm_core_timeout_type_t  input_cm_core_timeout_type
+    )
+{
+cm_core_timeout_type = input_cm_core_timeout_type;
+BaseType_t result = xTimerStart( cm_core_timeout_timer_handle, 0 );
+configASSERT( result == pdPASS );
+}
+
+/*================================================================================================
+@brief   CM core stop timeout timer
+@details CM core stop timeout timer
+@return  None
+@retval  None
+================================================================================================*/
+void CM_core_stop_timeout_timer
+    (
+    void
+    )
+{
+BaseType_t result = xTimerStop( cm_core_timeout_timer_handle, 0 );
+cm_core_timeout_count = 0;
+cm_core_timeout_type = CM_CORE_TIMEOUT_IDLE;
+configASSERT( result == pdPASS );
+}
+
+/*================================================================================================
+@brief   CM core timeout callback
+@details Count CM core timer and trigger event timeout
+@return  None
+@retval  None
+================================================================================================*/
+void CM_core_timeout_timer_callback
+    (
+    TimerHandle_t timer_handle
+    )
+{
+switch( cm_core_timeout_type )
+    {
+    /* Connection fail timeout event  */
+    case CM_CORE_TIMEOUT_CONNECTION_FAIL:
+        if( cm_core_timeout_count > CONNECTION_FAIL_TIMEOUT_PERIOD_MS )
+            {
+            CM_LOG_DEBUG( "CM_CORE_TIMEOUT_CONNECTION_FAIL" );
+            CM_core_stop_timeout_timer();
+            EW_notify_connection_status( EnumConnectionStatusCONNECTION_FAILED );
+            }
+        break;
+
+    default:
+        break;
+    }
+cm_core_timeout_count ++;
+}
+
+/*================================================================================================
+@brief   Connection Manager variable initialization
+@details Connection Manager variable initialization
 @return  None
 @retval  None
 ================================================================================================*/
@@ -121,27 +200,21 @@ if( ( CM_NAVI_APP_CONNECTION_DISCONNECTED == cm_connect_device.navi_app_connecti
     BT_navi_connect_result = BT_spp_connect( bd_addr, BT_SPP_APP_NAVILITE);
     if( BT_STATUS_OK == BT_navi_connect_result )
         {
-        cm_connect_device.navi_app_connection_status = CM_NAVI_APP_CONNECTION_CONNECTING;
-        if( pdTRUE != xSemaphoreTake( s_binary_semaphore, pdMS_TO_TICKS( CONNECT_CALLBACK_TIMEOUT ) ) )
-            {
-            CM_LOG_ERROR( "connect BT_SPP_Navi timeout");
-            cm_connect_device.navi_app_connection_status = CM_NAVI_APP_CONNECTION_DISCONNECTED;
-            }
+        // Start connection fail timeout event
+        CM_core_start_timeout_timer( CM_CORE_TIMEOUT_CONNECTION_FAIL );
 
+        cm_connect_device.navi_app_connection_status = CM_NAVI_APP_CONNECTION_CONNECTING;
+        cm_connecting_request_count++;
         // Connect Yconnect APP
         BT_yconnect_connect_result = BT_spp_connect( bd_addr, BT_SPP_APP_MOTOCON);
         if( BT_STATUS_OK ==  BT_yconnect_connect_result )
             {
             cm_connect_device.yconnect_app_connection_status = CM_YCONNECT_APP_CONNECTION_CONNECTING;
-            if( pdTRUE != xSemaphoreTake( s_binary_semaphore, pdMS_TO_TICKS( CONNECT_CALLBACK_TIMEOUT ) ) )
-               {
-                cm_connect_device.yconnect_app_connection_status = CM_YCONNECT_APP_CONNECTION_DISCONNECTED;
-                CM_LOG_ERROR( "connect BT_SPP_Yconnect timeout" );
-               }
+            cm_connecting_request_count++;
             }
         else if( BT_STATUS_AUTH_LOST ==  BT_yconnect_connect_result )
             {
-            EW_notify_connection_status(EnumConnectionStatusAUTHENTICATION_ERR, 0);
+            EW_notify_connection_status(EnumConnectionStatusAUTHENTICATION_ERR );
             }
         else
             {
@@ -151,7 +224,7 @@ if( ( CM_NAVI_APP_CONNECTION_DISCONNECTED == cm_connect_device.navi_app_connecti
     // Connect navi is authentication error
     else if( BT_STATUS_AUTH_LOST == BT_navi_connect_result )
         {
-        EW_notify_connection_status(EnumConnectionStatusAUTHENTICATION_ERR, 0);
+        EW_notify_connection_status(EnumConnectionStatusAUTHENTICATION_ERR );
         }
     // BT manager return other error
     else
@@ -228,6 +301,20 @@ return false;
 }
 
 /*================================================================================================
+@brief   Handle the HMI notify CCUID
+@details Handle the HMI notify CCUID
+@return  None
+@retval  None
+================================================================================================*/
+void CM_core_handle_hmi_ccuid_ready
+    (
+    const uint8_t *ccuid
+    )
+{
+memcpy( cm_stored_ccuid, ccuid, CCUID_LENGTH );
+}
+
+/*================================================================================================
 @brief   Get APP connection status
 @details For HMI get app connection status, return true only if the yconnect authentication is done
 @return  None
@@ -284,7 +371,7 @@ void CM_core_handle_btmgr_pairing_result
 {
 if( false == CM_btmgr_pairing_result->pairing_result )
     {
-    EW_notify_connection_status(EnumConnectionStatusPAIRING_FAILED, 0);
+    EW_notify_connection_status(EnumConnectionStatusPAIRING_FAILED );
     }
 }
 
@@ -315,6 +402,12 @@ if( false == CM_connection_status_change->connected )
     if( CM_APP_NAVILITE == CM_connection_status_change->app_type )
         {
         cm_connect_device.navi_app_connection_status = CM_NAVI_APP_CONNECTION_DISCONNECTED;
+        // Check if CM need to notify the connection result now
+        if( 1 == cm_connecting_request_count )
+            {
+            CM_core_stop_timeout_timer();
+            EW_notify_connection_status( EnumConnectionStatusNAVI_APP_CONNECTED );
+            }
         }
     else if( CM_APP_YCONNECT == CM_connection_status_change->app_type )
         {
@@ -329,16 +422,25 @@ if( false == CM_connection_status_change->connected )
 else
     {
     // LC is Connecting to APP
+    // Since the YCONNECT is connect after NAVI, if Yconnect status is from YCONNECT_CONNECTING to YCONNECT_CONNECTED
+
     if( ( CM_NAVI_APP_CONNECTION_CONNECTING == cm_connect_device.navi_app_connection_status || CM_YCONNECT_APP_CONNECTION_CONNECTING == cm_connect_device.yconnect_app_connection_status ) )
         {
-        xSemaphoreGive( s_binary_semaphore );
         if( CM_APP_NAVILITE == CM_connection_status_change->app_type )
             {
             cm_connect_device.navi_app_connection_status = CM_NAVI_APP_CONNECTION_CONNECTED;
+            // Check if CM need to notify the connection result now
+            if( 1 == cm_connecting_request_count )
+                {
+                CM_core_stop_timeout_timer();
+                EW_notify_connection_status( EnumConnectionStatusNAVI_APP_CONNECTED );
+                }
             }
         else if( CM_APP_YCONNECT == CM_connection_status_change->app_type  )
             {
+            BLE_server_set_advertising_mode( BLE_ADVERTISING_CONNECTABLE, BLE_ADVERTISING_DATA_NAME_COMPLETE, cm_stored_ccuid, CCUID_LENGTH + 1 );
             cm_connect_device.yconnect_app_connection_status = CM_YCONNECT_APP_CONNECTION_CONNECTED;
+            connecting_notify_ready = true;
             }
         }
     // APP connect to LC
@@ -347,16 +449,19 @@ else
         if( CM_APP_NAVILITE == CM_connection_status_change->app_type )
             {
             cm_connect_device.navi_app_connection_status = CM_NAVI_APP_CONNECTION_CONNECTED;
-            EW_notify_connection_status(EnumConnectionStatusNAVI_APP_CONNECTED, 0);
+            EW_notify_connection_status(EnumConnectionStatusNAVI_APP_CONNECTED );
             }
-        else if(  CM_APP_YCONNECT == CM_connection_status_change->app_type  )
+        else if( CM_APP_YCONNECT == CM_connection_status_change->app_type  )
             {
+            BLE_server_set_advertising_mode( BLE_ADVERTISING_CONNECTABLE, BLE_ADVERTISING_DATA_NAME_COMPLETE, cm_stored_ccuid, CCUID_LENGTH + 1 );
             cm_connect_device.yconnect_app_connection_status = CM_YCONNECT_APP_CONNECTION_CONNECTED;
-            //EW_notify_connection_status(EnumConnectionStatusYAMAHA_BLE_CONNECTED, 0);
+            EW_notify_connection_status( EnumConnectionStatusYAMAHA_APP_BLE_CONNECTED );
             }
         }
     }
-EW_notify_connection_status( EnumConnectionStatusCONNECTED_APP_CHANGED, 0 );
+
+cm_connecting_request_count = 0;  // Clear the connecting request at all cases
+EW_notify_connection_status( EnumConnectionStatusCONNECTED_APP_CHANGED );
 }
 
 /*================================================================================================
@@ -370,19 +475,50 @@ void CM_core_handle_app_auth_result
     const CM_auth_result_t *CM_auth_result
     )
 {
+bool is_LE_paired_device = false;
+
 // Currently only handle the authentication success case
 if( true == CM_auth_result->result )
     {
     if( CM_APP_YCONNECT == CM_auth_result->app_type )
         {
         cm_connect_device.yconnect_app_connection_status = CM_YCONNECT_APP_CONNECTION_AUTHENTICATED;
-        EW_notify_connection_status( EnumConnectionStatusYAMAHA_APP_CONNECTED, 0 );
+        // Check if the LC is connecting BT module, and need to notify HMI
+        if( false == connecting_notify_ready )
+            {
+            EW_notify_connection_status( EnumConnectionStatusYAMAHA_APP_CONNECTED );
+            }
+        else
+            {
+            BT_is_paired_le_device( cm_connect_device.bd_addr, &is_LE_paired_device );
+            if( false == is_LE_paired_device )
+                {
+                CM_core_stop_timeout_timer();
+                EW_notify_connection_status( EnumConnectionStatusYAMAHA_APP_BLE_NOT_CONNECTED );
+                }
+
+            if( CM_NAVI_APP_CONNECTION_DISCONNECTED == cm_connect_device.navi_app_connection_status )
+                {
+                CM_core_stop_timeout_timer();
+                EW_notify_connection_status( EnumConnectionStatusYAMAHA_APP_CONNECTED );
+                connecting_notify_ready = false;
+                }
+            else if( CM_NAVI_APP_CONNECTION_CONNECTED == cm_connect_device.navi_app_connection_status || CM_NAVI_APP_CONNECTION_AUTHENTICATED == cm_connect_device.navi_app_connection_status )
+                {
+                CM_core_stop_timeout_timer();
+                EW_notify_connection_status( EnumConnectionStatusBOTH_APP_CONNECTED );
+                connecting_notify_ready = false;
+                }
+
+            }
         }
+    // Reserved
     else if( CM_APP_NAVILITE == CM_auth_result->app_type )
         {
         cm_connect_device.navi_app_connection_status = CM_NAVI_APP_CONNECTION_AUTHENTICATED;
         }
     }
+EW_notify_connection_status( EnumConnectionStatusCONNECTED_APP_CHANGED );
 }
 
 /*================================================================================================
@@ -401,8 +537,11 @@ memset( cm_connect_device.bd_addr, BT_DEVICE_ADDRESS_LEN, 0 );
 cm_connect_device.yconnect_app_connection_status = CM_YCONNECT_APP_CONNECTION_DISCONNECTED;
 cm_connect_device.navi_app_connection_status = CM_NAVI_APP_CONNECTION_DISCONNECTED;
 
+
 // Update to Auto connect
 CMA_handle_btmgr_acl_link_disconnected( CM_acl_disconnected->bd_addr, CM_acl_disconnected->user_request );
+
+EW_notify_connection_status( EnumConnectionStatusCONNECTED_APP_CHANGED );
 }
 
 /*================================================================================================
@@ -432,9 +571,15 @@ void CM_core_handle_btmgr_enable_state_changed
     (
     const bool enable_state
     )
+{
+CMA_handle_btmgr_enable_state_changed( enable_state );
+
+if( true == enable_state )
     {
-    CMA_handle_btmgr_enable_state_changed( enable_state );
+    // The CM haven't get CCUID yet, use Test CCUID
+    BLE_server_set_advertising_mode( BLE_ADVERTISING_NON_CONNECTABLE, BLE_ADVERTISING_DATA_NAME_COMPLETE, cm_stored_ccuid, CCUID_LENGTH + 1 );
     }
+}
 
 #ifdef __cplusplus
 }

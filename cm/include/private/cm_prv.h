@@ -109,6 +109,11 @@ void CM_core_handle_btmgr_enable_state_changed
     const bool enable_state
     );
 
+void CM_core_handle_hmi_ccuid_ready
+    (
+    const uint8_t *ccuid
+    );
+
 #ifdef __cplusplus
 }
 #endif

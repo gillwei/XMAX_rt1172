@@ -386,7 +386,7 @@ while( ( NULL == found_device ) && ( try_count++ < device_count ) )
     {
     remove_needed = false;
 
-    BT_is_paired_device( s_cma_current_device->bd_addr, &paired )
+    BT_is_paired_device( s_cma_current_device->bd_addr, &paired );
     BT_is_paired_device_auth_lost( s_cma_current_device->bd_addr, &auth_lost );
 
     if( false == paired )

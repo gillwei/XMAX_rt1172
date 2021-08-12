@@ -113,6 +113,82 @@ return CM_STATUS_OK;
 }
 
 /*================================================================================================
+@brief   Get Connection manager autoconnect enable state
+@details Get Connection manager autoconnect enable state
+@return  None
+@retval  Return auto connect enable state
+================================================================================================*/
+bool CM_get_auto_connect_state
+    (
+    void
+    )
+{
+return CMA_get_enable_state();
+}
+
+/*================================================================================================
+@brief   Set autoconnect enable state
+@details Set autoconnect enable state
+@return  None
+@retval  None
+================================================================================================*/
+CM_status_e CM_set_auto_connect_state
+    (
+    const bool state
+    )
+{
+CM_task_request_t task_request;
+task_request.CM_REQUEST_type = CM_REQUEST_SET_AUTOCONNECT_STATE;
+task_request.CM_set_auto_connect_state.auto_connect_state = state;
+
+if( false == CM_tsk_send_request( &task_request ) )
+    {
+    return CM_STATUS_QUEUE_FULL;
+    }
+return CM_STATUS_OK;
+}
+
+/*================================================================================================
+@brief   Get Connection manager autoconnect enable state
+@details Get Connection manager autoconnect enable state
+@return  None
+@retval  Return auto connect enable state
+================================================================================================*/
+CM_status_e CM_factory_reset
+    (
+    void
+    )
+{
+if( !CMA_factory_reset() )
+    {
+    CM_LOG_ERROR( "CMA_factory_reset false" );
+    }
+return CM_STATUS_OK;
+}
+
+/*================================================================================================
+@brief   Receive EW notify the Linkcard CCUID
+@details Receive EW notify the Linkcard CCUID
+@return  None
+@retval  Return Connection manager send request status
+================================================================================================*/
+CM_status_e CM_handle_hmi_ccuid_ready
+    (
+    const uint8_t* ccuid
+    )
+{
+CM_task_request_t task_request;
+task_request.CM_REQUEST_type = CM_REQUEST_STORE_CCUID;
+memcpy( task_request.CM_store_ccuid.ccuid, ccuid, CCUID_LENGTH );
+
+if( false == CM_tsk_send_request( &task_request ) )
+    {
+    return CM_STATUS_QUEUE_FULL;
+    }
+return CM_STATUS_OK;
+}
+
+/*================================================================================================
 @brief   Get SPP connection status
 @details For HMI get spp connection status
 @return  None
@@ -239,60 +315,6 @@ task_request.CM_acl_disconnected.user_request = user_requested;
 if( false == CM_tsk_send_request( &task_request ) )
     {
     return CM_STATUS_QUEUE_FULL;
-    }
-return CM_STATUS_OK;
-}
-
-/*================================================================================================
-@brief   Get Connection manager autoconnect enable state
-@details Get Connection manager autoconnect enable state
-@return  None
-@retval  Return auto connect enable state
-================================================================================================*/
-bool CM_get_auto_connect_state
-    (
-    void
-    )
-{
-return CMA_get_enable_state();
-}
-
-/*================================================================================================
-@brief   Set autoconnect enable state
-@details Set autoconnect enable state
-@return  None
-@retval  None
-================================================================================================*/
-CM_status_e CM_set_auto_connect_state
-    (
-    const bool state
-    )
-{
-CM_task_request_t task_request;
-task_request.CM_REQUEST_type = CM_REQUEST_SET_AUTOCONNECT_STATE;
-task_request.CM_set_auto_connect_state.auto_connect_state = state;
-
-if( false == CM_tsk_send_request( &task_request ) )
-    {
-    return CM_STATUS_QUEUE_FULL;
-    }
-return CM_STATUS_OK;
-}
-
-/*================================================================================================
-@brief   Get Connection manager autoconnect enable state
-@details Get Connection manager autoconnect enable state
-@return  None
-@retval  Return auto connect enable state
-================================================================================================*/
-CM_status_e CM_factory_reset
-    (
-    void
-    )
-{
-if( !CMA_factory_reset() )
-    {
-    CM_LOG_ERROR( "CMA_factory_reset false" );
     }
 return CM_STATUS_OK;
 }

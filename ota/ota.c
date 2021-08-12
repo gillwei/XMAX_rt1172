@@ -29,7 +29,6 @@ extern "C"{
 #include "fsl_debug_console.h"
 
 #include "GRM_pub_prj.h"
-#include "HCI_pub.h"
 #include "fsl_lpuart.h"
 #include "fsl_adc_etc.h"
 #include "fsl_pit.h"

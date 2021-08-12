@@ -154,7 +154,12 @@ while( 1 )
 
             case CM_REQUEST_SET_ENABLE_STATE:
                 {
-                CM_core_set_auto_connect_state( &(task_request.CM_set_auto_connect_state) );
+                CM_core_handle_btmgr_enable_state_changed( task_request.CM_set_bt_enable_state.bt_enable_state );
+                } break;
+
+            case CM_REQUEST_STORE_CCUID:
+                {
+                CM_core_handle_hmi_ccuid_ready( task_request.CM_store_ccuid.ccuid );
                 } break;
 
 

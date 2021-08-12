@@ -17,6 +17,7 @@ extern "C" {
                         GENERAL INCLUDES
 --------------------------------------------------------------------*/
 #include "bt_core.h"
+#include "EW_pub.h"
 
 /*--------------------------------------------------------------------
                         LITERAL CONSTANTS
@@ -90,6 +91,7 @@ typedef enum CM_REQUEST_type
     CM_REQUEST_ACL_DISCONNECT,
     CM_REQUEST_SET_AUTOCONNECT_STATE,
     CM_REQUEST_SET_ENABLE_STATE,
+    CM_REQUEST_STORE_CCUID,
 
     CM_REQUEST_TYPE_CNT,
     CM_REQUEST_TYPE_INVALID = CM_REQUEST_TYPE_CNT
@@ -103,6 +105,12 @@ typedef enum CM_app_type
     CM_APP_TYPE_CNT,
     CM_APP_TYPE_INVALID = CM_APP_TYPE_CNT
     } CM_app_type_e;
+
+typedef enum CM_CORE_TIMEOUT_TYPE
+    {
+    CM_CORE_TIMEOUT_IDLE,
+    CM_CORE_TIMEOUT_CONNECTION_FAIL
+    } cm_core_timeout_type_t;
 
 typedef struct CM_connect_device_status
     {
@@ -158,6 +166,12 @@ typedef struct CM_set_bt_enable_state
     bool    bt_enable_state;
     } CM_set_bt_enable_state_t;
 
+// Store CCUID on CM, send length need to use ( CCUID_LENGTH + 1 )
+typedef struct CM_store_ccuid
+    {
+    uint8_t  ccuid[CCUID_LENGTH];
+    } CM_store_ccuid_t;
+
 typedef struct CM_task_request
     {
     CM_REQUEST_type_e                CM_REQUEST_type;
@@ -169,6 +183,7 @@ typedef struct CM_task_request
     CM_acl_disconnected_t            CM_acl_disconnected;
     CM_set_auto_connect_state_t      CM_set_auto_connect_state;
     CM_set_bt_enable_state_t         CM_set_bt_enable_state;
+    CM_store_ccuid_t                 CM_store_ccuid;
     } CM_task_request_t;
 
 // Since HMI need to show both of Navi and Yconnect Connection result

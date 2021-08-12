@@ -1096,7 +1096,7 @@ if( num_devices == device_num )
     {
     if( num_devices == BT_device_get_total_num() )
         {
-        EW_notify_connection_status( EnumConnectionStatusPAIRED_DEVICE_CHANGED, 0 );
+        EW_notify_connection_status( EnumConnectionStatusPAIRED_DEVICE_CHANGED );
         }
     else
         {
@@ -1149,7 +1149,7 @@ if( s_core.auto_pairing_once )
     }
 else
     {
-    EW_notify_bt_passkey_generated( device_name, passkey );
+    EW_notify_btc_passkey_generated( device_name, passkey );
     }
 }
 
