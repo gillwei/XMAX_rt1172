@@ -13,8 +13,7 @@
 --------------------------------------------------------------------*/
 #include <bc_motocon_priv.h>
 #include <string.h>
-#include "HCI_pub.h"
-#include "bt_spp_iap2.h"
+#include "BT_pub.h"
 #include "EW_pub.h"
 
 /*--------------------------------------------------------------------
@@ -33,7 +32,8 @@
 /*--------------------------------------------------------------------
                                  TYPES
 --------------------------------------------------------------------*/
-static void BC_motocon_authentication_received_btc_data( const uint8_t* data, const uint16_t length);
+static void BC_motocon_authentication_received_btc_state( const bool connected, const uint8_t* bd_addr );
+static void BC_motocon_authentication_received_btc_data( const uint8_t* data, const uint8_t length);
 
 /*--------------------------------------------------------------------
                            PROJECT INCLUDES
@@ -49,6 +49,7 @@ static void BC_motocon_authentication_received_btc_data( const uint8_t* data, co
 static uint8_t authentication_string[BC_MOTOCON_BTC_DATA_SIZE];
 static uint8_t* const ccuid_string = authentication_string + BC_MOTOCON_BTC_HEADER_SIZE + BC_MOTOCON_AUTHENTICATION_HEADER_SIZE;
 static uint8_t* const passkey_string = ccuid_string + BC_MOTOCON_AUTHENTICATION_CCUID_SIZE;
+static uint8_t btc_address[BT_DEVICE_ADDRESS_LEN];
 
 /*--------------------------------------------------------------------
                                 MACROS
@@ -89,7 +90,8 @@ authentication_string[4] = BC_MOTOCON_AUTHENTICATION_DATA_SIZE;
 authentication_string[BC_MOTOCON_BTC_HEADER_SIZE] = BC_MOTOCON_COMMAND_CODE_CONNECT_INFORMATION_RESPONSE >> 8;
 authentication_string[BC_MOTOCON_BTC_HEADER_SIZE +1] = BC_MOTOCON_COMMAND_CODE_CONNECT_INFORMATION_RESPONSE & 0xFF;
 authentication_string[BC_MOTOCON_BTC_DATA_SIZE - 1] = 4;
-HCI_spp_iap2_add_data_callback_y_app( BC_motocon_authentication_received_btc_data );
+BT_spp_add_connection_status_callback( BT_SPP_APP_MOTOCON, BC_motocon_authentication_received_btc_state );
+BT_spp_add_data_received_callback( BT_SPP_APP_MOTOCON, BC_motocon_authentication_received_btc_data );
 }
 
 /*********************************************************************
@@ -156,8 +158,28 @@ result_ccuid = EW_get_unit_id_ccuid( &real_ccuid );
 BC_MOTOCON_PRINTF( "%s: ccuid %d\r\n", __FUNCTION__, result_ccuid );
 result_passkey = EW_get_unit_id_passkey( &real_passkey );
 BC_MOTOCON_PRINTF( "%s: passkey %d\r\n", __FUNCTION__, result_passkey );
-bc_motocon_authentication_set_data( result_ccuid ? real_ccuid : (uint8_t*)TEST_CCUID, result_passkey ? real_passkey : (uint8_t*)TEST_PASSKEY );
+//bc_motocon_authentication_set_data( result_ccuid ? real_ccuid : (uint8_t*)TEST_CCUID, result_passkey ? real_passkey : (uint8_t*)TEST_PASSKEY );
 already_got = true;
+}
+
+/*********************************************************************
+*
+* @public
+* BC_motocon_authentication_received_btc_state
+*
+* Handle btc state.
+*
+*********************************************************************/
+void BC_motocon_authentication_received_btc_state
+    (
+    const bool     connected,
+    const uint8_t* bd_addr
+    )
+{
+if( connected )
+    {
+    memcpy( btc_address, bd_addr, BT_DEVICE_ADDRESS_LEN );
+    }
 }
 
 /*********************************************************************
@@ -171,7 +193,7 @@ already_got = true;
 void BC_motocon_authentication_received_btc_data
     (
     const uint8_t* data,
-    const uint16_t length
+    const uint8_t  length
     )
 {
 //TODO: check btc header is correct?
@@ -180,7 +202,7 @@ switch( command_code )
     {
     case BC_MOTOCON_COMMAND_CODE_CONNECT_INFORMATION_REQUEST:
         bc_motocon_authentication_update_data();
-        BT_SPP_IAP2_send_y_app( BC_MOTOCON_BTC_DATA_SIZE, authentication_string );
+        BT_spp_send_data( btc_address, BT_SPP_APP_MOTOCON, authentication_string, BC_MOTOCON_BTC_DATA_SIZE );
         break;
     default:
         bc_motocon_parse_error_handler( command_code, BC_MOTOCON_PARSE_INVALID_COMMAND_CODE, "" );

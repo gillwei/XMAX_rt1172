@@ -13,7 +13,7 @@
 --------------------------------------------------------------------*/
 #include "fsl_debug_console.h"
 #include "Enum.h"
-#include "BTM_pub.h"
+#include "BT_pub.h"
 #include "BC_motocon_pub.h"
 #include "BC_motocon_pub_type.h"
 
@@ -76,10 +76,10 @@ PRINTF( "%s %d\r\n", __FUNCTION__, test_item );
 switch( test_item )
     {
     case EnumMotoConTestSTART_BLE_ADVERTISING:
-        BTM_set_ble_advertisement( true );
+        //BLE_server_set_advertising_mode( true );
         break;
     case EnumMotoConTestSTOP_BLE_ADVERTISING:
-        BTM_set_ble_advertisement( false );
+        //BLE_server_set_advertising_mode( false );
         break;
     case EnumMotoConTestLIBRATY_VERSION:
         BC_motocon_send_lib_version( 1, 2, 3 );

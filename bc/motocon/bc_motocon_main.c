@@ -12,10 +12,10 @@
                            GENERAL INCLUDES
 --------------------------------------------------------------------*/
 #include <bc_motocon_priv.h>
-#include <HCI_pub.h>
-#include <hci_control_api.h>
 #if( ENABLE_MOTOCON_HCI_LINK )
-    #include <cycfg_gatt_db.h>
+    #include <BT_pub.h>
+    #include <ble_types.h>
+    #include <CM_pub.h>
 #endif
 #include "timers.h"
 #include "client_dcm_appl.h"
@@ -33,7 +33,7 @@
 void BC_motocon_ble_connected_callback( void );
 void BC_motocon_ble_disconnected_callback( void );
 void BC_motocon_read_request_received_callback( const uint16_t handle );
-void BC_motocon_write_request_received_callback( const uint16_t handle, const uint8_t* data, const uint16_t length );
+void BC_motocon_write_request_received_callback( const uint16_t handle, const uint8_t* data, const uint8_t length );
 static void send_alive_request( TimerHandle_t timer_handle );
 
 /*--------------------------------------------------------------------
@@ -54,7 +54,7 @@ static uint8_t alive_id;
 static TimerHandle_t alive_send_timer;
 
 #if( ENABLE_MOTOCON_HCI_LINK )
-    static ble_server_callback bc_motocon_ble_callback =
+    static BLE_server_callback_t bc_motocon_ble_callback =
         {
         BC_motocon_ble_connected_callback,
         BC_motocon_ble_disconnected_callback,
@@ -86,7 +86,7 @@ void bc_motocon_init
 bc_motocon_authentication_init();
 bc_motocon_set_connected( false );
 #if( ENABLE_MOTOCON_HCI_LINK )
-    HCI_le_register_server_callback( BLE_SERVER_MOTOCONSDK, &bc_motocon_ble_callback );
+    BLE_server_register_callback( BLE_SERVER_MOTOCON, &bc_motocon_ble_callback );
 #endif
 bc_motocon_ddt_init();
 alive_count = 0;
@@ -209,6 +209,7 @@ void bc_motocon_set_connected
     )
 {
 BC_MOTOCON_PRINTF( "%s: %d\r\n", __FUNCTION__, connected );
+CM_handle_app_auth_result( CM_APP_YCONNECT, connected );
 if( bc_motocon_connected != connected )
     {
     bc_motocon_connected = connected;
@@ -254,7 +255,7 @@ BC_MOTOCON_PERIODIC_PRINTF( "%s, %d\r\n", __FUNCTION__, alive_id );
 if( alive_count >= MOTOCON_ALIVE_TIMEOUT_COUNT )
     {
     BC_MOTOCON_PRINTF( "%s, disconnect ble.\r\n", __FUNCTION__ );
-    HCI_le_disconnect_ble();
+    //HCI_le_disconnect_ble();
     }
 else
     {
@@ -810,39 +811,39 @@ BC_MOTOCON_PERIODIC_PRINTF( "\r\n" );
     switch( type )
         {
         case BC_MOTOCON_NOTIFY:
-            result = HCI_le_send_gatt_server_data( HCI_CONTROL_GATT_COMMAND_NOTIFY, HDLC_MOTOCONSDK_NOTIFY_VALUE, bytes, length );
+            result = BLE_server_notify( HDLC_MOTOCONSDK_NOTIFY_VALUE, bytes, length );
             break;
 
         case BC_MOTOCON_DDT_TO_VEHICLE_STATUS_READ_RESPONSE:
-            result = HCI_le_send_gatt_server_data( HCI_CONTROL_GATT_COMMAND_READ_RESPONSE, HDLC_MOTOCONSDK_DDT_TO_VEHICLE_STATUS_VALUE, bytes, length );
+            result = BLE_server_read_response( HDLC_MOTOCONSDK_DDT_TO_VEHICLE_STATUS_VALUE, bytes, length );
             break;
 
         case BC_MOTOCON_DDT_TO_VEHICLE_STATUS_NOTIFY:
-            result = HCI_le_send_gatt_server_data( HCI_CONTROL_GATT_COMMAND_NOTIFY, HDLC_MOTOCONSDK_DDT_TO_VEHICLE_STATUS_VALUE, bytes, length );
+            result = BLE_server_notify( HDLC_MOTOCONSDK_DDT_TO_VEHICLE_STATUS_VALUE, bytes, length );
             break;
 
         case BC_MOTOCON_DDT_TO_PHONE_CONTROL_NOTIFY:
-            result = HCI_le_send_gatt_server_data( HCI_CONTROL_GATT_COMMAND_NOTIFY, HDLC_MOTOCONSDK_DDT_TO_PHONE_CONTROL_VALUE, bytes, length );
+            result = BLE_server_notify( HDLC_MOTOCONSDK_DDT_TO_PHONE_CONTROL_VALUE, bytes, length );
             break;
 
         case BC_MOTOCON_DDT_TO_PHONE_DATA_NOTIFY:
-            result = HCI_le_send_gatt_server_data( HCI_CONTROL_GATT_COMMAND_NOTIFY, HDLC_MOTOCONSDK_DDT_TO_PHONE_DATA_VALUE, bytes, length );
+            result = BLE_server_notify( HDLC_MOTOCONSDK_DDT_TO_PHONE_DATA_VALUE, bytes, length );
             break;
 
         case BC_MOTOCON_DDT_VEHICLE_INFORMATION_CONTROL_NOTIFY:
-            result = HCI_le_send_gatt_server_data( HCI_CONTROL_GATT_COMMAND_NOTIFY, HDLC_MOTOCONSDK_DDT_VEHICLE_INFORMATION_CONTROL_VALUE, bytes, length );
+            result = BLE_server_notify( HDLC_MOTOCONSDK_DDT_VEHICLE_INFORMATION_CONTROL_VALUE, bytes, length );
             break;
 
         case BC_MOTOCON_DDT_VEHICLE_INFORMATION_DATA_NOTIFY:
-            result = HCI_le_send_gatt_server_data( HCI_CONTROL_GATT_COMMAND_NOTIFY, HDLC_MOTOCONSDK_DDT_VEHICLE_INFORMATION_DATA_VALUE, bytes, length );
+            result = BLE_server_notify( HDLC_MOTOCONSDK_DDT_VEHICLE_INFORMATION_DATA_VALUE, bytes, length );
             break;
 
         case BC_MOTOCON_DDT_CAN_CONTROL_NOTIFY:
-            result = HCI_le_send_gatt_server_data( HCI_CONTROL_GATT_COMMAND_NOTIFY, HDLC_MOTOCONSDK_DDT_CAN_CONTROL_VALUE, bytes, length );
+            result = BLE_server_notify( HDLC_MOTOCONSDK_DDT_CAN_CONTROL_VALUE, bytes, length );
             break;
 
         case BC_MOTOCON_DDT_CAN_DATA_NOTIFY:
-            result = HCI_le_send_gatt_server_data( HCI_CONTROL_GATT_COMMAND_NOTIFY, HDLC_MOTOCONSDK_DDT_CAN_DATA_VALUE, bytes, length );
+            result = BLE_server_notify( HDLC_MOTOCONSDK_DDT_CAN_DATA_VALUE, bytes, length );
             break;
 
         default:
@@ -954,7 +955,7 @@ void BC_motocon_write_request_received_callback
     (
     const uint16_t handle,
     const uint8_t* data,
-    const uint16_t length
+    const uint8_t  length
     )
 {
 BC_MOTOCON_PERIODIC_PRINTF( "%s\r\n", __FUNCTION__ );

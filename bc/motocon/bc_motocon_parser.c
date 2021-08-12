@@ -517,7 +517,7 @@ if( length >= 22 )
         }
     }
 BC_motocon_send_authenticationv2_result( false );
-EW_notify_bt_connection_result( EnumBtDeviceConnectionResultYAMAHA_APP_CONNECTION_FAILED );
+//EW_notify_bt_connection_result( EnumBtDeviceConnectionResultYAMAHA_APP_CONNECTION_FAILED );
 bc_motocon_set_connected( false );
 return BC_MOTOCON_PARSE_INVALID_INPUT;
 }
