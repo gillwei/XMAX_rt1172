@@ -28,7 +28,8 @@
 #define NAVILITE_DEBUG_DETAIL false
 
 #if( NAVILITE_SERIAL_SEND_SUPPORT == 1 )
-#include "bt_spp_iap2.h"
+#include "BT_pub.h"
+#include "bt_types.h"
 #endif
 
 #endif
@@ -67,6 +68,35 @@
 /*--------------------------------------------------------------------
                               PROCEDURES
 --------------------------------------------------------------------*/
+
+/*********************************************************************
+*
+* @private
+* navilite_platform_send
+*
+* Send data to BT module via SPP using platform-dependent function call
+*
+* @param data_len data length
+* @param data data pointer to send
+* @return  true if success, otherwise false
+*
+*********************************************************************/
+bool navilite_platform_send
+    (
+    const uint8_t data_len,
+    const uint8_t* data
+    )
+{
+BT_status_e ret = BT_spp_send_data( NAVILITE_get_current_bt_addr(), BT_SPP_APP_NAVILITE, data, data_len );
+if( BT_STATUS_OK == ret )
+    {
+    return true;
+    }
+else
+    {
+    return false;
+    }
+}
 
 /*********************************************************************
 *
@@ -131,21 +161,10 @@ else
 
 #if( NAVILITE_SERIAL_SEND_SUPPORT == 1 )
     // Note: full frame header size - payload pointer filed + real data size = actual data frame to be sent!!
-
-    if( NAVILITE_get_connect_mode() == NAVILITE_CONN_BT_IAP2 )
-        {
-        #if( NAVILITE_DEBUG && NAVILITE_DEBUG_DETAIL )
-            NAVILITE_PRINTF( "\r\n++ Sent via IAP2\r\n" );
-        #endif
-        ret = BT_IAP2_send( FIELD_PAYLOADDATA_OFFSET + frame->payload_size, navilite_send_buffer );
-        }
-    else
-        {
-        #if( NAVILITE_DEBUG && NAVILITE_DEBUG_DETAIL )
-            NAVILITE_PRINTF( "\r\n++ Sent via SPP\r\n" );
-        #endif
-        ret = BT_SPP_send( FIELD_PAYLOADDATA_OFFSET + frame->payload_size, navilite_send_buffer );
-        }
+    #if( NAVILITE_DEBUG && NAVILITE_DEBUG_DETAIL )
+        NAVILITE_PRINTF( "\r\n++ Sent via SPP\r\n" );
+    #endif
+    ret = navilite_platform_send( FIELD_PAYLOADDATA_OFFSET + frame->payload_size, navilite_send_buffer );
 #endif
 
 return ret;

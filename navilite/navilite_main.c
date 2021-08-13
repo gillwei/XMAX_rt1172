@@ -23,7 +23,8 @@
 #include "NAVILITE_pub_protocol.h"
 #include "EW_pub.h"
 #include "navilite_prv.h"
-#include "BTM_pub.h"
+#include "BT_pub.h"
+#include "bt_types.h"
 #include "NAVILITE_pub.h"
 #include "navilite_util.h"
 #include "NAVI_pub.h"
@@ -77,6 +78,9 @@ static navilite_conn_mode_type conn_mode = 0;
 static bool navilite_is_connected = false;
 
 navilite_session_status_type navilite_session_status;
+
+// bt address
+static uint8_t navilite_bt_addr[NAVILITE_BT_ADDRESS_SIZE];
 
 // generic poi list (tbt/fav/gas)
 static uint32_t session_list_size_total[NAVILITE_SESSION_INDEX_SIZE] = { 0 };
@@ -184,22 +188,22 @@ return navilite_session_status.office_status == 1;
 *
 * navilite defined callback for handling the bt connection change
 *
-* @param connection_is_up true when connected, false disconnected
-* @param connection_info data pointer of bt connection info data
-* @param conn_path path for bt spp or iap
+* @param connected true when connected, false disconnected
+* @param bd_addr data pointer of bt address info
 *
 *********************************************************************/
 static void navilite_bt_connection_info_handler
     (
-    const bool connection_is_up,
-    const uint8_t* connection_info,
-    const bt_connection_path_type conn_path
+    const bool connected,
+    const uint8_t* bd_addr
     )
 {
-PRINTF(" \r\n#### BT STATUS PATH changed: %d ####\r\n", conn_path );
-if( connection_is_up )
+memcpy( navilite_bt_addr, bd_addr, NAVILITE_BT_ADDRESS_SIZE );
+
+PRINTF(" \r\n#### BT connection status changed: %d, bt addr: 0x%06x\r\n", connected, *bd_addr );
+if( connected )
     {
-    NAVILITE_connect( conn_path );
+    NAVILITE_connect( NAVILITE_CONN_BT_SPP );
     navilite_is_connected = true;
     }
 else
@@ -411,7 +415,7 @@ for( int i = 0; i < NAVILITE_SESSION_INDEX_SIZE; i++ )
 navilite_setup_queue_buffer();
 
 // Add a navilite callback to BT status changed
-BTM_add_connection_info_callback( navilite_bt_connection_info_handler );
+BT_spp_add_connection_status_callback( BT_SPP_APP_NAVILITE, navilite_bt_connection_info_handler );
 
 // HMI setup
 #if( UNIT_TEST_NAVILITE )
@@ -421,7 +425,7 @@ BTM_add_connection_info_callback( navilite_bt_connection_info_handler );
 #endif
 
 // Setup HCI data callback
-HCI_spp_iap2_add_data_callback( ( spp_iap2_data_callback )NAVILITE_queue_hci_buffer );
+BT_spp_add_data_received_callback( BT_SPP_APP_NAVILITE, NAVILITE_queue_hci_buffer );
 
 // Setup runloop event for job running (vehicle speed reporting)
 NAVILITE_register_update_callback_runloopevent( navilite_vim_runloop );
@@ -469,7 +473,7 @@ navilite_conn_mode_type NAVILITE_get_connect_mode
     void
     )
 {
-return conn_mode;
+return NAVILITE_CONN_BT_SPP;
 }
 
 /*********************************************************************
@@ -530,6 +534,20 @@ if( xQueueBuffer == NULL)
 /*********************************************************************
 *
 * @public
+* NAVILITE_get_current_bt_addr
+*
+* Get current bt address
+* @return return  data address of bt address
+*
+*********************************************************************/
+uint8_t* NAVILITE_get_current_bt_addr()
+{
+return navilite_bt_addr;
+}
+
+/*********************************************************************
+*
+* @public
 * NAVILITE_queue_hci_buffer
 *
 * Queue HCI buffer to NAVILITE internal queue buffer
@@ -540,8 +558,8 @@ if( xQueueBuffer == NULL)
 *********************************************************************/
 void NAVILITE_queue_hci_buffer
     (
-    uint8_t* data,
-    uint32_t data_len
+    const uint8_t* data,
+    const uint8_t data_len
     )
 {
 size_t buffer_write = 0;

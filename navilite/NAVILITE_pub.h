@@ -322,14 +322,16 @@ bool NAVILITE_register_update_callback_disconnected();
 bool NAVILITE_parse_data( uint8_t*, uint32_t );
 
 /* NaviLite Data Transfer API for queuing hci data buffers */
-void NAVILITE_queue_hci_buffer( uint8_t*, uint32_t );
+void NAVILITE_queue_hci_buffer( const uint8_t*, const uint8_t );
 
 /* NaviLite transportation API */
 bool NAVILITE_send( uint8_t*, uint32_t );
 bool NAVILITE_send_as_mobile( uint8_t*, uint32_t );
 bool NAVILITE_send_as_mobile_raw( uint8_t*, uint32_t );
-
 bool NAVILITE_receive( uint8_t*, uint32_t );
+
+/* Navilite platform port API */
+bool navilite_platform_send( const uint8_t data_len, const uint8_t* data );
 
 /* NaviLite App Request API (Request Mobile App to do something) */
 bool NAVILITE_request_app_startroute( uint32_t route_index, navilite_route_option_type route_option ); //! request navilite mobile app to start routing
@@ -354,6 +356,10 @@ bool NAVILITE_report_app_dialog_select( uint8_t dialog_id, navilite_button_type 
 bool NAVILITE_is_app_navigating();
 bool NAVILITE_is_app_home_setting_set();
 bool NAVILITE_is_app_office_setting_set();
+
+/* Navilite BT related API */
+uint8_t* NAVILITE_get_current_bt_addr();
+
 #ifdef __cplusplus
 }
 #endif

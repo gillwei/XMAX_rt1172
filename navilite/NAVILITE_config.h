@@ -26,6 +26,9 @@
 // build target platform choice
 #define NAVILITE_PLATFORM_SUPPORT NAVLITE_BUILD_OS_MCU
 
+// BT ADDRESS SIZE
+#define NAVILITE_BT_ADDRESS_SIZE 6
+
 // message queue size for default
 #define NAVILITE_MESSAGE_QUEUE_SIZE 300
 
