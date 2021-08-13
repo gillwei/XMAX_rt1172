@@ -140,7 +140,7 @@ static void CMA_db_eepm_device_count_callback
 s_eepm_result = result;
 if( s_eepm_result )
     {
-    s_device_count = *( (uint8_t*)data );
+    s_device_count = ( EEPROM_INVALID_VAL_1_BYTE == *( (uint8_t*)data ) ? 0 : *( (uint8_t*)data ) );
     }
 xSemaphoreGive( s_binary_semaphore );
 }

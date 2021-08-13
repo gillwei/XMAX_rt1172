@@ -24,6 +24,7 @@ extern "C"{
 #include "cm_tsk.h"
 #include "cm_prv.h"
 #include "cm_log.h"
+#include "cm_auto_connect.h"
 
 /*--------------------------------------------------------------------
                         Definitions
@@ -34,7 +35,7 @@ extern "C"{
 --------------------------------------------------------------------*/
 #define CM_TSK_NAME       ( "cm_task" )
 #define CM_TSK_PRIORITY   ( TASK_PRIO_CM_MNGR )
-#define CM_TSK_STACK_SIZE ( configMINIMAL_STACK_SIZE * 15 )
+#define CM_TSK_STACK_SIZE ( configMINIMAL_STACK_SIZE * 5 )
 
 #define REQUEST_QUEUE_MAX_ITEMS    ( 10 )
 #define SYNC_EVENT_QUEUE_MAX_ITEMS ( 1 )
@@ -108,7 +109,7 @@ static void CM_tsk_main
 {
 CM_task_request_t task_request;
 
-task_request.CM_REQUEST_type = CM_REQUEST_TYPE_INVALID;
+CMA_init();
 
 while( 1 )
     {

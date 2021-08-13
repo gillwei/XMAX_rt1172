@@ -65,7 +65,6 @@ CM_status_e CM_init
 {
 CM_core_init();
 CM_tsk_init();
-CMA_init();
 
 return CM_STATUS_OK;
 }

@@ -540,7 +540,11 @@ void CMA_init( void )
 {
 uint8_t connect_timer_id = 0;
 
-s_cma_connect_timer = xTimerCreate( "cm_auto_connect", 0, pdFALSE, (void*)&connect_timer_id, CMA_do_connect );
+s_cma_connect_timer = xTimerCreate( "cm_auto_connect",
+                                    pdMS_TO_TICKS( TIME_INTERVAL_FIRST_TIME_MS ),
+                                    pdFALSE,
+                                    (void*)&connect_timer_id,
+                                    CMA_do_connect );
 configASSERT( NULL != s_cma_connect_timer );
 
 CMA_db_init();

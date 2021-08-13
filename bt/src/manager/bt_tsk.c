@@ -40,7 +40,7 @@ extern "C"{
 --------------------------------------------------------------------*/
 #define BT_TSK_NAME       ( "bt_task" )
 #define BT_TSK_PRIORITY   ( TASK_PRIO_BT_MNGR )
-#define BT_TSK_STACK_SIZE ( configMINIMAL_STACK_SIZE * 15 )
+#define BT_TSK_STACK_SIZE ( configMINIMAL_STACK_SIZE * 5 )
 
 #define REQUEST_QUEUE_MAX_ITEMS    ( 10 )
 #define SYNC_EVENT_QUEUE_MAX_ITEMS ( 1 )

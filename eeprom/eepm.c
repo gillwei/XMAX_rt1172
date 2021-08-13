@@ -3022,7 +3022,7 @@ BaseType_t EEPM_set_auto_connect_device_count
 {
 BaseType_t rtn = pdTRUE;
 
-if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE].semaphore, ( TickType_t ) 0 ) == pdTRUE )
+if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_COUNT].semaphore, ( TickType_t ) 0 ) == pdTRUE )
     {
     eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_COUNT].write_val= (uint32_t)device_count;
     eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_COUNT].need_verified = true;
@@ -3054,10 +3054,10 @@ BaseType_t EEPM_get_auto_connect_device_count
 BaseType_t rtn = pdTRUE;
 if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_COUNT].semaphore, ( TickType_t ) 0 ) == pdTRUE )
     {
-    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE].write_val = 0;
-    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE].need_verified = false;
-    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_SEQUENCE].callback_ptr = callback_ptr;
-    eep_get_auto_connect_device_count( (uint8_t*)&( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_COUNT].read_val ), eepm_auto_connect_device_count_r_callback );
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_COUNT].write_val = 0;
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_COUNT].need_verified = false;
+    eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_COUNT].callback_ptr = callback_ptr;
+    rtn = eep_get_auto_connect_device_count( (uint8_t*)&( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_COUNT].read_val ), eepm_auto_connect_device_count_r_callback );
     }
 else
     {
@@ -3119,7 +3119,7 @@ if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_1].semaphore
     eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_1].write_val= 0;
     eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_1].need_verified = false;
     eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_1].callback_ptr = callback_ptr;
-    eep_get_auto_connect_device_1( read_auto_connect_device_1, eepm_auto_connect_device_1_r_callback );
+    rtn = eep_get_auto_connect_device_1( read_auto_connect_device_1, eepm_auto_connect_device_1_r_callback );
     }
 else
     {
@@ -3181,7 +3181,7 @@ if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_2].semaphore
     eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_2].write_val= 0;
     eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_2].need_verified = false;
     eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_2].callback_ptr = callback_ptr;
-    eep_get_auto_connect_device_2( read_auto_connect_device_2, eepm_auto_connect_device_2_r_callback );
+    rtn = eep_get_auto_connect_device_2( read_auto_connect_device_2, eepm_auto_connect_device_2_r_callback );
     }
 else
     {
@@ -3243,7 +3243,7 @@ if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_3].semaphore
     eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_3].write_val= 0;
     eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_3].need_verified = false;
     eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_3].callback_ptr = callback_ptr;
-    eep_get_auto_connect_device_3( read_auto_connect_device_3, eepm_auto_connect_device_3_r_callback );
+    rtn = eep_get_auto_connect_device_3( read_auto_connect_device_3, eepm_auto_connect_device_3_r_callback );
     }
 else
     {
@@ -3305,7 +3305,7 @@ if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_4].semaphore
     eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_4].write_val= 0;
     eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_4].need_verified = false;
     eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_4].callback_ptr = callback_ptr;
-    eep_get_auto_connect_device_4( read_auto_connect_device_4, eepm_auto_connect_device_4_r_callback );
+    rtn = eep_get_auto_connect_device_4( read_auto_connect_device_4, eepm_auto_connect_device_4_r_callback );
     }
 else
     {
@@ -3367,7 +3367,7 @@ if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_5].semaphore
     eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_5].write_val= 0;
     eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_5].need_verified = false;
     eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_5].callback_ptr = callback_ptr;
-    eep_get_auto_connect_device_5( read_auto_connect_device_5, eepm_auto_connect_device_5_r_callback );
+    rtn = eep_get_auto_connect_device_5( read_auto_connect_device_5, eepm_auto_connect_device_5_r_callback );
     }
 else
     {
@@ -3429,7 +3429,7 @@ if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_6].semaphore
     eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_6].write_val= 0;
     eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_6].need_verified = false;
     eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_6].callback_ptr = callback_ptr;
-    eep_get_auto_connect_device_6( read_auto_connect_device_6, eepm_auto_connect_device_6_r_callback );
+    rtn = eep_get_auto_connect_device_6( read_auto_connect_device_6, eepm_auto_connect_device_6_r_callback );
     }
 else
     {
@@ -3491,7 +3491,7 @@ if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_7].semaphore
     eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_7].write_val= 0;
     eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_7].need_verified = false;
     eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_7].callback_ptr = callback_ptr;
-    eep_get_auto_connect_device_7( read_auto_connect_device_7, eepm_auto_connect_device_7_r_callback );
+    rtn = eep_get_auto_connect_device_7( read_auto_connect_device_7, eepm_auto_connect_device_7_r_callback );
     }
 else
     {
@@ -3553,7 +3553,7 @@ if( xSemaphoreTake( eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_8].semaphore
     eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_8].write_val= 0;
     eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_8].need_verified = false;
     eepm_data[EEPM_BLOCK_CONFIG_AUTO_CONNECT_DEVICE_8].callback_ptr = callback_ptr;
-    eep_get_auto_connect_device_8( read_auto_connect_device_8, eepm_auto_connect_device_8_r_callback );
+    rtn = eep_get_auto_connect_device_8( read_auto_connect_device_8, eepm_auto_connect_device_8_r_callback );
     }
 else
     {

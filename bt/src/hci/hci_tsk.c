@@ -37,7 +37,7 @@ extern "C"{
 --------------------------------------------------------------------*/
 #define HCI_TSK_NAME       ( "hci_task" )
 #define HCI_TSK_PRIORITY   ( TASK_PRIO_BT_HCI )
-#define HCI_TSK_STACK_SIZE ( configMINIMAL_STACK_SIZE * 15 )
+#define HCI_TSK_STACK_SIZE ( configMINIMAL_STACK_SIZE * 5 )
 
 #define HCI_EVENT_QUEUE_MAX_ITEMS ( 10 )
 
