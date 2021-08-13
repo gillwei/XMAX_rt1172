@@ -866,7 +866,8 @@ typedef enum
   EnumConnectionStatusCONNECTION_FAILED = 7,
   EnumConnectionStatusCONNECTED_APP_CHANGED = 8,
   EnumConnectionStatusPAIRED_DEVICE_CHANGED = 9,
-  EnumConnectionStatusPAIRED_DEVICE_LIST_UPDATED = 10
+  EnumConnectionStatusPAIRED_DEVICE_LIST_UPDATED = 10,
+  EnumConnectionStatusAUTHENTICATION_ERR = 11
 } EnumConnectionStatus;
 
 /* User defined enumeration: 'Enum::BtmStatus' */

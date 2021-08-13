@@ -2326,6 +2326,16 @@ void SettingsSET10_11_12_BtConnectionResult_OnConnectoinStatusReceivedSlot( Sett
     }
     break;
 
+    case EnumConnectionStatusAUTHENTICATION_ERR :
+    {
+      UtilityString StringUtil;
+      SettingsSET10_11_12_BtConnectionResult_HideLoadingUI( _this );
+      StringUtil = EwNewObject( UtilityString, 0 );
+      ViewsText_OnSetString((ViewsText)&_this->Message, UtilityString_ReplaceString( 
+      StringUtil, EwGetVariantOfString( &StringsSET11_NO_LONGER_PAIRED ), _this->DeviceName ));
+    }
+    break;
+
     default : 
       ViewsText_OnSetString((ViewsText)&_this->Message, 0 );
   }

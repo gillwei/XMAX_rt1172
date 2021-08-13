@@ -1902,8 +1902,11 @@ enum ConnectionStatus
   $rect <10,460,260,500>
   item PAIRED_DEVICE_CHANGED;
 
-  $rect <10,560,280,600>
+  $rect <10,510,280,550>
   item PAIRED_DEVICE_LIST_UPDATED;
+
+  $rect <10,560,280,600>
+  item AUTHENTICATION_ERR;
 }
 
 $rect <30,220,230,260>

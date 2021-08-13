@@ -929,6 +929,12 @@ class SET10_11_12_BtConnectionResult : Components::BaseMainBG
         var Utility::String StringUtil = new Utility::String;
         Message.String = StringUtil.ReplaceString( Strings::SET10_CONNECTION_FAILED, DeviceName );
       }
+      case Enum::ConnectionStatus.AUTHENTICATION_ERR:
+      {
+        HideLoadingUI();
+        var Utility::String StringUtil = new Utility::String;
+        Message.String = StringUtil.ReplaceString( Strings::SET11_NO_LONGER_PAIRED, DeviceName );
+      }
       default: Message.String = "";
     }
     DismissTimer.Enabled = true;
