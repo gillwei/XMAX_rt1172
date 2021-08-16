@@ -95,8 +95,8 @@ set BOOT_IMAGE=%CURRENT_PATH%\boot_image.bin
 set OTA_IMAGE=%CURRENT_PATH%\BKA_UPDATE_FILE.bin
 
 rem Image offsets
-set /a BT_MINIDRIVER_OFFSET=0x100
-set /a BT_FIRMWARE_OFFSET=-0x4f1500
+set /a BT_FLASH_MINIDRIVER_OFFSET=0x100
+set /a BT_FLASH_FIRMWARE_OFFSET=-0x4f1500
 set /a BOOT_IMAGE_OFFSET=-0x30000000
 
 rem Get BT settings: Version
@@ -120,6 +120,37 @@ if %BT_MINOR_VERSION% lss 0 (
 )
 
 set /a BT_VERSION="%BT_MAJOR_VERSION% << 8 | %BT_MINOR_VERSION% & 0xF"
+
+rem Get BT settings: Minidriver address
+set /a BT_MINIDRVER_ADDRESS=-1
+set /a LINE_NUM=0
+set /a BT_MINIDRIVER_UPPER_ADDRESS=-1
+set /a BT_MINIDRIVER_LOWER_ADDRESS=-1
+for /f "delims=*" %%x in (%BT_PREBUILD_MINIDRIVER%) do (
+    set LINE=%%x
+
+    set /a LINE_NUM = !LINE_NUM! + 1
+    if !LINE_NUM! equ 1 (
+        set /a BT_MINIDRIVER_UPPER_ADDRESS=0x!LINE:~9,4!
+    )
+    if !LINE_NUM! equ 2 (
+        set /a BT_MINIDRIVER_LOWER_ADDRESS=0x!LINE:~3,4!
+    )
+    if !LINE_NUM! geq 3 (
+        goto BT_Minidriver_Address_Acquired
+    )
+)
+:BT_Minidriver_Address_Acquired
+if %BT_MINIDRIVER_UPPER_ADDRESS% lss 0 (
+    echo "Error: BT minidriver upper address not available"
+    goto End
+)
+if %BT_MINIDRIVER_LOWER_ADDRESS% lss 0 (
+    echo "Error: BT minidriver lower address not available"
+    goto End
+)
+
+set /a BT_MINIDRIVER_ADDRESS="( %BT_MINIDRIVER_UPPER_ADDRESS% << 16 | %BT_MINIDRIVER_LOWER_ADDRESS% )"
 
 rem Get BT settings: Minidriver size
 set /a BT_MINIDRIVER_SIZE=0
@@ -233,9 +264,9 @@ if %BT_FIRMWARE_DS_LOWER_ADDRESS% lss 0 (
     goto End
 )
 
-set /a BT_FLASH_MINIDRIVER_ADDRESS=%BT_FLASH_ADDRESS% + %BT_MINIDRIVER_OFFSET%
-set /a BT_FLASH_FIRMWARE_SS_ADDRESS="( %BT_FIRMWARE_UPPER_ADDRESS% << 16 | %BT_FIRMWARE_SS_LOWER_ADDRESS% ) + %BT_FIRMWARE_OFFSET% + %BT_FLASH_MINIDRIVER_ADDRESS%"
-set /a BT_FLASH_FIRMWARE_DS_ADDRESS="( %BT_FIRMWARE_UPPER_ADDRESS% << 16 | %BT_FIRMWARE_DS_LOWER_ADDRESS% ) + %BT_FIRMWARE_OFFSET% + %BT_FLASH_MINIDRIVER_ADDRESS%"
+set /a BT_FLASH_MINIDRIVER_ADDRESS=%BT_FLASH_ADDRESS% + %BT_FLASH_MINIDRIVER_OFFSET%
+set /a BT_FLASH_FIRMWARE_SS_ADDRESS="( %BT_FIRMWARE_UPPER_ADDRESS% << 16 | %BT_FIRMWARE_SS_LOWER_ADDRESS% ) + %BT_FLASH_FIRMWARE_OFFSET% + %BT_FLASH_MINIDRIVER_ADDRESS%"
+set /a BT_FLASH_FIRMWARE_DS_ADDRESS="( %BT_FIRMWARE_UPPER_ADDRESS% << 16 | %BT_FIRMWARE_DS_LOWER_ADDRESS% ) + %BT_FLASH_FIRMWARE_OFFSET% + %BT_FLASH_MINIDRIVER_ADDRESS%"
 
 rem Display build info
 echo --------------------------------- User Options ---------------------------------
@@ -250,13 +281,14 @@ echo Flashloader Image Folder: %FLASHLOADER_IMAGE_DIR%
 echo --------------------------------- BT Settings ----------------------------------
 echo BT Major Version: %BT_MAJOR_VERSION%
 echo BT Minor Version: %BT_MINOR_VERSION%
+echo BT Minidriver Address: %BT_MINIDRIVER_ADDRESS%
+echo BT Minidriver Size: %BT_MINIDRIVER_SIZE% bytes
+echo BT Firmware Static Section Size: %BT_FIRMWARE_SS_SIZE% bytes
+echo BT Firmware Data Section Size: %BT_FIRMWARE_DS_SIZE% bytes
 echo BT Flash Address: %BT_FLASH_ADDRESS%
 echo BT Flash Minidriver Address: %BT_FLASH_MINIDRIVER_ADDRESS%
 echo BT Flash Firmware Static Section Address: %BT_FLASH_FIRMWARE_SS_ADDRESS%
 echo BT Flash Firmware Data Section Address: %BT_FLASH_FIRMWARE_DS_ADDRESS%
-echo BT Minidriver Size: %BT_MINIDRIVER_SIZE% bytes
-echo BT Firmware Static Section Size: %BT_FIRMWARE_SS_SIZE% bytes
-echo BT Firmware Data Section Size: %BT_FIRMWARE_DS_SIZE% bytes
 echo ------------------------------- Pre-Build Images -------------------------------
 echo MCU System Validity: %MCU_PREBUILD_SYS_VALIDITY%
 echo BT Firmware: %BT_PREBUILD_FIRMWARE%
@@ -312,8 +344,9 @@ mkdir temp
 arm-none-eabi-objcopy -v -O srec %MCU_BUILD_IMAGE% temp\LinkCard-RT1172.srec
 arm-none-eabi-objcopy -v -O srec %BOOTLOADER_BUILD_IMAGE% temp\IXWW22_BLD.srec
 
-srec_cat.exe %BT_PREBUILD_FIRMWARE% -Intel -offset %BT_FIRMWARE_OFFSET% -o temp\BT_flash.hex -Intel
-srec_cat.exe temp\BT_flash.hex -Intel %BT_PREBUILD_MINIDRIVER% -Intel -o temp\BT_mdflash.bin -Binary
+srec_cat.exe %BT_PREBUILD_MINIDRIVER% -Intel -offset -%BT_MINIDRIVER_ADDRESS% -o temp\BT_md.hex -Intel
+srec_cat.exe %BT_PREBUILD_FIRMWARE% -Intel -offset %BT_FLASH_FIRMWARE_OFFSET% -o temp\BT_flash.hex -Intel
+srec_cat.exe temp\BT_md.hex -Intel temp\BT_flash.hex -Intel -o temp\BT_mdflash.bin -Binary
 
 rem Merge Bootloader+APP+BT firmware+VALIDITY for development ECU that no signature and encryption are used
 srec_cat.exe temp\IXWW22_BLD.srec -M temp\LinkCard-RT1172.srec -M ^
