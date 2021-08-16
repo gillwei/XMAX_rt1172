@@ -14,6 +14,7 @@
 #include <bc_motocon_priv.h>
 #include <string.h>
 #include "BT_pub.h"
+#include "CM_pub.h"
 #include "EW_pub.h"
 
 /*--------------------------------------------------------------------
@@ -158,7 +159,7 @@ result_ccuid = EW_get_unit_id_ccuid( &real_ccuid );
 BC_MOTOCON_PRINTF( "%s: ccuid %d\r\n", __FUNCTION__, result_ccuid );
 result_passkey = EW_get_unit_id_passkey( &real_passkey );
 BC_MOTOCON_PRINTF( "%s: passkey %d\r\n", __FUNCTION__, result_passkey );
-//bc_motocon_authentication_set_data( result_ccuid ? real_ccuid : (uint8_t*)TEST_CCUID, result_passkey ? real_passkey : (uint8_t*)TEST_PASSKEY );
+bc_motocon_authentication_set_data( result_ccuid ? real_ccuid : (uint8_t*)TEST_CCUID, result_passkey ? real_passkey : (uint8_t*)TEST_PASSKEY );
 already_got = true;
 }
 

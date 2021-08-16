@@ -16,7 +16,6 @@
 #include "BleServiceStructure.pb.h"
 #include <time.h>
 #include "client_ble_cmd.h"
-#include "EW_pub.h"
 #include "can_mid.h"
 
 /*--------------------------------------------------------------------
@@ -517,7 +516,6 @@ if( length >= 22 )
         }
     }
 BC_motocon_send_authenticationv2_result( false );
-//EW_notify_bt_connection_result( EnumBtDeviceConnectionResultYAMAHA_APP_CONNECTION_FAILED );
 bc_motocon_set_connected( false );
 return BC_MOTOCON_PARSE_INVALID_INPUT;
 }
