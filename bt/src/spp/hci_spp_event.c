@@ -89,7 +89,8 @@ switch( GROUP_EVENT_CODE( group_code, event_code ) )
         } break;
     case HCI_CONTROL_IAP2_EVENT_CONNECTED_GARMIN:
         {
-        uint8_t* bd_addr = &( param[0] );
+        uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN] = { 0 };
+        REVERSE_BD_ADDR( &( param[0] ), bd_addr );
         uint16_t connection_handle = LITTLE_ENDIAN_TO_INT16( &( param[6] ) );
         BT_spp_app_type_e app_type = param[8];
 
@@ -158,7 +159,8 @@ switch( GROUP_EVENT_CODE( group_code, event_code ) )
     {
     case HCI_CONTROL_SPP_EVENT_CONNECTED_GARMIN:
         {
-        uint8_t* bd_addr = &( param[0] );
+        uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN] = { 0 };
+        REVERSE_BD_ADDR( &( param[0] ), bd_addr );
         uint16_t connection_handle = LITTLE_ENDIAN_TO_INT16( &( param[6] ) );
         BT_spp_app_type_e app_type = param[8];
 

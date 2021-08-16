@@ -75,13 +75,15 @@ switch( GROUP_EVENT_CODE( group_code, event_code ) )
         } break;
     case HCI_CONTROL_EVENT_AUTH_LOST_GARMIN:
         {
-        uint8_t* bd_addr = &( param[0] );
+        uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN] = { 0 };
+        REVERSE_BD_ADDR( &( param[0] ), bd_addr );
 
         BT_LOG_DEBUG( "Auth lost event: bd_addr=%02x:%02x:%02x:%02x:%02x:%02x", BD_ADDR_PRINT( bd_addr ) );
         } break;
     case HCI_CONTROL_EVENT_CONNECTION_STATUS_GARMIN:
         {
-        uint8_t* bd_addr = &( param[0] );
+        uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN] = { 0 };
+        REVERSE_BD_ADDR( &( param[0] ), bd_addr );
         BT_transport_type_e transport_type = param[6];
         bool connected = param[7];
         uint8_t reason = param[8];
@@ -108,7 +110,8 @@ switch( GROUP_EVENT_CODE( group_code, event_code ) )
         } break;
     case HCI_CONTROL_EVENT_PAIRED_DEVICE_DELETED_GARMIN:
         {
-        uint8_t* bd_addr = &( param[0] );
+        uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN] = { 0 };
+        REVERSE_BD_ADDR( &( param[0] ), bd_addr );
 
         BT_LOG_DEBUG( "Paired device deleted event: bd_addr=%02x:%02x:%02x:%02x:%02x:%02x",
                       BD_ADDR_PRINT( bd_addr ) );
@@ -119,7 +122,8 @@ switch( GROUP_EVENT_CODE( group_code, event_code ) )
         {
         uint8_t num_devices = param[0];
         uint8_t device_num = param[1];
-        uint8_t* bd_addr = &( param[2] );
+        uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN] = { 0 };
+        REVERSE_BD_ADDR( &( param[2] ), bd_addr );
         uint8_t* device_name = &( param[8] );
         BT_device_type_e device_type = param[40];
         bool auth_lost = param[41];
@@ -147,7 +151,8 @@ switch( GROUP_EVENT_CODE( group_code, event_code ) )
         {
         uint8_t result = param[0];
         BT_transport_type_e transport_type = param[1];
-        uint8_t* bd_addr = &( param[2] );
+        uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN] = { 0 };
+        REVERSE_BD_ADDR( &( param[2] ), bd_addr );
 
         BT_LOG_DEBUG( "Pairing complete event: result=%u, bd_addr=%02x:%02x:%02x:%02x:%02x:%02x, transport_type=%s",
                       result,
@@ -158,7 +163,8 @@ switch( GROUP_EVENT_CODE( group_code, event_code ) )
         } break;
     case HCI_CONTROL_EVENT_USER_CONFIRMATION_GARMIN:
         {
-        uint8_t* bd_addr = &( param[0] );
+        uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN] = { 0 };
+        REVERSE_BD_ADDR( &( param[0] ), bd_addr );
         uint32_t passkey = LITTLE_ENDIAN_TO_INT32( &( param[6] ) );
         uint8_t device_name[BT_DEVICE_NAME_LEN] = { 0 };
 

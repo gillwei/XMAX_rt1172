@@ -133,6 +133,7 @@ bool BT_core_accept_pairing
     )
 {
 bool ret = false;
+uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN] = { 0 };
 uint8_t param[BT_DEVICE_ADDRESS_LEN + 1] = { 0 };
 BT_pairing_status_e pairing_status = BT_core_get_pairing_status();
 
@@ -142,7 +143,8 @@ if( BT_PAIRING_USER_CONFIRMING != pairing_status )
     }
 else
     {
-    BT_core_get_pairing_device_address( param );
+    BT_core_get_pairing_device_address( bd_addr );
+    REVERSE_BD_ADDR( bd_addr, &( param[0] ) );
     param[6] = (uint8_t)accept;
 
     ret = HCI_send_wiced_command( HCI_CONTROL_COMMAND_USER_CONFIRMATION, param, sizeof( param ) );
@@ -181,7 +183,7 @@ else
     {
     BT_core_disconnect_all( bd_addr );
 
-    memcpy( param, bd_addr, BT_DEVICE_ADDRESS_LEN );
+    REVERSE_BD_ADDR( bd_addr, &( param[0] ) );
     ret = HCI_send_wiced_command( HCI_CONTROL_COMMAND_UNBOND, param, sizeof( param ) );
     if( ret )
         {
@@ -481,7 +483,7 @@ bool ret = false;
 uint8_t param[BT_DEVICE_ADDRESS_LEN] = { 0 };
 const uint8_t* local_bd_addr = BT_core_get_local_device_address();
 
-memcpy( param, local_bd_addr, BT_DEVICE_ADDRESS_LEN );
+REVERSE_BD_ADDR( local_bd_addr, &( param[0] ) );
 
 ret = HCI_send_wiced_command( HCI_CONTROL_COMMAND_SET_LOCAL_BDA, param, sizeof( param ) );
 if( ret )

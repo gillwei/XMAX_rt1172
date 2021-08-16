@@ -241,7 +241,7 @@ else if( BT_CONNECTION_DISCONNECTED != connection_status )
     }
 else
     {
-    memcpy( &( param[0] ), bd_addr, BT_DEVICE_ADDRESS_LEN );
+    REVERSE_BD_ADDR( bd_addr, &( param[0] ) );
     param[6] = app_type;
 
     if( BT_device_is_iap_support( bd_addr ) )
