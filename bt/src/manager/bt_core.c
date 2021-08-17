@@ -975,7 +975,7 @@ bool BT_core_update_firmware( void )
 bool ret = false;
 BT_power_status_e power_status = BT_core_get_power_status();
 
-if( ( BT_POWER_ON != power_status ) || ( BT_POWER_ON_READY != power_status ) )
+if( ( BT_POWER_ON != power_status ) && ( BT_POWER_ON_READY != power_status ) )
     {
     BT_LOG_DEBUG( "Not allowed: power_status=%s", BT_util_get_power_status_string( power_status ) );
     }

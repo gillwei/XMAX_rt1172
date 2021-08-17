@@ -572,7 +572,7 @@ else if( false == s_bt_enabled )
     {
     CM_LOG_INFO( "Not allowed: BT disabled" );
     }
-else if( false == s_user_disconnected )
+else if( s_user_disconnected )
     {
     CM_LOG_INFO( "Not allowed: User disconnected" );
     }
