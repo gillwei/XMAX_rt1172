@@ -50,7 +50,7 @@ bool BT_update_get_sw_version
     uint8_t* minor_version
     );
 
-bool BT_update_has_newer_firmware
+bool BT_update_has_different_firmware
     (
     const uint8_t cyw_major_version,
     const uint8_t cyw_minor_version

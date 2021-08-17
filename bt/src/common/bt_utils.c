@@ -80,9 +80,9 @@ const char* BT_util_get_device_type_string
 {
 switch( device_type )
     {
-    case BT_DEVICE_BREDR:        return "BREDR";
+    case BT_DEVICE_BREDR:        return "BR/EDR";
     case BT_DEVICE_LE:           return "LE";
-    case BT_DEVICE_BREDR_LE:     return "BREDR + LE";
+    case BT_DEVICE_BREDR_LE:     return "BR/EDR + LE";
     case BT_DEVICE_TYPE_INVALID:
     default:                     return "Unknown";
     }
@@ -226,7 +226,7 @@ const char* BT_util_get_transport_type_string
 {
 switch( transport_type )
     {
-    case BT_TRANSPORT_BREDR:        return "BREDR";
+    case BT_TRANSPORT_BREDR:        return "BR/EDR";
     case BT_TRANSPORT_LE:           return "LE";
     case BT_TRANSPORT_TYPE_INVALID:
     default:                        return "Unknown";

@@ -73,8 +73,7 @@ switch( GROUP_EVENT_CODE( group_code, event_code ) )
         uint8_t protocol_minor_version = param[3];
         uint32_t device_id = LITTLE_ENDIAN_TO_INT32( &( param[4] ) );
 
-        BT_LOG_DEBUG( "Auth chip info event: device_version=%u, firmware_version=%u, \
-                      protocol_major_version=%u, protocol_minor_version=%u, device_id=%u",
+        BT_LOG_DEBUG( "Auth chip info event: device_version=%u, firmware_version=%u, protocol_major_version=%u, protocol_minor_version=%u, device_id=%u",
                       device_version,
                       firmware_version,
                       protocol_major_version,
@@ -89,8 +88,7 @@ switch( GROUP_EVENT_CODE( group_code, event_code ) )
         } break;
     case HCI_CONTROL_IAP2_EVENT_CONNECTED_GARMIN:
         {
-        uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN] = { 0 };
-        REVERSE_BD_ADDR( &( param[0] ), bd_addr );
+        uint8_t* bd_addr = &( param[0] );
         uint16_t connection_handle = LITTLE_ENDIAN_TO_INT16( &( param[6] ) );
         BT_spp_app_type_e app_type = param[8];
 
@@ -159,8 +157,7 @@ switch( GROUP_EVENT_CODE( group_code, event_code ) )
     {
     case HCI_CONTROL_SPP_EVENT_CONNECTED_GARMIN:
         {
-        uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN] = { 0 };
-        REVERSE_BD_ADDR( &( param[0] ), bd_addr );
+        uint8_t* bd_addr = &( param[0] );
         uint16_t connection_handle = LITTLE_ENDIAN_TO_INT16( &( param[6] ) );
         BT_spp_app_type_e app_type = param[8];
 

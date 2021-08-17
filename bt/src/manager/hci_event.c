@@ -73,23 +73,29 @@ switch( GROUP_EVENT_CODE( group_code, event_code ) )
 
         BT_LOG_DEBUG( "Command status event: status=%u", status );
         } break;
+    case HCI_CONTROL_EVENT_ENCRYPTION_CHANGED:
+        {
+        bool encryption_enabled = ( 0 == param[0] ? true: false );
+        uint8_t* bd_addr = &( param[1] );
+
+        BT_LOG_DEBUG( "Encryption changed event: enabled=%d, bd_addr=%02x:%02x:%02x:%02x:%02x:%02x",
+                      encryption_enabled,
+                      BD_ADDR_PRINT( bd_addr ) );
+        } break;
     case HCI_CONTROL_EVENT_AUTH_LOST_GARMIN:
         {
-        uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN] = { 0 };
-        REVERSE_BD_ADDR( &( param[0] ), bd_addr );
+        uint8_t* bd_addr = &( param[0] );
 
         BT_LOG_DEBUG( "Auth lost event: bd_addr=%02x:%02x:%02x:%02x:%02x:%02x", BD_ADDR_PRINT( bd_addr ) );
         } break;
     case HCI_CONTROL_EVENT_CONNECTION_STATUS_GARMIN:
         {
-        uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN] = { 0 };
-        REVERSE_BD_ADDR( &( param[0] ), bd_addr );
+        uint8_t* bd_addr = &( param[0] );
         BT_transport_type_e transport_type = param[6];
         bool connected = param[7];
         uint8_t reason = param[8];
 
-        BT_LOG_DEBUG( "Connection status event: bd_addr=%02x:%02x:%02x:%02x:%02x:%02x,\
-                       transport_type=%d, connected=%d, reason=%u",
+        BT_LOG_DEBUG( "Connection status event: bd_addr=%02x:%02x:%02x:%02x:%02x:%02x, transport_type=%d, connected=%d, reason=%u",
                        BD_ADDR_PRINT( bd_addr ),
                        transport_type,
                        connected,
@@ -110,8 +116,7 @@ switch( GROUP_EVENT_CODE( group_code, event_code ) )
         } break;
     case HCI_CONTROL_EVENT_PAIRED_DEVICE_DELETED_GARMIN:
         {
-        uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN] = { 0 };
-        REVERSE_BD_ADDR( &( param[0] ), bd_addr );
+        uint8_t* bd_addr = &( param[0] );
 
         BT_LOG_DEBUG( "Paired device deleted event: bd_addr=%02x:%02x:%02x:%02x:%02x:%02x",
                       BD_ADDR_PRINT( bd_addr ) );
@@ -122,22 +127,27 @@ switch( GROUP_EVENT_CODE( group_code, event_code ) )
         {
         uint8_t num_devices = param[0];
         uint8_t device_num = param[1];
-        uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN] = { 0 };
-        REVERSE_BD_ADDR( &( param[2] ), bd_addr );
+        uint8_t* bd_addr = &( param[2] );
         uint8_t* device_name = &( param[8] );
         BT_device_type_e device_type = param[40];
         bool auth_lost = param[41];
         bool iap_support = param[42];
 
-        BT_LOG_DEBUG( "Paired device list event: number=%u of %u, bd_addr=%02x:%02x:%02x:%02x:%02x:%02x, \
-                      device_name=%s, device_type=%s, auth_lost=%d, iap_support=%d",
-                      device_num,
-                      num_devices,
-                      BD_ADDR_PRINT( bd_addr ),
-                      device_name,
-                      BT_util_get_device_type_string( device_type ),
-                      auth_lost,
-                      iap_support );
+        if( 0 == num_devices )
+            {
+            BT_LOG_DEBUG( "Paired device list event: empty" );
+            }
+        else
+            {
+            BT_LOG_DEBUG( "Paired device list event: number=%u of %u, bd_addr=%02x:%02x:%02x:%02x:%02x:%02x, device_name=%s, device_type=%s, auth_lost=%d, iap_support=%d",
+                          device_num,
+                          num_devices,
+                          BD_ADDR_PRINT( bd_addr ),
+                          device_name,
+                          BT_util_get_device_type_string( device_type ),
+                          auth_lost,
+                          iap_support );
+            }
 
         BT_core_handle_device_event_paired_device_list( num_devices,
                                                         device_num,
@@ -151,8 +161,7 @@ switch( GROUP_EVENT_CODE( group_code, event_code ) )
         {
         uint8_t result = param[0];
         BT_transport_type_e transport_type = param[1];
-        uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN] = { 0 };
-        REVERSE_BD_ADDR( &( param[2] ), bd_addr );
+        uint8_t* bd_addr = &( param[2] );
 
         BT_LOG_DEBUG( "Pairing complete event: result=%u, bd_addr=%02x:%02x:%02x:%02x:%02x:%02x, transport_type=%s",
                       result,
@@ -163,8 +172,7 @@ switch( GROUP_EVENT_CODE( group_code, event_code ) )
         } break;
     case HCI_CONTROL_EVENT_USER_CONFIRMATION_GARMIN:
         {
-        uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN] = { 0 };
-        REVERSE_BD_ADDR( &( param[0] ), bd_addr );
+        uint8_t* bd_addr = &( param[0] );
         uint32_t passkey = LITTLE_ENDIAN_TO_INT32( &( param[6] ) );
         uint8_t device_name[BT_DEVICE_NAME_LEN] = { 0 };
 

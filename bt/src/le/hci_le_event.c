@@ -211,8 +211,7 @@ switch( GROUP_EVENT_CODE( group_code, event_code ) )
     case HCI_CONTROL_LE_EVENT_CONNECTED:
         {
         BLE_bd_addr_type_e bd_addr_type = param[0];
-        uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN] = { 0 };
-        REVERSE_BD_ADDR( &( param[1] ), bd_addr );
+        uint8_t* bd_addr = &( param[1] );
         uint16_t connection_handle = LITTLE_ENDIAN_TO_INT16( &( param[7] ) );
         BT_hci_role_e role = param[9];
 
@@ -237,8 +236,7 @@ switch( GROUP_EVENT_CODE( group_code, event_code ) )
         } break;
     case HCI_CONTROL_LE_EVENT_IDENTITY_ADDRESS:
         {
-        uint8_t bd_addr[BT_DEVICE_ADDRESS_LEN] = { 0 };
-        REVERSE_BD_ADDR( &( param[0] ), bd_addr );
+        uint8_t* bd_addr = &( param[0] );
 
         BT_LOG_DEBUG( "Identity address event: bd_addr=%02x%02x%02x%02x%02x%02x", BD_ADDR_PRINT( bd_addr ) );
         } break;

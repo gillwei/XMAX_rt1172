@@ -40,7 +40,7 @@ extern "C" {
                         MACROS
 --------------------------------------------------------------------*/
 // This is used to expand 6-bytes BD address in printf() only, use carefully
-#define BD_ADDR_PRINT( x ) x[5],x[4],x[3],x[2],x[1],x[0]
+#define BD_ADDR_PRINT( x ) x[0],x[1],x[2],x[3],x[4],x[5]
 
 /*--------------------------------------------------------------------
                         PROCEDURES

@@ -153,12 +153,6 @@ BT_request_t request = { 0 };
 
 FUNC_ENTRY_PRINT();
 
-if( BT_POWER_ON_READY != BT_core_get_power_status() )
-    {
-    FUNC_NOT_READY_PRINT();
-    return BT_STATUS_NOT_READY;
-    }
-
 request.type = BT_REQUEST_FACTORY_RESET;
 if( false == BT_tsk_send_request( &request ) )
     {

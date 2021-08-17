@@ -40,9 +40,12 @@ extern "C"{
 /*--------------------------------------------------------------------
                         LITERAL CONSTANTS
 --------------------------------------------------------------------*/
-#define MUTEX_LOCK_MS            ( 5000 )
-#define DEVICE_STARTED_MS        ( 3000 )
-#define PAIRED_DEVICE_DELETED_MS ( 3000 )
+#define MUTEX_LOCK_MS                  ( 5000 )
+#define DEVICE_STARTED_MS              ( 3000 )
+#define PAIRED_DEVICE_DELETED_MS       ( 3000 )
+#define PAIRED_DEVICE_LIST_RECEIVED_MS ( 3000 )
+
+#define BT_ENABLE_RETRY_MAX_TIMES ( 3 )
 
 /*--------------------------------------------------------------------
                         TYPES
@@ -65,6 +68,7 @@ typedef struct BT_core
     bool initialized;
     bool discoverable_state;
     bool test_mode;
+    bool factory_reset_pending;
     bool auto_pairing_once;
     BT_power_setting_t power_setting;
     BT_pairing_request_t pairing_request;
@@ -216,6 +220,7 @@ static bool BT_core_disconnect_all
     )
 {
 bool ret = false;
+bool spp_connected = false;
 uint8_t cur_bd_addr[BT_DEVICE_ADDRESS_LEN] = { 0 };
 
 if( NULL == bd_addr )
@@ -231,11 +236,19 @@ else
         if( ( BT_CONNECTION_CONNECTED == BT_core_spp_get_connection_status( app_type, cur_bd_addr ) &&
             ( 0 == memcmp( cur_bd_addr, bd_addr, BT_DEVICE_ADDRESS_LEN ) ) ) )
             {
+            spp_connected = true;
             ret &= BT_core_spp_disconnect( bd_addr, app_type );
             }
         }
 
-    // We expect that BLE will be disconnected by APP if the SPP connection is no longer existed
+    // We expect that SPP and LE are connected to the same remote device
+    if( spp_connected )
+        {
+        if( BLE_core_server_get_connection_status() )
+            {
+            ret &= BLE_core_server_disconnect();
+            }
+        }
     }
 return ret;
 }
@@ -249,28 +262,45 @@ return ret;
 bool BT_core_factory_reset( void )
 {
 bool ret = true;
-uint8_t num_paired_devices = BT_core_get_num_paired_devices();
-
-for( uint8_t i = 0; i < num_paired_devices; ++i )
-    {
-    const BT_device_info_t* device_info = BT_core_get_paired_device_info( 0 );
-    if( NULL == device_info )
-        {
-        BT_LOG_WARNING( "NULL paired device" );
-        ret = false;
-        }
-    else
-        {
-        ret &= BT_core_delete_paired_device( device_info->bd_addr );
-        }
-    }
+uint8_t num_paired_devices = 0;
+BT_sync_event_t sync_event = { BT_SYNC_EVENT_PAIRED_DEVICE_LIST_RECEIVED, { { 0 } } };
 
 if( BT_POWER_OFF == BT_core_get_power_status() )
     {
-    ret &= BT_core_set_enable_state( true, true );
+    BT_LOG_INFO( "Pending until BT module powered on" );
+    s_core.factory_reset_pending = true;
+
+    ret = BT_core_set_enable_state( true, true );
+    if( ret )
+        {
+        ret = BT_tsk_sync_wait( &sync_event, PAIRED_DEVICE_LIST_RECEIVED_MS );
+        if( false == ret )
+            {
+            BT_LOG_ERROR( "Timeout on waiting paired device list event" );
+            }
+        }
+    }
+
+if( ret )
+    {
+    num_paired_devices = BT_core_get_num_paired_devices();
+    for( uint8_t i = 0; i < num_paired_devices; ++i )
+        {
+        const BT_device_info_t* device_info = BT_core_get_paired_device_info( 0 );
+        if( NULL == device_info )
+            {
+            BT_LOG_WARNING( "NULL paired device" );
+            ret = false;
+            }
+        else
+            {
+            ret &= BT_core_delete_paired_device( device_info->bd_addr );
+            }
+        }
     }
 
 EW_notify_btm_status( EnumBtmStatusFACTORY_RESET_COMPLETED );
+s_core.factory_reset_pending = false;
 return ret;
 }
 
@@ -466,6 +496,7 @@ if( false == s_core.initialized )
     configASSERT( NULL != s_core.pairing_request.mutex );
 
     BT_core_reset();
+    BT_core_set_power_status( BT_POWER_ON );
 
     s_core.initialized = true;
     }
@@ -661,7 +692,9 @@ bool BT_core_set_enable_state
     )
 {
 bool ret = false;
+uint8_t retry_times = 0;
 BT_power_status_e power_status = BT_core_get_power_status();
+BT_request_t request = { BT_REQUEST_UPDATE_FIRMWARE, { { 0 } } };
 BT_sync_event_t sync_event = { BT_SYNC_EVENT_DEVICE_STARTED, { { 0 } } };
 
 if( enable && ( BT_POWER_OFF == power_status ) )
@@ -687,13 +720,25 @@ if( ret )
             BT_db_set_enable_state( true );
             }
 
-        ret = BT_hw_on( BT_HW_MODE_NORMAL );
-        if( ret )
+        ret = false;
+        while( ( false == ret ) && ( retry_times < BT_ENABLE_RETRY_MAX_TIMES ) )
             {
-            if( false == BT_tsk_sync_wait( &sync_event, DEVICE_STARTED_MS ) )
+            ret = BT_hw_on( BT_HW_MODE_NORMAL );
+            if( ret )
                 {
-                BT_LOG_ERROR( "Timeout on waiting device started event" );
-                BT_core_update_firmware();
+                ret = BT_tsk_sync_wait( &sync_event, DEVICE_STARTED_MS );
+                if( false == ret )
+                    {
+                    BT_LOG_ERROR( "Timeout on waiting device started event: retry_times=%u", ++retry_times );
+                    if( retry_times < BT_ENABLE_RETRY_MAX_TIMES )
+                        {
+                        BT_hw_off();
+                        }
+                    else
+                        {
+                        BT_tsk_send_request( &request );
+                        }
+                    }
                 }
             }
         }
@@ -1047,16 +1092,18 @@ BT_core_reset_all();
 
 BT_tsk_sync_signal( &sync_event );
 
-if( BT_update_has_newer_firmware( major_version, minor_version ) )
+if( false == s_core.factory_reset_pending )
     {
-    BT_core_set_power_status( BT_POWER_ON_UPDATING );
-    request.type = BT_REQUEST_UPDATE_FIRMWARE;
+    if( BT_update_has_different_firmware( major_version, minor_version ) )
+        {
+        request.type = BT_REQUEST_UPDATE_FIRMWARE;
+        }
+    else
+        {
+        request.type = BT_REQUEST_INIT_MODULE;
+        }
+    BT_tsk_send_request( &request );
     }
-else
-    {
-    request.type = BT_REQUEST_INIT_MODULE;
-    }
-BT_tsk_send_request( &request );
 }
 
 /*================================================================================================
@@ -1093,22 +1140,34 @@ void BT_core_handle_device_event_paired_device_list
     const bool iap_support
     )
 {
-if( 1 == device_num )
+bool hmi_notify_required = false;
+BT_sync_event_t sync_event = { BT_SYNC_EVENT_PAIRED_DEVICE_LIST_RECEIVED, { { 0 } } };
+
+if( 0 == num_devices )
     {
     BT_device_clear();
+    hmi_notify_required = true;
+    }
+else
+    {
+    if( 1 == device_num )
+        {
+        BT_device_clear();
+        }
+
+    BT_device_add( ( device_num - 1 ), bd_addr, device_name, device_type, auth_lost, iap_support );
+    hmi_notify_required = ( num_devices == device_num ) && ( num_devices == BT_device_get_total_num() );
     }
 
-BT_device_add( ( device_num - 1 ), bd_addr, device_name, device_type, auth_lost, iap_support );
-
-if( num_devices == device_num )
+if( s_core.factory_reset_pending )
     {
-    if( num_devices == BT_device_get_total_num() )
+    BT_tsk_sync_signal( &sync_event );
+    }
+else
+    {
+    if( hmi_notify_required )
         {
         EW_notify_connection_status( EnumConnectionStatusPAIRED_DEVICE_CHANGED );
-        }
-    else
-        {
-        // TODO: Error handling for the received paired device list incompleted
         }
     }
 }

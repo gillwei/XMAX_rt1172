@@ -364,13 +364,13 @@ return ret;
 }
 
 /*================================================================================================
-@brief   Check whether or not MCU has newer firmware for Cypress module to update
-@details Check the software version sent from Cypress module to know whether or not MCU has newer
-         firmware for Cypress module to update
+@brief   Check whether or not MCU has newer/older firmware for Cypress module to update
+@details Check the software version sent from Cypress module to know whether or not MCU has newer/
+         older firmware for Cypress module to update
 @return  None
-@retval  Whether or not MCU has newer firmware for Cypress module to update
+@retval  Whether or not MCU has newer/older firmware for Cypress module to update
 ================================================================================================*/
-bool BT_update_has_newer_firmware
+bool BT_update_has_different_firmware
     (
     const uint8_t cyw_major_version,
     const uint8_t cyw_minor_version
@@ -378,17 +378,17 @@ bool BT_update_has_newer_firmware
 {
 uint8_t mcu_major_version = *( (volatile uint8_t*)( MCU_FLASH_BT_VERSION_ADDR + 0 ) );
 uint8_t mcu_minor_version = *( (volatile uint8_t*)( MCU_FLASH_BT_VERSION_ADDR + 1 ) );
-bool has_newer_version = ( ( mcu_major_version << 8 ) + mcu_minor_version ) > ( ( cyw_major_version << 8 ) + cyw_minor_version );
+bool version_different = ( mcu_major_version != cyw_major_version ) || ( mcu_minor_version != cyw_minor_version );
 
-if( has_newer_version )
+if( version_different )
     {
-    BT_LOG_INFO( "Firmware update required: MCU=v%u.%02u is newer than CYW=v%u.%02u",
+    BT_LOG_INFO( "Firmware update required: MCU=v%u.%02u is different than CYW=v%u.%02u",
                  mcu_major_version,
                  mcu_minor_version,
                  cyw_major_version,
                  cyw_minor_version );
     }
-return has_newer_version;
+return version_different;
 }
 
 /*================================================================================================
@@ -625,8 +625,7 @@ uint8_t retry_times = 0;
 
 while( ( false == ret ) && ( retry_times < FIRMWARE_UPDATE_RETRY_MAX_TIMES ) )
     {
-    BT_LOG_INFO( "Firmware update: Start: retry_times=%u", retry_times );
-    ++retry_times;
+    BT_LOG_INFO( "Firmware update: Start: retry_times=%u", retry_times++ );
 
     if( ( BT_update_enter_download_mode() ) &&
         ( BT_update_download_minidriver() ) &&

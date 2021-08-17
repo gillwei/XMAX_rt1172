@@ -149,6 +149,8 @@ BT_LOG_INFO( "Local device address: %02x:%02x:%02x:%02x:%02x:%02x", BD_ADDR_PRIN
 BT_LOG_INFO( "SW version: %u.%02u", sw_major_version, sw_minor_version );
 BT_LOG_INFO( "Enable state: %d", enable_state );
 
+vTaskDelay( pdMS_TO_TICKS( BT_HW_POWER_SEQUENCE_MS ) );
+BT_core_set_enable_state( false, false );
 if( enable_state )
     {
     BT_core_set_enable_state( true, false );
@@ -281,7 +283,7 @@ if( NULL == request )
     return false;
     }
 
-if( pdTRUE != xQueueSend( s_request_queue, request, 0 ) )
+if( pdTRUE != xQueueSend( s_request_queue, request, portMAX_DELAY ) )
     {
     BT_LOG_ERROR( "Request sent failed due to Queue Full: %d", request->type );
     return false;
@@ -342,6 +344,8 @@ if( NULL == sync_event )
     BT_LOG_ERROR( "NULL sync event" );
     return;
     }
+
+xQueueReset( s_sync_event_queue );
 
 if( pdTRUE != xQueueSend( s_sync_event_queue, sync_event, 0 ) )
     {

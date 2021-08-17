@@ -279,7 +279,7 @@ if( rx_data_len > HCI_EVENT_MAX_SIZE )
 memcpy( hci_event.data, uart_rx_data, rx_data_len );
 hci_event.data_len = rx_data_len;
 
-if( pdTRUE != xQueueSend( s_hci_event_queue, &hci_event, 0 ) )
+if( pdTRUE != xQueueSend( s_hci_event_queue, &hci_event, portMAX_DELAY ) )
     {
     BT_LOG_ERROR( "HCI event sent failed due to Queue Full" );
     return false;
