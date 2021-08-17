@@ -740,6 +740,34 @@ if( false == BT_tsk_send_request( &request ) )
 return BT_STATUS_OK;
 }
 
+/*================================================================================================
+@brief   Update the firmware stored in MCU to Cypress module
+@details Send the request of downloading the firmware stored in MCU to Bluetooth Manager
+@return  None
+@retval  The error code specified in BT_status_e
+================================================================================================*/
+BT_status_e BT_update_firmware( void )
+{
+BT_request_t request = { 0 };
+
+FUNC_ENTRY_PRINT();
+
+if( BT_POWER_ON_READY != BT_core_get_power_status() )
+    {
+    FUNC_NOT_READY_PRINT();
+    return BT_STATUS_NOT_READY;
+    }
+
+request.type = BT_REQUEST_UPDATE_FIRMWARE;
+if( false == BT_tsk_send_request( &request ) )
+    {
+    FUNC_QUEUE_FULL_PRINT();
+    return BT_STATUS_QUEUE_FULL;
+    }
+
+return BT_STATUS_OK;
+}
+
 #ifdef __cplusplus
 }
 #endif

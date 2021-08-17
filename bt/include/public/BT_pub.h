@@ -141,6 +141,8 @@ BT_status_e BT_set_tx_carrier_mode
     const BT_tx_channel_type_e channel_type
     );
 
+BT_status_e BT_update_firmware( void );
+
 // SPP
 BT_status_e BT_spp_add_connection_status_callback
     (

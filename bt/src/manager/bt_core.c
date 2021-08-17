@@ -693,7 +693,6 @@ if( ret )
             if( false == BT_tsk_sync_wait( &sync_event, DEVICE_STARTED_MS ) )
                 {
                 BT_LOG_ERROR( "Timeout on waiting device started event" );
-                BT_core_set_power_status( BT_POWER_ON_UPDATING );
                 BT_core_update_firmware();
                 }
             }
@@ -974,22 +973,29 @@ return ret;
 bool BT_core_update_firmware( void )
 {
 bool ret = false;
+BT_power_status_e power_status = BT_core_get_power_status();
 
-EW_notify_btm_status( EnumBtmStatusUPDATE_START );
-
-ret = BT_update_start();
-if( ret )
+if( ( BT_POWER_ON != power_status ) || ( BT_POWER_ON_READY != power_status ) )
     {
-    if( BT_POWER_ON_UPDATING == BT_core_get_power_status() )
+    BT_LOG_DEBUG( "Not allowed: power_status=%s", BT_util_get_power_status_string( power_status ) );
+    }
+else
+    {
+    BT_core_set_power_status( BT_POWER_ON_UPDATING );
+
+    EW_notify_btm_status( EnumBtmStatusUPDATE_START );
+
+    ret = BT_update_start();
+    if( ret )
         {
         BT_core_set_power_status( BT_POWER_ON );
+
+        BT_core_set_enable_state( false, false );
+        BT_core_set_enable_state( true, false );
         }
 
-    BT_core_set_enable_state( false, false );
-    BT_core_set_enable_state( true, false );
+    EW_notify_btm_status( ret ? EnumBtmStatusUPDATE_FINISH : EnumBtmStatusUPDATE_ABORT );
     }
-
-EW_notify_btm_status( ret ? EnumBtmStatusUPDATE_FINISH : EnumBtmStatusUPDATE_ABORT );
 return ret;
 }
 
