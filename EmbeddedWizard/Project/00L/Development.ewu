@@ -201,7 +201,6 @@ class DEV_Bluetooth : Menu::BaseMenuView
   inherited method LoadItemClass()
   {
     aItemNo; // suppress warning
-
     return Menu::ItemBaseValue;
   }
 
@@ -228,6 +227,7 @@ class DEV_Bluetooth : Menu::BaseMenuView
           default:;
         }
       }
+      case 4: Title = "Update firmware";
       default:;
     }
     return Title;
@@ -241,6 +241,7 @@ class DEV_Bluetooth : Menu::BaseMenuView
     switch( aItemNo )
     {
       case 3: PresentDialog( new Development::DEV_BtLogLevel, null, null, null, null, null, null, null, null, false );
+      case 4: DeviceInterface::BluetoothDevice.UpdateBtFirmware();
       default:;
     }
   }
@@ -248,7 +249,7 @@ class DEV_Bluetooth : Menu::BaseMenuView
   $rect <20,20,160,60>
   inherited object Menu
   {
-    preset NoOfItems = 4;
+    preset NoOfItems = 5;
     preset ItemHeight = Menu::ItemHeightSmall;
     preset ItemNumPerPage = 4;
     preset ArrowScrollBarVisible = true;

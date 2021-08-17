@@ -3367,7 +3367,6 @@ class SET48_ReconnectYamahaApp : Settings::TimeoutDialog
   $rect <210,290,410,330>
   inherited slot OnTimeoutSlot
   {
-    DeviceInterface::BluetoothDevice.TriggerConnectionTimeoutTimer();
     Owner.SwitchToDialog( new Settings::SET22_WaitingConnection, null, null, null, null, null, null, null, null, null, false );
   }
 

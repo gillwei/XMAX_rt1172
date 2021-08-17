@@ -2451,17 +2451,6 @@ class BluetoothDeviceClass : Templates::DeviceClass
     return Connected;
   }
 
-  $rect <40,480,320,520>
-  method void TriggerConnectionTimeoutTimer()
-  {
-    $if !$prototyper
-      native
-      {
-        //BTM_start_btm_timeout_timer( BTM_BLE_PAIR_TIMEOUT );
-      }
-    $endif
-  }
-
   $rect <430,370,630,410>
   array DeviceInterface::BtPairedDeviceInfo PairedDeviceList[ 8 ];
 
@@ -2564,7 +2553,7 @@ class BluetoothDeviceClass : Templates::DeviceClass
     return IsYamahaAppConnected;
   }
 
-  $rect <41,530,240,570>
+  $rect <41,480,240,520>
   method void ConfirmPasskey( arg bool aResult )
   {
     $if !$prototyper
@@ -2660,8 +2649,19 @@ class BluetoothDeviceClass : Templates::DeviceClass
     }
   }
 
-  $rect <40,580,240,620>
+  $rect <40,530,240,570>
   property int32 PairingFailCount;
+
+  $rect <670,200,870,240>
+  method void UpdateBtFirmware()
+  {
+    $if !$prototyper
+      native
+      {
+        BT_update_firmware();
+      }
+    $endif
+  }
 }
 
 $rect <810,110,1010,150>

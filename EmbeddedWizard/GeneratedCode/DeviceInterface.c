@@ -2680,15 +2680,6 @@ XBool DeviceInterfaceBluetoothDeviceClass_IsPairingDeviceYamahaAppSPPConnected( 
   return Connected;
 }
 
-/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.TriggerConnectionTimeoutTimer()' */
-void DeviceInterfaceBluetoothDeviceClass_TriggerConnectionTimeoutTimer( DeviceInterfaceBluetoothDeviceClass _this )
-{
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( _this );
-
-  //BTM_start_btm_timeout_timer( BTM_BLE_PAIR_TIMEOUT );
-}
-
 /* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnPairedDeviceListUpdatedSlot()' */
 void DeviceInterfaceBluetoothDeviceClass_OnPairedDeviceListUpdatedSlot( DeviceInterfaceBluetoothDeviceClass _this, 
   XObject sender )
@@ -2869,6 +2860,15 @@ void DeviceInterfaceBluetoothDeviceClass_DeleteFromPairedDeviceList( DeviceInter
     _this->PairedDeviceNum--;
     DeviceInterfaceBluetoothDeviceClass_NotifyConnectionStatus( _this, EnumConnectionStatusPAIRED_DEVICE_LIST_UPDATED );
   }
+}
+
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.UpdateBtFirmware()' */
+void DeviceInterfaceBluetoothDeviceClass_UpdateBtFirmware( DeviceInterfaceBluetoothDeviceClass _this )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( _this );
+
+  BT_update_firmware();
 }
 
 /* Variants derived from the class : 'DeviceInterface::BluetoothDeviceClass' */

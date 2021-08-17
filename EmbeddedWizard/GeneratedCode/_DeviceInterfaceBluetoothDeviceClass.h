@@ -176,9 +176,6 @@ void DeviceInterfaceBluetoothDeviceClass__NotifyConnectionStatus( void* _this, X
 /* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.IsPairingDeviceYamahaAppSPPConnected()' */
 XBool DeviceInterfaceBluetoothDeviceClass_IsPairingDeviceYamahaAppSPPConnected( DeviceInterfaceBluetoothDeviceClass _this );
 
-/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.TriggerConnectionTimeoutTimer()' */
-void DeviceInterfaceBluetoothDeviceClass_TriggerConnectionTimeoutTimer( DeviceInterfaceBluetoothDeviceClass _this );
-
 /* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.OnPairedDeviceListUpdatedSlot()' */
 void DeviceInterfaceBluetoothDeviceClass_OnPairedDeviceListUpdatedSlot( DeviceInterfaceBluetoothDeviceClass _this, 
   XObject sender );
@@ -212,6 +209,9 @@ void DeviceInterfaceBluetoothDeviceClass_OnSetLogLevel( DeviceInterfaceBluetooth
 /* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.DeleteFromPairedDeviceList()' */
 void DeviceInterfaceBluetoothDeviceClass_DeleteFromPairedDeviceList( DeviceInterfaceBluetoothDeviceClass _this, 
   XUInt64 aDeviceAddress );
+
+/* 'C' function for method : 'DeviceInterface::BluetoothDeviceClass.UpdateBtFirmware()' */
+void DeviceInterfaceBluetoothDeviceClass_UpdateBtFirmware( DeviceInterfaceBluetoothDeviceClass _this );
 
 #ifdef __cplusplus
   }

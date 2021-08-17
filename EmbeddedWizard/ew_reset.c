@@ -21,6 +21,7 @@
 #include "Enum.h"
 #include "EEPM_pub.h"
 #include "BT_pub.h"
+#include "CM_pub.h"
 #include "VI_pub.h"
 #include "RTC_pub.h"
 

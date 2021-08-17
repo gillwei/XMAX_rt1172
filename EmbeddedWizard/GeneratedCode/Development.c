@@ -74,7 +74,7 @@
 /* Compressed strings for the language 'Default'. */
 EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
-  0x0000041E, /* ratio 52.75 % */
+  0x0000040C, /* ratio 53.28 % */
   0xB8001F00, 0x8008C452, 0x00C60030, 0x0DE003A0, 0xF2003900, 0xA0010000, 0x64004349,
   0xC0019400, 0x22C0C271, 0x01C22E48, 0x44237230, 0x0234548A, 0x6270B398, 0x37198BC5,
   0xD0481472, 0x0C854220, 0x8894421D, 0x864B2552, 0x647C171C, 0x1B801072, 0xD4006700,
@@ -89,88 +89,96 @@ EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
   0x9630E91F, 0xC6451F02, 0xC189451E, 0x340020F7, 0x43944115, 0xD4445149, 0x54A87646,
   0xB82D4515, 0xAA0211C4, 0x5510C515, 0xD048B163, 0x5441106F, 0x12144719, 0x10421EC4,
   0x51D5851D, 0xC0747149, 0x651DB347, 0x7E2B45C6, 0x6246DCE4, 0x002415A4, 0xE1911639,
-  0xE9340043, 0x254E4B10, 0x914211F0, 0x8C5968BD, 0xA624925B, 0x50621B84, 0xB63C4B61,
-  0x44001D66, 0x421146FD, 0x1F089519, 0x47C9DA43, 0x9C1793DB, 0x7848D6B9, 0x4B9C09B1,
-  0x27200270, 0xF69E7495, 0xE5635223, 0x1B645049, 0x5A19851D, 0x51093558, 0xAA093C9A,
-  0xE52C4412, 0x8A471B46, 0x6D28C116, 0x91B79A8F, 0x47BC0080, 0x6D104525, 0xE85A4714,
-  0xA2DEA58D, 0xD2EA392A, 0xE6DD8BA0, 0x1E874B98, 0x1B4710E9, 0x4628D99C, 0x67662AB3,
-  0xB69D5B63, 0x02854311, 0x00AA52E9, 0x58D63AAC, 0x00000101, 0x00000000
+  0xE9340043, 0xC54E4B10, 0x24154456, 0x56E2E461, 0x15891C00, 0xC7995A44, 0x251C4AA3,
+  0x914211F0, 0x8C5968BD, 0x9239766B, 0x50621B84, 0x32674B61, 0x44001784, 0x421146FD,
+  0x1F089519, 0x47C9DA43, 0xDC1793DB, 0x7B48D6B9, 0xA012E9F6, 0x254A0800, 0x88FDA7A1,
+  0x128958D4, 0x4746D914, 0x56168661, 0x2674424D, 0x04AA914F, 0xD1B94B11, 0x45A651C6,
+  0xA79B4A6C, 0x20246DE6, 0x4951EF00, 0xC51B4411, 0x637A1691, 0x4AA9A7A9, 0xE924BA9D,
+  0xE639B762, 0x3A47A592, 0x0158D634, 0x00000001, 0x00000000
 };
 
 /* Compressed strings for the language 'Default'. */
 EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault1[] =
 {
-  0x0000042E, /* ratio 44.86 % */
-  0xB8003300, 0x800A6452, 0x00DC0032, 0x04000320, 0xC2003600, 0xA6700424, 0x003A0021,
-  0x738000F2, 0x8E9CA2D0, 0xE9D40071, 0x8022E738, 0x16061893, 0xA190A8EC, 0x820021C3,
-  0xB1E27000, 0x18894423, 0x185CBA11, 0x93C4A4D1, 0x441A5414, 0x4C22D2D8, 0x7E1D3499,
-  0xE3925844, 0x1125899B, 0x7048149E, 0x699DC4E8, 0x38E9AA26, 0xA7D664C6, 0x1C861D0A,
-  0x56621129, 0x6A4F1A8C, 0xA792CA10, 0x012236C3, 0xD5DACC94, 0x26B05761, 0xE8853E3F,
-  0x8CCDE390, 0x606C0127, 0x002DD44B, 0x02E723B8, 0x0018BBA8, 0x1F7A8C5E, 0x3128E45A,
-  0x1E93C771, 0x88B55F08, 0xBA002E58, 0x844EEF16, 0x5F7258EC, 0xD8014B00, 0xB2DA5CF9,
-  0xDF45CD5A, 0x58CC55C6, 0x7BD242B4, 0x88442A2D, 0x0E49E4C7, 0x55670DB0, 0x70EE1A28,
-  0x427BA18A, 0x6153DBE4, 0x3F1D3BC9, 0x1C10EC9E, 0xACE2C4EB, 0xABB45615, 0x844F34DC,
-  0x944ECD5D, 0xD57A800A, 0x74D13BB6, 0xAA30C894, 0x31258749, 0x14A8ECE2, 0xBEA65C64,
-  0x595D5001, 0xDCEAE778, 0x1085C123, 0x56A18F77, 0x7123731A, 0xE760D274, 0x7FD167F5,
-  0x5F480592, 0xC6460563, 0x414F431C, 0x1749D0A7, 0x5C59C754, 0x5A087D39, 0x87A91C64,
-  0x35417917, 0x236C99B8, 0x46DF0885, 0x46B001EB, 0xA8758174, 0x75876C62, 0x125650C4,
-  0x44210439, 0x97180E12, 0x2879FA82, 0xF5AC4E9B, 0x7181DAA8, 0x86116809, 0x18186800,
-  0xF61A3770, 0x32157263, 0x921897F9, 0x485A9909, 0x53B955AF, 0x27CDA957, 0x500013E4,
-  0x084D5311, 0x7E52458D, 0x238559FB, 0xE4CA6A9A, 0xC9D91310, 0x124C0008, 0x429D647D,
-  0x92769466, 0x69EE4605, 0x24001568, 0x6C110001, 0x5414E67A, 0x52760597, 0x00000040,
-  0x00000000
+  0x00000406, /* ratio 44.66 % */
+  0xB8003700, 0x800A6452, 0x00DC0032, 0x04000320, 0x01073B00, 0x069001A0, 0x6C0018C0,
+  0x139C3A22, 0x8F000E91, 0x699E1515, 0xC44E4008, 0x66520038, 0xA2305818, 0x330E8642,
+  0x60084986, 0x798F43A4, 0x58D1C000, 0x3A8024F2, 0x4C7A3911, 0x41A58189, 0x0E492F84,
+  0x80041001, 0x11269213, 0x1118FCCA, 0x330042E6, 0x494CCE3D, 0xABCBA8C1, 0x7D36970E,
+  0x002A30EA, 0xD0DF3B8E, 0xA55088E4, 0x2960A457, 0xF11354D2, 0x6A004822, 0x09443A15,
+  0x8AC66674, 0xD0025338, 0xD5A696F0, 0xCACF3F36, 0x62F0E8BD, 0xD526AA5E, 0x73B87466,
+  0x0294CE6A, 0x4C351E09, 0x8E503112, 0xC45B1915, 0x6463D34B, 0xCE77248C, 0xA5311CFC,
+  0x1D49C287, 0x9A1C567A, 0x3DD2E3A4, 0x89EEA725, 0xB5456210, 0xD61253AC, 0x6270F5FC,
+  0x931BA3D0, 0xF49A6856, 0xF1089A64, 0x01C94D50, 0xA390DC76, 0x6EC622D5, 0xD45FB473,
+  0xE42A670E, 0xC9A22778, 0x5BAC1D94, 0x3B7B7EC5, 0xBF17EECD, 0xF088673F, 0x82E85FE2,
+  0x6B8713D3, 0x99C22275, 0xD545B10C, 0xC5655446, 0x057C5993, 0x2B001D35, 0x4399C7ED,
+  0x1406E910, 0xF7290862, 0x39BA7358, 0x984ED404, 0x845247A9, 0xD3C84DA8, 0x06E5CC6D,
+  0x956A55DE, 0x174A50A7, 0x625B2878, 0x8008551E, 0xB69D177B, 0xB58F44D3, 0x0E574005,
+  0x8C2336C6, 0xD115A13C, 0x27986B4C, 0xC63D8B58, 0x1555E145, 0x73A104CD, 0xA1A92D89,
+  0xD835824E, 0x559D7F12, 0x0F939725, 0x8CA22941, 0x1348A50C, 0x99762E75, 0x9DB87661,
+  0x6254D196, 0x822326A0, 0xE5770D82, 0x6599A383, 0x004F8CA0, 0x50530540, 0x421404F9,
+  0x68260942, 0x00000040, 0x00000000
 };
 
 /* Compressed strings for the language 'Default'. */
 EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault2[] =
 {
-  0x00000424, /* ratio 50.94 % */
-  0xB8003D00, 0x800A6452, 0x00DC0032, 0x04000320, 0xD0003800, 0xF0937800, 0x73004360,
-  0x7001A400, 0x001862A6, 0x44862E6C, 0x4862C768, 0xC62C7287, 0xC1B2C001, 0x265422C0,
-  0xF2399C72, 0x38901062, 0x19782659, 0x8846E533, 0x04B0630E, 0x4F6093B0, 0xCA2F0F8D,
-  0x88B45A18, 0x002D0011, 0xF439FD1C, 0x1626CBC2, 0xE94C58E9, 0x9F000850, 0x556A2533,
-  0x46633088, 0xAA193787, 0xE5E08A19, 0xC7149C10, 0xD4335800, 0x6F004F00, 0xF074B20D,
-  0xA457C8F2, 0xF8020740, 0xD6CDB298, 0x1A097CA1, 0xAB51F844, 0x1B162443, 0xF2FBDE1F,
-  0x0C85520A, 0x9B941A1D, 0x85422112, 0x7CBC172C, 0xD4A4F482, 0x132954BF, 0x801502B4,
-  0x1D218457, 0x510B069F, 0x9DA7CBE7, 0x7A65062D, 0xA567AFFB, 0xBCBC1943, 0xE6A3B259,
-  0xB219BFA4, 0x4016E07C, 0x15B9BF9D, 0x1CFA7ECA, 0x04D150F6, 0x4874CF89, 0x09D0E4DD,
-  0x74E3ABBD, 0xC2A296F8, 0x430DCF8C, 0xFCD1BAD4, 0x91C30950, 0x508D3D72, 0xCFC961FD,
-  0x4F84B373, 0xAD64ABD0, 0xC794A508, 0x1451AC45, 0x213360DB, 0xCD0292C4, 0x82206451,
-  0xC1150DD2, 0x9840524B, 0x204445E0, 0x1F569195, 0x82972429, 0x9464B800, 0x8001BA7C,
-  0xB2114C9B, 0x1B88DE04, 0x5FDDC6E5, 0xE156C9EE, 0xF5891D46, 0x962D5DDE, 0x178C6278,
-  0x19916131, 0x92C56800, 0x76FA2C70, 0xFD8C8551, 0xB45DE435, 0x46D3145D, 0xD4D88186,
-  0xB73D295B, 0x6E204651, 0x321392F0, 0x41914569, 0x1174621D, 0x06650856, 0x243452C0,
-  0x088F9B25, 0x92A00569, 0x10496800, 0x09791497, 0x9D159800, 0x0B990005, 0x9A838701,
-  0xE415663D, 0xB0680064, 0xE1329765, 0x005E1E79, 0x12C00128, 0xC500028D, 0x49A40099,
-  0x5997445E, 0x7250E584, 0xA0E74116, 0xD1985A5F, 0xEA428E5B, 0x5E68A4E8, 0x1047E8E4,
-  0x45965985, 0x273A192C, 0x3986A1A2, 0x4AA6A46A, 0x979FE94A, 0x5911B44A, 0x14388262,
-  0x00010100, 0x00000000
+  0x00000418, /* ratio 51.91 % */
+  0xB8003300, 0x800A6452, 0x00DC0032, 0x04000320, 0xA8002780, 0x10D20800, 0x69001300,
+  0x03580212, 0x30800860, 0xAC2CE400, 0x19A15198, 0xA8006F00, 0xE0B030B4, 0x1D0C8D41,
+  0x0558F47A, 0x44001240, 0x38448A2A, 0x941C0007, 0x54227B1A, 0x41A5A1E9, 0xFA630A84,
+  0xA8068004, 0x7B0E8442, 0x11A33C66, 0x578A9B24, 0x7979DA11, 0x004EE1D5, 0x68025471,
+  0x4A6252D0, 0x56B354AA, 0xAAF578A4, 0x436504CA, 0x30EA5C62, 0x04B85886, 0xF8CC8A25,
+  0xBB8CA1D3, 0x68008D2D, 0x5F2E5111, 0x365A17B1, 0xA5E74979, 0x0C428748, 0xB4DAA003,
+  0x3D0053F1, 0xC8A43A7B, 0x04588D50, 0x4D5E3D2D, 0x58A36639, 0x1A3D7103, 0xE5A0E954,
+  0x077DC911, 0xC6DB947E, 0x04D6D8B1, 0xEC6ECE8F, 0x904BC910, 0x648A118D, 0xDCCAF2DD,
+  0x960D15A4, 0xEC548AFE, 0x33109682, 0x77BC2D76, 0x56827129, 0x8C880306, 0xEA6F2AF0,
+  0x0DBE7F73, 0x5421172C, 0x13C77600, 0xE2BCCC14, 0x5A0C955F, 0xD54ADC52, 0xE69FC1A1,
+  0x107CAA47, 0xB91D401A, 0x9DF4295F, 0xE775FF60, 0xD0007C9C, 0x5C811157, 0x79013589,
+  0x9D300205, 0xD4292947, 0xFDB57FD3, 0x154658D4, 0x8201258A, 0x18563D19, 0x06DA1942,
+  0x79E57F9C, 0x276452D8, 0x1E572706, 0x92976515, 0x3551B377, 0xF40A0014, 0xB38CD297,
+  0x04562809, 0xE3D1492D, 0x94392F64, 0x353D4653, 0xA5429206, 0x5E5648DD, 0x10E57D73,
+  0xD0014E7B, 0x420F4A98, 0x00916219, 0x77E1D950, 0x94C54E42, 0x996A2A95, 0x7D7294E2,
+  0x0845D159, 0x0025749D, 0x252999F1, 0x04224200, 0xC67070D2, 0x126C5D55, 0x8DDB5465,
+  0x91E11578, 0xF921FF48, 0xB41B4A92, 0x8D5004E4, 0x92D064A5, 0x18B45598, 0x45FD4A42,
+  0xB1DF52C3, 0x788BA649, 0xA2D04A26, 0xC00A3529, 0xFA4941A3, 0xE000A552, 0x8C9AE980,
+  0x589C2991, 0x28CA281A, 0xD85AA450, 0x004A0011, 0x00AE04B0, 0xA5800140, 0x54D47915,
+  0x25092F49, 0x0101B1D6, 0x00000000
 };
 
 /* Compressed strings for the language 'Default'. */
 EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault3[] =
 {
-  0x000003F8, /* ratio 53.94 % */
+  0x0000042C, /* ratio 53.93 % */
   0xB8003700, 0x8009C452, 0x1CE80037, 0x40053004, 0x006E0018, 0x043001CC, 0x4B001280,
-  0x0280022C, 0x1C000640, 0x7C684000, 0x4421C708, 0xA2246500, 0xC2B2C004, 0x1F1C22C0,
-  0x70D9599E, 0x0B39000C, 0xF9D000D9, 0x9F198004, 0xD42A532A, 0x80259211, 0xDCAF2F0B,
-  0xE1269004, 0x1F3A914A, 0xB228544E, 0x00A7CCA4, 0x03C00060, 0xA35748C0, 0x594A5E11,
-  0xD14C90F9, 0x02A92AA8, 0x66600AB0, 0x974996CA, 0x52985536, 0x45B4DD24, 0x983000AB,
-  0xA2950004, 0x7D18897D, 0x002C9620, 0xF2F522B3, 0x80180BF5, 0x5E109660, 0xF299D456,
-  0x7BC4CE21, 0x2BFDF401, 0x0551B032, 0x9C9C8B2F, 0x44E9B3A9, 0xBC134634, 0x65338AF4,
-  0x59A89B44, 0x647826AA, 0x2636CE25, 0x4D04B223, 0x87C2AFB0, 0x5D1B73A5, 0x4922F2F0,
-  0xBE2729E1, 0x48BBC005, 0x4D11B643, 0xC00D8803, 0x38BFCBC2, 0xDA7532CB, 0xE0446114,
-  0x6EA22B45, 0x4AF9311A, 0x361B04B8, 0xF8325DC5, 0x1129A6CF, 0xBDBE9C53, 0x08A3507C,
-  0xBD6ED65E, 0xD5E7CD72, 0x1D249DF5, 0x8411F975, 0x35668044, 0x2F0352C5, 0x599115F5,
-  0x5134ADDE, 0x06E90F53, 0xE5306CC0, 0x4669DDB4, 0x4712F051, 0x50A4E108, 0x40016D1D,
-  0x7D2979A2, 0x4B188001, 0x76C7A43D, 0xC074B13A, 0xA43DF475, 0x120C0020, 0x4276C564,
-  0x6E10F49D, 0x52F60E28, 0x161A2146, 0x8D3D7F91, 0x99105A25, 0x116054B1, 0x5684984D,
-  0xD4BDF81E, 0xA5A84293, 0x0D641384, 0x4213649E, 0xA25791B8, 0x17811548, 0xBC0E0023,
-  0xCA74A514, 0x949E161D, 0x6395193B, 0xD4223B11, 0x01754D94, 0x718DA510, 0x4352F6CA,
-  0x6144D908, 0x9710009F, 0xADB0001E, 0x94891664, 0x68904955, 0xE679F1B8, 0x9419048C,
-  0xB12A1DD2, 0x074BC134, 0x96271656, 0x94509945, 0x649D7357, 0x15E844DE, 0x2A898421,
-  0xA86A7989, 0x215806A3, 0xFA15E7A2, 0xD90B1312, 0xDD4290F4, 0xA3E5C49D, 0xA225DD27,
-  0x19026249, 0x06C851AC, 0x00000004, 0x00000000
+  0x0280022C, 0x1A000640, 0x7C684000, 0x4421C708, 0xA2246500, 0xC352C004, 0x150B82C0,
+  0x30F86C22, 0x178AC4E2, 0xE8E45E33, 0x8A484711, 0x4800D000, 0xC4E53273, 0x12052C94,
+  0x26508834, 0x81369343, 0x13C8D4E6, 0x17914F80, 0x795D4249, 0x0A802594, 0x3C3E392F,
+  0x18E1B2B3, 0xB2167200, 0x09F6B001, 0x556F3300, 0xE3A854A6, 0x2F0BCB27, 0x9A1DA0AF,
+  0xB5C8A570, 0x142A270F, 0x5FAC7259, 0xE0003000, 0xB1846001, 0xA52F08D7, 0xE6487CAC,
+  0x83956027, 0x40061401, 0xBCD7E916, 0x4C2A897B, 0xE6347229, 0x1800559F, 0xCA80024C,
+  0xBC44D64F, 0x193C883E, 0xA9916540, 0x0D7EB757, 0x084B3620, 0x4DAE2B2F, 0x6E2D30F9,
+  0xBB5800D5, 0xABDB0916, 0x4E459782, 0x744B5D92, 0x099650A2, 0x9B4E365E, 0xEBD9E232,
+  0x3C13B200, 0x9B6D32B2, 0x139F2CAD, 0x21F0AD64, 0x1600F475, 0x79AACCBC, 0xE995D1AB,
+  0x1CDC365F, 0xAF507AB1, 0x5AE4BC16, 0xA5F1945A, 0x45085110, 0x154FDEE4, 0x44544509,
+  0x160679F7, 0x75110D41, 0xC1EF495E, 0xB74A5445, 0x5160E501, 0xC0857972, 0xB771E44B,
+  0x69CE1AD2, 0xFD4457C7, 0x88DE04A9, 0xA2B12104, 0xD4B17C6D, 0x45AC4BC0, 0x5C825954,
+  0x579355F1, 0x11C115E2, 0xE759EF42, 0x2D610515, 0x75429694, 0x93400670, 0x05F00211,
+  0xF5EC6200, 0xAD7C1E90, 0x0201D2C5, 0x5110F7FE, 0x0564BE36, 0xF49D735F, 0xB25179D0,
+  0x19411B34, 0x8FE26421, 0x5925BA28, 0xC7204174, 0x34458C12, 0x7965D261, 0x5B92F888,
+  0x5295090A, 0x78E1BF5A, 0x9D0859D2, 0x2293A0F7, 0x96A0B455, 0x92F03800, 0xD575FE9E,
+  0x656CA3A1, 0x6341261A, 0x59D44422, 0xE7A001A4, 0xA7869A97, 0x116742DF, 0xF24B20B5,
+  0x77C00851, 0xE4D6552B, 0x14127E70, 0x42A479DD, 0x2B52E5CA, 0x4B12A1DD, 0x2324BC13,
+  0xFA069971, 0x353F0993, 0x13881A26, 0x84D2C44D, 0xA4F10845, 0x37DE8B4A, 0x8AC84891,
+  0x8799ACA4, 0x4B15E7E2, 0x00000101, 0x00000000
+};
+
+/* Compressed strings for the language 'Default'. */
+EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault4[] =
+{
+  0x0000003A, /* ratio 96.55 % */
+  0xB8001700, 0x80098452, 0x00C60037, 0x0E800308, 0x01073480, 0x114001B8, 0x4522C0C2,
+  0x50043624, 0x8D9C8006, 0x6C4E210C, 0x43A351C3, 0x0401288A, 0x00000004, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -204,109 +212,110 @@ static const XStringRes _Const001A = { _StringsDefault0, 0x014F };
 static const XStringRes _Const001B = { _StringsDefault0, 0x0159 };
 static const XStringRes _Const001C = { _StringsDefault0, 0x0160 };
 static const XStringRes _Const001D = { _StringsDefault0, 0x0168 };
-static const XRect _Const001E = {{ 0, 2 }, { 480, 272 }};
-static const XRect _Const001F = {{ 432, 2 }, { 482, 22 }};
-static const XStringRes _Const0020 = { _StringsDefault0, 0x0172 };
-static const XStringRes _Const0021 = { _StringsDefault0, 0x017B };
-static const XStringRes _Const0022 = { _StringsDefault0, 0x0183 };
-static const XStringRes _Const0023 = { _StringsDefault0, 0x019B };
-static const XStringRes _Const0024 = { _StringsDefault0, 0x01B2 };
-static const XStringRes _Const0025 = { _StringsDefault0, 0x01C9 };
-static const XStringRes _Const0026 = { _StringsDefault0, 0x01E0 };
-static const XStringRes _Const0027 = { _StringsDefault0, 0x01F4 };
+static const XStringRes _Const001E = { _StringsDefault0, 0x0172 };
+static const XRect _Const001F = {{ 0, 2 }, { 480, 272 }};
+static const XRect _Const0020 = {{ 432, 2 }, { 482, 22 }};
+static const XStringRes _Const0021 = { _StringsDefault0, 0x0184 };
+static const XStringRes _Const0022 = { _StringsDefault0, 0x018D };
+static const XStringRes _Const0023 = { _StringsDefault0, 0x0195 };
+static const XStringRes _Const0024 = { _StringsDefault0, 0x01AD };
+static const XStringRes _Const0025 = { _StringsDefault0, 0x01C4 };
+static const XStringRes _Const0026 = { _StringsDefault0, 0x01DB };
+static const XStringRes _Const0027 = { _StringsDefault0, 0x01F2 };
 static const XStringRes _Const0028 = { _StringsDefault1, 0x0002 };
-static const XStringRes _Const0029 = { _StringsDefault1, 0x001B };
-static const XStringRes _Const002A = { _StringsDefault1, 0x0033 };
-static const XStringRes _Const002B = { _StringsDefault1, 0x0047 };
-static const XStringRes _Const002C = { _StringsDefault1, 0x0060 };
-static const XStringRes _Const002D = { _StringsDefault1, 0x007A };
+static const XStringRes _Const0029 = { _StringsDefault1, 0x001D };
+static const XStringRes _Const002A = { _StringsDefault1, 0x0036 };
+static const XStringRes _Const002B = { _StringsDefault1, 0x004E };
+static const XStringRes _Const002C = { _StringsDefault1, 0x0062 };
+static const XStringRes _Const002D = { _StringsDefault1, 0x007B };
 static const XStringRes _Const002E = { _StringsDefault1, 0x0095 };
-static const XStringRes _Const002F = { _StringsDefault1, 0x00B3 };
-static const XStringRes _Const0030 = { _StringsDefault1, 0x00CD };
-static const XStringRes _Const0031 = { _StringsDefault1, 0x00E9 };
-static const XStringRes _Const0032 = { _StringsDefault1, 0x0106 };
-static const XStringRes _Const0033 = { _StringsDefault1, 0x0123 };
-static const XStringRes _Const0034 = { _StringsDefault1, 0x013C };
+static const XStringRes _Const002F = { _StringsDefault1, 0x00B0 };
+static const XStringRes _Const0030 = { _StringsDefault1, 0x00CE };
+static const XStringRes _Const0031 = { _StringsDefault1, 0x00E8 };
+static const XStringRes _Const0032 = { _StringsDefault1, 0x0104 };
+static const XStringRes _Const0033 = { _StringsDefault1, 0x0121 };
+static const XStringRes _Const0034 = { _StringsDefault1, 0x013E };
 static const XStringRes _Const0035 = { _StringsDefault1, 0x0157 };
-static const XStringRes _Const0036 = { _StringsDefault1, 0x016E };
-static const XStringRes _Const0037 = { _StringsDefault1, 0x0182 };
-static const XStringRes _Const0038 = { _StringsDefault1, 0x0199 };
-static const XStringRes _Const0039 = { _StringsDefault1, 0x01B2 };
-static const XStringRes _Const003A = { _StringsDefault1, 0x01CE };
-static const XStringRes _Const003B = { _StringsDefault1, 0x01E8 };
-static const XStringRes _Const003C = { _StringsDefault1, 0x0201 };
-static const XStringRes _Const003D = { _StringsDefault2, 0x0002 };
-static const XStringRes _Const003E = { _StringsDefault2, 0x0020 };
-static const XStringRes _Const003F = { _StringsDefault2, 0x002D };
-static const XStringRes _Const0040 = { _StringsDefault2, 0x0036 };
-static const XStringRes _Const0041 = { _StringsDefault2, 0x003F };
-static const XStringRes _Const0042 = { _StringsDefault2, 0x0048 };
-static const XStringRes _Const0043 = { _StringsDefault2, 0x005F };
-static const XStringRes _Const0044 = { _StringsDefault2, 0x0067 };
-static const XStringRes _Const0045 = { _StringsDefault2, 0x006D };
-static const XStringRes _Const0046 = { _StringsDefault2, 0x007B };
-static const XStringRes _Const0047 = { _StringsDefault2, 0x0089 };
-static const XStringRes _Const0048 = { _StringsDefault2, 0x0097 };
-static const XStringRes _Const0049 = { _StringsDefault2, 0x00A2 };
-static const XStringRes _Const004A = { _StringsDefault2, 0x00B0 };
-static const XStringRes _Const004B = { _StringsDefault2, 0x00B9 };
-static const XStringRes _Const004C = { _StringsDefault2, 0x00C2 };
-static const XStringRes _Const004D = { _StringsDefault2, 0x00CE };
-static const XStringRes _Const004E = { _StringsDefault2, 0x00DD };
-static const XStringRes _Const004F = { _StringsDefault2, 0x00E8 };
-static const XStringRes _Const0050 = { _StringsDefault2, 0x00FB };
-static const XStringRes _Const0051 = { _StringsDefault2, 0x010D };
-static const XStringRes _Const0052 = { _StringsDefault2, 0x011F };
-static const XStringRes _Const0053 = { _StringsDefault2, 0x0129 };
-static const XStringRes _Const0054 = { _StringsDefault2, 0x013A };
-static const XStringRes _Const0055 = { _StringsDefault2, 0x0147 };
-static const XStringRes _Const0056 = { _StringsDefault2, 0x015A };
-static const XStringRes _Const0057 = { _StringsDefault2, 0x016C };
-static const XStringRes _Const0058 = { _StringsDefault2, 0x0178 };
-static const XStringRes _Const0059 = { _StringsDefault2, 0x0184 };
-static const XStringRes _Const005A = { _StringsDefault2, 0x018D };
-static const XStringRes _Const005B = { _StringsDefault2, 0x01A8 };
-static const XStringRes _Const005C = { _StringsDefault2, 0x01C3 };
-static const XStringRes _Const005D = { _StringsDefault2, 0x01DD };
-static const XStringRes _Const005E = { _StringsDefault2, 0x01F8 };
-static const XStringRes _Const005F = { _StringsDefault3, 0x0002 };
-static const XRect _Const0060 = {{ 10, 50 }, { 470, 236 }};
-static const XStringRes _Const0061 = { _StringsDefault3, 0x001D };
-static const XStringRes _Const0062 = { _StringsDefault3, 0x0032 };
-static const XStringRes _Const0063 = { _StringsDefault3, 0x0049 };
-static const XStringRes _Const0064 = { _StringsDefault3, 0x005A };
-static const XStringRes _Const0065 = { _StringsDefault3, 0x006F };
-static const XStringRes _Const0066 = { _StringsDefault3, 0x007E };
-static const XStringRes _Const0067 = { _StringsDefault3, 0x008E };
-static const XStringRes _Const0068 = { _StringsDefault3, 0x0098 };
-static const XStringRes _Const0069 = { _StringsDefault3, 0x00A1 };
-static const XStringRes _Const006A = { _StringsDefault3, 0x00AA };
-static const XStringRes _Const006B = { _StringsDefault3, 0x00B4 };
-static const XStringRes _Const006C = { _StringsDefault3, 0x00BF };
-static const XStringRes _Const006D = { _StringsDefault3, 0x00C9 };
-static const XStringRes _Const006E = { _StringsDefault3, 0x00DF };
-static const XStringRes _Const006F = { _StringsDefault3, 0x00F4 };
-static const XStringRes _Const0070 = { _StringsDefault3, 0x00FC };
-static const XStringRes _Const0071 = { _StringsDefault3, 0x0106 };
-static const XStringRes _Const0072 = { _StringsDefault3, 0x010E };
-static const XStringRes _Const0073 = { _StringsDefault3, 0x011B };
-static const XStringRes _Const0074 = { _StringsDefault3, 0x0124 };
-static const XStringRes _Const0075 = { _StringsDefault3, 0x0138 };
-static const XStringRes _Const0076 = { _StringsDefault3, 0x013F };
-static const XStringRes _Const0077 = { _StringsDefault3, 0x014C };
-static const XStringRes _Const0078 = { _StringsDefault3, 0x015B };
-static const XStringRes _Const0079 = { _StringsDefault3, 0x0163 };
-static const XStringRes _Const007A = { _StringsDefault3, 0x016B };
-static const XStringRes _Const007B = { _StringsDefault3, 0x017B };
-static const XStringRes _Const007C = { _StringsDefault3, 0x0189 };
-static const XStringRes _Const007D = { _StringsDefault3, 0x0196 };
-static const XStringRes _Const007E = { _StringsDefault3, 0x019F };
-static const XStringRes _Const007F = { _StringsDefault3, 0x01AA };
-static const XStringRes _Const0080 = { _StringsDefault3, 0x01B2 };
-static const XStringRes _Const0081 = { _StringsDefault3, 0x01B9 };
-static const XStringRes _Const0082 = { _StringsDefault3, 0x01CC };
-static const XStringRes _Const0083 = { _StringsDefault3, 0x01E1 };
-static const XStringRes _Const0084 = { _StringsDefault3, 0x01EC };
+static const XStringRes _Const0036 = { _StringsDefault1, 0x0172 };
+static const XStringRes _Const0037 = { _StringsDefault1, 0x0189 };
+static const XStringRes _Const0038 = { _StringsDefault1, 0x019D };
+static const XStringRes _Const0039 = { _StringsDefault1, 0x01B4 };
+static const XStringRes _Const003A = { _StringsDefault1, 0x01CD };
+static const XStringRes _Const003B = { _StringsDefault1, 0x01E9 };
+static const XStringRes _Const003C = { _StringsDefault2, 0x0002 };
+static const XStringRes _Const003D = { _StringsDefault2, 0x001B };
+static const XStringRes _Const003E = { _StringsDefault2, 0x0031 };
+static const XStringRes _Const003F = { _StringsDefault2, 0x004F };
+static const XStringRes _Const0040 = { _StringsDefault2, 0x005C };
+static const XStringRes _Const0041 = { _StringsDefault2, 0x0065 };
+static const XStringRes _Const0042 = { _StringsDefault2, 0x006E };
+static const XStringRes _Const0043 = { _StringsDefault2, 0x0077 };
+static const XStringRes _Const0044 = { _StringsDefault2, 0x008E };
+static const XStringRes _Const0045 = { _StringsDefault2, 0x0096 };
+static const XStringRes _Const0046 = { _StringsDefault2, 0x009C };
+static const XStringRes _Const0047 = { _StringsDefault2, 0x00AA };
+static const XStringRes _Const0048 = { _StringsDefault2, 0x00B8 };
+static const XStringRes _Const0049 = { _StringsDefault2, 0x00C6 };
+static const XStringRes _Const004A = { _StringsDefault2, 0x00D1 };
+static const XStringRes _Const004B = { _StringsDefault2, 0x00DF };
+static const XStringRes _Const004C = { _StringsDefault2, 0x00E8 };
+static const XStringRes _Const004D = { _StringsDefault2, 0x00F1 };
+static const XStringRes _Const004E = { _StringsDefault2, 0x00FD };
+static const XStringRes _Const004F = { _StringsDefault2, 0x010C };
+static const XStringRes _Const0050 = { _StringsDefault2, 0x0117 };
+static const XStringRes _Const0051 = { _StringsDefault2, 0x012A };
+static const XStringRes _Const0052 = { _StringsDefault2, 0x013C };
+static const XStringRes _Const0053 = { _StringsDefault2, 0x014E };
+static const XStringRes _Const0054 = { _StringsDefault2, 0x0158 };
+static const XStringRes _Const0055 = { _StringsDefault2, 0x0169 };
+static const XStringRes _Const0056 = { _StringsDefault2, 0x0176 };
+static const XStringRes _Const0057 = { _StringsDefault2, 0x0189 };
+static const XStringRes _Const0058 = { _StringsDefault2, 0x019B };
+static const XStringRes _Const0059 = { _StringsDefault2, 0x01A7 };
+static const XStringRes _Const005A = { _StringsDefault2, 0x01B3 };
+static const XStringRes _Const005B = { _StringsDefault2, 0x01BC };
+static const XStringRes _Const005C = { _StringsDefault2, 0x01D7 };
+static const XStringRes _Const005D = { _StringsDefault2, 0x01F2 };
+static const XStringRes _Const005E = { _StringsDefault3, 0x0002 };
+static const XStringRes _Const005F = { _StringsDefault3, 0x001D };
+static const XStringRes _Const0060 = { _StringsDefault3, 0x0037 };
+static const XRect _Const0061 = {{ 10, 50 }, { 470, 236 }};
+static const XStringRes _Const0062 = { _StringsDefault3, 0x0052 };
+static const XStringRes _Const0063 = { _StringsDefault3, 0x0067 };
+static const XStringRes _Const0064 = { _StringsDefault3, 0x007E };
+static const XStringRes _Const0065 = { _StringsDefault3, 0x008F };
+static const XStringRes _Const0066 = { _StringsDefault3, 0x00A4 };
+static const XStringRes _Const0067 = { _StringsDefault3, 0x00B3 };
+static const XStringRes _Const0068 = { _StringsDefault3, 0x00C3 };
+static const XStringRes _Const0069 = { _StringsDefault3, 0x00CD };
+static const XStringRes _Const006A = { _StringsDefault3, 0x00D6 };
+static const XStringRes _Const006B = { _StringsDefault3, 0x00DF };
+static const XStringRes _Const006C = { _StringsDefault3, 0x00E9 };
+static const XStringRes _Const006D = { _StringsDefault3, 0x00F4 };
+static const XStringRes _Const006E = { _StringsDefault3, 0x00FE };
+static const XStringRes _Const006F = { _StringsDefault3, 0x0114 };
+static const XStringRes _Const0070 = { _StringsDefault3, 0x0129 };
+static const XStringRes _Const0071 = { _StringsDefault3, 0x0131 };
+static const XStringRes _Const0072 = { _StringsDefault3, 0x013B };
+static const XStringRes _Const0073 = { _StringsDefault3, 0x0143 };
+static const XStringRes _Const0074 = { _StringsDefault3, 0x0150 };
+static const XStringRes _Const0075 = { _StringsDefault3, 0x0159 };
+static const XStringRes _Const0076 = { _StringsDefault3, 0x016D };
+static const XStringRes _Const0077 = { _StringsDefault3, 0x0174 };
+static const XStringRes _Const0078 = { _StringsDefault3, 0x0181 };
+static const XStringRes _Const0079 = { _StringsDefault3, 0x0190 };
+static const XStringRes _Const007A = { _StringsDefault3, 0x0198 };
+static const XStringRes _Const007B = { _StringsDefault3, 0x01A0 };
+static const XStringRes _Const007C = { _StringsDefault3, 0x01B0 };
+static const XStringRes _Const007D = { _StringsDefault3, 0x01BE };
+static const XStringRes _Const007E = { _StringsDefault3, 0x01CB };
+static const XStringRes _Const007F = { _StringsDefault3, 0x01D4 };
+static const XStringRes _Const0080 = { _StringsDefault3, 0x01DF };
+static const XStringRes _Const0081 = { _StringsDefault3, 0x01E7 };
+static const XStringRes _Const0082 = { _StringsDefault3, 0x01EE };
+static const XStringRes _Const0083 = { _StringsDefault3, 0x0201 };
+static const XStringRes _Const0084 = { _StringsDefault4, 0x0002 };
+static const XStringRes _Const0085 = { _StringsDefault4, 0x000D };
 
 #ifndef EW_DONT_CHECK_INDEX
   /* This function is used to check the indices when accessing an array.
@@ -783,7 +792,7 @@ void DevelopmentDEV_Bluetooth__Init( DevelopmentDEV_Bluetooth _this, XObject aLi
   _this->_.VMT = EW_CLASS( DevelopmentDEV_Bluetooth );
 
   /* ... and initialize objects, variables, properties, etc. */
-  MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 4 );
+  MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 5 );
   MenuVerticalMenu_OnSetItemHeight( &_this->Super1.Menu, 56 );
   MenuVerticalMenu_OnSetItemNumPerPage( &_this->Super1.Menu, 4 );
   MenuVerticalMenu_OnSetArrowScrollBarVisible( &_this->Super1.Menu, 1 );
@@ -887,6 +896,10 @@ XString DevelopmentDEV_Bluetooth_LoadItemTitle( DevelopmentDEV_Bluetooth _this,
     }
     break;
 
+    case 4 :
+      Title = EwLoadString( &_Const001E );
+    break;
+
     default :; 
   }
 
@@ -905,6 +918,11 @@ void DevelopmentDEV_Bluetooth_OnItemActivate( DevelopmentDEV_Bluetooth _this, XI
     case 3 :
       CoreGroup_PresentDialog((CoreGroup)_this, ((CoreGroup)EwNewObject( DevelopmentDEV_BtLogLevel, 
       0 )), 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
+    break;
+
+    case 4 :
+      DeviceInterfaceBluetoothDeviceClass_UpdateBtFirmware( EwGetAutoObject( &DeviceInterfaceBluetoothDevice, 
+      DeviceInterfaceBluetoothDeviceClass ));
     break;
 
     default :; 
@@ -1013,8 +1031,8 @@ void DevelopmentDEV_TFTBrightness__Init( DevelopmentDEV_TFTBrightness _this, XOb
 
   /* ... and initialize objects, variables, properties, etc. */
   CoreRectView__OnSetBounds( _this, _Const0011 );
-  CoreRectView__OnSetBounds( &_this->ChessboardImage, _Const001E );
-  CoreRectView__OnSetBounds( &_this->LevelText, _Const001F );
+  CoreRectView__OnSetBounds( &_this->ChessboardImage, _Const001F );
+  CoreRectView__OnSetBounds( &_this->LevelText, _Const0020 );
   ViewsText_OnSetWrapText( &_this->LevelText, 1 );
   ViewsText_OnSetString( &_this->LevelText, 0 );
   _this->BrightnessLevel = -1;
@@ -1101,9 +1119,9 @@ void DevelopmentDEV_TFTBrightness_UpdateViewState( DevelopmentDEV_TFTBrightness 
   ApplicationApplication App;
 
   CoreGroup_UpdateViewState((CoreGroup)_this, aState );
-  EwTrace( "%s%t", EwLoadString( &_Const0020 ), aState );
+  EwTrace( "%s%t", EwLoadString( &_Const0021 ), aState );
   App = EwCastObject( CoreView__GetRoot( _this ), ApplicationApplication );
-  EwTrace( "%s%*", EwLoadString( &_Const0021 ), App );
+  EwTrace( "%s%*", EwLoadString( &_Const0022 ), App );
 
   if ( App != 0 )
   {
@@ -1253,34 +1271,34 @@ void DevelopmentDEV_MotoCon__Init( DevelopmentDEV_MotoCon _this, XObject aLink, 
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 28 );
   MenuVerticalMenu_OnSetItemHeight( &_this->Super1.Menu, 56 );
   MenuVerticalMenu_OnSetItemNumPerPage( &_this->Super1.Menu, 4 );
-  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &_Const0022 ));
-  _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &_Const0023 ));
-  _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &_Const0024 ));
-  _this->ItemTitleArray[ 3 ] = EwShareString( EwLoadString( &_Const0025 ));
-  _this->ItemTitleArray[ 4 ] = EwShareString( EwLoadString( &_Const0026 ));
-  _this->ItemTitleArray[ 5 ] = EwShareString( EwLoadString( &_Const0027 ));
-  _this->ItemTitleArray[ 6 ] = EwShareString( EwLoadString( &_Const0028 ));
-  _this->ItemTitleArray[ 7 ] = EwShareString( EwLoadString( &_Const0029 ));
-  _this->ItemTitleArray[ 8 ] = EwShareString( EwLoadString( &_Const002A ));
-  _this->ItemTitleArray[ 9 ] = EwShareString( EwLoadString( &_Const002B ));
-  _this->ItemTitleArray[ 10 ] = EwShareString( EwLoadString( &_Const002C ));
-  _this->ItemTitleArray[ 11 ] = EwShareString( EwLoadString( &_Const002D ));
-  _this->ItemTitleArray[ 12 ] = EwShareString( EwLoadString( &_Const002E ));
-  _this->ItemTitleArray[ 13 ] = EwShareString( EwLoadString( &_Const002F ));
-  _this->ItemTitleArray[ 14 ] = EwShareString( EwLoadString( &_Const0030 ));
-  _this->ItemTitleArray[ 15 ] = EwShareString( EwLoadString( &_Const0031 ));
-  _this->ItemTitleArray[ 16 ] = EwShareString( EwLoadString( &_Const0032 ));
-  _this->ItemTitleArray[ 17 ] = EwShareString( EwLoadString( &_Const0033 ));
-  _this->ItemTitleArray[ 18 ] = EwShareString( EwLoadString( &_Const0034 ));
-  _this->ItemTitleArray[ 19 ] = EwShareString( EwLoadString( &_Const0035 ));
-  _this->ItemTitleArray[ 20 ] = EwShareString( EwLoadString( &_Const0036 ));
-  _this->ItemTitleArray[ 21 ] = EwShareString( EwLoadString( &_Const0037 ));
-  _this->ItemTitleArray[ 22 ] = EwShareString( EwLoadString( &_Const0038 ));
-  _this->ItemTitleArray[ 23 ] = EwShareString( EwLoadString( &_Const0039 ));
-  _this->ItemTitleArray[ 24 ] = EwShareString( EwLoadString( &_Const003A ));
-  _this->ItemTitleArray[ 25 ] = EwShareString( EwLoadString( &_Const003B ));
-  _this->ItemTitleArray[ 26 ] = EwShareString( EwLoadString( &_Const003C ));
-  _this->ItemTitleArray[ 27 ] = EwShareString( EwLoadString( &_Const003D ));
+  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &_Const0023 ));
+  _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &_Const0024 ));
+  _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &_Const0025 ));
+  _this->ItemTitleArray[ 3 ] = EwShareString( EwLoadString( &_Const0026 ));
+  _this->ItemTitleArray[ 4 ] = EwShareString( EwLoadString( &_Const0027 ));
+  _this->ItemTitleArray[ 5 ] = EwShareString( EwLoadString( &_Const0028 ));
+  _this->ItemTitleArray[ 6 ] = EwShareString( EwLoadString( &_Const0029 ));
+  _this->ItemTitleArray[ 7 ] = EwShareString( EwLoadString( &_Const002A ));
+  _this->ItemTitleArray[ 8 ] = EwShareString( EwLoadString( &_Const002B ));
+  _this->ItemTitleArray[ 9 ] = EwShareString( EwLoadString( &_Const002C ));
+  _this->ItemTitleArray[ 10 ] = EwShareString( EwLoadString( &_Const002D ));
+  _this->ItemTitleArray[ 11 ] = EwShareString( EwLoadString( &_Const002E ));
+  _this->ItemTitleArray[ 12 ] = EwShareString( EwLoadString( &_Const002F ));
+  _this->ItemTitleArray[ 13 ] = EwShareString( EwLoadString( &_Const0030 ));
+  _this->ItemTitleArray[ 14 ] = EwShareString( EwLoadString( &_Const0031 ));
+  _this->ItemTitleArray[ 15 ] = EwShareString( EwLoadString( &_Const0032 ));
+  _this->ItemTitleArray[ 16 ] = EwShareString( EwLoadString( &_Const0033 ));
+  _this->ItemTitleArray[ 17 ] = EwShareString( EwLoadString( &_Const0034 ));
+  _this->ItemTitleArray[ 18 ] = EwShareString( EwLoadString( &_Const0035 ));
+  _this->ItemTitleArray[ 19 ] = EwShareString( EwLoadString( &_Const0036 ));
+  _this->ItemTitleArray[ 20 ] = EwShareString( EwLoadString( &_Const0037 ));
+  _this->ItemTitleArray[ 21 ] = EwShareString( EwLoadString( &_Const0038 ));
+  _this->ItemTitleArray[ 22 ] = EwShareString( EwLoadString( &_Const0039 ));
+  _this->ItemTitleArray[ 23 ] = EwShareString( EwLoadString( &_Const003A ));
+  _this->ItemTitleArray[ 24 ] = EwShareString( EwLoadString( &_Const003B ));
+  _this->ItemTitleArray[ 25 ] = EwShareString( EwLoadString( &_Const003C ));
+  _this->ItemTitleArray[ 26 ] = EwShareString( EwLoadString( &_Const003D ));
+  _this->ItemTitleArray[ 27 ] = EwShareString( EwLoadString( &_Const003E ));
 }
 
 /* Re-Initializer for the class 'Development::DEV_MotoCon' */
@@ -1432,34 +1450,34 @@ void DevelopmentDEV_VehicleSupportedFunction__Init( DevelopmentDEV_VehicleSuppor
   MenuVerticalMenu_OnSetItemHeight( &_this->Super1.Menu, 56 );
   MenuVerticalMenu_OnSetItemNumPerPage( &_this->Super1.Menu, 4 );
   MenuVerticalMenu_OnSetScrollbarVisible( &_this->Super1.Menu, 0 );
-  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &_Const003E ));
-  _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &_Const003F ));
-  _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &_Const0040 ));
-  _this->ItemTitleArray[ 3 ] = EwShareString( EwLoadString( &_Const0041 ));
-  _this->ItemTitleArray[ 4 ] = EwShareString( EwLoadString( &_Const0042 ));
-  _this->ItemTitleArray[ 5 ] = EwShareString( EwLoadString( &_Const0043 ));
-  _this->ItemTitleArray[ 6 ] = EwShareString( EwLoadString( &_Const0044 ));
-  _this->ItemTitleArray[ 7 ] = EwShareString( EwLoadString( &_Const0045 ));
-  _this->ItemTitleArray[ 8 ] = EwShareString( EwLoadString( &_Const0046 ));
-  _this->ItemTitleArray[ 9 ] = EwShareString( EwLoadString( &_Const0047 ));
-  _this->ItemTitleArray[ 10 ] = EwShareString( EwLoadString( &_Const0048 ));
-  _this->ItemTitleArray[ 11 ] = EwShareString( EwLoadString( &_Const0049 ));
-  _this->ItemTitleArray[ 12 ] = EwShareString( EwLoadString( &_Const004A ));
-  _this->ItemTitleArray[ 13 ] = EwShareString( EwLoadString( &_Const004B ));
-  _this->ItemTitleArray[ 14 ] = EwShareString( EwLoadString( &_Const004C ));
-  _this->ItemTitleArray[ 15 ] = EwShareString( EwLoadString( &_Const004D ));
-  _this->ItemTitleArray[ 16 ] = EwShareString( EwLoadString( &_Const004E ));
-  _this->ItemTitleArray[ 17 ] = EwShareString( EwLoadString( &_Const004F ));
-  _this->ItemTitleArray[ 18 ] = EwShareString( EwLoadString( &_Const0050 ));
-  _this->ItemTitleArray[ 19 ] = EwShareString( EwLoadString( &_Const0051 ));
-  _this->ItemTitleArray[ 20 ] = EwShareString( EwLoadString( &_Const0052 ));
-  _this->ItemTitleArray[ 21 ] = EwShareString( EwLoadString( &_Const0053 ));
-  _this->ItemTitleArray[ 22 ] = EwShareString( EwLoadString( &_Const0054 ));
-  _this->ItemTitleArray[ 23 ] = EwShareString( EwLoadString( &_Const0055 ));
-  _this->ItemTitleArray[ 24 ] = EwShareString( EwLoadString( &_Const0056 ));
-  _this->ItemTitleArray[ 25 ] = EwShareString( EwLoadString( &_Const0057 ));
-  _this->ItemTitleArray[ 26 ] = EwShareString( EwLoadString( &_Const0058 ));
-  _this->ItemTitleArray[ 27 ] = EwShareString( EwLoadString( &_Const0059 ));
+  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &_Const003F ));
+  _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &_Const0040 ));
+  _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &_Const0041 ));
+  _this->ItemTitleArray[ 3 ] = EwShareString( EwLoadString( &_Const0042 ));
+  _this->ItemTitleArray[ 4 ] = EwShareString( EwLoadString( &_Const0043 ));
+  _this->ItemTitleArray[ 5 ] = EwShareString( EwLoadString( &_Const0044 ));
+  _this->ItemTitleArray[ 6 ] = EwShareString( EwLoadString( &_Const0045 ));
+  _this->ItemTitleArray[ 7 ] = EwShareString( EwLoadString( &_Const0046 ));
+  _this->ItemTitleArray[ 8 ] = EwShareString( EwLoadString( &_Const0047 ));
+  _this->ItemTitleArray[ 9 ] = EwShareString( EwLoadString( &_Const0048 ));
+  _this->ItemTitleArray[ 10 ] = EwShareString( EwLoadString( &_Const0049 ));
+  _this->ItemTitleArray[ 11 ] = EwShareString( EwLoadString( &_Const004A ));
+  _this->ItemTitleArray[ 12 ] = EwShareString( EwLoadString( &_Const004B ));
+  _this->ItemTitleArray[ 13 ] = EwShareString( EwLoadString( &_Const004C ));
+  _this->ItemTitleArray[ 14 ] = EwShareString( EwLoadString( &_Const004D ));
+  _this->ItemTitleArray[ 15 ] = EwShareString( EwLoadString( &_Const004E ));
+  _this->ItemTitleArray[ 16 ] = EwShareString( EwLoadString( &_Const004F ));
+  _this->ItemTitleArray[ 17 ] = EwShareString( EwLoadString( &_Const0050 ));
+  _this->ItemTitleArray[ 18 ] = EwShareString( EwLoadString( &_Const0051 ));
+  _this->ItemTitleArray[ 19 ] = EwShareString( EwLoadString( &_Const0052 ));
+  _this->ItemTitleArray[ 20 ] = EwShareString( EwLoadString( &_Const0053 ));
+  _this->ItemTitleArray[ 21 ] = EwShareString( EwLoadString( &_Const0054 ));
+  _this->ItemTitleArray[ 22 ] = EwShareString( EwLoadString( &_Const0055 ));
+  _this->ItemTitleArray[ 23 ] = EwShareString( EwLoadString( &_Const0056 ));
+  _this->ItemTitleArray[ 24 ] = EwShareString( EwLoadString( &_Const0057 ));
+  _this->ItemTitleArray[ 25 ] = EwShareString( EwLoadString( &_Const0058 ));
+  _this->ItemTitleArray[ 26 ] = EwShareString( EwLoadString( &_Const0059 ));
+  _this->ItemTitleArray[ 27 ] = EwShareString( EwLoadString( &_Const005A ));
 }
 
 /* Re-Initializer for the class 'Development::DEV_VehicleSupportedFunction' */
@@ -1663,12 +1681,12 @@ void DevelopmentDEV_FontMenu__Init( DevelopmentDEV_FontMenu _this, XObject aLink
   MenuVerticalMenu_OnSetNoOfItems( &_this->Super1.Menu, 6 );
   MenuVerticalMenu_OnSetItemHeight( &_this->Super1.Menu, 56 );
   MenuVerticalMenu_OnSetItemNumPerPage( &_this->Super1.Menu, 4 );
-  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &_Const005A ));
-  _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &_Const005B ));
-  _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &_Const005C ));
-  _this->ItemTitleArray[ 3 ] = EwShareString( EwLoadString( &_Const005D ));
-  _this->ItemTitleArray[ 4 ] = EwShareString( EwLoadString( &_Const005E ));
-  _this->ItemTitleArray[ 5 ] = EwShareString( EwLoadString( &_Const005F ));
+  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &_Const005B ));
+  _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &_Const005C ));
+  _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &_Const005D ));
+  _this->ItemTitleArray[ 3 ] = EwShareString( EwLoadString( &_Const005E ));
+  _this->ItemTitleArray[ 4 ] = EwShareString( EwLoadString( &_Const005F ));
+  _this->ItemTitleArray[ 5 ] = EwShareString( EwLoadString( &_Const0060 ));
 }
 
 /* Re-Initializer for the class 'Development::DEV_FontMenu' */
@@ -1868,7 +1886,7 @@ void DevelopmentDEV_FontTest__Init( DevelopmentDEV_FontTest _this, XObject aLink
 
   /* ... and initialize objects, variables, properties, etc. */
   _this->Super1.SlideOutEffectEnabled = 1;
-  CoreRectView__OnSetBounds( &_this->Text, _Const0060 );
+  CoreRectView__OnSetBounds( &_this->Text, _Const0061 );
   ViewsText_OnSetWrapText( &_this->Text, 1 );
   ViewsText_OnSetAlignment( &_this->Text, ViewsTextAlignmentAlignHorzLeft | ViewsTextAlignmentAlignVertTop );
   ViewsText_OnSetString( &_this->Text, 0 );
@@ -1937,7 +1955,7 @@ void DevelopmentDEV_FontTest_OnSetTestFont( DevelopmentDEV_FontTest _this, Resou
 
     _this->PageScrollOffset = ( EwGetRectH( _this->Text.Super1.Bounds ) / _this->RowDistance ) 
     * _this->RowDistance;
-    EwTrace( "%s%i", EwLoadString( &_Const0061 ), _this->PageScrollOffset );
+    EwTrace( "%s%i", EwLoadString( &_Const0062 ), _this->PageScrollOffset );
   }
 }
 
@@ -2021,11 +2039,11 @@ void DevelopmentDEV_EEPROMTest__Init( DevelopmentDEV_EEPROMTest _this, XObject a
   MenuVerticalMenu_OnSetItemHeight( &_this->Super1.Menu, 56 );
   MenuVerticalMenu_OnSetItemNumPerPage( &_this->Super1.Menu, 4 );
   MenuVerticalMenu_OnSetArrowScrollBarVisible( &_this->Super1.Menu, 1 );
-  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &_Const0062 ));
-  _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &_Const0063 ));
-  _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &_Const0064 ));
-  _this->ItemTitleArray[ 3 ] = EwShareString( EwLoadString( &_Const0065 ));
-  _this->ItemTitleArray[ 4 ] = EwShareString( EwLoadString( &_Const0066 ));
+  _this->ItemTitleArray[ 0 ] = EwShareString( EwLoadString( &_Const0063 ));
+  _this->ItemTitleArray[ 1 ] = EwShareString( EwLoadString( &_Const0064 ));
+  _this->ItemTitleArray[ 2 ] = EwShareString( EwLoadString( &_Const0065 ));
+  _this->ItemTitleArray[ 3 ] = EwShareString( EwLoadString( &_Const0066 ));
+  _this->ItemTitleArray[ 4 ] = EwShareString( EwLoadString( &_Const0067 ));
 }
 
 /* Re-Initializer for the class 'Development::DEV_EEPROMTest' */
@@ -2247,75 +2265,75 @@ XString DevelopmentDEV_LanguageTest_LoadItemTitle( DevelopmentDEV_LanguageTest _
     switch ( LanguageType )
     {
       case EnumLanguageENGLISH :
-        Title = EwLoadString( &_Const0067 );
-      break;
-
-      case EnumLanguageFRENCH :
         Title = EwLoadString( &_Const0068 );
       break;
 
-      case EnumLanguageGERMAN :
+      case EnumLanguageFRENCH :
         Title = EwLoadString( &_Const0069 );
       break;
 
-      case EnumLanguageITALIAN :
+      case EnumLanguageGERMAN :
         Title = EwLoadString( &_Const006A );
       break;
 
-      case EnumLanguageJAPANESE :
+      case EnumLanguageITALIAN :
         Title = EwLoadString( &_Const006B );
       break;
 
-      case EnumLanguageSPANISH :
+      case EnumLanguageJAPANESE :
         Title = EwLoadString( &_Const006C );
       break;
 
-      case EnumLanguageTRADITIONAL_CHINESE :
+      case EnumLanguageSPANISH :
         Title = EwLoadString( &_Const006D );
       break;
 
-      case EnumLanguageSIMPLIFIED_CHINESE :
+      case EnumLanguageTRADITIONAL_CHINESE :
         Title = EwLoadString( &_Const006E );
       break;
 
-      case EnumLanguageGREEK :
+      case EnumLanguageSIMPLIFIED_CHINESE :
         Title = EwLoadString( &_Const006F );
       break;
 
-      case EnumLanguageFINNISH :
+      case EnumLanguageGREEK :
         Title = EwLoadString( &_Const0070 );
       break;
 
-      case EnumLanguageHINDI :
+      case EnumLanguageFINNISH :
         Title = EwLoadString( &_Const0071 );
       break;
 
-      case EnumLanguageINDONESIAN :
+      case EnumLanguageHINDI :
         Title = EwLoadString( &_Const0072 );
       break;
 
-      case EnumLanguagePOLISH :
+      case EnumLanguageINDONESIAN :
         Title = EwLoadString( &_Const0073 );
       break;
 
-      case EnumLanguagePORTUGUESE_BRAZIL :
+      case EnumLanguagePOLISH :
         Title = EwLoadString( &_Const0074 );
       break;
 
-      case EnumLanguageTHAI :
+      case EnumLanguagePORTUGUESE_BRAZIL :
         Title = EwLoadString( &_Const0075 );
       break;
 
-      case EnumLanguageVIETNAMESE :
+      case EnumLanguageTHAI :
         Title = EwLoadString( &_Const0076 );
       break;
 
-      case EnumLanguageKOREAN :
+      case EnumLanguageVIETNAMESE :
         Title = EwLoadString( &_Const0077 );
       break;
 
-      case EnumLanguageMALAY :
+      case EnumLanguageKOREAN :
         Title = EwLoadString( &_Const0078 );
+      break;
+
+      case EnumLanguageMALAY :
+        Title = EwLoadString( &_Const0079 );
       break;
 
       default :; 
@@ -2481,19 +2499,19 @@ void DevelopmentDEV_AncsCategory__Init( DevelopmentDEV_AncsCategory _this, XObje
   MenuVerticalMenu_OnSetItemHeight( &_this->Super1.Menu, 56 );
   MenuVerticalMenu_OnSetItemNumPerPage( &_this->Super1.Menu, 4 );
   MenuVerticalMenu_OnSetScrollbarVisible( &_this->Super1.Menu, 0 );
-  _this->CategoryList[ 0 ] = EwShareString( EwLoadString( &_Const003E ));
-  _this->CategoryList[ 1 ] = EwShareString( EwLoadString( &_Const0079 ));
-  _this->CategoryList[ 2 ] = EwShareString( EwLoadString( &_Const007A ));
-  _this->CategoryList[ 3 ] = EwShareString( EwLoadString( &_Const007B ));
-  _this->CategoryList[ 4 ] = EwShareString( EwLoadString( &_Const007C ));
-  _this->CategoryList[ 5 ] = EwShareString( EwLoadString( &_Const007D ));
-  _this->CategoryList[ 6 ] = EwShareString( EwLoadString( &_Const007E ));
-  _this->CategoryList[ 7 ] = EwShareString( EwLoadString( &_Const007F ));
-  _this->CategoryList[ 8 ] = EwShareString( EwLoadString( &_Const0080 ));
-  _this->CategoryList[ 9 ] = EwShareString( EwLoadString( &_Const0081 ));
-  _this->CategoryList[ 10 ] = EwShareString( EwLoadString( &_Const0082 ));
-  _this->CategoryList[ 11 ] = EwShareString( EwLoadString( &_Const0083 ));
-  _this->CategoryList[ 12 ] = EwShareString( EwLoadString( &_Const0084 ));
+  _this->CategoryList[ 0 ] = EwShareString( EwLoadString( &_Const003F ));
+  _this->CategoryList[ 1 ] = EwShareString( EwLoadString( &_Const007A ));
+  _this->CategoryList[ 2 ] = EwShareString( EwLoadString( &_Const007B ));
+  _this->CategoryList[ 3 ] = EwShareString( EwLoadString( &_Const007C ));
+  _this->CategoryList[ 4 ] = EwShareString( EwLoadString( &_Const007D ));
+  _this->CategoryList[ 5 ] = EwShareString( EwLoadString( &_Const007E ));
+  _this->CategoryList[ 6 ] = EwShareString( EwLoadString( &_Const007F ));
+  _this->CategoryList[ 7 ] = EwShareString( EwLoadString( &_Const0080 ));
+  _this->CategoryList[ 8 ] = EwShareString( EwLoadString( &_Const0081 ));
+  _this->CategoryList[ 9 ] = EwShareString( EwLoadString( &_Const0082 ));
+  _this->CategoryList[ 10 ] = EwShareString( EwLoadString( &_Const0083 ));
+  _this->CategoryList[ 11 ] = EwShareString( EwLoadString( &_Const0084 ));
+  _this->CategoryList[ 12 ] = EwShareString( EwLoadString( &_Const0085 ));
 }
 
 /* Re-Initializer for the class 'Development::DEV_AncsCategory' */

@@ -6971,8 +6971,6 @@ void SettingsSET48_ReconnectYamahaApp_OnTimeoutSlot( SettingsSET48_ReconnectYama
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  DeviceInterfaceBluetoothDeviceClass_TriggerConnectionTimeoutTimer( EwGetAutoObject( 
-  &DeviceInterfaceBluetoothDevice, DeviceInterfaceBluetoothDeviceClass ));
   CoreGroup_SwitchToDialog( _this->Super6.Owner, ((CoreGroup)EwNewObject( SettingsSET22_WaitingConnection, 
   0 )), 0, 0, 0, 0, 0, 0, 0, EwNullSlot, EwNullSlot, 0 );
 }
