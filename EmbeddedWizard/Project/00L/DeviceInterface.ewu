@@ -2610,7 +2610,7 @@ class BluetoothDeviceClass : Templates::DeviceClass
     {
       pure LogLevel = value;
       $if !$prototyper
-        var bool BtLogLevel = value;
+        var int32 BtLogLevel = value;
         native( BtLogLevel )
         {
           BT_set_log_level( BtLogLevel );

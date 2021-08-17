@@ -2822,9 +2822,9 @@ void DeviceInterfaceBluetoothDeviceClass_OnSetLogLevel( DeviceInterfaceBluetooth
 {
   if ( _this->LogLevel != value )
   {
-    XBool BtLogLevel;
+    XInt32 BtLogLevel;
     _this->LogLevel = value;
-    BtLogLevel = !!value;
+    BtLogLevel = value;
     BT_set_log_level( BtLogLevel );
   }
 }
